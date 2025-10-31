@@ -26,7 +26,7 @@ func TestObjectContractNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Contracts.New(context.TODO(), crm.ObjectContractNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
@@ -64,7 +64,7 @@ func TestObjectContractUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Contracts.Update(
 		context.TODO(),
@@ -104,7 +104,7 @@ func TestObjectContractListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Contracts.List(context.TODO(), crm.ObjectContractListParams{
 		After:                 hubspotsdk.String("after"),
@@ -134,7 +134,7 @@ func TestObjectContractDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Objects.Contracts.Delete(context.TODO(), "contractId")
 	if err != nil {
@@ -157,7 +157,7 @@ func TestObjectContractGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Contracts.Get(
 		context.TODO(),
@@ -190,7 +190,7 @@ func TestObjectContractSearchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Contracts.Search(context.TODO(), crm.ObjectContractSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{

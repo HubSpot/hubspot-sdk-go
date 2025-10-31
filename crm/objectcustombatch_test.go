@@ -26,7 +26,7 @@ func TestObjectCustomBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Custom.Batch.New(
 		context.TODO(),
@@ -71,7 +71,7 @@ func TestObjectCustomBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Custom.Batch.Update(
 		context.TODO(),
@@ -109,7 +109,7 @@ func TestObjectCustomBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Objects.Custom.Batch.Delete(
 		context.TODO(),
@@ -142,7 +142,7 @@ func TestObjectCustomBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Custom.Batch.Get(
 		context.TODO(),
@@ -179,7 +179,7 @@ func TestObjectCustomBatchUpsert(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Custom.Batch.Upsert(
 		context.TODO(),

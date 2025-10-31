@@ -25,7 +25,7 @@ func TestSubscriptionList(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.List(context.TODO())
 	if err != nil {
@@ -48,7 +48,7 @@ func TestSubscriptionGetEmailStatus(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.GetEmailStatus(context.TODO(), "emailAddress")
 	if err != nil {
@@ -71,7 +71,7 @@ func TestSubscriptionSubscribeWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.Subscribe(context.TODO(), marketing.SubscriptionSubscribeParams{
 		PublicUpdateSubscriptionStatusRequest: marketing.PublicUpdateSubscriptionStatusRequestParam{
@@ -101,7 +101,7 @@ func TestSubscriptionUnsubscribeWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.Unsubscribe(context.TODO(), marketing.SubscriptionUnsubscribeParams{
 		PublicUpdateSubscriptionStatusRequest: marketing.PublicUpdateSubscriptionStatusRequestParam{

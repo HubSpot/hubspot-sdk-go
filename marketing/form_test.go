@@ -26,7 +26,7 @@ func TestFormNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Forms.New(context.TODO(), marketing.FormNewParams{
 		FormDefinitionCreateRequestBase: marketing.FormDefinitionCreateRequestBaseParam{
@@ -153,7 +153,7 @@ func TestFormUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Forms.Update(
 		context.TODO(),
@@ -280,7 +280,7 @@ func TestFormListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Forms.List(context.TODO(), marketing.FormListParams{
 		After:     hubspotsdk.String("after"),
@@ -308,7 +308,7 @@ func TestFormDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Forms.Delete(context.TODO(), "formId")
 	if err != nil {
@@ -331,7 +331,7 @@ func TestFormGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Forms.Get(
 		context.TODO(),
@@ -360,7 +360,7 @@ func TestFormReplaceWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Forms.Replace(
 		context.TODO(),

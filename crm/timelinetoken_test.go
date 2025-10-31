@@ -26,7 +26,7 @@ func TestTimelineTokenNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Timeline.Tokens.New(
 		context.TODO(),
@@ -70,7 +70,7 @@ func TestTimelineTokenUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Timeline.Tokens.Update(
 		context.TODO(),
@@ -114,7 +114,7 @@ func TestTimelineTokenDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Timeline.Tokens.Delete(
 		context.TODO(),

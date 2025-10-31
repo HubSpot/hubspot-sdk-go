@@ -26,7 +26,7 @@ func TestObjectDealSplitBatchRead(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.DealSplits.BatchRead(context.TODO(), crm.ObjectDealSplitBatchReadParams{
 		BatchInputPublicObjectID: shared.BatchInputPublicObjectIDParam{
@@ -55,7 +55,7 @@ func TestObjectDealSplitBatchUpsert(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.DealSplits.BatchUpsert(context.TODO(), crm.ObjectDealSplitBatchUpsertParams{
 		Inputs: []crm.ObjectDealSplitBatchUpsertParamsInput{{

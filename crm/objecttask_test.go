@@ -26,7 +26,7 @@ func TestObjectTaskNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tasks.New(context.TODO(), crm.ObjectTaskNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
@@ -64,7 +64,7 @@ func TestObjectTaskUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tasks.Update(
 		context.TODO(),
@@ -104,7 +104,7 @@ func TestObjectTaskListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tasks.List(context.TODO(), crm.ObjectTaskListParams{
 		After:                 hubspotsdk.String("after"),
@@ -134,7 +134,7 @@ func TestObjectTaskDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Objects.Tasks.Delete(context.TODO(), "taskId")
 	if err != nil {
@@ -157,7 +157,7 @@ func TestObjectTaskGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tasks.Get(
 		context.TODO(),
@@ -190,7 +190,7 @@ func TestObjectTaskSearchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tasks.Search(context.TODO(), crm.ObjectTaskSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{

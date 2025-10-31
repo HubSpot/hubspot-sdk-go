@@ -31,7 +31,7 @@ func TestHubdbTableNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.New(context.TODO(), cms.HubdbTableNewParams{
 		HubDBTableV3Request: cms.HubDBTableV3RequestParam{
@@ -85,7 +85,7 @@ func TestHubdbTableListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.List(context.TODO(), cms.HubdbTableListParams{
 		After:                hubspotsdk.String("after"),
@@ -121,7 +121,7 @@ func TestHubdbTableDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Hubdb.Tables.Delete(context.TODO(), "tableIdOrName")
 	if err != nil {
@@ -144,7 +144,7 @@ func TestHubdbTableCloneDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.CloneDraft(
 		context.TODO(),
@@ -178,7 +178,7 @@ func TestHubdbTableDeleteVersion(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Hubdb.Tables.DeleteVersion(
 		context.TODO(),
@@ -205,7 +205,7 @@ func TestHubdbTableExportWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	resp, err := client.Cms.Hubdb.Tables.Export(
 		context.TODO(),
@@ -245,7 +245,7 @@ func TestHubdbTableExportDraftWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	resp, err := client.Cms.Hubdb.Tables.ExportDraft(
 		context.TODO(),
@@ -287,7 +287,7 @@ func TestHubdbTableGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.Get(
 		context.TODO(),
@@ -318,7 +318,7 @@ func TestHubdbTableGetDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.GetDraft(
 		context.TODO(),
@@ -349,7 +349,7 @@ func TestHubdbTableImportDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.ImportDraft(
 		context.TODO(),
@@ -379,7 +379,7 @@ func TestHubdbTableListDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.ListDraft(context.TODO(), cms.HubdbTableListDraftParams{
 		After:                hubspotsdk.String("after"),
@@ -415,7 +415,7 @@ func TestHubdbTablePublishDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.PublishDraft(
 		context.TODO(),
@@ -444,7 +444,7 @@ func TestHubdbTableResetDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.ResetDraft(
 		context.TODO(),
@@ -473,7 +473,7 @@ func TestHubdbTableUnpublishWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.Unpublish(
 		context.TODO(),
@@ -502,7 +502,7 @@ func TestHubdbTableUpdateDraftWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Hubdb.Tables.UpdateDraft(
 		context.TODO(),

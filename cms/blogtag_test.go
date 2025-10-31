@@ -27,7 +27,7 @@ func TestBlogTagNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.New(context.TODO(), cms.BlogTagNewParams{
 		Tag: cms.TagParam{
@@ -60,7 +60,7 @@ func TestBlogTagUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.Update(
 		context.TODO(),
@@ -98,7 +98,7 @@ func TestBlogTagListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.List(context.TODO(), cms.BlogTagListParams{
 		After:         hubspotsdk.String("after"),
@@ -133,7 +133,7 @@ func TestBlogTagDeleteWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.Delete(
 		context.TODO(),
@@ -162,7 +162,7 @@ func TestBlogTagAttachToLangGroupWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.AttachToLangGroup(context.TODO(), cms.BlogTagAttachToLangGroupParams{
 		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
@@ -192,7 +192,7 @@ func TestBlogTagNewBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.NewBatch(context.TODO(), cms.BlogTagNewBatchParams{
 		BatchInputTag: cms.BatchInputTagParam{
@@ -227,7 +227,7 @@ func TestBlogTagNewLangVariationWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.NewLangVariation(context.TODO(), cms.BlogTagNewLangVariationParams{
 		TagCloneRequestVNext: cms.TagCloneRequestVNextParam{
@@ -257,7 +257,7 @@ func TestBlogTagDeleteBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.DeleteBatch(context.TODO(), cms.BlogTagDeleteBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -284,7 +284,7 @@ func TestBlogTagDetachFromLangGroup(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.DetachFromLangGroup(context.TODO(), cms.BlogTagDetachFromLangGroupParams{
 		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
@@ -311,7 +311,7 @@ func TestBlogTagGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.Get(
 		context.TODO(),
@@ -341,7 +341,7 @@ func TestBlogTagGetBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.GetBatch(context.TODO(), cms.BlogTagGetBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -369,7 +369,7 @@ func TestBlogTagSetLangPrimary(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.SetLangPrimary(context.TODO(), cms.BlogTagSetLangPrimaryParams{
 		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
@@ -396,7 +396,7 @@ func TestBlogTagUpdateBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Tags.UpdateBatch(context.TODO(), cms.BlogTagUpdateBatchParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
@@ -424,7 +424,7 @@ func TestBlogTagUpdateLangs(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Tags.UpdateLangs(context.TODO(), cms.BlogTagUpdateLangsParams{
 		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{

@@ -26,7 +26,7 @@ func TestObjectPostalMailBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PostalMail.Batch.New(context.TODO(), crm.ObjectPostalMailBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
@@ -67,7 +67,7 @@ func TestObjectPostalMailBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PostalMail.Batch.Update(context.TODO(), crm.ObjectPostalMailBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
@@ -101,7 +101,7 @@ func TestObjectPostalMailBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Objects.PostalMail.Batch.Delete(context.TODO(), crm.ObjectPostalMailBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
@@ -130,7 +130,7 @@ func TestObjectPostalMailBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PostalMail.Batch.Get(context.TODO(), crm.ObjectPostalMailBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
@@ -163,7 +163,7 @@ func TestObjectPostalMailBatchUpsert(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PostalMail.Batch.Upsert(context.TODO(), crm.ObjectPostalMailBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{

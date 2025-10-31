@@ -26,7 +26,7 @@ func TestBlogSettingListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Settings.List(context.TODO(), cms.BlogSettingListParams{
 		After:         hubspotsdk.String("after"),
@@ -60,7 +60,7 @@ func TestBlogSettingAttachToLangGroupWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Settings.AttachToLangGroup(context.TODO(), cms.BlogSettingAttachToLangGroupParams{
 		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
@@ -90,7 +90,7 @@ func TestBlogSettingNewLanguageVariationWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Settings.NewLanguageVariation(context.TODO(), cms.BlogSettingNewLanguageVariationParams{
 		BlogLanguageCloneRequestVNext: cms.BlogLanguageCloneRequestVNextParam{
@@ -120,7 +120,7 @@ func TestBlogSettingDetachFromLangGroup(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Settings.DetachFromLangGroup(context.TODO(), cms.BlogSettingDetachFromLangGroupParams{
 		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
@@ -147,7 +147,7 @@ func TestBlogSettingGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Settings.Get(context.TODO(), "blogId")
 	if err != nil {
@@ -170,7 +170,7 @@ func TestBlogSettingGetRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Settings.GetRevision(
 		context.TODO(),
@@ -199,7 +199,7 @@ func TestBlogSettingListRevisionsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Settings.ListRevisions(
 		context.TODO(),
@@ -230,7 +230,7 @@ func TestBlogSettingSetNewLangPrimary(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Settings.SetNewLangPrimary(context.TODO(), cms.BlogSettingSetNewLangPrimaryParams{
 		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
@@ -257,7 +257,7 @@ func TestBlogSettingUpdateLanguages(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Settings.UpdateLanguages(context.TODO(), cms.BlogSettingUpdateLanguagesParams{
 		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{

@@ -26,7 +26,7 @@ func TestObjectTicketBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tickets.Batch.New(context.TODO(), crm.ObjectTicketBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
@@ -67,7 +67,7 @@ func TestObjectTicketBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tickets.Batch.Update(context.TODO(), crm.ObjectTicketBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
@@ -101,7 +101,7 @@ func TestObjectTicketBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Objects.Tickets.Batch.Delete(context.TODO(), crm.ObjectTicketBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
@@ -130,7 +130,7 @@ func TestObjectTicketBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tickets.Batch.Get(context.TODO(), crm.ObjectTicketBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
@@ -163,7 +163,7 @@ func TestObjectTicketBatchUpsert(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.Tickets.Batch.Upsert(context.TODO(), crm.ObjectTicketBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{

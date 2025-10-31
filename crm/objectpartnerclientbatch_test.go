@@ -25,7 +25,7 @@ func TestObjectPartnerClientBatchBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PartnerClients.Batch.BatchGet(context.TODO(), crm.ObjectPartnerClientBatchBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
@@ -58,7 +58,7 @@ func TestObjectPartnerClientBatchBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.PartnerClients.Batch.BatchUpdate(context.TODO(), crm.ObjectPartnerClientBatchBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{

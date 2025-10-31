@@ -25,7 +25,7 @@ func TestTransactionalSmtpTokenNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Transactional.SmtpTokens.New(context.TODO(), marketing.TransactionalSmtpTokenNewParams{
 		SmtpAPITokenRequestEgg: marketing.SmtpAPITokenRequestEggParam{
@@ -53,7 +53,7 @@ func TestTransactionalSmtpTokenListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Transactional.SmtpTokens.List(context.TODO(), marketing.TransactionalSmtpTokenListParams{
 		After:           hubspotsdk.String("after"),
@@ -81,7 +81,7 @@ func TestTransactionalSmtpTokenDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Transactional.SmtpTokens.Delete(context.TODO(), "tokenId")
 	if err != nil {
@@ -104,7 +104,7 @@ func TestTransactionalSmtpTokenGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Transactional.SmtpTokens.Get(context.TODO(), "tokenId")
 	if err != nil {
@@ -127,7 +127,7 @@ func TestTransactionalSmtpTokenResetPassword(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Transactional.SmtpTokens.ResetPassword(context.TODO(), "tokenId")
 	if err != nil {

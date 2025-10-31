@@ -25,7 +25,7 @@ func TestCampaignBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Campaigns.Batch.New(context.TODO(), marketing.CampaignBatchNewParams{
 		BatchInputPublicCampaignInput: marketing.BatchInputPublicCampaignInputParam{
@@ -56,7 +56,7 @@ func TestCampaignBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Campaigns.Batch.Update(context.TODO(), marketing.CampaignBatchUpdateParams{
 		BatchInputPublicCampaignBatchUpdateItem: marketing.BatchInputPublicCampaignBatchUpdateItemParam{
@@ -88,7 +88,7 @@ func TestCampaignBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Campaigns.Batch.Delete(context.TODO(), marketing.CampaignBatchDeleteParams{
 		BatchInputPublicCampaignDeleteInput: marketing.BatchInputPublicCampaignDeleteInputParam{
@@ -117,7 +117,7 @@ func TestCampaignBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Campaigns.Batch.Get(context.TODO(), marketing.CampaignBatchGetParams{
 		BatchInputPublicCampaignReadInput: marketing.BatchInputPublicCampaignReadInputParam{

@@ -25,7 +25,7 @@ func TestObjectFeedbackSubmissionListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.FeedbackSubmissions.List(context.TODO(), crm.ObjectFeedbackSubmissionListParams{
 		After:                 hubspotsdk.String("after"),
@@ -55,7 +55,7 @@ func TestObjectFeedbackSubmissionGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.FeedbackSubmissions.Get(
 		context.TODO(),
@@ -88,7 +88,7 @@ func TestObjectFeedbackSubmissionSearchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Objects.FeedbackSubmissions.Search(context.TODO(), crm.ObjectFeedbackSubmissionSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{

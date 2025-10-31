@@ -25,7 +25,7 @@ func TestLimitGetAssociationLabelLimitsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetAssociationLabelLimits(context.TODO(), crm.LimitGetAssociationLabelLimitsParams{
 		FromObjectTypeID: hubspotsdk.String("fromObjectTypeId"),
@@ -51,7 +51,7 @@ func TestLimitGetAssociationRecordsLimitsByObjectType(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetAssociationRecordsLimitsByObjectType(
 		context.TODO(),
@@ -80,7 +80,7 @@ func TestLimitGetAssociationRecordsLimitsFromObjects(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetAssociationRecordsLimitsFromObjects(context.TODO())
 	if err != nil {
@@ -103,7 +103,7 @@ func TestLimitGetAssociationRecordsLimitsToObjects(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetAssociationRecordsLimitsToObjects(context.TODO(), "fromObjectTypeId")
 	if err != nil {
@@ -126,7 +126,7 @@ func TestLimitGetCalculatedPropertyLimits(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetCalculatedPropertyLimits(context.TODO())
 	if err != nil {
@@ -149,7 +149,7 @@ func TestLimitGetCustomObjectTypeLimits(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetCustomObjectTypeLimits(context.TODO())
 	if err != nil {
@@ -172,7 +172,7 @@ func TestLimitGetCustomPropertyLimits(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetCustomPropertyLimits(context.TODO())
 	if err != nil {
@@ -195,7 +195,7 @@ func TestLimitGetPipelineLimits(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetPipelineLimits(context.TODO())
 	if err != nil {
@@ -218,7 +218,7 @@ func TestLimitGetRecordLimits(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Limits.GetRecordLimits(context.TODO())
 	if err != nil {

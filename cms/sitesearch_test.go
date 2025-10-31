@@ -25,7 +25,7 @@ func TestSiteSearchGetIndexedDataWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.SiteSearch.GetIndexedData(
 		context.TODO(),
@@ -54,7 +54,7 @@ func TestSiteSearchSearchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.SiteSearch.Search(context.TODO(), cms.SiteSearchSearchParams{
 		Autocomplete:    hubspotsdk.Bool(true),

@@ -25,7 +25,7 @@ func TestSequenceEnrollmentEnrollWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Sequences.Enrollments.Enroll(context.TODO(), automation.SequenceEnrollmentEnrollParams{
 		PublicSequenceEnrollmentRequest: automation.PublicSequenceEnrollmentRequestParam{
@@ -55,7 +55,7 @@ func TestSequenceEnrollmentGetByContactID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Sequences.Enrollments.GetByContactID(context.TODO(), "contactId")
 	if err != nil {

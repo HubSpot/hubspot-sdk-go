@@ -27,7 +27,7 @@ func TestBlogPostBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Posts.Batch.New(context.TODO(), cms.BlogPostBatchNewParams{
 		BatchInputBlogPost: cms.BatchInputBlogPostParam{
@@ -244,7 +244,7 @@ func TestBlogPostBatchUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Posts.Batch.Update(context.TODO(), cms.BlogPostBatchUpdateParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
@@ -272,7 +272,7 @@ func TestBlogPostBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Blogs.Posts.Batch.Delete(context.TODO(), cms.BlogPostBatchDeleteParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -299,7 +299,7 @@ func TestBlogPostBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Blogs.Posts.Batch.Get(context.TODO(), cms.BlogPostBatchGetParams{
 		BatchInputString: shared.BatchInputStringParam{

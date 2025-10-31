@@ -25,7 +25,7 @@ func TestActionCallbackComplete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Automation.Actions.Callbacks.Complete(
 		context.TODO(),
@@ -58,7 +58,7 @@ func TestActionCallbackCompleteBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Automation.Actions.Callbacks.CompleteBatch(context.TODO(), automation.ActionCallbackCompleteBatchParams{
 		BatchInputCallbackCompletionBatchRequest: automation.BatchInputCallbackCompletionBatchRequestParam{

@@ -25,7 +25,7 @@ func TestAuditLogListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.AuditLogs.List(context.TODO(), cms.AuditLogListParams{
 		After:      hubspotsdk.String("after"),

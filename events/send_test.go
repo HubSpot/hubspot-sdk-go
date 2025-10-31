@@ -26,7 +26,7 @@ func TestSendSendWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Events.Send.Send(context.TODO(), events.SendSendParams{
 		BehavioralEventHTTPCompletionRequest: events.BehavioralEventHTTPCompletionRequestParam{
@@ -145,7 +145,7 @@ func TestSendSendBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Events.Send.SendBatch(context.TODO(), events.SendSendBatchParams{
 		BatchedBehavioralEventHTTPCompletionRequest: events.BatchedBehavioralEventHTTPCompletionRequestParam{

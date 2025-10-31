@@ -27,7 +27,7 @@ func TestCurrencyBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.BatchNew(context.TODO(), settings.CurrencyBatchNewParams{
 		BatchInputExchangeRateCreateRequest: settings.BatchInputExchangeRateCreateRequestParam{
@@ -58,7 +58,7 @@ func TestCurrencyBatchGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.BatchGet(context.TODO(), settings.CurrencyBatchGetParams{
 		BatchInputPublicObjectID: shared.BatchInputPublicObjectIDParam{
@@ -87,7 +87,7 @@ func TestCurrencyBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.BatchUpdate(context.TODO(), settings.CurrencyBatchUpdateParams{
 		BatchInputExchangeRateUpdateRequest: settings.BatchInputExchangeRateUpdateRequestParam{
@@ -118,7 +118,7 @@ func TestCurrencyNewExchangeRateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.NewExchangeRate(context.TODO(), settings.CurrencyNewExchangeRateParams{
 		ExchangeRateCreateRequest: settings.ExchangeRateCreateRequestParam{
@@ -147,7 +147,7 @@ func TestCurrencyGetCompanyCurrency(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.GetCompanyCurrency(context.TODO())
 	if err != nil {
@@ -170,7 +170,7 @@ func TestCurrencyGetExchangeRateByID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.GetExchangeRateByID(context.TODO(), "exchangeRateId")
 	if err != nil {
@@ -193,7 +193,7 @@ func TestCurrencyListCodes(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.ListCodes(context.TODO())
 	if err != nil {
@@ -216,7 +216,7 @@ func TestCurrencyListCurrentExchangeRates(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.ListCurrentExchangeRates(context.TODO())
 	if err != nil {
@@ -239,7 +239,7 @@ func TestCurrencyListExchangeRates(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.ListExchangeRates(context.TODO())
 	if err != nil {
@@ -262,7 +262,7 @@ func TestCurrencyUpdateCompanyCurrency(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.UpdateCompanyCurrency(context.TODO(), settings.CurrencyUpdateCompanyCurrencyParams{
 		CompanyCurrencyUpdateRequest: settings.CompanyCurrencyUpdateRequestParam{
@@ -289,7 +289,7 @@ func TestCurrencyUpdateExchangeRateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.UpdateExchangeRate(
 		context.TODO(),
@@ -321,7 +321,7 @@ func TestCurrencyUpdateVisibility(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Settings.Currencies.UpdateVisibility(context.TODO(), settings.CurrencyUpdateVisibilityParams{
 		CurrencyPairUpdate: settings.CurrencyPairUpdateParam{

@@ -25,7 +25,7 @@ func TestEmailStatisticGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Emails.Statistics.Get(context.TODO(), marketing.EmailStatisticGetParams{
 		EmailIDs:       []int64{0},
@@ -53,7 +53,7 @@ func TestEmailStatisticGetHistogramWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Emails.Statistics.GetHistogram(context.TODO(), marketing.EmailStatisticGetHistogramParams{
 		EmailIDs:       []int64{0},
