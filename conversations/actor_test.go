@@ -26,7 +26,7 @@ func TestActorBatchRead(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Conversations.Actors.BatchRead(context.TODO(), conversations.ActorBatchReadParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -53,7 +53,7 @@ func TestActorGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Conversations.Actors.Get(context.TODO(), "actorId")
 	if err != nil {

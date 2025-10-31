@@ -26,7 +26,7 @@ func TestSubscriptionV4StatusUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.Update(
 		context.TODO(),
@@ -61,7 +61,7 @@ func TestSubscriptionV4StatusBatchGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.BatchGet(context.TODO(), marketing.SubscriptionV4StatusBatchGetParams{
 		Channel: marketing.SubscriptionV4StatusBatchGetParamsChannelEmail,
@@ -90,7 +90,7 @@ func TestSubscriptionV4StatusBatchGetUnsubscribeAllStatusWithOptionalParams(t *t
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.BatchGetUnsubscribeAllStatus(context.TODO(), marketing.SubscriptionV4StatusBatchGetUnsubscribeAllStatusParams{
 		Channel: marketing.SubscriptionV4StatusBatchGetUnsubscribeAllStatusParamsChannelEmail,
@@ -119,7 +119,7 @@ func TestSubscriptionV4StatusBatchUnsubscribeAllWithOptionalParams(t *testing.T)
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.BatchUnsubscribeAll(context.TODO(), marketing.SubscriptionV4StatusBatchUnsubscribeAllParams{
 		Channel: marketing.SubscriptionV4StatusBatchUnsubscribeAllParamsChannelEmail,
@@ -149,7 +149,7 @@ func TestSubscriptionV4StatusBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.BatchUpdate(context.TODO(), marketing.SubscriptionV4StatusBatchUpdateParams{
 		BatchInputPublicStatusRequest: marketing.BatchInputPublicStatusRequestParam{
@@ -183,7 +183,7 @@ func TestSubscriptionV4StatusGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.Get(
 		context.TODO(),
@@ -213,7 +213,7 @@ func TestSubscriptionV4StatusGetUnsubscribeAllStatusWithOptionalParams(t *testin
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.GetUnsubscribeAllStatus(
 		context.TODO(),
@@ -244,7 +244,7 @@ func TestSubscriptionV4StatusUnsubscribeAllWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Statuses.UnsubscribeAll(
 		context.TODO(),

@@ -25,7 +25,7 @@ func TestEventParticipationGetByExternalAccountAndEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Participations.GetByExternalAccountAndEventID(
 		context.TODO(),
@@ -54,7 +54,7 @@ func TestEventParticipationGetByID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Participations.GetByID(context.TODO(), 0)
 	if err != nil {
@@ -77,7 +77,7 @@ func TestEventParticipationListBreakdownByContactWithOptionalParams(t *testing.T
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Participations.ListBreakdownByContact(
 		context.TODO(),
@@ -108,7 +108,7 @@ func TestEventParticipationListBreakdownByExternalAccountAndEventIDWithOptionalP
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Participations.ListBreakdownByExternalAccountAndEventID(
 		context.TODO(),
@@ -141,7 +141,7 @@ func TestEventParticipationListBreakdownByIDWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Participations.ListBreakdownByID(
 		context.TODO(),

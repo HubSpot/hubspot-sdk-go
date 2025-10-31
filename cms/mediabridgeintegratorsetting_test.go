@@ -25,7 +25,7 @@ func TestMediaBridgeIntegratorSettingNewObjectDefinition(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.NewObjectDefinition(
 		context.TODO(),
@@ -54,7 +54,7 @@ func TestMediaBridgeIntegratorSettingNewOembedDomainWithOptionalParams(t *testin
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.NewOembedDomain(
 		context.TODO(),
@@ -88,7 +88,7 @@ func TestMediaBridgeIntegratorSettingDeleteOembedDomain(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.MediaBridge.IntegratorSettings.DeleteOembedDomain(context.TODO(), "appId")
 	if err != nil {
@@ -111,7 +111,7 @@ func TestMediaBridgeIntegratorSettingGetEventVisibilitySettings(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.GetEventVisibilitySettings(context.TODO(), "appId")
 	if err != nil {
@@ -134,7 +134,7 @@ func TestMediaBridgeIntegratorSettingGetObjectDefinitionsByMediaType(t *testing.
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.GetObjectDefinitionsByMediaType(
 		context.TODO(),
@@ -163,7 +163,7 @@ func TestMediaBridgeIntegratorSettingGetOembedDomain(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.GetOembedDomain(
 		context.TODO(),
@@ -192,7 +192,7 @@ func TestMediaBridgeIntegratorSettingListOembedDomains(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.ListOembedDomains(context.TODO(), "appId")
 	if err != nil {
@@ -215,7 +215,7 @@ func TestMediaBridgeIntegratorSettingRegisterAppNameWithOptionalParams(t *testin
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.RegisterAppName(
 		context.TODO(),
@@ -245,7 +245,7 @@ func TestMediaBridgeIntegratorSettingUpdateAppNameWithOptionalParams(t *testing.
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.UpdateAppName(
 		context.TODO(),
@@ -275,7 +275,7 @@ func TestMediaBridgeIntegratorSettingUpdateEventVisibilitySettingsWithOptionalPa
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.UpdateEventVisibilitySettings(
 		context.TODO(),
@@ -308,7 +308,7 @@ func TestMediaBridgeIntegratorSettingUpdateOembedDomainWithOptionalParams(t *tes
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.UpdateOembedDomain(
 		context.TODO(),

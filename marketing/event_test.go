@@ -30,7 +30,7 @@ func TestEventNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.New(context.TODO(), marketing.EventNewParams{
 		MarketingEventCreateRequestParams: marketing.MarketingEventCreateRequestParams{
@@ -88,7 +88,7 @@ func TestEventUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Update(
 		context.TODO(),
@@ -147,7 +147,7 @@ func TestEventListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.List(context.TODO(), marketing.EventListParams{
 		After: hubspotsdk.String("after"),
@@ -173,7 +173,7 @@ func TestEventDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Events.Delete(context.TODO(), "objectId")
 	if err != nil {
@@ -196,7 +196,7 @@ func TestEventCancelByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.CancelByExternalEventID(
 		context.TODO(),
@@ -225,7 +225,7 @@ func TestEventCompleteByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.CompleteByExternalEventID(
 		context.TODO(),
@@ -258,7 +258,7 @@ func TestEventDeleteBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Events.DeleteBatch(context.TODO(), marketing.EventDeleteBatchParams{
 		BatchInputMarketingEventPublicObjectIDDeleteRequest: marketing.BatchInputMarketingEventPublicObjectIDDeleteRequestParam{
@@ -285,7 +285,7 @@ func TestEventDeleteBatchByExternalEventID(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	resp, err := client.Marketing.Events.DeleteBatchByExternalEventID(context.TODO(), marketing.EventDeleteBatchByExternalEventIDParams{
 		BatchInputMarketingEventExternalUniqueIdentifier: marketing.BatchInputMarketingEventExternalUniqueIdentifierParam{
@@ -329,7 +329,7 @@ func TestEventDeleteByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Marketing.Events.DeleteByExternalEventID(
 		context.TODO(),
@@ -358,7 +358,7 @@ func TestEventGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Get(context.TODO(), "objectId")
 	if err != nil {
@@ -381,7 +381,7 @@ func TestEventGetByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.GetByExternalEventID(
 		context.TODO(),
@@ -410,7 +410,7 @@ func TestEventSearchByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.SearchByExternalEventID(context.TODO(), marketing.EventSearchByExternalEventIDParams{
 		Q: "q",
@@ -435,7 +435,7 @@ func TestEventSearchIdentifiersByExternalEventID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.SearchIdentifiersByExternalEventID(context.TODO(), "externalEventId")
 	if err != nil {
@@ -458,7 +458,7 @@ func TestEventUpdateBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.UpdateBatch(context.TODO(), marketing.EventUpdateBatchParams{
 		BatchInputMarketingEventPublicUpdateRequestFullV2: marketing.BatchInputMarketingEventPublicUpdateRequestFullV2Param{
@@ -516,7 +516,7 @@ func TestEventUpdateByExternalEventIDWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.UpdateByExternalEventID(
 		context.TODO(),
@@ -577,7 +577,7 @@ func TestEventUpsertBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.UpsertBatch(context.TODO(), marketing.EventUpsertBatchParams{
 		BatchInputMarketingEventCreateRequestParams: marketing.BatchInputMarketingEventCreateRequestParams{
@@ -637,7 +637,7 @@ func TestEventUpsertByExternalEventIDWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.UpsertByExternalEventID(
 		context.TODO(),
@@ -697,7 +697,7 @@ func TestEventUpsertSubscriberStateByEmail(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	resp, err := client.Marketing.Events.UpsertSubscriberStateByEmail(
 		context.TODO(),
@@ -750,7 +750,7 @@ func TestEventUpsertSubscriberStateByID(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	resp, err := client.Marketing.Events.UpsertSubscriberStateByID(
 		context.TODO(),

@@ -26,7 +26,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.New(context.TODO(), automation.WorkflowNewParams{
 		APIFlowCreateRequest: automation.APIFlowCreateRequestUnionParam{
@@ -387,7 +387,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.Update(
 		context.TODO(),
@@ -737,7 +737,7 @@ func TestWorkflowListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.List(context.TODO(), automation.WorkflowListParams{
 		After: hubspotsdk.String("after"),
@@ -763,7 +763,7 @@ func TestWorkflowDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Automation.Workflows.Delete(context.TODO(), 0)
 	if err != nil {
@@ -786,7 +786,7 @@ func TestWorkflowBatchGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.BatchGet(context.TODO(), automation.WorkflowBatchGetParams{
 		APIFlowBatchInput: automation.APIFlowBatchInputParam{
@@ -816,7 +816,7 @@ func TestWorkflowBatchGetIDMappings(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.BatchGetIDMappings(context.TODO(), automation.WorkflowBatchGetIDMappingsParams{
 		APIFlowBatchMigrationInput: automation.APIFlowBatchMigrationInputParam{
@@ -848,7 +848,7 @@ func TestWorkflowGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.Get(context.TODO(), "flowId")
 	if err != nil {
@@ -871,7 +871,7 @@ func TestWorkflowListEmailCampaignsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Workflows.ListEmailCampaigns(context.TODO(), automation.WorkflowListEmailCampaignsParams{
 		After:  hubspotsdk.String("after"),

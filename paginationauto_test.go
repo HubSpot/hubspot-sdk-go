@@ -23,7 +23,7 @@ func TestAutoPagination(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	iter := client.CRM.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
 		Limit: hubspotsdk.Int(100),

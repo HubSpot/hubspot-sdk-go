@@ -25,7 +25,7 @@ func TestCurrencyCentralFxRateNewCurrency(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.CentralFxRates.NewCurrency(context.TODO(), settings.CurrencyCentralFxRateNewCurrencyParams{
 		CurrencyCreateRequest: settings.CurrencyCreateRequestParam{
@@ -52,7 +52,7 @@ func TestCurrencyCentralFxRateGetInformation(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.CentralFxRates.GetInformation(context.TODO())
 	if err != nil {
@@ -75,7 +75,7 @@ func TestCurrencyCentralFxRateGetUnsupportedCurrencies(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Settings.Currencies.CentralFxRates.GetUnsupportedCurrencies(context.TODO())
 	if err != nil {

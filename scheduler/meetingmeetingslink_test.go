@@ -26,7 +26,7 @@ func TestMeetingMeetingsLinkList(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Scheduler.Meetings.MeetingsLinks.List(context.TODO())
 	if err != nil {
@@ -49,7 +49,7 @@ func TestMeetingMeetingsLinkBookWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Scheduler.Meetings.MeetingsLinks.Book(context.TODO(), scheduler.MeetingMeetingsLinkBookParams{
 		ExternalMeetingBooking: scheduler.ExternalMeetingBookingParam{
@@ -92,7 +92,7 @@ func TestMeetingMeetingsLinkGetAvailabilityBySlug(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Scheduler.Meetings.MeetingsLinks.GetAvailabilityBySlug(context.TODO(), "slug")
 	if err != nil {
@@ -115,7 +115,7 @@ func TestMeetingMeetingsLinkGetBookingInfoBySlug(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Scheduler.Meetings.MeetingsLinks.GetBookingInfoBySlug(context.TODO(), "slug")
 	if err != nil {

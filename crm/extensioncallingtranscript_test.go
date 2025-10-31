@@ -25,7 +25,7 @@ func TestExtensionCallingTranscriptNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Extensions.Calling.Transcripts.New(context.TODO(), crm.ExtensionCallingTranscriptNewParams{
 		TranscriptCreateRequest: crm.TranscriptCreateRequestParam{
@@ -63,7 +63,7 @@ func TestExtensionCallingTranscriptDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Extensions.Calling.Transcripts.Delete(context.TODO(), "transcriptId")
 	if err != nil {
@@ -86,7 +86,7 @@ func TestExtensionCallingTranscriptGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Extensions.Calling.Transcripts.Get(context.TODO(), "transcriptId")
 	if err != nil {

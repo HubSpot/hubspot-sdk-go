@@ -23,7 +23,7 @@ func TestManualPagination(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	page, err := client.CRM.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
 		Limit: hubspotsdk.Int(100),

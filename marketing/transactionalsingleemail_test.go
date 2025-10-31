@@ -25,7 +25,7 @@ func TestTransactionalSingleEmailSendWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Transactional.SingleEmail.Send(context.TODO(), marketing.TransactionalSingleEmailSendParams{
 		PublicSingleSendRequestEgg: marketing.PublicSingleSendRequestEggParam{

@@ -25,7 +25,7 @@ func TestOAuthNewAccessTokenWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Auth.OAuth.NewAccessToken(context.TODO(), auth.OAuthNewAccessTokenParams{
 		ClientID:     hubspotsdk.String("client_id"),
@@ -55,7 +55,7 @@ func TestOAuthDeleteRefreshToken(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Auth.OAuth.DeleteRefreshToken(context.TODO(), "token")
 	if err != nil {
@@ -78,7 +78,7 @@ func TestOAuthGetAccessToken(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Auth.OAuth.GetAccessToken(context.TODO(), "token")
 	if err != nil {
@@ -101,7 +101,7 @@ func TestOAuthGetRefreshToken(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Auth.OAuth.GetRefreshToken(context.TODO(), "token")
 	if err != nil {

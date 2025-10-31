@@ -25,7 +25,7 @@ func TestEventAttendanceNewByEventIDAndContactID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Attendance.NewByEventIDAndContactID(
 		context.TODO(),
@@ -63,7 +63,7 @@ func TestEventAttendanceNewByEventIDAndEmail(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Attendance.NewByEventIDAndEmail(
 		context.TODO(),
@@ -104,7 +104,7 @@ func TestEventAttendanceNewByExternalEventIDAndContactIDWithOptionalParams(t *te
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Attendance.NewByExternalEventIDAndContactID(
 		context.TODO(),
@@ -143,7 +143,7 @@ func TestEventAttendanceNewByExternalEventIDAndEmailWithOptionalParams(t *testin
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Events.Attendance.NewByExternalEventIDAndEmail(
 		context.TODO(),

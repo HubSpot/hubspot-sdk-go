@@ -25,7 +25,7 @@ func TestExtensionCallingChannelConnectionSettingNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Extensions.Calling.ChannelConnectionSettings.New(
 		context.TODO(),
@@ -57,7 +57,7 @@ func TestExtensionCallingChannelConnectionSettingUpdateWithOptionalParams(t *tes
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Extensions.Calling.ChannelConnectionSettings.Update(
 		context.TODO(),
@@ -89,7 +89,7 @@ func TestExtensionCallingChannelConnectionSettingDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.CRM.Extensions.Calling.ChannelConnectionSettings.Delete(context.TODO(), 0)
 	if err != nil {
@@ -112,7 +112,7 @@ func TestExtensionCallingChannelConnectionSettingGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.CRM.Extensions.Calling.ChannelConnectionSettings.Get(context.TODO(), 0)
 	if err != nil {

@@ -25,7 +25,7 @@ func TestMediaBridgeEventNewAttentionSpanEventWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewAttentionSpanEvent(context.TODO(), cms.MediaBridgeEventNewAttentionSpanEventParams{
 		MediaType:         cms.MediaBridgeEventNewAttentionSpanEventParamsMediaTypeVideo,
@@ -70,7 +70,7 @@ func TestMediaBridgeEventNewMediaPlayedEventWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewMediaPlayedEvent(context.TODO(), cms.MediaBridgeEventNewMediaPlayedEventParams{
 		MediaType:         cms.MediaBridgeEventNewMediaPlayedEventParamsMediaTypeVideo,
@@ -109,7 +109,7 @@ func TestMediaBridgeEventNewMediaPlayedPercentEventWithOptionalParams(t *testing
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewMediaPlayedPercentEvent(context.TODO(), cms.MediaBridgeEventNewMediaPlayedPercentEventParams{
 		MediaType:         cms.MediaBridgeEventNewMediaPlayedPercentEventParamsMediaTypeVideo,

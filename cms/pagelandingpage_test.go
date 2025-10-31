@@ -27,7 +27,7 @@ func TestPageLandingPageNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.New(context.TODO(), cms.PageLandingPageNewParams{
 		Page: cms.PageParam{
@@ -238,7 +238,7 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.Update(
 		context.TODO(),
@@ -454,7 +454,7 @@ func TestPageLandingPageListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.List(context.TODO(), cms.PageLandingPageListParams{
 		After:         hubspotsdk.String("after"),
@@ -489,7 +489,7 @@ func TestPageLandingPageDeleteWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.Delete(
 		context.TODO(),
@@ -518,7 +518,7 @@ func TestPageLandingPageAttachToLangGroupWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.AttachToLangGroup(context.TODO(), cms.PageLandingPageAttachToLangGroupParams{
 		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
@@ -548,7 +548,7 @@ func TestPageLandingPageCloneWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.Clone(context.TODO(), cms.PageLandingPageCloneParams{
 		ContentCloneRequestVNext: cms.ContentCloneRequestVNextParam{
@@ -576,7 +576,7 @@ func TestPageLandingPageNewAbTestVariation(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.NewAbTestVariation(context.TODO(), cms.PageLandingPageNewAbTestVariationParams{
 		AbTestCreateRequestVNext: shared.AbTestCreateRequestVNextParam{
@@ -604,7 +604,7 @@ func TestPageLandingPageNewBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.NewBatch(context.TODO(), cms.PageLandingPageNewBatchParams{
 		BatchInputPage: cms.BatchInputPageParam{
@@ -817,7 +817,7 @@ func TestPageLandingPageNewFolder(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.NewFolder(context.TODO(), cms.PageLandingPageNewFolderParams{
 		ContentFolder: cms.ContentFolderParam{
@@ -850,7 +850,7 @@ func TestPageLandingPageNewFoldersBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.NewFoldersBatch(context.TODO(), cms.PageLandingPageNewFoldersBatchParams{
 		BatchInputContentFolder: cms.BatchInputContentFolderParam{
@@ -885,7 +885,7 @@ func TestPageLandingPageNewLanguageVariationWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.NewLanguageVariation(context.TODO(), cms.PageLandingPageNewLanguageVariationParams{
 		ContentLanguageCloneRequestVNext: cms.ContentLanguageCloneRequestVNextParam{
@@ -914,7 +914,7 @@ func TestPageLandingPageDeleteBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.DeleteBatch(context.TODO(), cms.PageLandingPageDeleteBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -941,7 +941,7 @@ func TestPageLandingPageDeleteFolderWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.DeleteFolder(
 		context.TODO(),
@@ -970,7 +970,7 @@ func TestPageLandingPageDeleteFoldersBatch(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.DeleteFoldersBatch(context.TODO(), cms.PageLandingPageDeleteFoldersBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -997,7 +997,7 @@ func TestPageLandingPageDetachFromLangGroup(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.DetachFromLangGroup(context.TODO(), cms.PageLandingPageDetachFromLangGroupParams{
 		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
@@ -1024,7 +1024,7 @@ func TestPageLandingPageEndAbTest(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.EndAbTest(context.TODO(), cms.PageLandingPageEndAbTestParams{
 		AbTestEndRequestVNext: cms.AbTestEndRequestVNextParam{
@@ -1052,7 +1052,7 @@ func TestPageLandingPageGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.Get(
 		context.TODO(),
@@ -1082,7 +1082,7 @@ func TestPageLandingPageGetBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetBatch(context.TODO(), cms.PageLandingPageGetBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -1110,7 +1110,7 @@ func TestPageLandingPageGetDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetDraft(context.TODO(), "objectId")
 	if err != nil {
@@ -1133,7 +1133,7 @@ func TestPageLandingPageGetFolderWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetFolder(
 		context.TODO(),
@@ -1163,7 +1163,7 @@ func TestPageLandingPageGetFolderRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetFolderRevision(
 		context.TODO(),
@@ -1192,7 +1192,7 @@ func TestPageLandingPageGetFoldersBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetFoldersBatch(context.TODO(), cms.PageLandingPageGetFoldersBatchParams{
 		BatchInputString: shared.BatchInputStringParam{
@@ -1220,7 +1220,7 @@ func TestPageLandingPageGetRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.GetRevision(
 		context.TODO(),
@@ -1249,7 +1249,7 @@ func TestPageLandingPageListFolderRevisionsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.ListFolderRevisions(
 		context.TODO(),
@@ -1280,7 +1280,7 @@ func TestPageLandingPageListFoldersWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.ListFolders(context.TODO(), cms.PageLandingPageListFoldersParams{
 		After:         hubspotsdk.String("after"),
@@ -1315,7 +1315,7 @@ func TestPageLandingPageListRevisionsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.ListRevisions(
 		context.TODO(),
@@ -1346,7 +1346,7 @@ func TestPageLandingPagePublishDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.PublishDraft(context.TODO(), "objectId")
 	if err != nil {
@@ -1369,7 +1369,7 @@ func TestPageLandingPageRerunAbTest(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.RerunAbTest(context.TODO(), cms.PageLandingPageRerunAbTestParams{
 		AbTestRerunRequestVNext: cms.AbTestRerunRequestVNextParam{
@@ -1397,7 +1397,7 @@ func TestPageLandingPageResetDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.ResetDraft(context.TODO(), "objectId")
 	if err != nil {
@@ -1420,7 +1420,7 @@ func TestPageLandingPageRestoreFolderRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.RestoreFolderRevision(
 		context.TODO(),
@@ -1449,7 +1449,7 @@ func TestPageLandingPageRestoreRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.RestoreRevision(
 		context.TODO(),
@@ -1478,7 +1478,7 @@ func TestPageLandingPageRestoreRevisionToDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.RestoreRevisionToDraft(
 		context.TODO(),
@@ -1507,7 +1507,7 @@ func TestPageLandingPageSchedule(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.Schedule(context.TODO(), cms.PageLandingPageScheduleParams{
 		ContentScheduleRequestVNext: cms.ContentScheduleRequestVNextParam{
@@ -1535,7 +1535,7 @@ func TestPageLandingPageSetNewLangPrimary(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.SetNewLangPrimary(context.TODO(), cms.PageLandingPageSetNewLangPrimaryParams{
 		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
@@ -1562,7 +1562,7 @@ func TestPageLandingPageUpdateBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.UpdateBatch(context.TODO(), cms.PageLandingPageUpdateBatchParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
@@ -1590,7 +1590,7 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.UpdateDraft(
 		context.TODO(),
@@ -1805,7 +1805,7 @@ func TestPageLandingPageUpdateFolderWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.UpdateFolder(
 		context.TODO(),
@@ -1843,7 +1843,7 @@ func TestPageLandingPageUpdateFoldersBatchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.Pages.LandingPages.UpdateFoldersBatch(context.TODO(), cms.PageLandingPageUpdateFoldersBatchParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
@@ -1871,7 +1871,7 @@ func TestPageLandingPageUpdateLanguages(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	err := client.Cms.Pages.LandingPages.UpdateLanguages(context.TODO(), cms.PageLandingPageUpdateLanguagesParams{
 		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{

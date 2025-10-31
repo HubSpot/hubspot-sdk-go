@@ -25,7 +25,7 @@ func TestSubscriptionV4LinkNewWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Marketing.Subscriptions.V4.Links.New(context.TODO(), marketing.SubscriptionV4LinkNewParams{
 		Channel: marketing.SubscriptionV4LinkNewParamsChannelEmail,
