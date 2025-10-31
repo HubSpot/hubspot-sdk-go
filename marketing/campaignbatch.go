@@ -1,0 +1,151 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+package marketing
+
+import (
+	"context"
+	"encoding/json"
+	"net/http"
+	"net/url"
+	"slices"
+
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+)
+
+// CampaignBatchService contains methods and other services that help with
+// interacting with the Hubspot API.
+//
+// Note, unlike clients, this service does not read variables from the environment
+// automatically. You should not instantiate this service directly, and instead use
+// the [NewCampaignBatchService] method instead.
+type CampaignBatchService struct {
+	Options []option.RequestOption
+}
+
+// NewCampaignBatchService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
+func NewCampaignBatchService(opts ...option.RequestOption) (r CampaignBatchService) {
+	r = CampaignBatchService{}
+	r.Options = opts
+	return
+}
+
+// This endpoint creates a batch of campaigns. The maximum number of items in a
+// batch request is 50. The campaigns in the response are not guaranteed to be in
+// the same order as they were provided in the request.
+func (r *CampaignBatchService) New(ctx context.Context, body CampaignBatchNewParams, opts ...option.RequestOption) (res *BatchResponsePublicCampaign, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "marketing/v3/campaigns/batch/create"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// This endpoint updates a batch of campaigns based on the provided input data. The
+// maximum number of items in a batch request is 50. If an empty string ("") is
+// passed for any property in the Batch Update, it will reset that property's
+// value.
+func (r *CampaignBatchService) Update(ctx context.Context, body CampaignBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponsePublicCampaign, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "marketing/v3/campaigns/batch/update"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// This endpoint deletes a batch of campaigns. The maximum number of items in a
+// batch request is 50. The response will always be 204 No Content, regardless of
+// whether the campaigns exist or not, whether they were successfully deleted or
+// not, or if only some of the campaigns in the batch were deleted.
+func (r *CampaignBatchService) Delete(ctx context.Context, body CampaignBatchDeleteParams, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := "marketing/v3/campaigns/batch/archive"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
+	return
+}
+
+// This endpoint reads a batch of campaigns based on the provided input data and
+// returns the campaigns along with their associated assets. The maximum number of
+// items in a batch request is 50. The campaigns in the response are not guaranteed
+// to be in the same order as they were provided in the request. If duplicate
+// campaign IDs are provided in the request, duplicates will be ignored. The
+// response will include only unique IDs and will be returned without duplicates.
+func (r *CampaignBatchService) Get(ctx context.Context, params CampaignBatchGetParams, opts ...option.RequestOption) (res *BatchResponsePublicCampaignWithAssets, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "marketing/v3/campaigns/batch/read"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	return
+}
+
+type CampaignBatchNewParams struct {
+	BatchInputPublicCampaignInput BatchInputPublicCampaignInputParam
+	paramObj
+}
+
+func (r CampaignBatchNewParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputPublicCampaignInput)
+}
+func (r *CampaignBatchNewParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.BatchInputPublicCampaignInput)
+}
+
+type CampaignBatchUpdateParams struct {
+	BatchInputPublicCampaignBatchUpdateItem BatchInputPublicCampaignBatchUpdateItemParam
+	paramObj
+}
+
+func (r CampaignBatchUpdateParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputPublicCampaignBatchUpdateItem)
+}
+func (r *CampaignBatchUpdateParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.BatchInputPublicCampaignBatchUpdateItem)
+}
+
+type CampaignBatchDeleteParams struct {
+	BatchInputPublicCampaignDeleteInput BatchInputPublicCampaignDeleteInputParam
+	paramObj
+}
+
+func (r CampaignBatchDeleteParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputPublicCampaignDeleteInput)
+}
+func (r *CampaignBatchDeleteParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.BatchInputPublicCampaignDeleteInput)
+}
+
+type CampaignBatchGetParams struct {
+	BatchInputPublicCampaignReadInput BatchInputPublicCampaignReadInputParam
+	// End date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched.
+	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	// Start date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched.
+	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
+	// A comma-separated list of the properties to be returned in the response. If any
+	// of the specified properties has empty value on the requested object(s), they
+	// will be ignored and not returned in response. If this parameter is empty, the
+	// response will include an empty properties map.
+	Properties []string `query:"properties,omitzero" json:"-"`
+	paramObj
+}
+
+func (r CampaignBatchGetParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputPublicCampaignReadInput)
+}
+func (r *CampaignBatchGetParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.BatchInputPublicCampaignReadInput)
+}
+
+// URLQuery serializes [CampaignBatchGetParams]'s query parameters as `url.Values`.
+func (r CampaignBatchGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}

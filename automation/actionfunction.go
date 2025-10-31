@@ -1,0 +1,253 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+package automation
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"slices"
+
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/hubspot-sdk-go/option"
+)
+
+// ActionFunctionService contains methods and other services that help with
+// interacting with the Hubspot API.
+//
+// Note, unlike clients, this service does not read variables from the environment
+// automatically. You should not instantiate this service directly, and instead use
+// the [NewActionFunctionService] method instead.
+type ActionFunctionService struct {
+	Options []option.RequestOption
+}
+
+// NewActionFunctionService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
+func NewActionFunctionService(opts ...option.RequestOption) (r ActionFunctionService) {
+	r = ActionFunctionService{}
+	r.Options = opts
+	return
+}
+
+// Retrieve all functions included in a definition.
+func (r *ActionFunctionService) List(ctx context.Context, definitionID string, query ActionFunctionListParams, opts ...option.RequestOption) (res *CollectionResponsePublicActionFunctionIdentifierNoPaging, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if definitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions", query.AppID, definitionID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
+// Archive a function for a definition
+func (r *ActionFunctionService) Delete(ctx context.Context, functionID string, body ActionFunctionDeleteParams, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if body.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	if functionID == "" {
+		err = errors.New("missing required functionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v/%s", body.AppID, body.DefinitionID, body.FunctionType, functionID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
+}
+
+// Update a function for a given definition by ID.
+func (r *ActionFunctionService) NewOrReplace(ctx context.Context, functionID string, params ActionFunctionNewOrReplaceParams, opts ...option.RequestOption) (res *PublicActionFunctionIdentifier, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if params.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	if functionID == "" {
+		err = errors.New("missing required functionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v/%s", params.AppID, params.DefinitionID, params.FunctionType, functionID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
+	return
+}
+
+// Add a function for a given definition.
+func (r *ActionFunctionService) NewOrReplaceByFunctionType(ctx context.Context, functionType ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType, params ActionFunctionNewOrReplaceByFunctionTypeParams, opts ...option.RequestOption) (res *PublicActionFunctionIdentifier, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if params.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v", params.AppID, params.DefinitionID, functionType)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
+	return
+}
+
+// Delete a function within a given definition.
+func (r *ActionFunctionService) DeleteByFunctionType(ctx context.Context, functionType ActionFunctionDeleteByFunctionTypeParamsFunctionType, body ActionFunctionDeleteByFunctionTypeParams, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if body.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v", body.AppID, body.DefinitionID, functionType)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
+}
+
+// Retrieve a specific function from a given definition.
+func (r *ActionFunctionService) Get(ctx context.Context, functionID string, query ActionFunctionGetParams, opts ...option.RequestOption) (res *PublicActionFunction, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if query.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	if functionID == "" {
+		err = errors.New("missing required functionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v/%s", query.AppID, query.DefinitionID, query.FunctionType, functionID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
+// Retrieve functions by a type for a given definition
+func (r *ActionFunctionService) GetByFunctionType(ctx context.Context, functionType ActionFunctionGetByFunctionTypeParamsFunctionType, query ActionFunctionGetByFunctionTypeParams, opts ...option.RequestOption) (res *PublicActionFunction, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if query.DefinitionID == "" {
+		err = errors.New("missing required definitionId parameter")
+		return
+	}
+	path := fmt.Sprintf("automation/v4/actions/%v/%s/functions/%v", query.AppID, query.DefinitionID, functionType)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
+type ActionFunctionListParams struct {
+	AppID int64 `path:"appId,required" json:"-"`
+	paramObj
+}
+
+type ActionFunctionDeleteParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
+	// "POST_ACTION_EXECUTION".
+	FunctionType ActionFunctionDeleteParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
+	paramObj
+}
+
+type ActionFunctionDeleteParamsFunctionType string
+
+const (
+	ActionFunctionDeleteParamsFunctionTypePreActionExecution  ActionFunctionDeleteParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionDeleteParamsFunctionTypePreFetchOptions     ActionFunctionDeleteParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionDeleteParamsFunctionTypePostFetchOptions    ActionFunctionDeleteParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionDeleteParamsFunctionTypePostActionExecution ActionFunctionDeleteParamsFunctionType = "POST_ACTION_EXECUTION"
+)
+
+type ActionFunctionNewOrReplaceParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
+	// "POST_ACTION_EXECUTION".
+	FunctionType ActionFunctionNewOrReplaceParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
+	Body         string
+	paramObj
+}
+
+func (r ActionFunctionNewOrReplaceParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.Body)
+}
+func (r *ActionFunctionNewOrReplaceParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.Body)
+}
+
+type ActionFunctionNewOrReplaceParamsFunctionType string
+
+const (
+	ActionFunctionNewOrReplaceParamsFunctionTypePreActionExecution  ActionFunctionNewOrReplaceParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionNewOrReplaceParamsFunctionTypePreFetchOptions     ActionFunctionNewOrReplaceParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionNewOrReplaceParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionNewOrReplaceParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceParamsFunctionType = "POST_ACTION_EXECUTION"
+)
+
+type ActionFunctionNewOrReplaceByFunctionTypeParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	Body         string
+	paramObj
+}
+
+func (r ActionFunctionNewOrReplaceByFunctionTypeParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.Body)
+}
+func (r *ActionFunctionNewOrReplaceByFunctionTypeParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.Body)
+}
+
+type ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType string
+
+const (
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+)
+
+type ActionFunctionDeleteByFunctionTypeParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	paramObj
+}
+
+type ActionFunctionDeleteByFunctionTypeParamsFunctionType string
+
+const (
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionDeleteByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionDeleteByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+)
+
+type ActionFunctionGetParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
+	// "POST_ACTION_EXECUTION".
+	FunctionType ActionFunctionGetParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
+	paramObj
+}
+
+type ActionFunctionGetParamsFunctionType string
+
+const (
+	ActionFunctionGetParamsFunctionTypePreActionExecution  ActionFunctionGetParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionGetParamsFunctionTypePreFetchOptions     ActionFunctionGetParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionGetParamsFunctionTypePostFetchOptions    ActionFunctionGetParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionGetParamsFunctionTypePostActionExecution ActionFunctionGetParamsFunctionType = "POST_ACTION_EXECUTION"
+)
+
+type ActionFunctionGetByFunctionTypeParams struct {
+	AppID        int64  `path:"appId,required" json:"-"`
+	DefinitionID string `path:"definitionId,required" json:"-"`
+	paramObj
+}
+
+type ActionFunctionGetByFunctionTypeParamsFunctionType string
+
+const (
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionGetByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionGetByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+)
