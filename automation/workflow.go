@@ -91,7 +91,7 @@ func (r *WorkflowService) ListAutoPaging(ctx context.Context, query WorkflowList
 // support.
 func (r *WorkflowService) Delete(ctx context.Context, flowID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := fmt.Sprintf("automation/v4/flows/%v", flowID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

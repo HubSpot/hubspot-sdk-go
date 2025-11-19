@@ -62,7 +62,7 @@ func (r *CampaignBatchService) Update(ctx context.Context, body CampaignBatchUpd
 // not, or if only some of the campaigns in the batch were deleted.
 func (r *CampaignBatchService) Delete(ctx context.Context, body CampaignBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "marketing/v3/campaigns/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

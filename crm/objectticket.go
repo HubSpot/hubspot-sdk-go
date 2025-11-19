@@ -95,7 +95,7 @@ func (r *ObjectTicketService) ListAutoPaging(ctx context.Context, query ObjectTi
 // Move an Object identified by `{ticketId}` to the recycling bin.
 func (r *ObjectTicketService) Delete(ctx context.Context, ticketID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if ticketID == "" {
 		err = errors.New("missing required ticketId parameter")
 		return

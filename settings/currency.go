@@ -143,7 +143,7 @@ func (r *CurrencyService) UpdateExchangeRate(ctx context.Context, exchangeRateID
 // currency pair for users in the HubSpot app.
 func (r *CurrencyService) UpdateVisibility(ctx context.Context, body CurrencyUpdateVisibilityParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "settings/v3/currencies/exchange-rates/update-visibility"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

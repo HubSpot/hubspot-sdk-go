@@ -52,7 +52,7 @@ func (r *AssociationBatchService) New(ctx context.Context, toObjectType string, 
 
 func (r *AssociationBatchService) Delete(ctx context.Context, toObjectType string, params AssociationBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if params.FromObjectType == "" {
 		err = errors.New("missing required fromObjectType parameter")
 		return

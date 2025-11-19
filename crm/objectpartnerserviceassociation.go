@@ -94,7 +94,7 @@ func (r *ObjectPartnerServiceAssociationService) ListAutoPaging(ctx context.Cont
 // Remove an association between two partner services
 func (r *ObjectPartnerServiceAssociationService) Delete(ctx context.Context, associationType string, body ObjectPartnerServiceAssociationDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.PartnerServiceID == "" {
 		err = errors.New("missing required partnerServiceId parameter")
 		return

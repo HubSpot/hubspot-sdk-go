@@ -93,7 +93,7 @@ func (r *ObjectTaxService) ListAutoPaging(ctx context.Context, query ObjectTaxLi
 // Move an Object identified by `{taxId}` to the recycling bin.
 func (r *ObjectTaxService) Delete(ctx context.Context, taxID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if taxID == "" {
 		err = errors.New("missing required taxId parameter")
 		return

@@ -82,7 +82,7 @@ func (r *TimelineTemplateService) List(ctx context.Context, appID int64, opts ..
 // Delete an event type template by ID.
 func (r *TimelineTemplateService) Delete(ctx context.Context, eventTemplateID string, body TimelineTemplateDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if eventTemplateID == "" {
 		err = errors.New("missing required eventTemplateId parameter")
 		return

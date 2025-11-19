@@ -61,7 +61,7 @@ func (r *CampaignSpendService) Update(ctx context.Context, spendID int64, params
 // Delete a specific campaign spend item by ID
 func (r *CampaignSpendService) Delete(ctx context.Context, spendID int64, body CampaignSpendDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return

@@ -54,7 +54,7 @@ func (r *ObjectTaxBatchService) Update(ctx context.Context, body ObjectTaxBatchU
 // Archive a batch of taxes by ID
 func (r *ObjectTaxBatchService) Delete(ctx context.Context, body ObjectTaxBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/taxes/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

@@ -96,7 +96,7 @@ func (r *ObjectInvoiceService) ListAutoPaging(ctx context.Context, query ObjectI
 // Move an Object identified by `{invoiceId}` to the recycling bin.
 func (r *ObjectInvoiceService) Delete(ctx context.Context, invoiceID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if invoiceID == "" {
 		err = errors.New("missing required invoiceId parameter")
 		return

@@ -84,7 +84,7 @@ func (r *ActionDefinitionService) ListAutoPaging(ctx context.Context, appID int6
 // Delete an action definition by ID.
 func (r *ActionDefinitionService) Delete(ctx context.Context, definitionID string, body ActionDefinitionDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if definitionID == "" {
 		err = errors.New("missing required definitionId parameter")
 		return

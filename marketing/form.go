@@ -91,7 +91,7 @@ func (r *FormService) ListAutoPaging(ctx context.Context, query FormListParams, 
 // definition will be permanently deleted after 3 months.
 func (r *FormService) Delete(ctx context.Context, formID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if formID == "" {
 		err = errors.New("missing required formId parameter")
 		return

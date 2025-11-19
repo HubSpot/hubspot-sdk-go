@@ -49,7 +49,7 @@ func (r *TimelineEventService) New(ctx context.Context, body TimelineEventNewPar
 // or add them if they don't exist.
 func (r *TimelineEventService) BatchNew(ctx context.Context, body TimelineEventBatchNewParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "integrators/timeline/v3/events/batch/create"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

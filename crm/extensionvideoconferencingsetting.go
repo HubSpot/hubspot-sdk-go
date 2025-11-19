@@ -44,7 +44,7 @@ func (r *ExtensionVideoConferencingSettingService) Update(ctx context.Context, a
 // Deletes the settings for a video conference application with the specified ID.
 func (r *ExtensionVideoConferencingSettingService) Delete(ctx context.Context, appID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := fmt.Sprintf("crm/v3/extensions/videoconferencing/settings/%v", appID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

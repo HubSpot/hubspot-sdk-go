@@ -81,7 +81,7 @@ func (r *HubdbTableService) ListAutoPaging(ctx context.Context, query HubdbTable
 // and draft versions.
 func (r *HubdbTableService) Delete(ctx context.Context, tableIDOrName string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if tableIDOrName == "" {
 		err = errors.New("missing required tableIdOrName parameter")
 		return
@@ -108,7 +108,7 @@ func (r *HubdbTableService) CloneDraft(ctx context.Context, tableIDOrName string
 // Delete a specific version of a table
 func (r *HubdbTableService) DeleteVersion(ctx context.Context, versionID int64, body HubdbTableDeleteVersionParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.TableIDOrName == "" {
 		err = errors.New("missing required tableIdOrName parameter")
 		return

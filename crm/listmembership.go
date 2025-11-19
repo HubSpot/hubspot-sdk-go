@@ -110,7 +110,7 @@ func (r *ListMembershipService) Add(ctx context.Context, listID string, body Lis
 // memberships.
 func (r *ListMembershipService) AddAllFromList(ctx context.Context, sourceListID string, body ListMembershipAddAllFromListParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ListID == "" {
 		err = errors.New("missing required listId parameter")
 		return
@@ -224,7 +224,7 @@ func (r *ListMembershipService) Remove(ctx context.Context, listID string, body 
 // This endpoint only supports lists that have less than 100,000 memberships.
 func (r *ListMembershipService) RemoveAll(ctx context.Context, listID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if listID == "" {
 		err = errors.New("missing required listId parameter")
 		return

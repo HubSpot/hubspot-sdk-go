@@ -64,7 +64,7 @@ func (r *ObjectObjectBatchService) Update(ctx context.Context, objectType string
 // Archive a batch of objects by ID
 func (r *ObjectObjectBatchService) Delete(ctx context.Context, objectType string, body ObjectObjectBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

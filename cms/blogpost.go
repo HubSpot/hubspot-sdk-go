@@ -94,7 +94,7 @@ func (r *BlogPostService) ListAutoPaging(ctx context.Context, query BlogPostList
 // Delete a blog post by ID.
 func (r *BlogPostService) Delete(ctx context.Context, objectID string, body BlogPostDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -108,7 +108,7 @@ func (r *BlogPostService) Delete(ctx context.Context, objectID string, body Blog
 // [multi-language group](https://developers.hubspot.com/docs/guides/cms/content/multi-language-content).
 func (r *BlogPostService) AttachToLangGroup(ctx context.Context, body BlogPostAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -134,7 +134,7 @@ func (r *BlogPostService) NewLangVariation(ctx context.Context, body BlogPostNew
 // [multi-language group](https://developers.hubspot.com/docs/guides/cms/content/multi-language-content).
 func (r *BlogPostService) DetachFromLangGroup(ctx context.Context, body BlogPostDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -211,7 +211,7 @@ func (r *BlogPostService) GetPreviousVersionsAutoPaging(ctx context.Context, obj
 // page.
 func (r *BlogPostService) PushLive(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -225,7 +225,7 @@ func (r *BlogPostService) PushLive(ctx context.Context, objectID string, opts ..
 // currently published version.
 func (r *BlogPostService) ResetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -267,7 +267,7 @@ func (r *BlogPostService) RestorePreviousVersionToDraft(ctx context.Context, rev
 // Schedule a blog post to be published at a specified time.
 func (r *BlogPostService) Schedule(ctx context.Context, body BlogPostScheduleParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/schedule"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -278,7 +278,7 @@ func (r *BlogPostService) Schedule(ctx context.Context, body BlogPostSchedulePar
 // to the language of the provided post (specified as an ID in the request body)
 func (r *BlogPostService) SetLangPrimary(ctx context.Context, body BlogPostSetLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -301,7 +301,7 @@ func (r *BlogPostService) UpdateDraft(ctx context.Context, objectID string, body
 // [multi-language group](https://developers.hubspot.com/docs/guides/cms/content/multi-language-content).
 func (r *BlogPostService) UpdateLangs(ctx context.Context, body BlogPostUpdateLangsParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

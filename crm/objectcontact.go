@@ -102,7 +102,7 @@ func (r *ObjectContactService) ListAutoPaging(ctx context.Context, query ObjectC
 // [restore archived records](https://knowledge.hubspot.com/records/restore-deleted-records).
 func (r *ObjectContactService) Delete(ctx context.Context, contactID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if contactID == "" {
 		err = errors.New("missing required contactId parameter")
 		return
@@ -119,7 +119,7 @@ func (r *ObjectContactService) Delete(ctx context.Context, contactID string, opt
 // [permanently deleting contacts](https://knowledge.hubspot.com/privacy-and-consent/how-do-i-perform-a-gdpr-delete-in-hubspot).
 func (r *ObjectContactService) GdprDelete(ctx context.Context, body ObjectContactGdprDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/contacts/gdpr-delete"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

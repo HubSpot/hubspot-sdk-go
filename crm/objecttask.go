@@ -93,7 +93,7 @@ func (r *ObjectTaskService) ListAutoPaging(ctx context.Context, query ObjectTask
 // Move an Object identified by `{taskId}` to the recycling bin.
 func (r *ObjectTaskService) Delete(ctx context.Context, taskID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if taskID == "" {
 		err = errors.New("missing required taskId parameter")
 		return

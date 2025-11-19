@@ -96,7 +96,7 @@ func (r *ObjectCommunicationService) ListAutoPaging(ctx context.Context, query O
 // Move an Object identified by `{communicationId}` to the recycling bin.
 func (r *ObjectCommunicationService) Delete(ctx context.Context, communicationID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if communicationID == "" {
 		err = errors.New("missing required communicationId parameter")
 		return

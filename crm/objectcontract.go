@@ -96,7 +96,7 @@ func (r *ObjectContractService) ListAutoPaging(ctx context.Context, query Object
 // Move an Object identified by `{contractId}` to the recycling bin.
 func (r *ObjectContractService) Delete(ctx context.Context, contractID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if contractID == "" {
 		err = errors.New("missing required contractId parameter")
 		return

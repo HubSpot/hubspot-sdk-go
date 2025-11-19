@@ -80,7 +80,7 @@ func (r *PropertyGroupService) List(ctx context.Context, objectType string, opts
 // Move a property group identified by {groupName} to the recycling bin.
 func (r *PropertyGroupService) Delete(ctx context.Context, groupName string, body PropertyGroupDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

@@ -94,7 +94,7 @@ func (r *BlogAuthorService) ListAutoPaging(ctx context.Context, query BlogAuthor
 // Delete the Blog Author object identified by the id in the path.
 func (r *BlogAuthorService) Delete(ctx context.Context, objectID string, body BlogAuthorDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -107,7 +107,7 @@ func (r *BlogAuthorService) Delete(ctx context.Context, objectID string, body Bl
 // Attach a Blog Author to a multi-language group.
 func (r *BlogAuthorService) AttachToLangGroup(ctx context.Context, body BlogAuthorAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/authors/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -132,7 +132,7 @@ func (r *BlogAuthorService) NewLanguageVariation(ctx context.Context, body BlogA
 // Delete the Blog Author objects identified in the request body.
 func (r *BlogAuthorService) DeleteBatch(ctx context.Context, body BlogAuthorDeleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/authors/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -141,7 +141,7 @@ func (r *BlogAuthorService) DeleteBatch(ctx context.Context, body BlogAuthorDele
 // Detach a Blog Author from a multi-language group.
 func (r *BlogAuthorService) DetachFromLangGroup(ctx context.Context, body BlogAuthorDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/authors/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -170,7 +170,7 @@ func (r *BlogAuthorService) GetBatch(ctx context.Context, params BlogAuthorGetBa
 // Set a Blog Author as the primary language of a multi-language group.
 func (r *BlogAuthorService) SetNewLangPrimary(ctx context.Context, body BlogAuthorSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/authors/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -187,7 +187,7 @@ func (r *BlogAuthorService) UpdateBatch(ctx context.Context, params BlogAuthorUp
 // Explicitly set new languages for each Blog Author in a multi-language group.
 func (r *BlogAuthorService) UpdateLanguages(ctx context.Context, body BlogAuthorUpdateLanguagesParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/authors/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

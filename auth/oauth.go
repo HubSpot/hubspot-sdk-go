@@ -62,7 +62,7 @@ func (r *OAuthService) NewAccessToken(ctx context.Context, body OAuthNewAccessTo
 // between an account and the app.
 func (r *OAuthService) DeleteRefreshToken(ctx context.Context, token string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if token == "" {
 		err = errors.New("missing required token parameter")
 		return

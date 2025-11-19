@@ -85,7 +85,7 @@ func (r *MediaBridgeSchemaService) NewAssociation(ctx context.Context, objectTyp
 // Delete an existing association definition for an object type.
 func (r *MediaBridgeSchemaService) DeleteAssociation(ctx context.Context, associationID string, body MediaBridgeSchemaDeleteAssociationParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.AppID == "" {
 		err = errors.New("missing required appId parameter")
 		return

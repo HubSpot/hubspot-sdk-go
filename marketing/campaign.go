@@ -108,7 +108,7 @@ func (r *CampaignService) ListAutoPaging(ctx context.Context, query CampaignList
 // an existing campaign or not.
 func (r *CampaignService) Delete(ctx context.Context, campaignGuid string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return

@@ -65,7 +65,7 @@ func (r *MediaBridgeIntegratorSettingService) NewOembedDomain(ctx context.Contex
 // Delete an existing oEmbed domain.
 func (r *MediaBridgeIntegratorSettingService) DeleteOembedDomain(ctx context.Context, appID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if appID == "" {
 		err = errors.New("missing required appId parameter")
 		return

@@ -92,7 +92,7 @@ func (r *EmailService) ListAutoPaging(ctx context.Context, query EmailListParams
 // Delete a marketing email by its ID
 func (r *EmailService) Delete(ctx context.Context, emailID string, body EmailDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
@@ -195,7 +195,7 @@ func (r *EmailService) ListRevisions(ctx context.Context, emailID string, query 
 // a regular email.
 func (r *EmailService) Publish(ctx context.Context, emailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
@@ -208,7 +208,7 @@ func (r *EmailService) Publish(ctx context.Context, emailID string, opts ...opti
 // Resets the draft back to a copy of the live object.
 func (r *EmailService) ResetDraft(ctx context.Context, emailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
@@ -222,7 +222,7 @@ func (r *EmailService) ResetDraft(ctx context.Context, emailID string, opts ...o
 // old, and the restored revision is given a new version number.
 func (r *EmailService) RestoreRevision(ctx context.Context, revisionID string, body EmailRestoreRevisionParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.EmailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
@@ -255,7 +255,7 @@ func (r *EmailService) RestoreRevisionToDraft(ctx context.Context, revisionID in
 // might not be possible.
 func (r *EmailService) Unpublish(ctx context.Context, emailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return

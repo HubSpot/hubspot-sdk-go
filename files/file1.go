@@ -58,7 +58,7 @@ func (r *FileService) Update(ctx context.Context, fileID string, body FileUpdate
 // Delete a file by ID
 func (r *FileService) Delete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
 		return
@@ -71,7 +71,7 @@ func (r *FileService) Delete(ctx context.Context, fileID string, opts ...option.
 // Delete a file in accordance with GDPR regulations.
 func (r *FileService) GdprDelete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
 		return

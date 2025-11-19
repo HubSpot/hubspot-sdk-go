@@ -65,7 +65,7 @@ func (r *ObjectContactBatchService) Update(ctx context.Context, body ObjectConta
 // [restore archived records](https://knowledge.hubspot.com/records/restore-deleted-records).
 func (r *ObjectContactBatchService) Delete(ctx context.Context, body ObjectContactBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/contacts/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

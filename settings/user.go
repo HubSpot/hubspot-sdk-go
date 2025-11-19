@@ -90,7 +90,7 @@ func (r *UserService) ListAutoPaging(ctx context.Context, query UserListParams, 
 // default, or optionally email as specified by the `IdProperty` query param.
 func (r *UserService) Delete(ctx context.Context, userID string, body UserDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if userID == "" {
 		err = errors.New("missing required userId parameter")
 		return

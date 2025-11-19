@@ -133,7 +133,7 @@ func (r *AssociationV4Service) ListAutoPaging(ctx context.Context, toObjectType 
 // deletes all associations between two records.
 func (r *AssociationV4Service) Delete(ctx context.Context, toObjectID string, body AssociationV4DeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

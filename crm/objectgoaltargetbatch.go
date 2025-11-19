@@ -55,7 +55,7 @@ func (r *ObjectGoalTargetBatchService) Update(ctx context.Context, body ObjectGo
 // Archive multiple goal targets in a single batch operation using their IDs.
 func (r *ObjectGoalTargetBatchService) Delete(ctx context.Context, body ObjectGoalTargetBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/goal_targets/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

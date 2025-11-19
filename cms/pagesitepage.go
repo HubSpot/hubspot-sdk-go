@@ -43,7 +43,7 @@ func NewPageSitePageService(opts ...option.RequestOption) (r PageSitePageService
 // Create a new Site Page
 func (r *PageSitePageService) New(ctx context.Context, body PageSitePageNewParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -92,7 +92,7 @@ func (r *PageSitePageService) ListAutoPaging(ctx context.Context, query PageSite
 // Delete the Site Page object identified by the id in the path.
 func (r *PageSitePageService) Delete(ctx context.Context, objectID string, body PageSitePageDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -105,7 +105,7 @@ func (r *PageSitePageService) Delete(ctx context.Context, objectID string, body 
 // Attach a site page to a multi-language group.
 func (r *PageSitePageService) AttachToLangGroup(ctx context.Context, body PageSitePageAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -149,7 +149,7 @@ func (r *PageSitePageService) NewLanguageVariation(ctx context.Context, body Pag
 // send an normal update with the `archivedInDashboard` field set to true.
 func (r *PageSitePageService) DeleteBatch(ctx context.Context, body PageSitePageDeleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -158,7 +158,7 @@ func (r *PageSitePageService) DeleteBatch(ctx context.Context, body PageSitePage
 // Detach a site page from a multi-language group.
 func (r *PageSitePageService) DetachFromLangGroup(ctx context.Context, body PageSitePageDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -167,7 +167,7 @@ func (r *PageSitePageService) DetachFromLangGroup(ctx context.Context, body Page
 // End an active A/B test and designate a winner.
 func (r *PageSitePageService) EndAbTest(ctx context.Context, body PageSitePageEndAbTestParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/ab-test/end"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -237,7 +237,7 @@ func (r *PageSitePageService) ListRevisions(ctx context.Context, objectID string
 // live version.
 func (r *PageSitePageService) PublishDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -250,7 +250,7 @@ func (r *PageSitePageService) PublishDraft(ctx context.Context, objectID string,
 // Rerun a previous A/B test.
 func (r *PageSitePageService) RerunAbTest(ctx context.Context, body PageSitePageRerunAbTestParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/ab-test/rerun"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -259,7 +259,7 @@ func (r *PageSitePageService) RerunAbTest(ctx context.Context, body PageSitePage
 // Discards any edits and resets the draft to the live version.
 func (r *PageSitePageService) ResetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -301,7 +301,7 @@ func (r *PageSitePageService) RestoreRevisionToDraft(ctx context.Context, revisi
 // Schedule a Site Page to be Published
 func (r *PageSitePageService) Schedule(ctx context.Context, body PageSitePageScheduleParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/schedule"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -310,7 +310,7 @@ func (r *PageSitePageService) Schedule(ctx context.Context, body PageSitePageSch
 // Set a site page as the primary language of a multi-language group.
 func (r *PageSitePageService) SetNewLangPrimary(ctx context.Context, body PageSitePageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -341,7 +341,7 @@ func (r *PageSitePageService) UpdateDraft(ctx context.Context, objectID string, 
 // Explicitly set new languages for each site page in a multi-language group.
 func (r *PageSitePageService) UpdateLanguages(ctx context.Context, body PageSitePageUpdateLanguagesParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/site-pages/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

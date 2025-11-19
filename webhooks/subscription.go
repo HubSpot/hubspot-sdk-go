@@ -60,7 +60,7 @@ func (r *SubscriptionService) List(ctx context.Context, appID int64, opts ...opt
 // Delete an existing event subscription by ID.
 func (r *SubscriptionService) Delete(ctx context.Context, subscriptionID int64, body SubscriptionDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := fmt.Sprintf("webhooks/v3/%v/subscriptions/%v", body.AppID, subscriptionID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

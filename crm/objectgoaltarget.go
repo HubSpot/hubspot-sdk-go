@@ -96,7 +96,7 @@ func (r *ObjectGoalTargetService) ListAutoPaging(ctx context.Context, query Obje
 // Delete a goal target by `{goalTargetId}` to the recycling bin.
 func (r *ObjectGoalTargetService) Delete(ctx context.Context, goalTargetID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if goalTargetID == "" {
 		err = errors.New("missing required goalTargetId parameter")
 		return

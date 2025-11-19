@@ -54,7 +54,7 @@ func (r *UserBatchService) Update(ctx context.Context, body UserBatchUpdateParam
 // Archive a batch of users by ID
 func (r *UserBatchService) Delete(ctx context.Context, body UserBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/users/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

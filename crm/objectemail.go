@@ -95,7 +95,7 @@ func (r *ObjectEmailService) ListAutoPaging(ctx context.Context, query ObjectEma
 // Move an Object identified by `{emailId}` to the recycling bin.
 func (r *ObjectEmailService) Delete(ctx context.Context, emailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return

@@ -65,7 +65,7 @@ func (r *TimelineTokenService) Update(ctx context.Context, tokenName string, par
 // Delete an existing token from a specific event type template.
 func (r *TimelineTokenService) Delete(ctx context.Context, tokenName string, body TimelineTokenDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.EventTemplateID == "" {
 		err = errors.New("missing required eventTemplateId parameter")
 		return

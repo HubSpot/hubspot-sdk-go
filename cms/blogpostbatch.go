@@ -57,7 +57,7 @@ func (r *BlogPostBatchService) Update(ctx context.Context, params BlogPostBatchU
 // `archivedInDashboard` field set to `true`.
 func (r *BlogPostBatchService) Delete(ctx context.Context, body BlogPostBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/posts/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
