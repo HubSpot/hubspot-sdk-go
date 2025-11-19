@@ -97,7 +97,7 @@ func (r *ObjectCompanyService) ListAutoPaging(ctx context.Context, query ObjectC
 // [restoring records](https://knowledge.hubspot.com/records/restore-deleted-records).
 func (r *ObjectCompanyService) Delete(ctx context.Context, companyID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if companyID == "" {
 		err = errors.New("missing required companyId parameter")
 		return

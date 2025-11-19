@@ -89,7 +89,7 @@ func (r *PropertyService) List(ctx context.Context, objectType string, query Pro
 // Move a property identified by {propertyName} to the recycling bin.
 func (r *PropertyService) Delete(ctx context.Context, propertyName string, body PropertyDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

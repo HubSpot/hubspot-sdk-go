@@ -95,7 +95,7 @@ func (r *MediaBridgePropertyService) List(ctx context.Context, objectType string
 // Delete an existing property for an object type.
 func (r *MediaBridgePropertyService) Delete(ctx context.Context, propertyName string, body MediaBridgePropertyDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.AppID == "" {
 		err = errors.New("missing required appId parameter")
 		return
@@ -116,7 +116,7 @@ func (r *MediaBridgePropertyService) Delete(ctx context.Context, propertyName st
 // Archive a batch of existing properties for the specified types.
 func (r *MediaBridgePropertyService) ArchiveBatch(ctx context.Context, objectType string, params MediaBridgePropertyArchiveBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if params.AppID == "" {
 		err = errors.New("missing required appId parameter")
 		return

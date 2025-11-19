@@ -50,7 +50,7 @@ func (r *FolderService) New(ctx context.Context, body FolderNewParams, opts ...o
 // Delete folder by ID.
 func (r *FolderService) DeleteByID(ctx context.Context, folderID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if folderID == "" {
 		err = errors.New("missing required folderId parameter")
 		return
@@ -63,7 +63,7 @@ func (r *FolderService) DeleteByID(ctx context.Context, folderID string, opts ..
 // Delete a folder, identified by its path.
 func (r *FolderService) DeleteByPath(ctx context.Context, folderPath string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if folderPath == "" {
 		err = errors.New("missing required folderPath parameter")
 		return

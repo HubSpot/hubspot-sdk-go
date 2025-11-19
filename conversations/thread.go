@@ -59,7 +59,7 @@ func (r *ThreadService) List(ctx context.Context, opts ...option.RequestOption) 
 // placed in an archived state.
 func (r *ThreadService) Delete(ctx context.Context, threadID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if threadID == "" {
 		err = errors.New("missing required threadId parameter")
 		return

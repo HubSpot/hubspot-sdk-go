@@ -93,7 +93,7 @@ func (r *ObjectLeadService) ListAutoPaging(ctx context.Context, query ObjectLead
 // Move an Object identified by `{leadsId}` to the recycling bin.
 func (r *ObjectLeadService) Delete(ctx context.Context, leadsID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if leadsID == "" {
 		err = errors.New("missing required leadsId parameter")
 		return

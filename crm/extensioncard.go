@@ -72,7 +72,7 @@ func (r *ExtensionCardService) List(ctx context.Context, appID int64, opts ...op
 // be undone.
 func (r *ExtensionCardService) Delete(ctx context.Context, cardID string, body ExtensionCardDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if cardID == "" {
 		err = errors.New("missing required cardId parameter")
 		return

@@ -74,7 +74,7 @@ func (r *TransactionalSmtpTokenService) ListAutoPaging(ctx context.Context, quer
 // Delete a single token by ID.
 func (r *TransactionalSmtpTokenService) Delete(ctx context.Context, tokenID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if tokenID == "" {
 		err = errors.New("missing required tokenId parameter")
 		return

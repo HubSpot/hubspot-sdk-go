@@ -107,7 +107,7 @@ func (r *ObjectObjectService) ListAutoPaging(ctx context.Context, objectType str
 // Move an Object identified by `{objectId}` to the recycling bin.
 func (r *ObjectObjectService) Delete(ctx context.Context, objectID string, body ObjectObjectDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

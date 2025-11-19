@@ -73,7 +73,7 @@ func (r *MediaBridgeGroupService) List(ctx context.Context, objectType string, q
 // Delete an existing property group by name
 func (r *MediaBridgeGroupService) DeleteByName(ctx context.Context, groupName string, body MediaBridgeGroupDeleteByNameParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.AppID == "" {
 		err = errors.New("missing required appId parameter")
 		return

@@ -95,7 +95,7 @@ func (r *ObjectOrderService) ListAutoPaging(ctx context.Context, query ObjectOrd
 // Move an Object identified by `{orderId}` to the recycling bin.
 func (r *ObjectOrderService) Delete(ctx context.Context, orderID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if orderID == "" {
 		err = errors.New("missing required orderId parameter")
 		return

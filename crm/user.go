@@ -93,7 +93,7 @@ func (r *UserService) ListAutoPaging(ctx context.Context, query UserListParams, 
 // Move an Object identified by `{userId}` to the recycling bin.
 func (r *UserService) Delete(ctx context.Context, userID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if userID == "" {
 		err = errors.New("missing required userId parameter")
 		return

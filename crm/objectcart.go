@@ -93,7 +93,7 @@ func (r *ObjectCartService) ListAutoPaging(ctx context.Context, query ObjectCart
 // Move an Object identified by `{cartId}` to the recycling bin.
 func (r *ObjectCartService) Delete(ctx context.Context, cartID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if cartID == "" {
 		err = errors.New("missing required cartId parameter")
 		return

@@ -65,7 +65,7 @@ func (r *SourceCodeService) New(ctx context.Context, path string, params SourceC
 // Deletes the file at the specified path in the specified environment.
 func (r *SourceCodeService) Delete(ctx context.Context, path string, body SourceCodeDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return

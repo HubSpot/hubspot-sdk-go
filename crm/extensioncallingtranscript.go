@@ -47,7 +47,7 @@ func (r *ExtensionCallingTranscriptService) New(ctx context.Context, body Extens
 
 func (r *ExtensionCallingTranscriptService) Delete(ctx context.Context, transcriptID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if transcriptID == "" {
 		err = errors.New("missing required transcriptId parameter")
 		return

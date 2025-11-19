@@ -96,7 +96,7 @@ func (r *ObjectServiceService) ListAutoPaging(ctx context.Context, query ObjectS
 // Move an Object identified by `{serviceId}` to the recycling bin.
 func (r *ObjectServiceService) Delete(ctx context.Context, serviceID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if serviceID == "" {
 		err = errors.New("missing required serviceId parameter")
 		return

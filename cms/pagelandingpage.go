@@ -43,7 +43,7 @@ func NewPageLandingPageService(opts ...option.RequestOption) (r PageLandingPageS
 // Create a new Landing Page
 func (r *PageLandingPageService) New(ctx context.Context, body PageLandingPageNewParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -92,7 +92,7 @@ func (r *PageLandingPageService) ListAutoPaging(ctx context.Context, query PageL
 // Delete the Landing Page object identified by the id in the path.
 func (r *PageLandingPageService) Delete(ctx context.Context, objectID string, body PageLandingPageDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -105,7 +105,7 @@ func (r *PageLandingPageService) Delete(ctx context.Context, objectID string, bo
 // Attach a landing page to a multi-language group.
 func (r *PageLandingPageService) AttachToLangGroup(ctx context.Context, body PageLandingPageAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -166,7 +166,7 @@ func (r *PageLandingPageService) NewLanguageVariation(ctx context.Context, body 
 // true.
 func (r *PageLandingPageService) DeleteBatch(ctx context.Context, body PageLandingPageDeleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -175,7 +175,7 @@ func (r *PageLandingPageService) DeleteBatch(ctx context.Context, body PageLandi
 // Delete the Folder object identified by the id in the path.
 func (r *PageLandingPageService) DeleteFolder(ctx context.Context, objectID string, body PageLandingPageDeleteFolderParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -188,7 +188,7 @@ func (r *PageLandingPageService) DeleteFolder(ctx context.Context, objectID stri
 // Delete the Folder objects identified in the request body.
 func (r *PageLandingPageService) DeleteFoldersBatch(ctx context.Context, body PageLandingPageDeleteFoldersBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/folders/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -197,7 +197,7 @@ func (r *PageLandingPageService) DeleteFoldersBatch(ctx context.Context, body Pa
 // Detach a landing page from a multi-language group.
 func (r *PageLandingPageService) DetachFromLangGroup(ctx context.Context, body PageLandingPageDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -206,7 +206,7 @@ func (r *PageLandingPageService) DetachFromLangGroup(ctx context.Context, body P
 // End an active A/B test and designate a winner.
 func (r *PageLandingPageService) EndAbTest(ctx context.Context, body PageLandingPageEndAbTestParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/ab-test/end"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -334,7 +334,7 @@ func (r *PageLandingPageService) ListRevisions(ctx context.Context, objectID str
 // the live version.
 func (r *PageLandingPageService) PublishDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -347,7 +347,7 @@ func (r *PageLandingPageService) PublishDraft(ctx context.Context, objectID stri
 // Rerun a previous A/B test.
 func (r *PageLandingPageService) RerunAbTest(ctx context.Context, body PageLandingPageRerunAbTestParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/ab-test/rerun"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -356,7 +356,7 @@ func (r *PageLandingPageService) RerunAbTest(ctx context.Context, body PageLandi
 // Discards any edits and resets the draft to the live version.
 func (r *PageLandingPageService) ResetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -414,7 +414,7 @@ func (r *PageLandingPageService) RestoreRevisionToDraft(ctx context.Context, rev
 // Schedule a Landing Page to be Published
 func (r *PageLandingPageService) Schedule(ctx context.Context, body PageLandingPageScheduleParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/schedule"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -423,7 +423,7 @@ func (r *PageLandingPageService) Schedule(ctx context.Context, body PageLandingP
 // Set a landing page as the primary language of a multi-language group.
 func (r *PageLandingPageService) SetNewLangPrimary(ctx context.Context, body PageLandingPageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -475,7 +475,7 @@ func (r *PageLandingPageService) UpdateFoldersBatch(ctx context.Context, params 
 // Explicitly set new languages for each landing page in a multi-language group.
 func (r *PageLandingPageService) UpdateLanguages(ctx context.Context, body PageLandingPageUpdateLanguagesParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/pages/landing-pages/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

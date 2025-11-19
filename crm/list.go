@@ -70,7 +70,7 @@ func (r *ListService) List(ctx context.Context, query ListListParams, opts ...op
 // and can no longer be restored.
 func (r *ListService) Delete(ctx context.Context, listID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if listID == "" {
 		err = errors.New("missing required listId parameter")
 		return
@@ -83,7 +83,7 @@ func (r *ListService) Delete(ctx context.Context, listID string, opts ...option.
 // Delete an existing scheduled conversion for a list.
 func (r *ListService) DeleteScheduleConversion(ctx context.Context, listID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if listID == "" {
 		err = errors.New("missing required listId parameter")
 		return
@@ -138,7 +138,7 @@ func (r *ListService) GetScheduleConversion(ctx context.Context, listID string, 
 // to be restored up-to 90-days after the list has been deleted.
 func (r *ListService) Restore(ctx context.Context, listID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if listID == "" {
 		err = errors.New("missing required listId parameter")
 		return

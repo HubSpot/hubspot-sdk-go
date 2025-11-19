@@ -54,7 +54,7 @@ func (r *ObjectFeeBatchService) Update(ctx context.Context, body ObjectFeeBatchU
 // Archive a batch of fees by ID
 func (r *ObjectFeeBatchService) Delete(ctx context.Context, body ObjectFeeBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/fees/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

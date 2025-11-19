@@ -96,7 +96,7 @@ func (r *ObjectPostalMailService) ListAutoPaging(ctx context.Context, query Obje
 // Move an Object identified by `{postalMailId}` to the recycling bin.
 func (r *ObjectPostalMailService) Delete(ctx context.Context, postalMailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if postalMailID == "" {
 		err = errors.New("missing required postalMailId parameter")
 		return

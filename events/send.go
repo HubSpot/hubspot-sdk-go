@@ -38,7 +38,7 @@ func NewSendService(opts ...option.RequestOption) (r SendService) {
 // Send data for a single event completion.
 func (r *SendService) Send(ctx context.Context, body SendSendParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "events/v3/send"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -47,7 +47,7 @@ func (r *SendService) Send(ctx context.Context, body SendSendParams, opts ...opt
 // Send multiple event completions at once.
 func (r *SendService) SendBatch(ctx context.Context, body SendSendBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "events/v3/send/batch"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

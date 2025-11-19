@@ -53,7 +53,7 @@ func (r *PropertyBatchService) New(ctx context.Context, objectType string, body 
 // active, already archived, non-existent).
 func (r *PropertyBatchService) Delete(ctx context.Context, objectType string, body PropertyBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

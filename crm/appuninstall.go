@@ -35,7 +35,7 @@ func NewAppUninstallService(opts ...option.RequestOption) (r AppUninstallService
 // email notification that the developer has uninstall the app from their account.
 func (r *AppUninstallService) Uninstall(ctx context.Context, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "appinstalls/v3/external-install"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

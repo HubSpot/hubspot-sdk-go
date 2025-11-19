@@ -48,7 +48,7 @@ func (r *EventAssociationService) List(ctx context.Context, marketingEventID str
 // id
 func (r *EventAssociationService) Delete(ctx context.Context, listID string, body EventAssociationDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.MarketingEventID == "" {
 		err = errors.New("missing required marketingEventId parameter")
 		return
@@ -65,7 +65,7 @@ func (r *EventAssociationService) Delete(ctx context.Context, listID string, bod
 // Associates a list with a marketing event by marketing event id and ILS list id
 func (r *EventAssociationService) Associate(ctx context.Context, listID string, body EventAssociationAssociateParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.MarketingEventID == "" {
 		err = errors.New("missing required marketingEventId parameter")
 		return
@@ -83,7 +83,7 @@ func (r *EventAssociationService) Associate(ctx context.Context, listID string, 
 // id, and ILS list id
 func (r *EventAssociationService) AssociateByExternalAccount(ctx context.Context, listID string, body EventAssociationAssociateByExternalAccountParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ExternalAccountID == "" {
 		err = errors.New("missing required externalAccountId parameter")
 		return
@@ -105,7 +105,7 @@ func (r *EventAssociationService) AssociateByExternalAccount(ctx context.Context
 // event id, and ILS list id
 func (r *EventAssociationService) DeleteByExternalAccount(ctx context.Context, listID string, body EventAssociationDeleteByExternalAccountParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ExternalAccountID == "" {
 		err = errors.New("missing required externalAccountId parameter")
 		return

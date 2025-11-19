@@ -45,7 +45,7 @@ func NewCampaignAssetService(opts ...option.RequestOption) (r CampaignAssetServi
 // the campaign tool in HubSpot.
 func (r *CampaignAssetService) Update(ctx context.Context, assetID string, body CampaignAssetUpdateParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return
@@ -87,7 +87,7 @@ func (r *CampaignAssetService) List(ctx context.Context, assetType string, param
 // Static lists, External website pages
 func (r *CampaignAssetService) Delete(ctx context.Context, assetID string, body CampaignAssetDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return

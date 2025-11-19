@@ -93,7 +93,7 @@ func (r *HubdbRowBatchService) GetDraftBatch(ctx context.Context, tableIDOrName 
 // IDs. Maximum of 100 row IDs per call.
 func (r *HubdbRowBatchService) PurgeBatch(ctx context.Context, tableIDOrName string, body HubdbRowBatchPurgeBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if tableIDOrName == "" {
 		err = errors.New("missing required tableIdOrName parameter")
 		return

@@ -96,7 +96,7 @@ func (r *ObjectLineItemService) ListAutoPaging(ctx context.Context, query Object
 // Move an Object identified by `{lineItemId}` to the recycling bin.
 func (r *ObjectLineItemService) Delete(ctx context.Context, lineItemID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if lineItemID == "" {
 		err = errors.New("missing required lineItemId parameter")
 		return

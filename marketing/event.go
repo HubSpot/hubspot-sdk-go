@@ -105,7 +105,7 @@ func (r *EventService) ListAutoPaging(ctx context.Context, query EventListParams
 // Deletes the existing Marketing Event with the specified objectId, if it exists.
 func (r *EventService) Delete(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -147,7 +147,7 @@ func (r *EventService) CompleteByExternalEventID(ctx context.Context, externalEv
 // Marketing Events.
 func (r *EventService) DeleteBatch(ctx context.Context, body EventDeleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "marketing/v3/marketing-events/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -172,7 +172,7 @@ func (r *EventService) DeleteBatchByExternalEventID(ctx context.Context, body Ev
 // Only Marketing Events created by the same app can be deleted.
 func (r *EventService) DeleteByExternalEventID(ctx context.Context, externalEventID string, body EventDeleteByExternalEventIDParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if externalEventID == "" {
 		err = errors.New("missing required externalEventId parameter")
 		return

@@ -94,7 +94,7 @@ func (r *BlogTagService) ListAutoPaging(ctx context.Context, query BlogTagListPa
 // Delete the Blog Tag object identified by the id in the path.
 func (r *BlogTagService) Delete(ctx context.Context, objectID string, body BlogTagDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
@@ -107,7 +107,7 @@ func (r *BlogTagService) Delete(ctx context.Context, objectID string, body BlogT
 // Attach a Blog Tag to a multi-language group.
 func (r *BlogTagService) AttachToLangGroup(ctx context.Context, body BlogTagAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/tags/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -132,7 +132,7 @@ func (r *BlogTagService) NewLangVariation(ctx context.Context, body BlogTagNewLa
 // Delete the Blog Tag objects identified in the request body.
 func (r *BlogTagService) DeleteBatch(ctx context.Context, body BlogTagDeleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/tags/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -141,7 +141,7 @@ func (r *BlogTagService) DeleteBatch(ctx context.Context, body BlogTagDeleteBatc
 // Detach a Blog Tag from a multi-language group.
 func (r *BlogTagService) DetachFromLangGroup(ctx context.Context, body BlogTagDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/tags/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -170,7 +170,7 @@ func (r *BlogTagService) GetBatch(ctx context.Context, params BlogTagGetBatchPar
 // Set a Blog Tag as the primary language of a multi-language group.
 func (r *BlogTagService) SetLangPrimary(ctx context.Context, body BlogTagSetLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/tags/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -187,7 +187,7 @@ func (r *BlogTagService) UpdateBatch(ctx context.Context, params BlogTagUpdateBa
 // Explicitly set new languages for each Blog Tag in a multi-language group.
 func (r *BlogTagService) UpdateLangs(ctx context.Context, body BlogTagUpdateLangsParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blogs/tags/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

@@ -37,7 +37,7 @@ func NewActionCallbackService(opts ...option.RequestOption) (r ActionCallbackSer
 // Complete a specific blocked action execution by ID.
 func (r *ActionCallbackService) Complete(ctx context.Context, callbackID string, body ActionCallbackCompleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if callbackID == "" {
 		err = errors.New("missing required callbackId parameter")
 		return
@@ -50,7 +50,7 @@ func (r *ActionCallbackService) Complete(ctx context.Context, callbackID string,
 // Complete a batch of blocked action executions.
 func (r *ActionCallbackService) CompleteBatch(ctx context.Context, body ActionCallbackCompleteBatchParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "automation/v4/actions/callbacks/complete"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

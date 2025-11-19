@@ -54,7 +54,7 @@ func (r *ObjectPostalMailBatchService) Update(ctx context.Context, body ObjectPo
 // Archive a batch of postal mail by ID
 func (r *ObjectPostalMailBatchService) Delete(ctx context.Context, body ObjectPostalMailBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/postal_mail/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

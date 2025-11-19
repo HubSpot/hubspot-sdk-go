@@ -54,7 +54,7 @@ func (r *ObjectNoteBatchService) Update(ctx context.Context, body ObjectNoteBatc
 // Archive a batch of notes by ID
 func (r *ObjectNoteBatchService) Delete(ctx context.Context, body ObjectNoteBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/notes/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

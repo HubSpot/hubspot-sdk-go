@@ -119,7 +119,7 @@ func (r *HubdbRowService) CloneDraft(ctx context.Context, rowID string, params H
 // Permanently deletes a row from a table's draft version.
 func (r *HubdbRowService) DeleteDraft(ctx context.Context, rowID string, body HubdbRowDeleteDraftParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.TableIDOrName == "" {
 		err = errors.New("missing required tableIdOrName parameter")
 		return

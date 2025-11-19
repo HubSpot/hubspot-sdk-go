@@ -48,7 +48,7 @@ func (r *ListFolderService) New(ctx context.Context, body ListFolderNewParams, o
 // Deletes the folder with the given Id.
 func (r *ListFolderService) Delete(ctx context.Context, folderID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if folderID == "" {
 		err = errors.New("missing required folderId parameter")
 		return
@@ -88,7 +88,7 @@ func (r *ListFolderService) Move(ctx context.Context, newParentFolderID string, 
 // Given a list and a folder, the list will be moved to that folder.
 func (r *ListFolderService) MoveList(ctx context.Context, body ListFolderMoveListParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/lists/folders/move-list"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return

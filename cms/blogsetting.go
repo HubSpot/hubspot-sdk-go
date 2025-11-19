@@ -73,7 +73,7 @@ func (r *BlogSettingService) ListAutoPaging(ctx context.Context, query BlogSetti
 // Attach a blog to a multi-language group.
 func (r *BlogSettingService) AttachToLangGroup(ctx context.Context, body BlogSettingAttachToLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blog-settings/settings/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -90,7 +90,7 @@ func (r *BlogSettingService) NewLanguageVariation(ctx context.Context, body Blog
 // Detach a blog from a multi-language group.
 func (r *BlogSettingService) DetachFromLangGroup(ctx context.Context, body BlogSettingDetachFromLangGroupParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blog-settings/settings/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return
@@ -139,7 +139,7 @@ func (r *BlogSettingService) ListRevisions(ctx context.Context, blogID string, q
 // Set a blog as the primary language of a multi-language group.
 func (r *BlogSettingService) SetNewLangPrimary(ctx context.Context, body BlogSettingSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blog-settings/settings/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return
@@ -148,7 +148,7 @@ func (r *BlogSettingService) SetNewLangPrimary(ctx context.Context, body BlogSet
 // Explicitly set new languages for each blog in a multi-language group.
 func (r *BlogSettingService) UpdateLanguages(ctx context.Context, body BlogSettingUpdateLanguagesParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/v3/blog-settings/settings/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

@@ -54,7 +54,7 @@ func (r *ObjectLineItemBatchService) Update(ctx context.Context, body ObjectLine
 // Archive a batch of line items by ID
 func (r *ObjectLineItemBatchService) Delete(ctx context.Context, body ObjectLineItemBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/objects/line_items/batch/archive"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

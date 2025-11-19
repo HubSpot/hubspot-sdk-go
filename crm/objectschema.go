@@ -75,7 +75,7 @@ func (r *ObjectSchemaService) List(ctx context.Context, query ObjectSchemaListPa
 // Otherwise this call will fail.
 func (r *ObjectSchemaService) Delete(ctx context.Context, objectType string, body ObjectSchemaDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return
@@ -101,7 +101,7 @@ func (r *ObjectSchemaService) NewAssociation(ctx context.Context, objectType str
 // Removes an existing association from a schema.
 func (r *ObjectSchemaService) DeleteAssociation(ctx context.Context, associationIdentifier string, body ObjectSchemaDeleteAssociationParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

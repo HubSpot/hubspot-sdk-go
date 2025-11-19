@@ -87,7 +87,7 @@ func (r *EventDefinitionService) ListAutoPaging(ctx context.Context, query Event
 // Delete a custom event definition by name.
 func (r *EventDefinitionService) Delete(ctx context.Context, eventName string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if eventName == "" {
 		err = errors.New("missing required eventName parameter")
 		return
@@ -112,7 +112,7 @@ func (r *EventDefinitionService) NewProperty(ctx context.Context, eventName stri
 // Delete an existing property from a custom event definition.
 func (r *EventDefinitionService) DeleteProperty(ctx context.Context, propertyName string, body EventDefinitionDeletePropertyParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.EventName == "" {
 		err = errors.New("missing required eventName parameter")
 		return

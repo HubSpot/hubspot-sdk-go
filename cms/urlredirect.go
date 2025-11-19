@@ -87,7 +87,7 @@ func (r *URLRedirectService) ListAutoPaging(ctx context.Context, query URLRedire
 // Delete one existing redirect, so it is no longer mapped.
 func (r *URLRedirectService) Delete(ctx context.Context, urlRedirectID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if urlRedirectID == "" {
 		err = errors.New("missing required urlRedirectId parameter")
 		return

@@ -93,7 +93,7 @@ func (r *ObjectDealService) ListAutoPaging(ctx context.Context, query ObjectDeal
 // Move an Object identified by `{dealId}` to the recycling bin.
 func (r *ObjectDealService) Delete(ctx context.Context, dealID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if dealID == "" {
 		err = errors.New("missing required dealId parameter")
 		return

@@ -76,7 +76,7 @@ func (r *CustomChannelService) List(ctx context.Context, opts ...option.RequestO
 // Archive an existing registered custom channel
 func (r *CustomChannelService) Delete(ctx context.Context, channelID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if channelID == "" {
 		err = errors.New("missing required channelId parameter")
 		return

@@ -87,7 +87,7 @@ func (r *PipelineService) List(ctx context.Context, objectType string, opts ...o
 // Delete the pipeline identified by `{pipelineId}`.
 func (r *PipelineService) Delete(ctx context.Context, pipelineID string, params PipelineDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return

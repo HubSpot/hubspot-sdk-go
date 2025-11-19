@@ -93,7 +93,7 @@ func (r *ObjectNoteService) ListAutoPaging(ctx context.Context, query ObjectNote
 // Move an Object identified by `{noteId}` to the recycling bin.
 func (r *ObjectNoteService) Delete(ctx context.Context, noteID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if noteID == "" {
 		err = errors.New("missing required noteId parameter")
 		return

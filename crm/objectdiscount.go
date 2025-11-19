@@ -96,7 +96,7 @@ func (r *ObjectDiscountService) ListAutoPaging(ctx context.Context, query Object
 // Move an Object identified by `{discountId}` to the recycling bin.
 func (r *ObjectDiscountService) Delete(ctx context.Context, discountID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if discountID == "" {
 		err = errors.New("missing required discountId parameter")
 		return

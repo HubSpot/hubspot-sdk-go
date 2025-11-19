@@ -93,7 +93,7 @@ func (r *ObjectFeeService) ListAutoPaging(ctx context.Context, query ObjectFeeLi
 // Move an Object identified by `{feeId}` to the recycling bin.
 func (r *ObjectFeeService) Delete(ctx context.Context, feeID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if feeID == "" {
 		err = errors.New("missing required feeId parameter")
 		return

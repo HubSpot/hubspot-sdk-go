@@ -54,7 +54,7 @@ func (r *SettingService) List(ctx context.Context, appID int64, opts ...option.R
 // be deleted, but will be paused until another webhook is created.
 func (r *SettingService) Delete(ctx context.Context, appID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := fmt.Sprintf("webhooks/v3/%v/settings", appID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

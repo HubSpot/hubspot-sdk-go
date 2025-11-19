@@ -93,7 +93,7 @@ func (r *ObjectCallService) ListAutoPaging(ctx context.Context, query ObjectCall
 // Move an Object identified by `{callId}` to the recycling bin.
 func (r *ObjectCallService) Delete(ctx context.Context, callID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if callID == "" {
 		err = errors.New("missing required callId parameter")
 		return

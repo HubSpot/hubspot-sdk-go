@@ -49,7 +49,7 @@ func (r *ActionFunctionService) List(ctx context.Context, definitionID string, q
 // Archive a function for a definition
 func (r *ActionFunctionService) Delete(ctx context.Context, functionID string, body ActionFunctionDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.DefinitionID == "" {
 		err = errors.New("missing required definitionId parameter")
 		return
@@ -94,7 +94,7 @@ func (r *ActionFunctionService) NewOrReplaceByFunctionType(ctx context.Context, 
 // Delete a function within a given definition.
 func (r *ActionFunctionService) DeleteByFunctionType(ctx context.Context, functionType ActionFunctionDeleteByFunctionTypeParamsFunctionType, body ActionFunctionDeleteByFunctionTypeParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.DefinitionID == "" {
 		err = errors.New("missing required definitionId parameter")
 		return

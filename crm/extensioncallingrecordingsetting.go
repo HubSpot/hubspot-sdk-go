@@ -64,7 +64,7 @@ func (r *ExtensionCallingRecordingSettingService) Get(ctx context.Context, appID
 // (`engagementid`).
 func (r *ExtensionCallingRecordingSettingService) MarkReady(ctx context.Context, body ExtensionCallingRecordingSettingMarkReadyParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "crm/v3/extensions/calling/recordings/ready"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return

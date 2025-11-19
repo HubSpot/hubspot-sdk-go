@@ -96,7 +96,7 @@ func (r *ObjectMeetingService) ListAutoPaging(ctx context.Context, query ObjectM
 // Move an Object identified by `{meetingId}` to the recycling bin.
 func (r *ObjectMeetingService) Delete(ctx context.Context, meetingID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if meetingID == "" {
 		err = errors.New("missing required meetingId parameter")
 		return
