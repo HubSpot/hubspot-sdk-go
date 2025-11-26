@@ -39,13 +39,13 @@ func TestTimelineEventNewWithOptionalParams(t *testing.T) {
 			ID:     hubspotsdk.String("id"),
 			Domain: hubspotsdk.String("domain"),
 			Email:  hubspotsdk.String("art3mis-pup@petspot.com"),
-			ExtraData: map[string]interface{}{
-				"questions": map[string]interface{}{
-					"0": map[string]interface{}{
+			ExtraData: map[string]any{
+				"questions": []undefined{
+					map[string]any{
 						"answer":   "Bark!",
 						"question": "Who's a good girl?",
 					},
-					"1": map[string]interface{}{
+					map[string]any{
 						"answer":   "Woof!",
 						"question": "Do you wanna go on a walk?",
 					},
@@ -97,13 +97,13 @@ func TestTimelineEventBatchNew(t *testing.T) {
 				ID:     hubspotsdk.String("id"),
 				Domain: hubspotsdk.String("domain"),
 				Email:  hubspotsdk.String("art3mis-pup@petspot.com"),
-				ExtraData: map[string]interface{}{
-					"questions": map[string]interface{}{
-						"0": map[string]interface{}{
+				ExtraData: map[string]any{
+					"questions": []undefined{
+						map[string]any{
 							"answer":   "Bark!",
 							"question": "Who's a good girl?",
 						},
-						"1": map[string]interface{}{
+						map[string]any{
 							"answer":   "Woof!",
 							"question": "Do you wanna go on a walk?",
 						},
@@ -129,13 +129,13 @@ func TestTimelineEventBatchNew(t *testing.T) {
 				ID:     hubspotsdk.String("id"),
 				Domain: hubspotsdk.String("domain"),
 				Email:  hubspotsdk.String("pocket-tiger@petspot.com"),
-				ExtraData: map[string]interface{}{
-					"questions": map[string]interface{}{
-						"0": map[string]interface{}{
+				ExtraData: map[string]any{
+					"questions": []undefined{
+						map[string]any{
 							"answer":   "Purr...",
 							"question": "Who's a good kitty?",
 						},
-						"1": map[string]interface{}{
+						map[string]any{
 							"answer":   "Meow!",
 							"question": "Will you stop playing with that?",
 						},

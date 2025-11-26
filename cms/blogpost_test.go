@@ -36,7 +36,7 @@ func TestBlogPostNew(t *testing.T) {
 			ArchivedAt:          0,
 			ArchivedInDashboard: true,
 			AttachedStylesheets: []map[string]any{{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			}},
 			AuthorName:                    "authorName",
 			BlogAuthorID:                  "blogAuthorId",
@@ -72,7 +72,7 @@ func TestBlogPostNew(t *testing.T) {
 					Label:    "label",
 					Name:     "name",
 					Params: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					RowMetaData: []cms.RowMetaDataParam{{
 						CssClass: "cssClass",
@@ -113,8 +113,8 @@ func TestBlogPostNew(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -157,8 +157,8 @@ func TestBlogPostNew(t *testing.T) {
 						BreakpointStyles: map[string]cms.BreakpointStylesParam{
 							"foo": {
 								Hidden:  true,
-								Margin:  map[string]interface{}{},
-								Padding: map[string]interface{}{},
+								Margin:  map[string]any{},
+								Padding: map[string]any{},
 							},
 						},
 					},
@@ -178,7 +178,7 @@ func TestBlogPostNew(t *testing.T) {
 			Password:                 "password",
 			PostBody:                 "postBody",
 			PostSummary:              "postSummary",
-			PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+			PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 			PublicAccessRulesEnabled: true,
 			PublishDate:              time.Now(),
 			PublishImmediately:       true,
@@ -188,7 +188,7 @@ func TestBlogPostNew(t *testing.T) {
 			State:                    "state",
 			TagIDs:                   []int64{0},
 			ThemeSettingsValues: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 			TranslatedFromID: "translatedFromId",
 			Translations: map[string]cms.ContentLanguageVariationParam{
@@ -200,7 +200,7 @@ func TestBlogPostNew(t *testing.T) {
 					Created:                  time.Now(),
 					Name:                     "name",
 					Password:                 "password",
-					PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+					PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 					PublicAccessRulesEnabled: true,
 					PublishDate:              time.Now(),
 					Slug:                     "slug",
@@ -214,10 +214,10 @@ func TestBlogPostNew(t *testing.T) {
 			URL:              "url",
 			UseFeaturedImage: true,
 			WidgetContainers: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 			Widgets: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 		},
 	})
@@ -254,7 +254,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 				ArchivedAt:          0,
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				}},
 				AuthorName:                    "authorName",
 				BlogAuthorID:                  "blogAuthorId",
@@ -290,7 +290,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 						Label:    "label",
 						Name:     "name",
 						Params: map[string]any{
-							"foo": map[string]interface{}{},
+							"foo": map[string]any{},
 						},
 						RowMetaData: []cms.RowMetaDataParam{{
 							CssClass: "cssClass",
@@ -331,8 +331,8 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 								BreakpointStyles: map[string]cms.BreakpointStylesParam{
 									"foo": {
 										Hidden:  true,
-										Margin:  map[string]interface{}{},
-										Padding: map[string]interface{}{},
+										Margin:  map[string]any{},
+										Padding: map[string]any{},
 									},
 								},
 							},
@@ -375,8 +375,8 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -396,7 +396,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 				Password:                 "password",
 				PostBody:                 "postBody",
 				PostSummary:              "postSummary",
-				PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
@@ -406,7 +406,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 				State:                    "state",
 				TagIDs:                   []int64{0},
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
 				Translations: map[string]cms.ContentLanguageVariationParam{
@@ -418,7 +418,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 						Created:                  time.Now(),
 						Name:                     "name",
 						Password:                 "password",
-						PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+						PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 						PublicAccessRulesEnabled: true,
 						PublishDate:              time.Now(),
 						Slug:                     "slug",
@@ -432,10 +432,10 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 				URL:              "url",
 				UseFeaturedImage: true,
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 			},
 			Archived: hubspotsdk.Bool(true),
@@ -923,7 +923,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 				ArchivedAt:          0,
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				}},
 				AuthorName:                    "authorName",
 				BlogAuthorID:                  "blogAuthorId",
@@ -959,7 +959,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 						Label:    "label",
 						Name:     "name",
 						Params: map[string]any{
-							"foo": map[string]interface{}{},
+							"foo": map[string]any{},
 						},
 						RowMetaData: []cms.RowMetaDataParam{{
 							CssClass: "cssClass",
@@ -1000,8 +1000,8 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 								BreakpointStyles: map[string]cms.BreakpointStylesParam{
 									"foo": {
 										Hidden:  true,
-										Margin:  map[string]interface{}{},
-										Padding: map[string]interface{}{},
+										Margin:  map[string]any{},
+										Padding: map[string]any{},
 									},
 								},
 							},
@@ -1044,8 +1044,8 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -1065,7 +1065,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 				Password:                 "password",
 				PostBody:                 "postBody",
 				PostSummary:              "postSummary",
-				PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
@@ -1075,7 +1075,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 				State:                    "state",
 				TagIDs:                   []int64{0},
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
 				Translations: map[string]cms.ContentLanguageVariationParam{
@@ -1087,7 +1087,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 						Created:                  time.Now(),
 						Name:                     "name",
 						Password:                 "password",
-						PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+						PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 						PublicAccessRulesEnabled: true,
 						PublishDate:              time.Now(),
 						Slug:                     "slug",
@@ -1101,10 +1101,10 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 				URL:              "url",
 				UseFeaturedImage: true,
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 			},
 		},

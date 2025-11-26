@@ -38,11 +38,11 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 			Campaign:       hubspotsdk.String("1b7f51a6-33c1-44d6-ba28-fe81f655dced"),
 			Content: marketing.PublicEmailContentParam{
 				FlexAreas: map[string]any{
-					"main": map[string]interface{}{},
+					"main": map[string]any{},
 				},
 				PlainTextVersion: hubspotsdk.String("This is custom! View in browser ({{view_as_page_url}})\n\nHello {{ contact.firstname }},\n\nPlain text emails have minimal formatting so your reader can really focus on what you have to say. Introduce yourself and explain why you’re reaching out.\n\nEvery email should try to lead the reader to some kind of action. Use this space to describe why the reader should want to click on the link below. Put the link on its own line to really draw their eye to it.\n\nLink text\n\nNow it’s time to wrap up your email. Before your signature, thank the recipient for reading. You can also invite them to send this email to any of their colleagues who might be interested.\n\nAll the best,\n\nYour full name\n\nYour job title\n\nOther contact information\n\n{{site_settings.company_name}}, {{site_settings.company_street_address_1}}, {{site_settings.company_street_address_2}}, {{site_settings.company_city}}, {{site_settings.company_state}} {{site_settings.company_zip}}, {{site_settings.company_country}}, {{site_settings.company_phone}}\n\nUnsubscribe ({{unsubscribe_link_all}})\n\nManage preferences ({{unsubscribe_link}})"),
 				SmartFields: map[string]marketing.SmartEmailField{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				StyleSettings: marketing.PublicEmailStyleSettingsParam{
 					BackgroundColor:       hubspotsdk.String("backgroundColor"),
@@ -53,7 +53,7 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 					BodyBorderWidth:       hubspotsdk.Float(0),
 					BodyColor:             hubspotsdk.String("bodyColor"),
 					ButtonStyleSettings: marketing.PublicButtonStyleSettingsParam{
-						BackgroundColor: map[string]interface{}{},
+						BackgroundColor: map[string]any{},
 						CornerRadius:    hubspotsdk.Int(0),
 						FontStyle: marketing.PublicFontStyleParam{
 							Bold:      hubspotsdk.Bool(true),
@@ -71,7 +71,7 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 					ColorPickerFavorite5: hubspotsdk.String("colorPickerFavorite5"),
 					ColorPickerFavorite6: hubspotsdk.String("colorPickerFavorite6"),
 					DividerStyleSettings: marketing.PublicDividerStyleSettingsParam{
-						Color:    map[string]interface{}{},
+						Color:    map[string]any{},
 						Height:   hubspotsdk.Int(0),
 						LineType: hubspotsdk.String("lineType"),
 					},
@@ -114,16 +114,16 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 				},
 				TemplatePath: hubspotsdk.String("templatePath"),
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"module-0-1-1":           map[string]interface{}{},
-					"module-1-1-1":           map[string]interface{}{},
-					"module_160676180617911": map[string]interface{}{},
-					"preview_text":           map[string]interface{}{},
+					"module-0-1-1":           map[string]any{},
+					"module-1-1-1":           map[string]any{},
+					"module_160676180617911": map[string]any{},
+					"preview_text":           map[string]any{},
 				},
 			},
 			FeedbackSurveyID: hubspotsdk.String("feedbackSurveyId"),
@@ -144,7 +144,7 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 				MaxEntries:        hubspotsdk.Int(0),
 				RssEntryTemplate:  hubspotsdk.String("rssEntryTemplate"),
 				Timing: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				URL:                  hubspotsdk.String("url"),
 				UseHeadlineAsSubject: hubspotsdk.Bool(true),
@@ -233,11 +233,11 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 				Campaign:       hubspotsdk.String("1b7f51a6-33c1-44d6-ba28-fe81f655dced"),
 				Content: marketing.PublicEmailContentParam{
 					FlexAreas: map[string]any{
-						"main": map[string]interface{}{},
+						"main": map[string]any{},
 					},
 					PlainTextVersion: hubspotsdk.String("This is custom! View in browser ({{view_as_page_url}})\n\nHello {{ contact.firstname }},\n\nPlain text emails have minimal formatting so your reader can really focus on what you have to say. Introduce yourself and explain why you’re reaching out.\n\nEvery email should try to lead the reader to some kind of action. Use this space to describe why the reader should want to click on the link below. Put the link on its own line to really draw their eye to it.\n\nLink text\n\nNow it’s time to wrap up your email. Before your signature, thank the recipient for reading. You can also invite them to send this email to any of their colleagues who might be interested.\n\nAll the best,\n\nYour full name\n\nYour job title\n\nOther contact information\n\n{{site_settings.company_name}}, {{site_settings.company_street_address_1}}, {{site_settings.company_street_address_2}}, {{site_settings.company_city}}, {{site_settings.company_state}} {{site_settings.company_zip}}, {{site_settings.company_country}}, {{site_settings.company_phone}}\n\nUnsubscribe ({{unsubscribe_link_all}})\n\nManage preferences ({{unsubscribe_link}})"),
 					SmartFields: map[string]marketing.SmartEmailField{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					StyleSettings: marketing.PublicEmailStyleSettingsParam{
 						BackgroundColor:       hubspotsdk.String("backgroundColor"),
@@ -248,7 +248,7 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 						BodyBorderWidth:       hubspotsdk.Float(0),
 						BodyColor:             hubspotsdk.String("bodyColor"),
 						ButtonStyleSettings: marketing.PublicButtonStyleSettingsParam{
-							BackgroundColor: map[string]interface{}{},
+							BackgroundColor: map[string]any{},
 							CornerRadius:    hubspotsdk.Int(0),
 							FontStyle: marketing.PublicFontStyleParam{
 								Bold:      hubspotsdk.Bool(true),
@@ -266,7 +266,7 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 						ColorPickerFavorite5: hubspotsdk.String("colorPickerFavorite5"),
 						ColorPickerFavorite6: hubspotsdk.String("colorPickerFavorite6"),
 						DividerStyleSettings: marketing.PublicDividerStyleSettingsParam{
-							Color:    map[string]interface{}{},
+							Color:    map[string]any{},
 							Height:   hubspotsdk.Int(0),
 							LineType: hubspotsdk.String("lineType"),
 						},
@@ -309,16 +309,16 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 					},
 					TemplatePath: hubspotsdk.String("templatePath"),
 					ThemeSettingsValues: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					WidgetContainers: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					Widgets: map[string]any{
-						"module-0-1-1":           map[string]interface{}{},
-						"module-1-1-1":           map[string]interface{}{},
-						"module_160676180617911": map[string]interface{}{},
-						"preview_text":           map[string]interface{}{},
+						"module-0-1-1":           map[string]any{},
+						"module-1-1-1":           map[string]any{},
+						"module_160676180617911": map[string]any{},
+						"preview_text":           map[string]any{},
 					},
 				},
 				FolderIDV2: hubspotsdk.Int(0),
@@ -339,7 +339,7 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 					MaxEntries:        hubspotsdk.Int(0),
 					RssEntryTemplate:  hubspotsdk.String("rssEntryTemplate"),
 					Timing: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					URL:                  hubspotsdk.String("url"),
 					UseHeadlineAsSubject: hubspotsdk.Bool(true),
@@ -823,11 +823,11 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 				Campaign:       hubspotsdk.String("1b7f51a6-33c1-44d6-ba28-fe81f655dced"),
 				Content: marketing.PublicEmailContentParam{
 					FlexAreas: map[string]any{
-						"main": map[string]interface{}{},
+						"main": map[string]any{},
 					},
 					PlainTextVersion: hubspotsdk.String("This is custom! View in browser ({{view_as_page_url}})\n\nHello {{ contact.firstname }},\n\nPlain text emails have minimal formatting so your reader can really focus on what you have to say. Introduce yourself and explain why you’re reaching out.\n\nEvery email should try to lead the reader to some kind of action. Use this space to describe why the reader should want to click on the link below. Put the link on its own line to really draw their eye to it.\n\nLink text\n\nNow it’s time to wrap up your email. Before your signature, thank the recipient for reading. You can also invite them to send this email to any of their colleagues who might be interested.\n\nAll the best,\n\nYour full name\n\nYour job title\n\nOther contact information\n\n{{site_settings.company_name}}, {{site_settings.company_street_address_1}}, {{site_settings.company_street_address_2}}, {{site_settings.company_city}}, {{site_settings.company_state}} {{site_settings.company_zip}}, {{site_settings.company_country}}, {{site_settings.company_phone}}\n\nUnsubscribe ({{unsubscribe_link_all}})\n\nManage preferences ({{unsubscribe_link}})"),
 					SmartFields: map[string]marketing.SmartEmailField{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					StyleSettings: marketing.PublicEmailStyleSettingsParam{
 						BackgroundColor:       hubspotsdk.String("backgroundColor"),
@@ -838,7 +838,7 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 						BodyBorderWidth:       hubspotsdk.Float(0),
 						BodyColor:             hubspotsdk.String("bodyColor"),
 						ButtonStyleSettings: marketing.PublicButtonStyleSettingsParam{
-							BackgroundColor: map[string]interface{}{},
+							BackgroundColor: map[string]any{},
 							CornerRadius:    hubspotsdk.Int(0),
 							FontStyle: marketing.PublicFontStyleParam{
 								Bold:      hubspotsdk.Bool(true),
@@ -856,7 +856,7 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 						ColorPickerFavorite5: hubspotsdk.String("colorPickerFavorite5"),
 						ColorPickerFavorite6: hubspotsdk.String("colorPickerFavorite6"),
 						DividerStyleSettings: marketing.PublicDividerStyleSettingsParam{
-							Color:    map[string]interface{}{},
+							Color:    map[string]any{},
 							Height:   hubspotsdk.Int(0),
 							LineType: hubspotsdk.String("lineType"),
 						},
@@ -899,16 +899,16 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 					},
 					TemplatePath: hubspotsdk.String("templatePath"),
 					ThemeSettingsValues: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					WidgetContainers: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					Widgets: map[string]any{
-						"module-0-1-1":           map[string]interface{}{},
-						"module-1-1-1":           map[string]interface{}{},
-						"module_160676180617911": map[string]interface{}{},
-						"preview_text":           map[string]interface{}{},
+						"module-0-1-1":           map[string]any{},
+						"module-1-1-1":           map[string]any{},
+						"module_160676180617911": map[string]any{},
+						"preview_text":           map[string]any{},
 					},
 				},
 				FolderIDV2: hubspotsdk.Int(0),
@@ -929,7 +929,7 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 					MaxEntries:        hubspotsdk.Int(0),
 					RssEntryTemplate:  hubspotsdk.String("rssEntryTemplate"),
 					Timing: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					URL:                  hubspotsdk.String("url"),
 					UseHeadlineAsSubject: hubspotsdk.Bool(true),

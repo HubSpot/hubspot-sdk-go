@@ -37,7 +37,7 @@ func TestPageSitePageNew(t *testing.T) {
 			ArchivedAt:          time.Now(),
 			ArchivedInDashboard: true,
 			AttachedStylesheets: []map[string]any{{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			}},
 			AuthorName:                "authorName",
 			Campaign:                  "campaign",
@@ -71,7 +71,7 @@ func TestPageSitePageNew(t *testing.T) {
 					Label:    "label",
 					Name:     "name",
 					Params: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					RowMetaData: []cms.RowMetaDataParam{{
 						CssClass: "cssClass",
@@ -112,8 +112,8 @@ func TestPageSitePageNew(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -156,8 +156,8 @@ func TestPageSitePageNew(t *testing.T) {
 						BreakpointStyles: map[string]cms.BreakpointStylesParam{
 							"foo": {
 								Hidden:  true,
-								Margin:  map[string]interface{}{},
-								Padding: map[string]interface{}{},
+								Margin:  map[string]any{},
+								Padding: map[string]any{},
 							},
 						},
 					},
@@ -176,7 +176,7 @@ func TestPageSitePageNew(t *testing.T) {
 			PageExpiryRedirectURL:    "pageExpiryRedirectUrl",
 			PageRedirected:           true,
 			Password:                 "password",
-			PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+			PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 			PublicAccessRulesEnabled: true,
 			PublishDate:              time.Now(),
 			PublishImmediately:       true,
@@ -185,7 +185,7 @@ func TestPageSitePageNew(t *testing.T) {
 			Subcategory:              "subcategory",
 			TemplatePath:             "templatePath",
 			ThemeSettingsValues: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 			TranslatedFromID: "translatedFromId",
 			Translations: map[string]cms.ContentLanguageVariationParam{
@@ -197,7 +197,7 @@ func TestPageSitePageNew(t *testing.T) {
 					Created:                  time.Now(),
 					Name:                     "name",
 					Password:                 "password",
-					PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+					PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 					PublicAccessRulesEnabled: true,
 					PublishDate:              time.Now(),
 					Slug:                     "slug",
@@ -211,10 +211,10 @@ func TestPageSitePageNew(t *testing.T) {
 			URL:              "url",
 			UseFeaturedImage: true,
 			WidgetContainers: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 			Widgets: map[string]any{
-				"foo": map[string]interface{}{},
+				"foo": map[string]any{},
 			},
 		},
 	})
@@ -251,7 +251,7 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				}},
 				AuthorName:                "authorName",
 				Campaign:                  "campaign",
@@ -285,7 +285,7 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 						Label:    "label",
 						Name:     "name",
 						Params: map[string]any{
-							"foo": map[string]interface{}{},
+							"foo": map[string]any{},
 						},
 						RowMetaData: []cms.RowMetaDataParam{{
 							CssClass: "cssClass",
@@ -326,8 +326,8 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 								BreakpointStyles: map[string]cms.BreakpointStylesParam{
 									"foo": {
 										Hidden:  true,
-										Margin:  map[string]interface{}{},
-										Padding: map[string]interface{}{},
+										Margin:  map[string]any{},
+										Padding: map[string]any{},
 									},
 								},
 							},
@@ -370,8 +370,8 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -390,7 +390,7 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 				PageExpiryRedirectURL:    "pageExpiryRedirectUrl",
 				PageRedirected:           true,
 				Password:                 "password",
-				PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
@@ -399,7 +399,7 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 				Subcategory:              "subcategory",
 				TemplatePath:             "templatePath",
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
 				Translations: map[string]cms.ContentLanguageVariationParam{
@@ -411,7 +411,7 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 						Created:                  time.Now(),
 						Name:                     "name",
 						Password:                 "password",
-						PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+						PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 						PublicAccessRulesEnabled: true,
 						PublishDate:              time.Now(),
 						Slug:                     "slug",
@@ -425,10 +425,10 @@ func TestPageSitePageUpdateWithOptionalParams(t *testing.T) {
 				URL:              "url",
 				UseFeaturedImage: true,
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 			},
 			Archived: hubspotsdk.Bool(true),
@@ -615,7 +615,7 @@ func TestPageSitePageNewBatch(t *testing.T) {
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				}},
 				AuthorName:                "authorName",
 				Campaign:                  "campaign",
@@ -649,7 +649,7 @@ func TestPageSitePageNewBatch(t *testing.T) {
 						Label:    "label",
 						Name:     "name",
 						Params: map[string]any{
-							"foo": map[string]interface{}{},
+							"foo": map[string]any{},
 						},
 						RowMetaData: []cms.RowMetaDataParam{{
 							CssClass: "cssClass",
@@ -690,8 +690,8 @@ func TestPageSitePageNewBatch(t *testing.T) {
 								BreakpointStyles: map[string]cms.BreakpointStylesParam{
 									"foo": {
 										Hidden:  true,
-										Margin:  map[string]interface{}{},
-										Padding: map[string]interface{}{},
+										Margin:  map[string]any{},
+										Padding: map[string]any{},
 									},
 								},
 							},
@@ -734,8 +734,8 @@ func TestPageSitePageNewBatch(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -754,7 +754,7 @@ func TestPageSitePageNewBatch(t *testing.T) {
 				PageExpiryRedirectURL:    "pageExpiryRedirectUrl",
 				PageRedirected:           true,
 				Password:                 "password",
-				PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
@@ -763,7 +763,7 @@ func TestPageSitePageNewBatch(t *testing.T) {
 				Subcategory:              "subcategory",
 				TemplatePath:             "templatePath",
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
 				Translations: map[string]cms.ContentLanguageVariationParam{
@@ -775,7 +775,7 @@ func TestPageSitePageNewBatch(t *testing.T) {
 						Created:                  time.Now(),
 						Name:                     "name",
 						Password:                 "password",
-						PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+						PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 						PublicAccessRulesEnabled: true,
 						PublishDate:              time.Now(),
 						Slug:                     "slug",
@@ -789,10 +789,10 @@ func TestPageSitePageNewBatch(t *testing.T) {
 				URL:              "url",
 				UseFeaturedImage: true,
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 			}},
 		},
@@ -1260,7 +1260,7 @@ func TestPageSitePageUpdateBatchWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.Pages.SitePages.UpdateBatch(context.TODO(), cms.PageSitePageUpdateBatchParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
-			Inputs: []any{map[string]interface{}{}},
+			Inputs: []any{map[string]any{}},
 		},
 		Archived: hubspotsdk.Bool(true),
 	})
@@ -1297,7 +1297,7 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				}},
 				AuthorName:                "authorName",
 				Campaign:                  "campaign",
@@ -1331,7 +1331,7 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 						Label:    "label",
 						Name:     "name",
 						Params: map[string]any{
-							"foo": map[string]interface{}{},
+							"foo": map[string]any{},
 						},
 						RowMetaData: []cms.RowMetaDataParam{{
 							CssClass: "cssClass",
@@ -1372,8 +1372,8 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 								BreakpointStyles: map[string]cms.BreakpointStylesParam{
 									"foo": {
 										Hidden:  true,
-										Margin:  map[string]interface{}{},
-										Padding: map[string]interface{}{},
+										Margin:  map[string]any{},
+										Padding: map[string]any{},
 									},
 								},
 							},
@@ -1416,8 +1416,8 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 							BreakpointStyles: map[string]cms.BreakpointStylesParam{
 								"foo": {
 									Hidden:  true,
-									Margin:  map[string]interface{}{},
-									Padding: map[string]interface{}{},
+									Margin:  map[string]any{},
+									Padding: map[string]any{},
 								},
 							},
 						},
@@ -1436,7 +1436,7 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 				PageExpiryRedirectURL:    "pageExpiryRedirectUrl",
 				PageRedirected:           true,
 				Password:                 "password",
-				PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
@@ -1445,7 +1445,7 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 				Subcategory:              "subcategory",
 				TemplatePath:             "templatePath",
 				ThemeSettingsValues: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
 				Translations: map[string]cms.ContentLanguageVariationParam{
@@ -1457,7 +1457,7 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 						Created:                  time.Now(),
 						Name:                     "name",
 						Password:                 "password",
-						PublicAccessRules:        []cms.PublicAccessRule{map[string]interface{}{}},
+						PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 						PublicAccessRulesEnabled: true,
 						PublishDate:              time.Now(),
 						Slug:                     "slug",
@@ -1471,10 +1471,10 @@ func TestPageSitePageUpdateDraft(t *testing.T) {
 				URL:              "url",
 				UseFeaturedImage: true,
 				WidgetContainers: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 				Widgets: map[string]any{
-					"foo": map[string]interface{}{},
+					"foo": map[string]any{},
 				},
 			},
 		},

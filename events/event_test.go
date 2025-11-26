@@ -36,13 +36,13 @@ func TestEventListWithOptionalParams(t *testing.T) {
 		Limit:     hubspotsdk.Int(0),
 		ObjectID:  hubspotsdk.Int(0),
 		ObjectProperty: events.EventListParamsObjectProperty{
-			Propname: map[string]interface{}{},
+			Propname: map[string]any{},
 		},
 		ObjectType:     hubspotsdk.String("objectType"),
 		OccurredAfter:  hubspotsdk.Time(time.Now()),
 		OccurredBefore: hubspotsdk.Time(time.Now()),
 		Property: events.EventListParamsProperty{
-			Propname: map[string]interface{}{},
+			Propname: map[string]any{},
 		},
 		Sort: []string{"string"},
 	})
