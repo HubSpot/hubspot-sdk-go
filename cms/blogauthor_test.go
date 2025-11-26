@@ -448,7 +448,7 @@ func TestBlogAuthorUpdateBatchWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.Blogs.Authors.UpdateBatch(context.TODO(), cms.BlogAuthorUpdateBatchParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
-			Inputs: []any{map[string]interface{}{}},
+			Inputs: []any{map[string]any{}},
 		},
 		Archived: hubspotsdk.Bool(true),
 	})

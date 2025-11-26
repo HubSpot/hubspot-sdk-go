@@ -95,7 +95,7 @@ func TestActionDefinitionNewWithOptionalParams(t *testing.T) {
 				ArchivedAt:  hubspotsdk.Int(0),
 				ExecutionRules: []automation.PublicExecutionTranslationRuleParam{{
 					Conditions: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					LabelName: "labelName",
 				}},
@@ -166,7 +166,7 @@ func TestActionDefinitionUpdateWithOptionalParams(t *testing.T) {
 				ActionURL: hubspotsdk.String("actionUrl"),
 				ExecutionRules: []automation.PublicExecutionTranslationRuleParam{{
 					Conditions: map[string]any{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					LabelName: "labelName",
 				}},

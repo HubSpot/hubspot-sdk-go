@@ -69,7 +69,7 @@ func TestHubdbRowBatchNewBatch(t *testing.T) {
 			BatchInputHubDBTableRowV3Request: cms.BatchInputHubDBTableRowV3RequestParam{
 				Inputs: []cms.HubDBTableRowV3RequestParam{{
 					Values: map[string]cms.Variant{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					ChildTableID: hubspotsdk.Int(0),
 					DisplayIndex: hubspotsdk.Int(0),
@@ -202,7 +202,7 @@ func TestHubdbRowBatchReplaceBatch(t *testing.T) {
 				Inputs: []cms.HubDBTableRowV3BatchUpdateRequestParam{{
 					ID: "id",
 					Values: map[string]cms.Variant{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					ChildTableID: hubspotsdk.Int(0),
 					DisplayIndex: hubspotsdk.Int(0),
@@ -242,7 +242,7 @@ func TestHubdbRowBatchUpdateBatch(t *testing.T) {
 				Inputs: []cms.HubDBTableRowV3BatchUpdateRequestParam{{
 					ID: "id",
 					Values: map[string]cms.Variant{
-						"foo": map[string]interface{}{},
+						"foo": map[string]any{},
 					},
 					ChildTableID: hubspotsdk.Int(0),
 					DisplayIndex: hubspotsdk.Int(0),
