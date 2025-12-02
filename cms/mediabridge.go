@@ -46,7 +46,7 @@ func NewMediaBridgeService(opts ...option.RequestOption) (r MediaBridgeService) 
 type AbsoluteValue struct {
 	// Any of "ABSOLUTE_VALUE".
 	Operator     AbsoluteValueOperator `json:"operator,required"`
-	Inputs       []any                 `json:"inputs"`
+	Inputs       []ExpressionUnion     `json:"inputs"`
 	PropertyName string                `json:"propertyName"`
 	Value        float64               `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -76,7 +76,7 @@ type AddNumbers struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "ADD_NUMBERS".
 	Operator     AddNumbersOperator `json:"operator,required"`
-	Inputs       []any              `json:"inputs"`
+	Inputs       []ExpressionUnion  `json:"inputs"`
 	PropertyName string             `json:"propertyName"`
 	Value        float64            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -105,11 +105,11 @@ const (
 
 type AddTime struct {
 	// Any of "ADD_TIME".
-	Operator      AddTimeOperator `json:"operator,required"`
-	StringToCheck any             `json:"stringToCheck,required"`
-	Inputs        []any           `json:"inputs"`
-	PropertyName  string          `json:"propertyName"`
-	Value         float64         `json:"value"`
+	Operator      AddTimeOperator   `json:"operator,required"`
+	StringToCheck ExpressionUnion   `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion `json:"inputs"`
+	PropertyName  string            `json:"propertyName"`
+	Value         float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator      respjson.Field
@@ -137,10 +137,10 @@ const (
 type And struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "AND".
-	Operator     AndOperator `json:"operator,required"`
-	Inputs       []any       `json:"inputs"`
-	PropertyName string      `json:"propertyName"`
-	Value        bool        `json:"value"`
+	Operator     AndOperator       `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		EnclosedInParentheses respjson.Field
@@ -312,8 +312,8 @@ const (
 type BeginsWith struct {
 	// Any of "BEGINS_WITH".
 	Operator      BeginsWithOperator `json:"operator,required"`
-	StringToCheck any                `json:"stringToCheck,required"`
-	Inputs        []any              `json:"inputs"`
+	StringToCheck ExpressionUnion    `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion  `json:"inputs"`
 	PropertyName  string             `json:"propertyName"`
 	Value         bool               `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -343,7 +343,7 @@ const (
 type BooleanPropertyVariable struct {
 	// Any of "BOOLEAN_PROPERTY_VARIABLE".
 	Operator     BooleanPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                           `json:"inputs"`
+	Inputs       []ExpressionUnion               `json:"inputs"`
 	PropertyName string                          `json:"propertyName"`
 	Value        bool                            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -372,7 +372,7 @@ const (
 type BooleanTargetPropertyVariable struct {
 	// Any of "BOOLEAN_TARGET_PROPERTY_VARIABLE".
 	Operator     BooleanTargetPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                                 `json:"inputs"`
+	Inputs       []ExpressionUnion                     `json:"inputs"`
 	PropertyName string                                `json:"propertyName"`
 	Value        bool                                  `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -465,7 +465,7 @@ func (r *CollectionResponsePropertyNoPaging) UnmarshalJSON(data []byte) error {
 type ConcatStrings struct {
 	// Any of "CONCAT_STRINGS".
 	Operator     ConcatStringsOperator `json:"operator,required"`
-	Inputs       []any                 `json:"inputs"`
+	Inputs       []ExpressionUnion     `json:"inputs"`
 	PropertyName string                `json:"propertyName"`
 	Value        string                `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -494,7 +494,7 @@ const (
 type ConstantBoolean struct {
 	// Any of "CONSTANT_BOOLEAN".
 	Operator     ConstantBooleanOperator `json:"operator,required"`
-	Inputs       []any                   `json:"inputs"`
+	Inputs       []ExpressionUnion       `json:"inputs"`
 	PropertyName string                  `json:"propertyName"`
 	Value        bool                    `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -523,7 +523,7 @@ const (
 type ConstantNumber struct {
 	// Any of "CONSTANT_NUMBER".
 	Operator     ConstantNumberOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        float64                `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -552,7 +552,7 @@ const (
 type ConstantString struct {
 	// Any of "CONSTANT_STRING".
 	Operator     ConstantStringOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        string                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -580,11 +580,11 @@ const (
 
 type Contains struct {
 	// Any of "CONTAINS".
-	Operator      ContainsOperator `json:"operator,required"`
-	StringToCheck any              `json:"stringToCheck,required"`
-	Inputs        []any            `json:"inputs"`
-	PropertyName  string           `json:"propertyName"`
-	Value         bool             `json:"value"`
+	Operator      ContainsOperator  `json:"operator,required"`
+	StringToCheck ExpressionUnion   `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion `json:"inputs"`
+	PropertyName  string            `json:"propertyName"`
+	Value         bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator      respjson.Field
@@ -611,10 +611,10 @@ const (
 
 type Date struct {
 	// Any of "DATE".
-	Operator     DateOperator `json:"operator,required"`
-	Inputs       []any        `json:"inputs"`
-	PropertyName string       `json:"propertyName"`
-	Value        float64      `json:"value"`
+	Operator     DateOperator      `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -641,7 +641,7 @@ const (
 type DatedExchangeRate struct {
 	// Any of "DATED_EXCHANGE_RATE".
 	Operator     DatedExchangeRateOperator `json:"operator,required"`
-	Inputs       []any                     `json:"inputs"`
+	Inputs       []ExpressionUnion         `json:"inputs"`
 	PropertyName string                    `json:"propertyName"`
 	Value        float64                   `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -719,7 +719,7 @@ type DivideNumbers struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "DIVIDE_NUMBERS".
 	Operator     DivideNumbersOperator `json:"operator,required"`
-	Inputs       []any                 `json:"inputs"`
+	Inputs       []ExpressionUnion     `json:"inputs"`
 	PropertyName string                `json:"propertyName"`
 	Value        float64               `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -793,10 +793,10 @@ func (r *EndpointsParam) UnmarshalJSON(data []byte) error {
 
 type Euler struct {
 	// Any of "EULER".
-	Operator     EulerOperator `json:"operator,required"`
-	Inputs       []any         `json:"inputs"`
-	PropertyName string        `json:"propertyName"`
-	Value        float64       `json:"value"`
+	Operator     EulerOperator     `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -900,6 +900,451 @@ func (r *EventVisibilityResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// ExpressionUnion contains all possible properties and values from
+// [ConstantBoolean], [ConstantNumber], [ConstantString],
+// [BooleanPropertyVariable], [StringPropertyVariable], [NumberPropertyVariable],
+// [TimestampOfPropertyVariable], [BooleanTargetPropertyVariable],
+// [StringTargetPropertyVariable], [NumberTargetPropertyVariable],
+// [TimestampOfTargetPropertyVariable], [AddNumbers], [SubtractNumbers],
+// [MultiplyNumbers], [DivideNumbers], [RoundDownNumbers], [RoundUpNumbers],
+// [RoundNearestNumbers], [UpperCase], [LowerCase], [ConcatStrings], [Contains],
+// [BeginsWith], [NumberToString], [ParseNumber], [FetchExchangeRate],
+// [FetchCurrencyDecimalPlaces], [FetchSingleCurrencyPortalCurrency],
+// [DatedExchangeRate], [PipelineProbability], [MaxNumbers], [MinNumbers],
+// [LessThan], [LessThanOrEqual], [MoreThan], [MoreThanOrEqual], [NumberEquals],
+// [StringEquals], [IsPipelineStageClosed], [Not], [Date], [Month], [Year], [Now],
+// [TimeBetween], [PeriodToMonths], [PeriodToWeeks], [And], [Or], [Xor],
+// [IfString], [IfNumber], [IfBoolean], [IsPresent], [HasEmailReply],
+// [HasPlainTextEmailReply], [ExtractMostRecentEmailReplyHTML],
+// [ExtractMostRecentEmailReplyText], [ExtractMostRecentPlainTextEmailReply],
+// [SetContainsString], [IsEngagementType], [FormatFullName], [AbsoluteValue],
+// [SquareRoot], [Power], [Substring], [Euler], [StringLength], [AddTime],
+// [SubtractTime].
+//
+// Use the methods beginning with 'As' to cast the union to one of its variants.
+type ExpressionUnion struct {
+	Operator     string            `json:"operator"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	// This field is a union of [bool], [float64], [string], [bool], [string],
+	// [float64], [string], [bool], [string], [float64], [string], [float64],
+	// [float64], [float64], [float64], [float64], [float64], [float64], [string],
+	// [string], [string], [bool], [bool], [string], [float64], [float64], [float64],
+	// [string], [float64], [float64], [float64], [float64], [bool], [bool], [bool],
+	// [bool], [bool], [bool], [bool], [bool], [float64], [float64], [float64],
+	// [float64], [float64], [float64], [float64], [bool], [bool], [bool], [string],
+	// [float64], [bool], [bool], [bool], [bool], [string], [string], [string], [bool],
+	// [bool], [string], [float64], [float64], [float64], [string], [float64],
+	// [float64], [float64], [float64]
+	Value                 ExpressionUnionValue `json:"value"`
+	EnclosedInParentheses bool                 `json:"enclosedInParentheses"`
+	// This field is from variant [Contains].
+	StringToCheck ExpressionUnion `json:"stringToCheck"`
+	// This field is from variant [IfString].
+	IfExpression ExpressionUnion `json:"ifExpression"`
+	// This field is from variant [IfString].
+	ElseExpression ExpressionUnion `json:"elseExpression"`
+	// This field is from variant [IsPresent].
+	ExpressionToEvaluate ExpressionUnion `json:"expressionToEvaluate"`
+	JSON                 struct {
+		Operator              respjson.Field
+		Inputs                respjson.Field
+		PropertyName          respjson.Field
+		Value                 respjson.Field
+		EnclosedInParentheses respjson.Field
+		StringToCheck         respjson.Field
+		IfExpression          respjson.Field
+		ElseExpression        respjson.Field
+		ExpressionToEvaluate  respjson.Field
+		raw                   string
+	} `json:"-"`
+}
+
+func (u ExpressionUnion) AsConstantBoolean() (v ConstantBoolean) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsConstantNumber() (v ConstantNumber) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsConstantString() (v ConstantString) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsBooleanPropertyVariable() (v BooleanPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsStringPropertyVariable() (v StringPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNumberPropertyVariable() (v NumberPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsTimestampOfPropertyVariable() (v TimestampOfPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsBooleanTargetPropertyVariable() (v BooleanTargetPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsStringTargetPropertyVariable() (v StringTargetPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNumberTargetPropertyVariable() (v NumberTargetPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsTimestampOfTargetPropertyVariable() (v TimestampOfTargetPropertyVariable) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsAddNumbers() (v AddNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsSubtractNumbers() (v SubtractNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMultiplyNumbers() (v MultiplyNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsDivideNumbers() (v DivideNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsRoundDown() (v RoundDownNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsRoundUp() (v RoundUpNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsRoundNearest() (v RoundNearestNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsUpperCase() (v UpperCase) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsLowerCase() (v LowerCase) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsConcatStrings() (v ConcatStrings) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsContains() (v Contains) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsBeginsWith() (v BeginsWith) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNumberToString() (v NumberToString) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsParseNumber() (v ParseNumber) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsFetchExchangeRate() (v FetchExchangeRate) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsFetchCurrencyDecimalPlaces() (v FetchCurrencyDecimalPlaces) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsFetchSingleCurrencyPortalCurrency() (v FetchSingleCurrencyPortalCurrency) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsDatedExchangeRate() (v DatedExchangeRate) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsPipelineProbability() (v PipelineProbability) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMaxNumbers() (v MaxNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMinNumbers() (v MinNumbers) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsLessThan() (v LessThan) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsLessThanOrEqual() (v LessThanOrEqual) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMoreThan() (v MoreThan) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMoreThanOrEqual() (v MoreThanOrEqual) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNumberEquals() (v NumberEquals) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsStringEquals() (v StringEquals) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIsPipelineStageClosed() (v IsPipelineStageClosed) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNot() (v Not) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsDate() (v Date) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsMonth() (v Month) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsYear() (v Year) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsNow() (v Now) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsTimeBetween() (v TimeBetween) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsPeriodToMonths() (v PeriodToMonths) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsPeriodToWeeks() (v PeriodToWeeks) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsAnd() (v And) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsOr() (v Or) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsXor() (v Xor) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIfString() (v IfString) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIfNumber() (v IfNumber) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIfBoolean() (v IfBoolean) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIsPresent() (v IsPresent) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsHasEmailReply() (v HasEmailReply) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsHasPlainTextEmailReply() (v HasPlainTextEmailReply) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsExtractMostRecentEmailReplyHTML() (v ExtractMostRecentEmailReplyHTML) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsExtractMostRecentEmailReplyText() (v ExtractMostRecentEmailReplyText) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsExtractMostRecentPlainTextEmailReply() (v ExtractMostRecentPlainTextEmailReply) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsSetContainsString() (v SetContainsString) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsIsEngagementType() (v IsEngagementType) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsFormatFullName() (v FormatFullName) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsAbsoluteValue() (v AbsoluteValue) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsSquareRoot() (v SquareRoot) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsPower() (v Power) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsSubstring() (v Substring) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsEuler() (v Euler) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsStringLength() (v StringLength) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsAddTime() (v AddTime) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ExpressionUnion) AsSubtractTime() (v SubtractTime) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+// Returns the unmodified JSON received from the API
+func (u ExpressionUnion) RawJSON() string { return u.JSON.raw }
+
+func (r *ExpressionUnion) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ExpressionUnionValue is an implicit subunion of [ExpressionUnion].
+// ExpressionUnionValue provides convenient access to the sub-properties of the
+// union.
+//
+// For type safety it is recommended to directly use a variant of the
+// [ExpressionUnion].
+//
+// If the underlying value is not a json object, one of the following properties
+// will be valid: OfBool OfFloat OfString]
+type ExpressionUnionValue struct {
+	// This field will be present if the value is a [bool] instead of an object.
+	OfBool bool `json:",inline"`
+	// This field will be present if the value is a [float64] instead of an object.
+	OfFloat float64 `json:",inline"`
+	// This field will be present if the value is a [string] instead of an object.
+	OfString string `json:",inline"`
+	JSON     struct {
+		OfBool   respjson.Field
+		OfFloat  respjson.Field
+		OfString respjson.Field
+		raw      string
+	} `json:"-"`
+}
+
+func (r *ExpressionUnionValue) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type ExtensionData struct {
 	ExtensionStatusMap                  map[string]string                   `json:"extensionStatusMap,required"`
 	Tags                                []string                            `json:"tags,required"`
@@ -947,7 +1392,7 @@ func (r *ExternalOptionsMetaData) UnmarshalJSON(data []byte) error {
 type ExtractMostRecentEmailReplyHTML struct {
 	// Any of "EXTRACT_MOST_RECENT_EMAIL_REPLY_HTML".
 	Operator     ExtractMostRecentEmailReplyHTMLOperator `json:"operator,required"`
-	Inputs       []any                                   `json:"inputs"`
+	Inputs       []ExpressionUnion                       `json:"inputs"`
 	PropertyName string                                  `json:"propertyName"`
 	Value        string                                  `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -976,7 +1421,7 @@ const (
 type ExtractMostRecentEmailReplyText struct {
 	// Any of "EXTRACT_MOST_RECENT_EMAIL_REPLY_TEXT".
 	Operator     ExtractMostRecentEmailReplyTextOperator `json:"operator,required"`
-	Inputs       []any                                   `json:"inputs"`
+	Inputs       []ExpressionUnion                       `json:"inputs"`
 	PropertyName string                                  `json:"propertyName"`
 	Value        string                                  `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1005,7 +1450,7 @@ const (
 type ExtractMostRecentPlainTextEmailReply struct {
 	// Any of "EXTRACT_MOST_RECENT_PLAIN_TEXT_EMAIL_REPLY".
 	Operator     ExtractMostRecentPlainTextEmailReplyOperator `json:"operator,required"`
-	Inputs       []any                                        `json:"inputs"`
+	Inputs       []ExpressionUnion                            `json:"inputs"`
 	PropertyName string                                       `json:"propertyName"`
 	Value        string                                       `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1034,7 +1479,7 @@ const (
 type FetchCurrencyDecimalPlaces struct {
 	// Any of "FETCH_CURRENCY_DECIMAL_PLACES".
 	Operator     FetchCurrencyDecimalPlacesOperator `json:"operator,required"`
-	Inputs       []any                              `json:"inputs"`
+	Inputs       []ExpressionUnion                  `json:"inputs"`
 	PropertyName string                             `json:"propertyName"`
 	Value        float64                            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1063,7 +1508,7 @@ const (
 type FetchExchangeRate struct {
 	// Any of "FETCH_EXCHANGE_RATE".
 	Operator     FetchExchangeRateOperator `json:"operator,required"`
-	Inputs       []any                     `json:"inputs"`
+	Inputs       []ExpressionUnion         `json:"inputs"`
 	PropertyName string                    `json:"propertyName"`
 	Value        float64                   `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1092,7 +1537,7 @@ const (
 type FetchSingleCurrencyPortalCurrency struct {
 	// Any of "FETCH_SINGLE_CURRENCY_PORTAL_CURRENCY".
 	Operator     FetchSingleCurrencyPortalCurrencyOperator `json:"operator,required"`
-	Inputs       []any                                     `json:"inputs"`
+	Inputs       []ExpressionUnion                         `json:"inputs"`
 	PropertyName string                                    `json:"propertyName"`
 	Value        string                                    `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1155,7 +1600,7 @@ func (r *FilteringMetaData) UnmarshalJSON(data []byte) error {
 type FormatFullName struct {
 	// Any of "FORMAT_FULL_NAME".
 	Operator     FormatFullNameOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        string                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1240,7 +1685,7 @@ func (r *GroupView) UnmarshalJSON(data []byte) error {
 type HasEmailReply struct {
 	// Any of "HAS_EMAIL_REPLY".
 	Operator     HasEmailReplyOperator `json:"operator,required"`
-	Inputs       []any                 `json:"inputs"`
+	Inputs       []ExpressionUnion     `json:"inputs"`
 	PropertyName string                `json:"propertyName"`
 	Value        bool                  `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1269,7 +1714,7 @@ const (
 type HasPlainTextEmailReply struct {
 	// Any of "HAS_PLAIN_TEXT_EMAIL_REPLY".
 	Operator     HasPlainTextEmailReplyOperator `json:"operator,required"`
-	Inputs       []any                          `json:"inputs"`
+	Inputs       []ExpressionUnion              `json:"inputs"`
 	PropertyName string                         `json:"propertyName"`
 	Value        bool                           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1296,12 +1741,12 @@ const (
 )
 
 type IfBoolean struct {
-	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
-	IfExpression          any  `json:"ifExpression,required"`
+	EnclosedInParentheses bool            `json:"enclosedInParentheses,required"`
+	IfExpression          ExpressionUnion `json:"ifExpression,required"`
 	// Any of "IF_BOOLEAN".
 	Operator       IfBooleanOperator `json:"operator,required"`
-	ElseExpression any               `json:"elseExpression"`
-	Inputs         []any             `json:"inputs"`
+	ElseExpression ExpressionUnion   `json:"elseExpression"`
+	Inputs         []ExpressionUnion `json:"inputs"`
 	PropertyName   string            `json:"propertyName"`
 	Value          bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1331,14 +1776,14 @@ const (
 )
 
 type IfNumber struct {
-	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
-	IfExpression          any  `json:"ifExpression,required"`
+	EnclosedInParentheses bool            `json:"enclosedInParentheses,required"`
+	IfExpression          ExpressionUnion `json:"ifExpression,required"`
 	// Any of "IF_NUMBER".
-	Operator       IfNumberOperator `json:"operator,required"`
-	ElseExpression any              `json:"elseExpression"`
-	Inputs         []any            `json:"inputs"`
-	PropertyName   string           `json:"propertyName"`
-	Value          float64          `json:"value"`
+	Operator       IfNumberOperator  `json:"operator,required"`
+	ElseExpression ExpressionUnion   `json:"elseExpression"`
+	Inputs         []ExpressionUnion `json:"inputs"`
+	PropertyName   string            `json:"propertyName"`
+	Value          float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		EnclosedInParentheses respjson.Field
@@ -1366,14 +1811,14 @@ const (
 )
 
 type IfString struct {
-	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
-	IfExpression          any  `json:"ifExpression,required"`
+	EnclosedInParentheses bool            `json:"enclosedInParentheses,required"`
+	IfExpression          ExpressionUnion `json:"ifExpression,required"`
 	// Any of "IF_STRING".
-	Operator       IfStringOperator `json:"operator,required"`
-	ElseExpression any              `json:"elseExpression"`
-	Inputs         []any            `json:"inputs"`
-	PropertyName   string           `json:"propertyName"`
-	Value          string           `json:"value"`
+	Operator       IfStringOperator  `json:"operator,required"`
+	ElseExpression ExpressionUnion   `json:"elseExpression"`
+	Inputs         []ExpressionUnion `json:"inputs"`
+	PropertyName   string            `json:"propertyName"`
+	Value          string            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		EnclosedInParentheses respjson.Field
@@ -1587,7 +2032,7 @@ func (r *IntegratorObjectCreationResponse) UnmarshalJSON(data []byte) error {
 type IsEngagementType struct {
 	// Any of "IS_ENGAGEMENT_TYPE".
 	Operator     IsEngagementTypeOperator `json:"operator,required"`
-	Inputs       []any                    `json:"inputs"`
+	Inputs       []ExpressionUnion        `json:"inputs"`
 	PropertyName string                   `json:"propertyName"`
 	Value        bool                     `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1616,7 +2061,7 @@ const (
 type IsPipelineStageClosed struct {
 	// Any of "IS_PIPELINE_STAGE_CLOSED".
 	Operator     IsPipelineStageClosedOperator `json:"operator,required"`
-	Inputs       []any                         `json:"inputs"`
+	Inputs       []ExpressionUnion             `json:"inputs"`
 	PropertyName string                        `json:"propertyName"`
 	Value        bool                          `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1643,10 +2088,10 @@ const (
 )
 
 type IsPresent struct {
-	ExpressionToEvaluate any `json:"expressionToEvaluate,required"`
+	ExpressionToEvaluate ExpressionUnion `json:"expressionToEvaluate,required"`
 	// Any of "IS_PRESENT".
 	Operator     IsPresentOperator `json:"operator,required"`
-	Inputs       []any             `json:"inputs"`
+	Inputs       []ExpressionUnion `json:"inputs"`
 	PropertyName string            `json:"propertyName"`
 	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1675,10 +2120,10 @@ const (
 
 type LessThan struct {
 	// Any of "LESS_THAN".
-	Operator     LessThanOperator `json:"operator,required"`
-	Inputs       []any            `json:"inputs"`
-	PropertyName string           `json:"propertyName"`
-	Value        bool             `json:"value"`
+	Operator     LessThanOperator  `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -1705,7 +2150,7 @@ const (
 type LessThanOrEqual struct {
 	// Any of "LESS_THAN_OR_EQUAL".
 	Operator     LessThanOrEqualOperator `json:"operator,required"`
-	Inputs       []any                   `json:"inputs"`
+	Inputs       []ExpressionUnion       `json:"inputs"`
 	PropertyName string                  `json:"propertyName"`
 	Value        bool                    `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1734,7 +2179,7 @@ const (
 type LowerCase struct {
 	// Any of "LOWER_CASE".
 	Operator     LowerCaseOperator `json:"operator,required"`
-	Inputs       []any             `json:"inputs"`
+	Inputs       []ExpressionUnion `json:"inputs"`
 	PropertyName string            `json:"propertyName"`
 	Value        string            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1763,7 +2208,7 @@ const (
 type MaxNumbers struct {
 	// Any of "MAX_NUMBERS".
 	Operator     MaxNumbersOperator `json:"operator,required"`
-	Inputs       []any              `json:"inputs"`
+	Inputs       []ExpressionUnion  `json:"inputs"`
 	PropertyName string             `json:"propertyName"`
 	Value        float64            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2101,7 +2546,7 @@ const (
 type MinNumbers struct {
 	// Any of "MIN_NUMBERS".
 	Operator     MinNumbersOperator `json:"operator,required"`
-	Inputs       []any              `json:"inputs"`
+	Inputs       []ExpressionUnion  `json:"inputs"`
 	PropertyName string             `json:"propertyName"`
 	Value        float64            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2129,10 +2574,10 @@ const (
 
 type Month struct {
 	// Any of "MONTH".
-	Operator     MonthOperator `json:"operator,required"`
-	Inputs       []any         `json:"inputs"`
-	PropertyName string        `json:"propertyName"`
-	Value        float64       `json:"value"`
+	Operator     MonthOperator     `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -2158,10 +2603,10 @@ const (
 
 type MoreThan struct {
 	// Any of "MORE_THAN".
-	Operator     MoreThanOperator `json:"operator,required"`
-	Inputs       []any            `json:"inputs"`
-	PropertyName string           `json:"propertyName"`
-	Value        bool             `json:"value"`
+	Operator     MoreThanOperator  `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -2188,7 +2633,7 @@ const (
 type MoreThanOrEqual struct {
 	// Any of "MORE_THAN_OR_EQUAL".
 	Operator     MoreThanOrEqualOperator `json:"operator,required"`
-	Inputs       []any                   `json:"inputs"`
+	Inputs       []ExpressionUnion       `json:"inputs"`
 	PropertyName string                  `json:"propertyName"`
 	Value        bool                    `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2218,7 +2663,7 @@ type MultiplyNumbers struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "MULTIPLY_NUMBERS".
 	Operator     MultiplyNumbersOperator `json:"operator,required"`
-	Inputs       []any                   `json:"inputs"`
+	Inputs       []ExpressionUnion       `json:"inputs"`
 	PropertyName string                  `json:"propertyName"`
 	Value        float64                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2247,10 +2692,10 @@ const (
 
 type Not struct {
 	// Any of "NOT".
-	Operator     NotOperator `json:"operator,required"`
-	Inputs       []any       `json:"inputs"`
-	PropertyName string      `json:"propertyName"`
-	Value        bool        `json:"value"`
+	Operator     NotOperator       `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -2276,10 +2721,10 @@ const (
 
 type Now struct {
 	// Any of "NOW".
-	Operator     NowOperator `json:"operator,required"`
-	Inputs       []any       `json:"inputs"`
-	PropertyName string      `json:"propertyName"`
-	Value        float64     `json:"value"`
+	Operator     NowOperator       `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -2306,7 +2751,7 @@ const (
 type NumberEquals struct {
 	// Any of "NUMBER_EQUALS".
 	Operator     NumberEqualsOperator `json:"operator,required"`
-	Inputs       []any                `json:"inputs"`
+	Inputs       []ExpressionUnion    `json:"inputs"`
 	PropertyName string               `json:"propertyName"`
 	Value        bool                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2335,7 +2780,7 @@ const (
 type NumberPropertyVariable struct {
 	// Any of "NUMBER_PROPERTY_VARIABLE".
 	Operator     NumberPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                          `json:"inputs"`
+	Inputs       []ExpressionUnion              `json:"inputs"`
 	PropertyName string                         `json:"propertyName"`
 	Value        float64                        `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2364,7 +2809,7 @@ const (
 type NumberTargetPropertyVariable struct {
 	// Any of "NUMBER_TARGET_PROPERTY_VARIABLE".
 	Operator     NumberTargetPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                                `json:"inputs"`
+	Inputs       []ExpressionUnion                    `json:"inputs"`
 	PropertyName string                               `json:"propertyName"`
 	Value        float64                              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2393,7 +2838,7 @@ const (
 type NumberToString struct {
 	// Any of "NUMBER_TO_STRING".
 	Operator     NumberToStringOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        string                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2522,10 +2967,10 @@ func (r *OptionDecoratorsExtensionData) UnmarshalJSON(data []byte) error {
 type Or struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "OR".
-	Operator     OrOperator `json:"operator,required"`
-	Inputs       []any      `json:"inputs"`
-	PropertyName string     `json:"propertyName"`
-	Value        bool       `json:"value"`
+	Operator     OrOperator        `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		EnclosedInParentheses respjson.Field
@@ -2553,7 +2998,7 @@ const (
 type ParseNumber struct {
 	// Any of "PARSE_NUMBER".
 	Operator     ParseNumberOperator `json:"operator,required"`
-	Inputs       []any               `json:"inputs"`
+	Inputs       []ExpressionUnion   `json:"inputs"`
 	PropertyName string              `json:"propertyName"`
 	Value        float64             `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2582,7 +3027,7 @@ const (
 type PeriodToMonths struct {
 	// Any of "PERIOD_TO_MONTHS".
 	Operator     PeriodToMonthsOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        float64                `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2611,7 +3056,7 @@ const (
 type PeriodToWeeks struct {
 	// Any of "PERIOD_TO_WEEKS".
 	Operator     PeriodToWeeksOperator `json:"operator,required"`
-	Inputs       []any                 `json:"inputs"`
+	Inputs       []ExpressionUnion     `json:"inputs"`
 	PropertyName string                `json:"propertyName"`
 	Value        float64               `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2640,7 +3085,7 @@ const (
 type PipelineProbability struct {
 	// Any of "PIPELINE_PROBABILITY".
 	Operator     PipelineProbabilityOperator `json:"operator,required"`
-	Inputs       []any                       `json:"inputs"`
+	Inputs       []ExpressionUnion           `json:"inputs"`
 	PropertyName string                      `json:"propertyName"`
 	Value        float64                     `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2668,10 +3113,10 @@ const (
 
 type Power struct {
 	// Any of "POWER".
-	Operator     PowerOperator `json:"operator,required"`
-	Inputs       []any         `json:"inputs"`
-	PropertyName string        `json:"propertyName"`
-	Value        float64       `json:"value"`
+	Operator     PowerOperator     `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field
@@ -2785,19 +3230,19 @@ const (
 type PropertyDefinition struct {
 	ObjectTypeID string `json:"objectTypeId,required"`
 	// Defines a property
-	Property                 shared.Property                              `json:"property,required"`
-	CalculationExpression    PropertyDefinitionCalculationExpressionUnion `json:"calculationExpression"`
-	CalculationFormula       string                                       `json:"calculationFormula"`
-	DefinitionSource         PropertyDefinitionSource                     `json:"definitionSource"`
-	ExtensionData            ExtensionData                                `json:"extensionData"`
-	ExternalOptionsMetaData  ExternalOptionsMetaData                      `json:"externalOptionsMetaData"`
-	FulcrumPortalID          int64                                        `json:"fulcrumPortalId"`
-	FulcrumTimestamp         int64                                        `json:"fulcrumTimestamp"`
-	JanusGroup               string                                       `json:"janusGroup"`
-	Permission               FieldLevelPermission                         `json:"permission"`
-	PropertyDefinitionSource DefinitionSource                             `json:"propertyDefinitionSource"`
-	PropertyRequirements     DefaultRequirements                          `json:"propertyRequirements"`
-	RollupExpression         RollupExpression                             `json:"rollupExpression"`
+	Property                 shared.Property          `json:"property,required"`
+	CalculationExpression    ExpressionUnion          `json:"calculationExpression"`
+	CalculationFormula       string                   `json:"calculationFormula"`
+	DefinitionSource         PropertyDefinitionSource `json:"definitionSource"`
+	ExtensionData            ExtensionData            `json:"extensionData"`
+	ExternalOptionsMetaData  ExternalOptionsMetaData  `json:"externalOptionsMetaData"`
+	FulcrumPortalID          int64                    `json:"fulcrumPortalId"`
+	FulcrumTimestamp         int64                    `json:"fulcrumTimestamp"`
+	JanusGroup               string                   `json:"janusGroup"`
+	Permission               FieldLevelPermission     `json:"permission"`
+	PropertyDefinitionSource DefinitionSource         `json:"propertyDefinitionSource"`
+	PropertyRequirements     DefaultRequirements      `json:"propertyRequirements"`
+	RollupExpression         RollupExpression         `json:"rollupExpression"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ObjectTypeID             respjson.Field
@@ -2822,449 +3267,6 @@ type PropertyDefinition struct {
 // Returns the unmodified JSON received from the API
 func (r PropertyDefinition) RawJSON() string { return r.JSON.raw }
 func (r *PropertyDefinition) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PropertyDefinitionCalculationExpressionUnion contains all possible properties
-// and values from [ConstantBoolean], [ConstantNumber], [ConstantString],
-// [BooleanPropertyVariable], [StringPropertyVariable], [NumberPropertyVariable],
-// [TimestampOfPropertyVariable], [BooleanTargetPropertyVariable],
-// [StringTargetPropertyVariable], [NumberTargetPropertyVariable],
-// [TimestampOfTargetPropertyVariable], [AddNumbers], [SubtractNumbers],
-// [MultiplyNumbers], [DivideNumbers], [RoundDownNumbers], [RoundUpNumbers],
-// [RoundNearestNumbers], [UpperCase], [LowerCase], [ConcatStrings], [Contains],
-// [BeginsWith], [NumberToString], [ParseNumber], [FetchExchangeRate],
-// [FetchCurrencyDecimalPlaces], [FetchSingleCurrencyPortalCurrency],
-// [DatedExchangeRate], [PipelineProbability], [MaxNumbers], [MinNumbers],
-// [LessThan], [LessThanOrEqual], [MoreThan], [MoreThanOrEqual], [NumberEquals],
-// [StringEquals], [IsPipelineStageClosed], [Not], [Date], [Month], [Year], [Now],
-// [TimeBetween], [PeriodToMonths], [PeriodToWeeks], [And], [Or], [Xor],
-// [IfString], [IfNumber], [IfBoolean], [IsPresent], [HasEmailReply],
-// [HasPlainTextEmailReply], [ExtractMostRecentEmailReplyHTML],
-// [ExtractMostRecentEmailReplyText], [ExtractMostRecentPlainTextEmailReply],
-// [SetContainsString], [IsEngagementType], [FormatFullName], [AbsoluteValue],
-// [SquareRoot], [Power], [Substring], [Euler], [StringLength], [AddTime],
-// [SubtractTime].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PropertyDefinitionCalculationExpressionUnion struct {
-	Operator     string `json:"operator"`
-	Inputs       []any  `json:"inputs"`
-	PropertyName string `json:"propertyName"`
-	// This field is a union of [bool], [float64], [string], [bool], [string],
-	// [float64], [string], [bool], [string], [float64], [string], [float64],
-	// [float64], [float64], [float64], [float64], [float64], [float64], [string],
-	// [string], [string], [bool], [bool], [string], [float64], [float64], [float64],
-	// [string], [float64], [float64], [float64], [float64], [bool], [bool], [bool],
-	// [bool], [bool], [bool], [bool], [bool], [float64], [float64], [float64],
-	// [float64], [float64], [float64], [float64], [bool], [bool], [bool], [string],
-	// [float64], [bool], [bool], [bool], [bool], [string], [string], [string], [bool],
-	// [bool], [string], [float64], [float64], [float64], [string], [float64],
-	// [float64], [float64], [float64]
-	Value                 PropertyDefinitionCalculationExpressionUnionValue `json:"value"`
-	EnclosedInParentheses bool                                              `json:"enclosedInParentheses"`
-	StringToCheck         any                                               `json:"stringToCheck"`
-	IfExpression          any                                               `json:"ifExpression"`
-	ElseExpression        any                                               `json:"elseExpression"`
-	// This field is from variant [IsPresent].
-	ExpressionToEvaluate any `json:"expressionToEvaluate"`
-	JSON                 struct {
-		Operator              respjson.Field
-		Inputs                respjson.Field
-		PropertyName          respjson.Field
-		Value                 respjson.Field
-		EnclosedInParentheses respjson.Field
-		StringToCheck         respjson.Field
-		IfExpression          respjson.Field
-		ElseExpression        respjson.Field
-		ExpressionToEvaluate  respjson.Field
-		raw                   string
-	} `json:"-"`
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsConstantBoolean() (v ConstantBoolean) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsConstantNumber() (v ConstantNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsConstantString() (v ConstantString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsBooleanPropertyVariable() (v BooleanPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsStringPropertyVariable() (v StringPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNumberPropertyVariable() (v NumberPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsTimestampOfPropertyVariable() (v TimestampOfPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsBooleanTargetPropertyVariable() (v BooleanTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsStringTargetPropertyVariable() (v StringTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNumberTargetPropertyVariable() (v NumberTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsTimestampOfTargetPropertyVariable() (v TimestampOfTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsAddNumbers() (v AddNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsSubtractNumbers() (v SubtractNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMultiplyNumbers() (v MultiplyNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsDivideNumbers() (v DivideNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsRoundDown() (v RoundDownNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsRoundUp() (v RoundUpNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsRoundNearest() (v RoundNearestNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsUpperCase() (v UpperCase) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsLowerCase() (v LowerCase) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsConcatStrings() (v ConcatStrings) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsContains() (v Contains) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsBeginsWith() (v BeginsWith) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNumberToString() (v NumberToString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsParseNumber() (v ParseNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsFetchExchangeRate() (v FetchExchangeRate) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsFetchCurrencyDecimalPlaces() (v FetchCurrencyDecimalPlaces) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsFetchSingleCurrencyPortalCurrency() (v FetchSingleCurrencyPortalCurrency) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsDatedExchangeRate() (v DatedExchangeRate) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsPipelineProbability() (v PipelineProbability) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMaxNumbers() (v MaxNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMinNumbers() (v MinNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsLessThan() (v LessThan) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsLessThanOrEqual() (v LessThanOrEqual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMoreThan() (v MoreThan) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMoreThanOrEqual() (v MoreThanOrEqual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNumberEquals() (v NumberEquals) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsStringEquals() (v StringEquals) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIsPipelineStageClosed() (v IsPipelineStageClosed) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNot() (v Not) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsDate() (v Date) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsMonth() (v Month) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsYear() (v Year) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsNow() (v Now) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsTimeBetween() (v TimeBetween) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsPeriodToMonths() (v PeriodToMonths) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsPeriodToWeeks() (v PeriodToWeeks) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsAnd() (v And) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsOr() (v Or) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsXor() (v Xor) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIfString() (v IfString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIfNumber() (v IfNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIfBoolean() (v IfBoolean) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIsPresent() (v IsPresent) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsHasEmailReply() (v HasEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsHasPlainTextEmailReply() (v HasPlainTextEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsExtractMostRecentEmailReplyHTML() (v ExtractMostRecentEmailReplyHTML) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsExtractMostRecentEmailReplyText() (v ExtractMostRecentEmailReplyText) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsExtractMostRecentPlainTextEmailReply() (v ExtractMostRecentPlainTextEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsSetContainsString() (v SetContainsString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsIsEngagementType() (v IsEngagementType) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsFormatFullName() (v FormatFullName) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsAbsoluteValue() (v AbsoluteValue) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsSquareRoot() (v SquareRoot) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsPower() (v Power) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsSubstring() (v Substring) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsEuler() (v Euler) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsStringLength() (v StringLength) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsAddTime() (v AddTime) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PropertyDefinitionCalculationExpressionUnion) AsSubtractTime() (v SubtractTime) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PropertyDefinitionCalculationExpressionUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *PropertyDefinitionCalculationExpressionUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PropertyDefinitionCalculationExpressionUnionValue is an implicit subunion of
-// [PropertyDefinitionCalculationExpressionUnion].
-// PropertyDefinitionCalculationExpressionUnionValue provides convenient access to
-// the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PropertyDefinitionCalculationExpressionUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfBool OfFloat OfString]
-type PropertyDefinitionCalculationExpressionUnionValue struct {
-	// This field will be present if the value is a [bool] instead of an object.
-	OfBool bool `json:",inline"`
-	// This field will be present if the value is a [float64] instead of an object.
-	OfFloat float64 `json:",inline"`
-	// This field will be present if the value is a [string] instead of an object.
-	OfString string `json:",inline"`
-	JSON     struct {
-		OfBool   respjson.Field
-		OfFloat  respjson.Field
-		OfString respjson.Field
-		raw      string
-	} `json:"-"`
-}
-
-func (r *PropertyDefinitionCalculationExpressionUnionValue) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -3313,14 +3315,14 @@ func (r *RequiredPropertiesExtensionData) UnmarshalJSON(data []byte) error {
 }
 
 type RollupExpression struct {
-	AssociationTypes            []shared.AssociationSpec                   `json:"associationTypes,required"`
-	RollupOperator              string                                     `json:"rollupOperator,required"`
-	SourceObjectTypeID          string                                     `json:"sourceObjectTypeId,required"`
-	SourcePropertyName          string                                     `json:"sourcePropertyName,required"`
-	ConditionalExpression       RollupExpressionConditionalExpressionUnion `json:"conditionalExpression"`
-	ConditionalFormula          string                                     `json:"conditionalFormula"`
-	EmptyRollupValue            string                                     `json:"emptyRollupValue"`
-	SourceCompareByPropertyName string                                     `json:"sourceCompareByPropertyName"`
+	AssociationTypes            []shared.AssociationSpec `json:"associationTypes,required"`
+	RollupOperator              string                   `json:"rollupOperator,required"`
+	SourceObjectTypeID          string                   `json:"sourceObjectTypeId,required"`
+	SourcePropertyName          string                   `json:"sourcePropertyName,required"`
+	ConditionalExpression       ExpressionUnion          `json:"conditionalExpression"`
+	ConditionalFormula          string                   `json:"conditionalFormula"`
+	EmptyRollupValue            string                   `json:"emptyRollupValue"`
+	SourceCompareByPropertyName string                   `json:"sourceCompareByPropertyName"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AssociationTypes            respjson.Field
@@ -3342,453 +3344,10 @@ func (r *RollupExpression) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// RollupExpressionConditionalExpressionUnion contains all possible properties and
-// values from [ConstantBoolean], [ConstantNumber], [ConstantString],
-// [BooleanPropertyVariable], [StringPropertyVariable], [NumberPropertyVariable],
-// [TimestampOfPropertyVariable], [BooleanTargetPropertyVariable],
-// [StringTargetPropertyVariable], [NumberTargetPropertyVariable],
-// [TimestampOfTargetPropertyVariable], [AddNumbers], [SubtractNumbers],
-// [MultiplyNumbers], [DivideNumbers], [RoundDownNumbers], [RoundUpNumbers],
-// [RoundNearestNumbers], [UpperCase], [LowerCase], [ConcatStrings], [Contains],
-// [BeginsWith], [NumberToString], [ParseNumber], [FetchExchangeRate],
-// [FetchCurrencyDecimalPlaces], [FetchSingleCurrencyPortalCurrency],
-// [DatedExchangeRate], [PipelineProbability], [MaxNumbers], [MinNumbers],
-// [LessThan], [LessThanOrEqual], [MoreThan], [MoreThanOrEqual], [NumberEquals],
-// [StringEquals], [IsPipelineStageClosed], [Not], [Date], [Month], [Year], [Now],
-// [TimeBetween], [PeriodToMonths], [PeriodToWeeks], [And], [Or], [Xor],
-// [IfString], [IfNumber], [IfBoolean], [IsPresent], [HasEmailReply],
-// [HasPlainTextEmailReply], [ExtractMostRecentEmailReplyHTML],
-// [ExtractMostRecentEmailReplyText], [ExtractMostRecentPlainTextEmailReply],
-// [SetContainsString], [IsEngagementType], [FormatFullName], [AbsoluteValue],
-// [SquareRoot], [Power], [Substring], [Euler], [StringLength], [AddTime],
-// [SubtractTime].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type RollupExpressionConditionalExpressionUnion struct {
-	Operator     string `json:"operator"`
-	Inputs       []any  `json:"inputs"`
-	PropertyName string `json:"propertyName"`
-	// This field is a union of [bool], [float64], [string], [bool], [string],
-	// [float64], [string], [bool], [string], [float64], [string], [float64],
-	// [float64], [float64], [float64], [float64], [float64], [float64], [string],
-	// [string], [string], [bool], [bool], [string], [float64], [float64], [float64],
-	// [string], [float64], [float64], [float64], [float64], [bool], [bool], [bool],
-	// [bool], [bool], [bool], [bool], [bool], [float64], [float64], [float64],
-	// [float64], [float64], [float64], [float64], [bool], [bool], [bool], [string],
-	// [float64], [bool], [bool], [bool], [bool], [string], [string], [string], [bool],
-	// [bool], [string], [float64], [float64], [float64], [string], [float64],
-	// [float64], [float64], [float64]
-	Value                 RollupExpressionConditionalExpressionUnionValue `json:"value"`
-	EnclosedInParentheses bool                                            `json:"enclosedInParentheses"`
-	StringToCheck         any                                             `json:"stringToCheck"`
-	IfExpression          any                                             `json:"ifExpression"`
-	ElseExpression        any                                             `json:"elseExpression"`
-	// This field is from variant [IsPresent].
-	ExpressionToEvaluate any `json:"expressionToEvaluate"`
-	JSON                 struct {
-		Operator              respjson.Field
-		Inputs                respjson.Field
-		PropertyName          respjson.Field
-		Value                 respjson.Field
-		EnclosedInParentheses respjson.Field
-		StringToCheck         respjson.Field
-		IfExpression          respjson.Field
-		ElseExpression        respjson.Field
-		ExpressionToEvaluate  respjson.Field
-		raw                   string
-	} `json:"-"`
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsConstantBoolean() (v ConstantBoolean) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsConstantNumber() (v ConstantNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsConstantString() (v ConstantString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsBooleanPropertyVariable() (v BooleanPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsStringPropertyVariable() (v StringPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNumberPropertyVariable() (v NumberPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsTimestampOfPropertyVariable() (v TimestampOfPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsBooleanTargetPropertyVariable() (v BooleanTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsStringTargetPropertyVariable() (v StringTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNumberTargetPropertyVariable() (v NumberTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsTimestampOfTargetPropertyVariable() (v TimestampOfTargetPropertyVariable) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsAddNumbers() (v AddNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsSubtractNumbers() (v SubtractNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMultiplyNumbers() (v MultiplyNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsDivideNumbers() (v DivideNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsRoundDown() (v RoundDownNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsRoundUp() (v RoundUpNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsRoundNearest() (v RoundNearestNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsUpperCase() (v UpperCase) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsLowerCase() (v LowerCase) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsConcatStrings() (v ConcatStrings) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsContains() (v Contains) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsBeginsWith() (v BeginsWith) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNumberToString() (v NumberToString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsParseNumber() (v ParseNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsFetchExchangeRate() (v FetchExchangeRate) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsFetchCurrencyDecimalPlaces() (v FetchCurrencyDecimalPlaces) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsFetchSingleCurrencyPortalCurrency() (v FetchSingleCurrencyPortalCurrency) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsDatedExchangeRate() (v DatedExchangeRate) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsPipelineProbability() (v PipelineProbability) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMaxNumbers() (v MaxNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMinNumbers() (v MinNumbers) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsLessThan() (v LessThan) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsLessThanOrEqual() (v LessThanOrEqual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMoreThan() (v MoreThan) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMoreThanOrEqual() (v MoreThanOrEqual) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNumberEquals() (v NumberEquals) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsStringEquals() (v StringEquals) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIsPipelineStageClosed() (v IsPipelineStageClosed) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNot() (v Not) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsDate() (v Date) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsMonth() (v Month) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsYear() (v Year) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsNow() (v Now) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsTimeBetween() (v TimeBetween) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsPeriodToMonths() (v PeriodToMonths) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsPeriodToWeeks() (v PeriodToWeeks) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsAnd() (v And) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsOr() (v Or) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsXor() (v Xor) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIfString() (v IfString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIfNumber() (v IfNumber) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIfBoolean() (v IfBoolean) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIsPresent() (v IsPresent) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsHasEmailReply() (v HasEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsHasPlainTextEmailReply() (v HasPlainTextEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsExtractMostRecentEmailReplyHTML() (v ExtractMostRecentEmailReplyHTML) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsExtractMostRecentEmailReplyText() (v ExtractMostRecentEmailReplyText) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsExtractMostRecentPlainTextEmailReply() (v ExtractMostRecentPlainTextEmailReply) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsSetContainsString() (v SetContainsString) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsIsEngagementType() (v IsEngagementType) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsFormatFullName() (v FormatFullName) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsAbsoluteValue() (v AbsoluteValue) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsSquareRoot() (v SquareRoot) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsPower() (v Power) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsSubstring() (v Substring) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsEuler() (v Euler) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsStringLength() (v StringLength) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsAddTime() (v AddTime) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u RollupExpressionConditionalExpressionUnion) AsSubtractTime() (v SubtractTime) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u RollupExpressionConditionalExpressionUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *RollupExpressionConditionalExpressionUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// RollupExpressionConditionalExpressionUnionValue is an implicit subunion of
-// [RollupExpressionConditionalExpressionUnion].
-// RollupExpressionConditionalExpressionUnionValue provides convenient access to
-// the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [RollupExpressionConditionalExpressionUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfBool OfFloat OfString]
-type RollupExpressionConditionalExpressionUnionValue struct {
-	// This field will be present if the value is a [bool] instead of an object.
-	OfBool bool `json:",inline"`
-	// This field will be present if the value is a [float64] instead of an object.
-	OfFloat float64 `json:",inline"`
-	// This field will be present if the value is a [string] instead of an object.
-	OfString string `json:",inline"`
-	JSON     struct {
-		OfBool   respjson.Field
-		OfFloat  respjson.Field
-		OfString respjson.Field
-		raw      string
-	} `json:"-"`
-}
-
-func (r *RollupExpressionConditionalExpressionUnionValue) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type RoundDownNumbers struct {
 	// Any of "ROUND_DOWN".
 	Operator     RoundDownNumbersOperator `json:"operator,required"`
-	Inputs       []any                    `json:"inputs"`
+	Inputs       []ExpressionUnion        `json:"inputs"`
 	PropertyName string                   `json:"propertyName"`
 	Value        float64                  `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3817,7 +3376,7 @@ const (
 type RoundNearestNumbers struct {
 	// Any of "ROUND_NEAREST".
 	Operator     RoundNearestNumbersOperator `json:"operator,required"`
-	Inputs       []any                       `json:"inputs"`
+	Inputs       []ExpressionUnion           `json:"inputs"`
 	PropertyName string                      `json:"propertyName"`
 	Value        float64                     `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3846,7 +3405,7 @@ const (
 type RoundUpNumbers struct {
 	// Any of "ROUND_UP".
 	Operator     RoundUpNumbersOperator `json:"operator,required"`
-	Inputs       []any                  `json:"inputs"`
+	Inputs       []ExpressionUnion      `json:"inputs"`
 	PropertyName string                 `json:"propertyName"`
 	Value        float64                `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3895,8 +3454,8 @@ func (r *ScopeMapping) UnmarshalJSON(data []byte) error {
 type SetContainsString struct {
 	// Any of "SET_CONTAINS_STRING".
 	Operator      SetContainsStringOperator `json:"operator,required"`
-	StringToCheck any                       `json:"stringToCheck,required"`
-	Inputs        []any                     `json:"inputs"`
+	StringToCheck ExpressionUnion           `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion         `json:"inputs"`
 	PropertyName  string                    `json:"propertyName"`
 	Value         bool                      `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3942,7 +3501,7 @@ func (r *SoftRequiredPropertiesExtensionData) UnmarshalJSON(data []byte) error {
 type SquareRoot struct {
 	// Any of "SQUARE_ROOT".
 	Operator     SquareRootOperator `json:"operator,required"`
-	Inputs       []any              `json:"inputs"`
+	Inputs       []ExpressionUnion  `json:"inputs"`
 	PropertyName string             `json:"propertyName"`
 	Value        float64            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3971,7 +3530,7 @@ const (
 type StringEquals struct {
 	// Any of "STRING_EQUALS".
 	Operator     StringEqualsOperator `json:"operator,required"`
-	Inputs       []any                `json:"inputs"`
+	Inputs       []ExpressionUnion    `json:"inputs"`
 	PropertyName string               `json:"propertyName"`
 	Value        bool                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4000,7 +3559,7 @@ const (
 type StringLength struct {
 	// Any of "STRING_LENGTH".
 	Operator     StringLengthOperator `json:"operator,required"`
-	Inputs       []any                `json:"inputs"`
+	Inputs       []ExpressionUnion    `json:"inputs"`
 	PropertyName string               `json:"propertyName"`
 	Value        float64              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4029,7 +3588,7 @@ const (
 type StringPropertyVariable struct {
 	// Any of "STRING_PROPERTY_VARIABLE".
 	Operator     StringPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                          `json:"inputs"`
+	Inputs       []ExpressionUnion              `json:"inputs"`
 	PropertyName string                         `json:"propertyName"`
 	Value        string                         `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4058,7 +3617,7 @@ const (
 type StringTargetPropertyVariable struct {
 	// Any of "STRING_TARGET_PROPERTY_VARIABLE".
 	Operator     StringTargetPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                                `json:"inputs"`
+	Inputs       []ExpressionUnion                    `json:"inputs"`
 	PropertyName string                               `json:"propertyName"`
 	Value        string                               `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4087,8 +3646,8 @@ const (
 type Substring struct {
 	// Any of "SUBSTRING".
 	Operator      SubstringOperator `json:"operator,required"`
-	StringToCheck any               `json:"stringToCheck,required"`
-	Inputs        []any             `json:"inputs"`
+	StringToCheck ExpressionUnion   `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion `json:"inputs"`
 	PropertyName  string            `json:"propertyName"`
 	Value         string            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4119,7 +3678,7 @@ type SubtractNumbers struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "SUBTRACT_NUMBERS".
 	Operator     SubtractNumbersOperator `json:"operator,required"`
-	Inputs       []any                   `json:"inputs"`
+	Inputs       []ExpressionUnion       `json:"inputs"`
 	PropertyName string                  `json:"propertyName"`
 	Value        float64                 `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4149,8 +3708,8 @@ const (
 type SubtractTime struct {
 	// Any of "SUBTRACT_TIME".
 	Operator      SubtractTimeOperator `json:"operator,required"`
-	StringToCheck any                  `json:"stringToCheck,required"`
-	Inputs        []any                `json:"inputs"`
+	StringToCheck ExpressionUnion      `json:"stringToCheck,required"`
+	Inputs        []ExpressionUnion    `json:"inputs"`
 	PropertyName  string               `json:"propertyName"`
 	Value         float64              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4180,7 +3739,7 @@ const (
 type TimeBetween struct {
 	// Any of "TIME_BETWEEN".
 	Operator     TimeBetweenOperator `json:"operator,required"`
-	Inputs       []any               `json:"inputs"`
+	Inputs       []ExpressionUnion   `json:"inputs"`
 	PropertyName string              `json:"propertyName"`
 	Value        float64             `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4209,7 +3768,7 @@ const (
 type TimestampOfPropertyVariable struct {
 	// Any of "TIMESTAMP_OF_PROPERTY_VARIABLE".
 	Operator     TimestampOfPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                               `json:"inputs"`
+	Inputs       []ExpressionUnion                   `json:"inputs"`
 	PropertyName string                              `json:"propertyName"`
 	Value        string                              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4238,7 +3797,7 @@ const (
 type TimestampOfTargetPropertyVariable struct {
 	// Any of "TIMESTAMP_OF_TARGET_PROPERTY_VARIABLE".
 	Operator     TimestampOfTargetPropertyVariableOperator `json:"operator,required"`
-	Inputs       []any                                     `json:"inputs"`
+	Inputs       []ExpressionUnion                         `json:"inputs"`
 	PropertyName string                                    `json:"propertyName"`
 	Value        string                                    `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4267,7 +3826,7 @@ const (
 type UpperCase struct {
 	// Any of "UPPER_CASE".
 	Operator     UpperCaseOperator `json:"operator,required"`
-	Inputs       []any             `json:"inputs"`
+	Inputs       []ExpressionUnion `json:"inputs"`
 	PropertyName string            `json:"propertyName"`
 	Value        string            `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4296,10 +3855,10 @@ const (
 type Xor struct {
 	EnclosedInParentheses bool `json:"enclosedInParentheses,required"`
 	// Any of "XOR".
-	Operator     XorOperator `json:"operator,required"`
-	Inputs       []any       `json:"inputs"`
-	PropertyName string      `json:"propertyName"`
-	Value        bool        `json:"value"`
+	Operator     XorOperator       `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        bool              `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		EnclosedInParentheses respjson.Field
@@ -4326,10 +3885,10 @@ const (
 
 type Year struct {
 	// Any of "YEAR".
-	Operator     YearOperator `json:"operator,required"`
-	Inputs       []any        `json:"inputs"`
-	PropertyName string       `json:"propertyName"`
-	Value        float64      `json:"value"`
+	Operator     YearOperator      `json:"operator,required"`
+	Inputs       []ExpressionUnion `json:"inputs"`
+	PropertyName string            `json:"propertyName"`
+	Value        float64           `json:"value"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Operator     respjson.Field

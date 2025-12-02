@@ -809,6 +809,7 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Euler">Euler</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#EventVisibilityChange">EventVisibilityChange</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#EventVisibilityResponse">EventVisibilityResponse</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#ExpressionUnion">ExpressionUnion</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#ExtensionData">ExtensionData</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#ExternalOptionsMetaData">ExternalOptionsMetaData</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#ExtractMostRecentEmailReplyHTML">ExtractMostRecentEmailReplyHTML</a>
