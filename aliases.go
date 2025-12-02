@@ -116,9 +116,6 @@ const BatchResponsePropertyStatusPending = shared.BatchResponsePropertyStatusPen
 const BatchResponsePropertyStatusProcessing = shared.BatchResponsePropertyStatusProcessing
 
 // This is an alias to an internal type.
-type CollectionResponseObjectSchemaNoPaging = shared.CollectionResponseObjectSchemaNoPaging
-
-// This is an alias to an internal type.
 type Error = shared.Error
 
 // This is an alias to an internal type.
