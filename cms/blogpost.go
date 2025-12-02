@@ -1769,51 +1769,6 @@ func (r *BlogPostLanguageCloneRequestVNextParam) UnmarshalJSON(data []byte) erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BreakpointStyles struct {
-	Hidden  bool    `json:"hidden,required"`
-	Margin  Margin  `json:"margin,required"`
-	Padding Padding `json:"padding,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Hidden      respjson.Field
-		Margin      respjson.Field
-		Padding     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BreakpointStyles) RawJSON() string { return r.JSON.raw }
-func (r *BreakpointStyles) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this BreakpointStyles to a BreakpointStylesParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// BreakpointStylesParam.Overrides()
-func (r BreakpointStyles) ToParam() BreakpointStylesParam {
-	return param.Override[BreakpointStylesParam](json.RawMessage(r.RawJSON()))
-}
-
-// The properties Hidden, Margin, Padding are required.
-type BreakpointStylesParam struct {
-	Hidden  bool    `json:"hidden,required"`
-	Margin  Margin  `json:"margin,omitzero,required"`
-	Padding Padding `json:"padding,omitzero,required"`
-	paramObj
-}
-
-func (r BreakpointStylesParam) MarshalJSON() (data []byte, err error) {
-	type shadow BreakpointStylesParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BreakpointStylesParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // Response object for collections of blog posts with pagination information.
 type CollectionResponseWithTotalBlogPostForwardPaging struct {
 	// Collection of blog posts.
