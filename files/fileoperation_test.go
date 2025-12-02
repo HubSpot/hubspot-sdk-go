@@ -17,7 +17,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestFileUpdateWithOptionalParams(t *testing.T) {
+func TestFileOperationUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -30,10 +30,10 @@ func TestFileUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.Update(
+	_, err := client.Files.FileOperations.Update(
 		context.TODO(),
 		"321669910225",
-		files.FileUpdateParams{
+		files.FileOperationUpdateParams{
 			FileUpdateInput: files.FileUpdateInputParam{
 				Access:            files.FileUpdateInputAccessHiddenIndexable,
 				ClearExpires:      hubspotsdk.Bool(true),
@@ -54,7 +54,7 @@ func TestFileUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileDelete(t *testing.T) {
+func TestFileOperationDelete(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -67,7 +67,7 @@ func TestFileDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.Files.Files.Delete(context.TODO(), "321669910225")
+	err := client.Files.FileOperations.Delete(context.TODO(), "321669910225")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -77,7 +77,7 @@ func TestFileDelete(t *testing.T) {
 	}
 }
 
-func TestFileGdprDelete(t *testing.T) {
+func TestFileOperationGdprDelete(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -90,7 +90,7 @@ func TestFileGdprDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.Files.Files.GdprDelete(context.TODO(), "321669910225")
+	err := client.Files.FileOperations.GdprDelete(context.TODO(), "321669910225")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -100,7 +100,7 @@ func TestFileGdprDelete(t *testing.T) {
 	}
 }
 
-func TestFileGetWithOptionalParams(t *testing.T) {
+func TestFileOperationGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -113,10 +113,10 @@ func TestFileGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.Get(
+	_, err := client.Files.FileOperations.Get(
 		context.TODO(),
 		"321669910225",
-		files.FileGetParams{
+		files.FileOperationGetParams{
 			Properties: []string{"string"},
 		},
 	)
@@ -129,7 +129,7 @@ func TestFileGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileGetByPathWithOptionalParams(t *testing.T) {
+func TestFileOperationGetByPathWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -142,10 +142,10 @@ func TestFileGetByPathWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.GetByPath(
+	_, err := client.Files.FileOperations.GetByPath(
 		context.TODO(),
 		"path",
-		files.FileGetByPathParams{
+		files.FileOperationGetByPathParams{
 			Properties: []string{"string"},
 		},
 	)
@@ -158,7 +158,7 @@ func TestFileGetByPathWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileGetImportTaskStatus(t *testing.T) {
+func TestFileOperationGetImportTaskStatus(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -171,7 +171,7 @@ func TestFileGetImportTaskStatus(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.GetImportTaskStatus(context.TODO(), "taskId")
+	_, err := client.Files.FileOperations.GetImportTaskStatus(context.TODO(), "taskId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -181,7 +181,7 @@ func TestFileGetImportTaskStatus(t *testing.T) {
 	}
 }
 
-func TestFileGetSignedURLWithOptionalParams(t *testing.T) {
+func TestFileOperationGetSignedURLWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -194,12 +194,12 @@ func TestFileGetSignedURLWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.GetSignedURL(
+	_, err := client.Files.FileOperations.GetSignedURL(
 		context.TODO(),
 		"321669910225",
-		files.FileGetSignedURLParams{
+		files.FileOperationGetSignedURLParams{
 			ExpirationSeconds: hubspotsdk.Int(0),
-			Size:              files.FileGetSignedURLParamsSizeIcon,
+			Size:              files.FileOperationGetSignedURLParamsSizeIcon,
 			Upscale:           hubspotsdk.Bool(true),
 		},
 	)
@@ -212,7 +212,7 @@ func TestFileGetSignedURLWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileImportFromURLAsyncWithOptionalParams(t *testing.T) {
+func TestFileOperationImportFromURLAsyncWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -225,7 +225,7 @@ func TestFileImportFromURLAsyncWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.ImportFromURLAsync(context.TODO(), files.FileImportFromURLAsyncParams{
+	_, err := client.Files.FileOperations.ImportFromURLAsync(context.TODO(), files.FileOperationImportFromURLAsyncParams{
 		ImportFromURLInput: files.ImportFromURLInputParam{
 			Access:                      files.ImportFromURLInputAccessHiddenIndexable,
 			URL:                         "url",
@@ -248,7 +248,7 @@ func TestFileImportFromURLAsyncWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileReplaceWithOptionalParams(t *testing.T) {
+func TestFileOperationReplaceWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -261,10 +261,10 @@ func TestFileReplaceWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.Replace(
+	_, err := client.Files.FileOperations.Replace(
 		context.TODO(),
 		"321669910225",
-		files.FileReplaceParams{
+		files.FileOperationReplaceParams{
 			CharsetHunch: hubspotsdk.String("charsetHunch"),
 			File:         io.Reader(bytes.NewBuffer([]byte("some file contents"))),
 			Options:      hubspotsdk.String("options"),
@@ -279,7 +279,7 @@ func TestFileReplaceWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileSearchWithOptionalParams(t *testing.T) {
+func TestFileOperationSearchWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -292,7 +292,7 @@ func TestFileSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.Search(context.TODO(), files.FileSearchParams{
+	_, err := client.Files.FileOperations.Search(context.TODO(), files.FileOperationSearchParams{
 		After:                 hubspotsdk.String("after"),
 		AllowsAnonymousAccess: hubspotsdk.Bool(true),
 		Before:                hubspotsdk.String("before"),
@@ -339,7 +339,7 @@ func TestFileSearchWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestFileUploadWithOptionalParams(t *testing.T) {
+func TestFileOperationUploadWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -352,7 +352,7 @@ func TestFileUploadWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Files.Files.Upload(context.TODO(), files.FileUploadParams{
+	_, err := client.Files.FileOperations.Upload(context.TODO(), files.FileOperationUploadParams{
 		CharsetHunch: hubspotsdk.String("charsetHunch"),
 		File:         io.Reader(bytes.NewBuffer([]byte("some file contents"))),
 		FileName:     hubspotsdk.String("fileName"),

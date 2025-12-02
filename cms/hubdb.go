@@ -436,7 +436,7 @@ type HubDBTableRowV3BatchUpdateRequestParam struct {
 	ChildTableID int64 `json:"childTableId,required"`
 	DisplayIndex int64 `json:"displayIndex,required"`
 	// List of key value pairs with the column name and column value
-	Values map[string]Variant `json:"values,omitzero,required"`
+	Values map[string]VariantParam `json:"values,omitzero,required"`
 	// The id of the table row
 	ID param.Opt[string] `json:"id,omitzero"`
 	// Specifies the value for `hs_name` column, which will be used as title in the
@@ -462,7 +462,7 @@ type HubDBTableRowV3RequestParam struct {
 	ChildTableID int64 `json:"childTableId,required"`
 	DisplayIndex int64 `json:"displayIndex,required"`
 	// List of key value pairs with the column name and column value
-	Values map[string]Variant `json:"values,omitzero,required"`
+	Values map[string]VariantParam `json:"values,omitzero,required"`
 	// Specifies the value for `hs_name` column, which will be used as title in the
 	// dynamic pages
 	Name param.Opt[string] `json:"name,omitzero"`
@@ -586,7 +586,7 @@ type ImportResult struct {
 	// Specifies number of duplicate rows
 	DuplicateRows int64 `json:"duplicateRows,required"`
 	// List of errors during import
-	Errors []shared.Error `json:"errors,required"`
+	Errors []shared.APIError `json:"errors,required"`
 	// Specifies whether row limit exceeded during import
 	RowLimitExceeded bool `json:"rowLimitExceeded,required"`
 	// Specifies number of rows imported
@@ -778,5 +778,17 @@ type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPagingNext struct
 }
 
 func (r *UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPagingNext) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type VariantParam struct {
+	paramObj
+}
+
+func (r VariantParam) MarshalJSON() (data []byte, err error) {
+	type shadow VariantParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *VariantParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

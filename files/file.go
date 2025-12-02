@@ -19,9 +19,9 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewFileService] method instead.
 type FileService struct {
-	Options []option.RequestOption
-	Files   FileService
-	Folders FolderService
+	Options        []option.RequestOption
+	FileOperations FileOperationService
+	Folders        FolderService
 }
 
 // NewFileService generates a new service that applies the given options to each
@@ -30,7 +30,7 @@ type FileService struct {
 func NewFileService(opts ...option.RequestOption) (r FileService) {
 	r = FileService{}
 	r.Options = opts
-	r.Files = NewFileService(opts...)
+	r.FileOperations = NewFileOperationService(opts...)
 	r.Folders = NewFolderService(opts...)
 	return
 }

@@ -40,6 +40,9 @@ const ActionResponseStatusPending = shared.ActionResponseStatusPending
 const ActionResponseStatusProcessing = shared.ActionResponseStatusProcessing
 
 // This is an alias to an internal type.
+type APIError = shared.APIError
+
+// This is an alias to an internal type.
 type AssociationDefinitionEggParam = shared.AssociationDefinitionEggParam
 
 // Defines the type, direction, and details of the relationship between two CRM
@@ -114,9 +117,6 @@ const BatchResponsePropertyStatusPending = shared.BatchResponsePropertyStatusPen
 
 // Equals "PROCESSING"
 const BatchResponsePropertyStatusProcessing = shared.BatchResponsePropertyStatusProcessing
-
-// This is an alias to an internal type.
-type Error = shared.Error
 
 // This is an alias to an internal type.
 type ErrorDetail = shared.ErrorDetail

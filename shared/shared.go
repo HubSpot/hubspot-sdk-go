@@ -70,6 +70,44 @@ const (
 	ActionResponseStatusProcessing ActionResponseStatus = "PROCESSING"
 )
 
+type APIError struct {
+	// The error category.
+	Category string `json:"category,required"`
+	// A unique identifier for the request. Include this value with any error reports
+	// or support tickets.
+	CorrelationID string `json:"correlationId,required" format:"uuid"`
+	// A human readable message describing the error along with remediation steps where
+	// appropriate.
+	Message string `json:"message,required"`
+	// Context about the error condition.
+	Context map[string][]string `json:"context"`
+	// further information about the error
+	Errors []ErrorDetail `json:"errors"`
+	// A map of link names to associated URIs containing documentation about the error
+	// or recommended remediation steps.
+	Links map[string]string `json:"links"`
+	// A specific category that contains more specific detail about the error.
+	SubCategory string `json:"subCategory"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Category      respjson.Field
+		CorrelationID respjson.Field
+		Message       respjson.Field
+		Context       respjson.Field
+		Errors        respjson.Field
+		Links         respjson.Field
+		SubCategory   respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r APIError) RawJSON() string { return r.JSON.raw }
+func (r *APIError) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 // The properties FromObjectTypeID, ToObjectTypeID are required.
 type AssociationDefinitionEggParam struct {
 	FromObjectTypeID string            `json:"fromObjectTypeId,required"`
@@ -269,44 +307,6 @@ const (
 	BatchResponsePropertyStatusPending    BatchResponsePropertyStatus = "PENDING"
 	BatchResponsePropertyStatusProcessing BatchResponsePropertyStatus = "PROCESSING"
 )
-
-type Error struct {
-	// The error category.
-	Category string `json:"category,required"`
-	// A unique identifier for the request. Include this value with any error reports
-	// or support tickets.
-	CorrelationID string `json:"correlationId,required" format:"uuid"`
-	// A human readable message describing the error along with remediation steps where
-	// appropriate.
-	Message string `json:"message,required"`
-	// Context about the error condition.
-	Context map[string][]string `json:"context"`
-	// further information about the error
-	Errors []ErrorDetail `json:"errors"`
-	// A map of link names to associated URIs containing documentation about the error
-	// or recommended remediation steps.
-	Links map[string]string `json:"links"`
-	// A specific category that contains more specific detail about the error.
-	SubCategory string `json:"subCategory"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Category      respjson.Field
-		CorrelationID respjson.Field
-		Message       respjson.Field
-		Context       respjson.Field
-		Errors        respjson.Field
-		Links         respjson.Field
-		SubCategory   respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r Error) RawJSON() string { return r.JSON.raw }
-func (r *Error) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type ErrorDetail struct {
 	// A human readable message describing the error along with remediation steps where

@@ -24,27 +24,27 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 )
 
-// FileService contains methods and other services that help with interacting with
-// the hubspot API.
+// FileOperationService contains methods and other services that help with
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewFileService] method instead.
-type FileService struct {
+// the [NewFileOperationService] method instead.
+type FileOperationService struct {
 	Options []option.RequestOption
 }
 
-// NewFileService generates a new service that applies the given options to each
-// request. These options are applied after the parent client's options (if there
-// is one), and before any request-specific options.
-func NewFileService(opts ...option.RequestOption) (r FileService) {
-	r = FileService{}
+// NewFileOperationService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
+func NewFileOperationService(opts ...option.RequestOption) (r FileOperationService) {
+	r = FileOperationService{}
 	r.Options = opts
 	return
 }
 
 // Update properties of file by ID.
-func (r *FileService) Update(ctx context.Context, fileID string, body FileUpdateParams, opts ...option.RequestOption) (res *File, err error) {
+func (r *FileOperationService) Update(ctx context.Context, fileID string, body FileOperationUpdateParams, opts ...option.RequestOption) (res *File, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
@@ -56,7 +56,7 @@ func (r *FileService) Update(ctx context.Context, fileID string, body FileUpdate
 }
 
 // Delete a file by ID
-func (r *FileService) Delete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
+func (r *FileOperationService) Delete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if fileID == "" {
@@ -69,7 +69,7 @@ func (r *FileService) Delete(ctx context.Context, fileID string, opts ...option.
 }
 
 // Delete a file in accordance with GDPR regulations.
-func (r *FileService) GdprDelete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
+func (r *FileOperationService) GdprDelete(ctx context.Context, fileID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if fileID == "" {
@@ -82,7 +82,7 @@ func (r *FileService) GdprDelete(ctx context.Context, fileID string, opts ...opt
 }
 
 // Retrieve a file by its ID.
-func (r *FileService) Get(ctx context.Context, fileID string, query FileGetParams, opts ...option.RequestOption) (res *File, err error) {
+func (r *FileOperationService) Get(ctx context.Context, fileID string, query FileOperationGetParams, opts ...option.RequestOption) (res *File, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
@@ -94,7 +94,7 @@ func (r *FileService) Get(ctx context.Context, fileID string, query FileGetParam
 }
 
 // Retrieve a file by its path.
-func (r *FileService) GetByPath(ctx context.Context, path string, query FileGetByPathParams, opts ...option.RequestOption) (res *FileStat, err error) {
+func (r *FileOperationService) GetByPath(ctx context.Context, path string, query FileOperationGetByPathParams, opts ...option.RequestOption) (res *FileStat, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if path == "" {
 		err = errors.New("missing required path parameter")
@@ -106,7 +106,7 @@ func (r *FileService) GetByPath(ctx context.Context, path string, query FileGetB
 }
 
 // Check the status of requested import.
-func (r *FileService) GetImportTaskStatus(ctx context.Context, taskID string, opts ...option.RequestOption) (res *FileActionResponse, err error) {
+func (r *FileOperationService) GetImportTaskStatus(ctx context.Context, taskID string, opts ...option.RequestOption) (res *FileActionResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if taskID == "" {
 		err = errors.New("missing required taskId parameter")
@@ -118,7 +118,7 @@ func (r *FileService) GetImportTaskStatus(ctx context.Context, taskID string, op
 }
 
 // Generates signed URL that allows temporary access to a private file.
-func (r *FileService) GetSignedURL(ctx context.Context, fileID string, query FileGetSignedURLParams, opts ...option.RequestOption) (res *SignedURL, err error) {
+func (r *FileOperationService) GetSignedURL(ctx context.Context, fileID string, query FileOperationGetSignedURLParams, opts ...option.RequestOption) (res *SignedURL, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
@@ -130,7 +130,7 @@ func (r *FileService) GetSignedURL(ctx context.Context, fileID string, query Fil
 }
 
 // Asynchronously imports the file at the given URL into the file manager.
-func (r *FileService) ImportFromURLAsync(ctx context.Context, body FileImportFromURLAsyncParams, opts ...option.RequestOption) (res *ImportFromURLTaskLocator, err error) {
+func (r *FileOperationService) ImportFromURLAsync(ctx context.Context, body FileOperationImportFromURLAsyncParams, opts ...option.RequestOption) (res *ImportFromURLTaskLocator, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "files/v3/files/import-from-url/async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -139,7 +139,7 @@ func (r *FileService) ImportFromURLAsync(ctx context.Context, body FileImportFro
 
 // Replace existing file data with new file data. Can be used to change image
 // content without having to upload a new file and update all references.
-func (r *FileService) Replace(ctx context.Context, fileID string, body FileReplaceParams, opts ...option.RequestOption) (res *File, err error) {
+func (r *FileOperationService) Replace(ctx context.Context, fileID string, body FileOperationReplaceParams, opts ...option.RequestOption) (res *File, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if fileID == "" {
 		err = errors.New("missing required fileId parameter")
@@ -152,7 +152,7 @@ func (r *FileService) Replace(ctx context.Context, fileID string, body FileRepla
 
 // Search through files in the file manager. Does not display hidden or archived
 // files.
-func (r *FileService) Search(ctx context.Context, query FileSearchParams, opts ...option.RequestOption) (res *pagination.Page[File], err error) {
+func (r *FileOperationService) Search(ctx context.Context, query FileOperationSearchParams, opts ...option.RequestOption) (res *pagination.Page[File], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -171,59 +171,60 @@ func (r *FileService) Search(ctx context.Context, query FileSearchParams, opts .
 
 // Search through files in the file manager. Does not display hidden or archived
 // files.
-func (r *FileService) SearchAutoPaging(ctx context.Context, query FileSearchParams, opts ...option.RequestOption) *pagination.PageAutoPager[File] {
+func (r *FileOperationService) SearchAutoPaging(ctx context.Context, query FileOperationSearchParams, opts ...option.RequestOption) *pagination.PageAutoPager[File] {
 	return pagination.NewPageAutoPager(r.Search(ctx, query, opts...))
 }
 
 // Upload a single file with content specified in request body.
-func (r *FileService) Upload(ctx context.Context, body FileUploadParams, opts ...option.RequestOption) (res *File, err error) {
+func (r *FileOperationService) Upload(ctx context.Context, body FileOperationUploadParams, opts ...option.RequestOption) (res *File, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "files/v3/files"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
-type FileUpdateParams struct {
+type FileOperationUpdateParams struct {
 	// Object for updating files.
 	FileUpdateInput FileUpdateInputParam
 	paramObj
 }
 
-func (r FileUpdateParams) MarshalJSON() (data []byte, err error) {
+func (r FileOperationUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.FileUpdateInput)
 }
-func (r *FileUpdateParams) UnmarshalJSON(data []byte) error {
+func (r *FileOperationUpdateParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.FileUpdateInput)
 }
 
-type FileGetParams struct {
+type FileOperationGetParams struct {
 	Properties []string `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [FileGetParams]'s query parameters as `url.Values`.
-func (r FileGetParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [FileOperationGetParams]'s query parameters as `url.Values`.
+func (r FileOperationGetParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type FileGetByPathParams struct {
+type FileOperationGetByPathParams struct {
 	// Properties to return in the response.
 	Properties []string `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [FileGetByPathParams]'s query parameters as `url.Values`.
-func (r FileGetByPathParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [FileOperationGetByPathParams]'s query parameters as
+// `url.Values`.
+func (r FileOperationGetByPathParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type FileGetSignedURLParams struct {
+type FileOperationGetSignedURLParams struct {
 	// How long in seconds the link will provide access to the file.
 	ExpirationSeconds param.Opt[int64] `query:"expirationSeconds,omitzero" json:"-"`
 	// If size is provided, this will upscale the image to fit the size dimensions.
@@ -232,12 +233,13 @@ type FileGetSignedURLParams struct {
 	// Does not affect the original file, just the file served by this signed URL.
 	//
 	// Any of "icon", "medium", "preview", "thumb".
-	Size FileGetSignedURLParamsSize `query:"size,omitzero" json:"-"`
+	Size FileOperationGetSignedURLParamsSize `query:"size,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [FileGetSignedURLParams]'s query parameters as `url.Values`.
-func (r FileGetSignedURLParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [FileOperationGetSignedURLParams]'s query parameters as
+// `url.Values`.
+func (r FileOperationGetSignedURLParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
@@ -246,28 +248,28 @@ func (r FileGetSignedURLParams) URLQuery() (v url.Values, err error) {
 
 // For image files. This will resize the image to the desired size before sharing.
 // Does not affect the original file, just the file served by this signed URL.
-type FileGetSignedURLParamsSize string
+type FileOperationGetSignedURLParamsSize string
 
 const (
-	FileGetSignedURLParamsSizeIcon    FileGetSignedURLParamsSize = "icon"
-	FileGetSignedURLParamsSizeMedium  FileGetSignedURLParamsSize = "medium"
-	FileGetSignedURLParamsSizePreview FileGetSignedURLParamsSize = "preview"
-	FileGetSignedURLParamsSizeThumb   FileGetSignedURLParamsSize = "thumb"
+	FileOperationGetSignedURLParamsSizeIcon    FileOperationGetSignedURLParamsSize = "icon"
+	FileOperationGetSignedURLParamsSizeMedium  FileOperationGetSignedURLParamsSize = "medium"
+	FileOperationGetSignedURLParamsSizePreview FileOperationGetSignedURLParamsSize = "preview"
+	FileOperationGetSignedURLParamsSizeThumb   FileOperationGetSignedURLParamsSize = "thumb"
 )
 
-type FileImportFromURLAsyncParams struct {
+type FileOperationImportFromURLAsyncParams struct {
 	ImportFromURLInput ImportFromURLInputParam
 	paramObj
 }
 
-func (r FileImportFromURLAsyncParams) MarshalJSON() (data []byte, err error) {
+func (r FileOperationImportFromURLAsyncParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ImportFromURLInput)
 }
-func (r *FileImportFromURLAsyncParams) UnmarshalJSON(data []byte) error {
+func (r *FileOperationImportFromURLAsyncParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.ImportFromURLInput)
 }
 
-type FileReplaceParams struct {
+type FileOperationReplaceParams struct {
 	// Character set of given file data.
 	CharsetHunch param.Opt[string] `json:"charsetHunch,omitzero"`
 	// JSON string representing FileReplaceOptions. Includes options to set the access
@@ -279,7 +281,7 @@ type FileReplaceParams struct {
 	paramObj
 }
 
-func (r FileReplaceParams) MarshalMultipart() (data []byte, contentType string, err error) {
+func (r FileOperationReplaceParams) MarshalMultipart() (data []byte, contentType string, err error) {
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
 	err = apiform.MarshalRoot(r, writer)
@@ -297,7 +299,7 @@ func (r FileReplaceParams) MarshalMultipart() (data []byte, contentType string, 
 	return buf.Bytes(), writer.FormDataContentType(), nil
 }
 
-type FileSearchParams struct {
+type FileOperationSearchParams struct {
 	// Offset search results by this value. The default offset is 0 and the maximum
 	// offset of items for a given search is 10,000. Narrow your search down if you are
 	// reaching this limit.
@@ -386,15 +388,16 @@ type FileSearchParams struct {
 	paramObj
 }
 
-// URLQuery serializes [FileSearchParams]'s query parameters as `url.Values`.
-func (r FileSearchParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [FileOperationSearchParams]'s query parameters as
+// `url.Values`.
+func (r FileOperationSearchParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type FileUploadParams struct {
+type FileOperationUploadParams struct {
 	// Character set of the uploaded file.
 	CharsetHunch param.Opt[string] `json:"charsetHunch,omitzero"`
 	// Desired name for the uploaded file.
@@ -413,7 +416,7 @@ type FileUploadParams struct {
 	paramObj
 }
 
-func (r FileUploadParams) MarshalMultipart() (data []byte, contentType string, err error) {
+func (r FileOperationUploadParams) MarshalMultipart() (data []byte, contentType string, err error) {
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
 	err = apiform.MarshalRoot(r, writer)
