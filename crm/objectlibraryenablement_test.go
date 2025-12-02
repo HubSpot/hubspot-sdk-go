@@ -26,7 +26,7 @@ func TestObjectLibraryEnablementList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.ObjectLibrary.Enablement.List(context.TODO())
+	_, err := client.Crm.ObjectLibrary.Enablement.List(context.TODO())
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -49,7 +49,7 @@ func TestObjectLibraryEnablementGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.ObjectLibrary.Enablement.Get(context.TODO(), "objectTypeId")
+	_, err := client.Crm.ObjectLibrary.Enablement.Get(context.TODO(), "objectTypeId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

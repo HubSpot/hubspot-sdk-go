@@ -68,13 +68,13 @@ func TestHubdbRowBatchNewBatch(t *testing.T) {
 		cms.HubdbRowBatchNewBatchParams{
 			BatchInputHubDBTableRowV3Request: cms.BatchInputHubDBTableRowV3RequestParam{
 				Inputs: []cms.HubDBTableRowV3RequestParam{{
+					ChildTableID: 0,
+					DisplayIndex: 0,
 					Values: map[string]cms.Variant{
 						"foo": map[string]any{},
 					},
-					ChildTableID: hubspotsdk.Int(0),
-					DisplayIndex: hubspotsdk.Int(0),
-					Name:         hubspotsdk.String("name"),
-					Path:         hubspotsdk.String("path"),
+					Name: hubspotsdk.String("name"),
+					Path: hubspotsdk.String("path"),
 				}},
 			},
 		},
@@ -200,14 +200,14 @@ func TestHubdbRowBatchReplaceBatch(t *testing.T) {
 		cms.HubdbRowBatchReplaceBatchParams{
 			BatchInputHubDBTableRowV3BatchUpdateRequest: cms.BatchInputHubDBTableRowV3BatchUpdateRequestParam{
 				Inputs: []cms.HubDBTableRowV3BatchUpdateRequestParam{{
-					ID: "id",
+					ChildTableID: 0,
+					DisplayIndex: 0,
 					Values: map[string]cms.Variant{
 						"foo": map[string]any{},
 					},
-					ChildTableID: hubspotsdk.Int(0),
-					DisplayIndex: hubspotsdk.Int(0),
-					Name:         hubspotsdk.String("name"),
-					Path:         hubspotsdk.String("path"),
+					ID:   hubspotsdk.String("id"),
+					Name: hubspotsdk.String("name"),
+					Path: hubspotsdk.String("path"),
 				}},
 			},
 		},
@@ -240,14 +240,14 @@ func TestHubdbRowBatchUpdateBatch(t *testing.T) {
 		cms.HubdbRowBatchUpdateBatchParams{
 			BatchInputHubDBTableRowV3BatchUpdateRequest: cms.BatchInputHubDBTableRowV3BatchUpdateRequestParam{
 				Inputs: []cms.HubDBTableRowV3BatchUpdateRequestParam{{
-					ID: "id",
+					ChildTableID: 0,
+					DisplayIndex: 0,
 					Values: map[string]cms.Variant{
 						"foo": map[string]any{},
 					},
-					ChildTableID: hubspotsdk.Int(0),
-					DisplayIndex: hubspotsdk.Int(0),
-					Name:         hubspotsdk.String("name"),
-					Path:         hubspotsdk.String("path"),
+					ID:   hubspotsdk.String("id"),
+					Name: hubspotsdk.String("name"),
+					Path: hubspotsdk.String("path"),
 				}},
 			},
 		},

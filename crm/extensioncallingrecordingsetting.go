@@ -15,7 +15,7 @@ import (
 )
 
 // ExtensionCallingRecordingSettingService contains methods and other services that
-// help with interacting with the Hubspot API.
+// help with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -33,8 +33,6 @@ func NewExtensionCallingRecordingSettingService(opts ...option.RequestOption) (r
 	return
 }
 
-// Register an external URL that HubSpot will use to retrieve
-// [call recordings](https://developers.hubspot.com/docs/guides/apps/extensions/calling-extensions/recordings-and-transcriptions#register-your-app-s-endpoint-with-hubspot-using-the-calling-settings-api).
 func (r *ExtensionCallingRecordingSettingService) New(ctx context.Context, appID int64, body ExtensionCallingRecordingSettingNewParams, opts ...option.RequestOption) (res *RecordingSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/recording", appID)
@@ -42,8 +40,6 @@ func (r *ExtensionCallingRecordingSettingService) New(ctx context.Context, appID
 	return
 }
 
-// Update the URL that HubSpot will use to retrieve
-// [call recordings](https://developers.hubspot.com/docs/guides/apps/extensions/calling-extensions/recordings-and-transcriptions#register-your-app-s-endpoint-with-hubspot-using-the-calling-settings-api).
 func (r *ExtensionCallingRecordingSettingService) Update(ctx context.Context, appID int64, body ExtensionCallingRecordingSettingUpdateParams, opts ...option.RequestOption) (res *RecordingSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/recording", appID)
@@ -51,8 +47,6 @@ func (r *ExtensionCallingRecordingSettingService) Update(ctx context.Context, ap
 	return
 }
 
-// Retrieve the URL that is registered for
-// [call recording](https://developers.hubspot.com/docs/guides/apps/extensions/calling-extensions/recordings-and-transcriptions#register-your-app-s-endpoint-with-hubspot-using-the-calling-settings-api).
 func (r *ExtensionCallingRecordingSettingService) Get(ctx context.Context, appID int64, opts ...option.RequestOption) (res *RecordingSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/recording", appID)
@@ -60,8 +54,6 @@ func (r *ExtensionCallingRecordingSettingService) Get(ctx context.Context, appID
 	return
 }
 
-// Mark a call recording as ready for transcription, specifying the call by its ID
-// (`engagementid`).
 func (r *ExtensionCallingRecordingSettingService) MarkReady(ctx context.Context, body ExtensionCallingRecordingSettingMarkReadyParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)

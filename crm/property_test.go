@@ -28,7 +28,7 @@ func TestPropertyNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.New(
+	_, err := client.Crm.Properties.New(
 		context.TODO(),
 		"objectType",
 		crm.PropertyNewParams{
@@ -39,7 +39,7 @@ func TestPropertyNewWithOptionalParams(t *testing.T) {
 				Name:               "name",
 				Type:               shared.PropertyCreateTypeBool,
 				CalculationFormula: hubspotsdk.String("calculationFormula"),
-				DataSensitivity:    shared.PropertyCreateDataSensitivityNonSensitive,
+				DataSensitivity:    shared.PropertyCreateDataSensitivityHighlySensitive,
 				Description:        hubspotsdk.String("description"),
 				DisplayOrder:       hubspotsdk.Int(0),
 				ExternalOptions:    hubspotsdk.Bool(true),
@@ -79,7 +79,7 @@ func TestPropertyUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Update(
+	_, err := client.Crm.Properties.Update(
 		context.TODO(),
 		"propertyName",
 		crm.PropertyUpdateParams{
@@ -132,12 +132,14 @@ func TestPropertyListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.List(
+	_, err := client.Crm.Properties.List(
 		context.TODO(),
 		"objectType",
 		crm.PropertyListParams{
-			Archived:   hubspotsdk.Bool(true),
-			Properties: hubspotsdk.String("properties"),
+			Archived:        hubspotsdk.Bool(true),
+			DataSensitivity: crm.PropertyListParamsDataSensitivityHighlySensitive,
+			Locale:          hubspotsdk.String("locale"),
+			Properties:      hubspotsdk.String("properties"),
 		},
 	)
 	if err != nil {
@@ -162,7 +164,7 @@ func TestPropertyDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Properties.Delete(
+	err := client.Crm.Properties.Delete(
 		context.TODO(),
 		"propertyName",
 		crm.PropertyDeleteParams{
@@ -191,13 +193,15 @@ func TestPropertyGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Get(
+	_, err := client.Crm.Properties.Get(
 		context.TODO(),
 		"propertyName",
 		crm.PropertyGetParams{
-			ObjectType: "objectType",
-			Archived:   hubspotsdk.Bool(true),
-			Properties: hubspotsdk.String("properties"),
+			ObjectType:      "objectType",
+			Archived:        hubspotsdk.Bool(true),
+			DataSensitivity: crm.PropertyGetParamsDataSensitivityHighlySensitive,
+			Locale:          hubspotsdk.String("locale"),
+			Properties:      hubspotsdk.String("properties"),
 		},
 	)
 	if err != nil {

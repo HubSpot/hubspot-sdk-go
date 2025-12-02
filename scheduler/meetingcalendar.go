@@ -6,15 +6,17 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
 // MeetingCalendarService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -32,14 +34,15 @@ func NewMeetingCalendarService(opts ...option.RequestOption) (r MeetingCalendarS
 	return
 }
 
-func (r *MeetingCalendarService) New(ctx context.Context, body MeetingCalendarNewParams, opts ...option.RequestOption) (res *ExternalCalenderMeetingEventResponse, err error) {
+func (r *MeetingCalendarService) New(ctx context.Context, params MeetingCalendarNewParams, opts ...option.RequestOption) (res *ExternalCalenderMeetingEventResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "scheduler/v3/meetings/calendar"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 type MeetingCalendarNewParams struct {
+	OrganizerUserID                           string `query:"organizerUserId,required" json:"-"`
 	ExternalCalendarMeetingEventCreateRequest ExternalCalendarMeetingEventCreateRequestParam
 	paramObj
 }
@@ -49,4 +52,13 @@ func (r MeetingCalendarNewParams) MarshalJSON() (data []byte, err error) {
 }
 func (r *MeetingCalendarNewParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.ExternalCalendarMeetingEventCreateRequest)
+}
+
+// URLQuery serializes [MeetingCalendarNewParams]'s query parameters as
+// `url.Values`.
+func (r MeetingCalendarNewParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

@@ -31,7 +31,7 @@ func TestSiteSearchGetIndexedDataWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"contentId",
 		cms.SiteSearchGetIndexedDataParams{
-			Type: cms.SiteSearchGetIndexedDataParamsTypeLandingPage,
+			Type: cms.SiteSearchGetIndexedDataParamsTypeBlogPost,
 		},
 	)
 	if err != nil {
@@ -64,7 +64,7 @@ func TestSiteSearchSearchWithOptionalParams(t *testing.T) {
 		GroupID:         []int64{0},
 		HubdbQuery:      hubspotsdk.String("hubdbQuery"),
 		Language:        cms.SiteSearchSearchParamsLanguageAf,
-		Length:          cms.SiteSearchSearchParamsLengthShort,
+		Length:          cms.SiteSearchSearchParamsLengthLong,
 		Limit:           hubspotsdk.Int(0),
 		MatchPrefix:     hubspotsdk.Bool(true),
 		Offset:          hubspotsdk.Int(0),

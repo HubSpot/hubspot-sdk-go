@@ -15,7 +15,7 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-// RequestOption is an option for the requests made by the Hubspot API Client
+// RequestOption is an option for the requests made by the hubspot API Client
 // which can be supplied to clients, services, and methods. You can read more about this functional
 // options pattern in our [README].
 //

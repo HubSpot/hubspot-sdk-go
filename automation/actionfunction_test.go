@@ -62,7 +62,7 @@ func TestActionFunctionDelete(t *testing.T) {
 		automation.ActionFunctionDeleteParams{
 			AppID:        0,
 			DefinitionID: "definitionId",
-			FunctionType: automation.ActionFunctionDeleteParamsFunctionTypePreActionExecution,
+			FunctionType: automation.ActionFunctionDeleteParamsFunctionTypePostActionExecution,
 		},
 	)
 	if err != nil {
@@ -93,7 +93,7 @@ func TestActionFunctionNewOrReplace(t *testing.T) {
 		automation.ActionFunctionNewOrReplaceParams{
 			AppID:        0,
 			DefinitionID: "definitionId",
-			FunctionType: automation.ActionFunctionNewOrReplaceParamsFunctionTypePreActionExecution,
+			FunctionType: automation.ActionFunctionNewOrReplaceParamsFunctionTypePostActionExecution,
 			Body:         "body",
 		},
 	)
@@ -121,7 +121,7 @@ func TestActionFunctionNewOrReplaceByFunctionType(t *testing.T) {
 	)
 	_, err := client.Automation.Actions.Functions.NewOrReplaceByFunctionType(
 		context.TODO(),
-		automation.ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePreActionExecution,
+		automation.ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostActionExecution,
 		automation.ActionFunctionNewOrReplaceByFunctionTypeParams{
 			AppID:        0,
 			DefinitionID: "definitionId",
@@ -152,7 +152,7 @@ func TestActionFunctionDeleteByFunctionType(t *testing.T) {
 	)
 	err := client.Automation.Actions.Functions.DeleteByFunctionType(
 		context.TODO(),
-		automation.ActionFunctionDeleteByFunctionTypeParamsFunctionTypePreActionExecution,
+		automation.ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostActionExecution,
 		automation.ActionFunctionDeleteByFunctionTypeParams{
 			AppID:        0,
 			DefinitionID: "definitionId",
@@ -186,7 +186,7 @@ func TestActionFunctionGet(t *testing.T) {
 		automation.ActionFunctionGetParams{
 			AppID:        0,
 			DefinitionID: "definitionId",
-			FunctionType: automation.ActionFunctionGetParamsFunctionTypePreActionExecution,
+			FunctionType: automation.ActionFunctionGetParamsFunctionTypePostActionExecution,
 		},
 	)
 	if err != nil {
@@ -213,7 +213,7 @@ func TestActionFunctionGetByFunctionType(t *testing.T) {
 	)
 	_, err := client.Automation.Actions.Functions.GetByFunctionType(
 		context.TODO(),
-		automation.ActionFunctionGetByFunctionTypeParamsFunctionTypePreActionExecution,
+		automation.ActionFunctionGetByFunctionTypeParamsFunctionTypePostActionExecution,
 		automation.ActionFunctionGetByFunctionTypeParams{
 			AppID:        0,
 			DefinitionID: "definitionId",

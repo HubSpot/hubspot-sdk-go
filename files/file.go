@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -14,7 +13,7 @@ import (
 )
 
 // FileService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -38,9 +37,8 @@ func NewFileService(opts ...option.RequestOption) (r FileService) {
 
 // Collections of files
 type CollectionResponseFile struct {
-	Results []File `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Results []File        `json:"results,required"`
+	Paging  shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -57,9 +55,8 @@ func (r *CollectionResponseFile) UnmarshalJSON(data []byte) error {
 }
 
 type CollectionResponseFolder struct {
-	Results []Folder `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Results []Folder      `json:"results,required"`
+	Paging  shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -81,8 +78,8 @@ type File struct {
 	ID string `json:"id,required"`
 	// File access. Can be PUBLIC_INDEXABLE, PUBLIC_NOT_INDEXABLE, PRIVATE.
 	//
-	// Any of "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE", "HIDDEN_INDEXABLE",
-	// "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE", "PRIVATE", "HIDDEN_SENSITIVE",
+	// Any of "HIDDEN_INDEXABLE", "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE",
+	// "HIDDEN_SENSITIVE", "PRIVATE", "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE",
 	// "SENSITIVE".
 	Access FileAccess `json:"access,required"`
 	// If the file is deleted.
@@ -162,13 +159,13 @@ func (r *File) UnmarshalJSON(data []byte) error {
 type FileAccess string
 
 const (
-	FileAccessPublicIndexable    FileAccess = "PUBLIC_INDEXABLE"
-	FileAccessPublicNotIndexable FileAccess = "PUBLIC_NOT_INDEXABLE"
 	FileAccessHiddenIndexable    FileAccess = "HIDDEN_INDEXABLE"
 	FileAccessHiddenNotIndexable FileAccess = "HIDDEN_NOT_INDEXABLE"
 	FileAccessHiddenPrivate      FileAccess = "HIDDEN_PRIVATE"
-	FileAccessPrivate            FileAccess = "PRIVATE"
 	FileAccessHiddenSensitive    FileAccess = "HIDDEN_SENSITIVE"
+	FileAccessPrivate            FileAccess = "PRIVATE"
+	FileAccessPublicIndexable    FileAccess = "PUBLIC_INDEXABLE"
+	FileAccessPublicNotIndexable FileAccess = "PUBLIC_NOT_INDEXABLE"
 	FileAccessSensitive          FileAccess = "SENSITIVE"
 )
 
@@ -179,7 +176,7 @@ type FileActionResponse struct {
 	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
 	// Current status of the task.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status FileActionResponseStatus `json:"status,required"`
 	// ID of the requested task.
 	TaskID string `json:"taskId,required"`
@@ -219,10 +216,10 @@ func (r *FileActionResponse) UnmarshalJSON(data []byte) error {
 type FileActionResponseStatus string
 
 const (
-	FileActionResponseStatusPending    FileActionResponseStatus = "PENDING"
-	FileActionResponseStatusProcessing FileActionResponseStatus = "PROCESSING"
 	FileActionResponseStatusCanceled   FileActionResponseStatus = "CANCELED"
 	FileActionResponseStatusComplete   FileActionResponseStatus = "COMPLETE"
+	FileActionResponseStatusPending    FileActionResponseStatus = "PENDING"
+	FileActionResponseStatusProcessing FileActionResponseStatus = "PROCESSING"
 )
 
 type FileStat struct {
@@ -262,8 +259,8 @@ type FileUpdateInputParam struct {
 	// duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload
 	// a new file and return the found duplicate instead.
 	//
-	// Any of "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE", "HIDDEN_INDEXABLE",
-	// "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE", "PRIVATE", "HIDDEN_SENSITIVE",
+	// Any of "HIDDEN_INDEXABLE", "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE",
+	// "HIDDEN_SENSITIVE", "PRIVATE", "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE",
 	// "SENSITIVE".
 	Access FileUpdateInputAccess `json:"access,omitzero"`
 	paramObj
@@ -283,13 +280,13 @@ func (r *FileUpdateInputParam) UnmarshalJSON(data []byte) error {
 type FileUpdateInputAccess string
 
 const (
-	FileUpdateInputAccessPublicIndexable    FileUpdateInputAccess = "PUBLIC_INDEXABLE"
-	FileUpdateInputAccessPublicNotIndexable FileUpdateInputAccess = "PUBLIC_NOT_INDEXABLE"
 	FileUpdateInputAccessHiddenIndexable    FileUpdateInputAccess = "HIDDEN_INDEXABLE"
 	FileUpdateInputAccessHiddenNotIndexable FileUpdateInputAccess = "HIDDEN_NOT_INDEXABLE"
 	FileUpdateInputAccessHiddenPrivate      FileUpdateInputAccess = "HIDDEN_PRIVATE"
-	FileUpdateInputAccessPrivate            FileUpdateInputAccess = "PRIVATE"
 	FileUpdateInputAccessHiddenSensitive    FileUpdateInputAccess = "HIDDEN_SENSITIVE"
+	FileUpdateInputAccessPrivate            FileUpdateInputAccess = "PRIVATE"
+	FileUpdateInputAccessPublicIndexable    FileUpdateInputAccess = "PUBLIC_INDEXABLE"
+	FileUpdateInputAccessPublicNotIndexable FileUpdateInputAccess = "PUBLIC_NOT_INDEXABLE"
 	FileUpdateInputAccessSensitive          FileUpdateInputAccess = "SENSITIVE"
 )
 
@@ -338,7 +335,7 @@ type FolderActionResponse struct {
 	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
 	// Current status of the task.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status FolderActionResponseStatus `json:"status,required"`
 	// ID of the task.
 	TaskID string `json:"taskId,required"`
@@ -377,10 +374,10 @@ func (r *FolderActionResponse) UnmarshalJSON(data []byte) error {
 type FolderActionResponseStatus string
 
 const (
-	FolderActionResponseStatusPending    FolderActionResponseStatus = "PENDING"
-	FolderActionResponseStatusProcessing FolderActionResponseStatus = "PROCESSING"
 	FolderActionResponseStatusCanceled   FolderActionResponseStatus = "CANCELED"
 	FolderActionResponseStatusComplete   FolderActionResponseStatus = "COMPLETE"
+	FolderActionResponseStatusPending    FolderActionResponseStatus = "PENDING"
+	FolderActionResponseStatusProcessing FolderActionResponseStatus = "PROCESSING"
 )
 
 // Object for creating a folder.
@@ -479,8 +476,8 @@ type ImportFromURLInputParam struct {
 	// NOT publicly accessible. Requires a signed URL to see content. Search engines
 	// _can't_ index the file.
 	//
-	// Any of "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE", "HIDDEN_INDEXABLE",
-	// "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE", "PRIVATE", "HIDDEN_SENSITIVE",
+	// Any of "HIDDEN_INDEXABLE", "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE",
+	// "HIDDEN_SENSITIVE", "PRIVATE", "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE",
 	// "SENSITIVE".
 	Access ImportFromURLInputAccess `json:"access,omitzero,required"`
 	// URL to download the new file from.
@@ -535,13 +532,13 @@ func (r *ImportFromURLInputParam) UnmarshalJSON(data []byte) error {
 type ImportFromURLInputAccess string
 
 const (
-	ImportFromURLInputAccessPublicIndexable    ImportFromURLInputAccess = "PUBLIC_INDEXABLE"
-	ImportFromURLInputAccessPublicNotIndexable ImportFromURLInputAccess = "PUBLIC_NOT_INDEXABLE"
 	ImportFromURLInputAccessHiddenIndexable    ImportFromURLInputAccess = "HIDDEN_INDEXABLE"
 	ImportFromURLInputAccessHiddenNotIndexable ImportFromURLInputAccess = "HIDDEN_NOT_INDEXABLE"
 	ImportFromURLInputAccessHiddenPrivate      ImportFromURLInputAccess = "HIDDEN_PRIVATE"
-	ImportFromURLInputAccessPrivate            ImportFromURLInputAccess = "PRIVATE"
 	ImportFromURLInputAccessHiddenSensitive    ImportFromURLInputAccess = "HIDDEN_SENSITIVE"
+	ImportFromURLInputAccessPrivate            ImportFromURLInputAccess = "PRIVATE"
+	ImportFromURLInputAccessPublicIndexable    ImportFromURLInputAccess = "PUBLIC_INDEXABLE"
+	ImportFromURLInputAccessPublicNotIndexable ImportFromURLInputAccess = "PUBLIC_NOT_INDEXABLE"
 	ImportFromURLInputAccessSensitive          ImportFromURLInputAccess = "SENSITIVE"
 )
 

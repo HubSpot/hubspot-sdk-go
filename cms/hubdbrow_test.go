@@ -32,13 +32,13 @@ func TestHubdbRowNewWithOptionalParams(t *testing.T) {
 		"tableIdOrName",
 		cms.HubdbRowNewParams{
 			HubDBTableRowV3Request: cms.HubDBTableRowV3RequestParam{
+				ChildTableID: 0,
+				DisplayIndex: 0,
 				Values: map[string]cms.Variant{
 					"foo": map[string]any{},
 				},
-				ChildTableID: hubspotsdk.Int(0),
-				DisplayIndex: hubspotsdk.Int(0),
-				Name:         hubspotsdk.String("name"),
-				Path:         hubspotsdk.String("path"),
+				Name: hubspotsdk.String("name"),
+				Path: hubspotsdk.String("path"),
 			},
 		},
 	)
@@ -257,13 +257,13 @@ func TestHubdbRowReplaceDraftWithOptionalParams(t *testing.T) {
 		cms.HubdbRowReplaceDraftParams{
 			TableIDOrName: "tableIdOrName",
 			HubDBTableRowV3Request: cms.HubDBTableRowV3RequestParam{
+				ChildTableID: 0,
+				DisplayIndex: 0,
 				Values: map[string]cms.Variant{
 					"foo": map[string]any{},
 				},
-				ChildTableID: hubspotsdk.Int(0),
-				DisplayIndex: hubspotsdk.Int(0),
-				Name:         hubspotsdk.String("name"),
-				Path:         hubspotsdk.String("path"),
+				Name: hubspotsdk.String("name"),
+				Path: hubspotsdk.String("path"),
 			},
 		},
 	)
@@ -295,13 +295,13 @@ func TestHubdbRowUpdateDraftWithOptionalParams(t *testing.T) {
 		cms.HubdbRowUpdateDraftParams{
 			TableIDOrName: "tableIdOrName",
 			HubDBTableRowV3Request: cms.HubDBTableRowV3RequestParam{
+				ChildTableID: 0,
+				DisplayIndex: 0,
 				Values: map[string]cms.Variant{
 					"foo": map[string]any{},
 				},
-				ChildTableID: hubspotsdk.Int(0),
-				DisplayIndex: hubspotsdk.Int(0),
-				Name:         hubspotsdk.String("name"),
-				Path:         hubspotsdk.String("path"),
+				Name: hubspotsdk.String("name"),
+				Path: hubspotsdk.String("path"),
 			},
 		},
 	)

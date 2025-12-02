@@ -27,7 +27,7 @@ func TestObjectFeedbackSubmissionListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.FeedbackSubmissions.List(context.TODO(), crm.ObjectFeedbackSubmissionListParams{
+	_, err := client.Crm.Objects.FeedbackSubmissions.List(context.TODO(), crm.ObjectFeedbackSubmissionListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -57,7 +57,7 @@ func TestObjectFeedbackSubmissionGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.FeedbackSubmissions.Get(
+	_, err := client.Crm.Objects.FeedbackSubmissions.Get(
 		context.TODO(),
 		"feedbackSubmissionId",
 		crm.ObjectFeedbackSubmissionGetParams{
@@ -90,22 +90,22 @@ func TestObjectFeedbackSubmissionSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.FeedbackSubmissions.Search(context.TODO(), crm.ObjectFeedbackSubmissionSearchParams{
+	_, err := client.Crm.Objects.FeedbackSubmissions.Search(context.TODO(), crm.ObjectFeedbackSubmissionSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

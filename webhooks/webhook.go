@@ -13,7 +13,7 @@ import (
 )
 
 // WebhookService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -59,7 +59,7 @@ type BatchResponseSubscriptionResponse struct {
 	// The current status of the batch operation, which can be PENDING, PROCESSING,
 	// CANCELED, or COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseSubscriptionResponseStatus `json:"status,required"`
 	// A collection of related links associated with the batch operation.
 	Links map[string]string `json:"links"`
@@ -89,10 +89,10 @@ func (r *BatchResponseSubscriptionResponse) UnmarshalJSON(data []byte) error {
 type BatchResponseSubscriptionResponseStatus string
 
 const (
-	BatchResponseSubscriptionResponseStatusPending    BatchResponseSubscriptionResponseStatus = "PENDING"
-	BatchResponseSubscriptionResponseStatusProcessing BatchResponseSubscriptionResponseStatus = "PROCESSING"
 	BatchResponseSubscriptionResponseStatusCanceled   BatchResponseSubscriptionResponseStatus = "CANCELED"
 	BatchResponseSubscriptionResponseStatusComplete   BatchResponseSubscriptionResponseStatus = "COMPLETE"
+	BatchResponseSubscriptionResponseStatusPending    BatchResponseSubscriptionResponseStatus = "PENDING"
+	BatchResponseSubscriptionResponseStatusProcessing BatchResponseSubscriptionResponseStatus = "PROCESSING"
 )
 
 // New or updated webhook settings for an app.
@@ -168,21 +168,21 @@ type SubscriptionCreateRequestParam struct {
 	// Type of event to listen for. Can be one of `create`, `delete`,
 	// `deletedForPrivacy`, or `propertyChange`.
 	//
-	// Any of "contact.propertyChange", "company.propertyChange",
-	// "deal.propertyChange", "ticket.propertyChange", "product.propertyChange",
-	// "line_item.propertyChange", "contact.creation", "contact.deletion",
-	// "contact.privacyDeletion", "company.creation", "company.deletion",
-	// "deal.creation", "deal.deletion", "ticket.creation", "ticket.deletion",
-	// "product.creation", "product.deletion", "line_item.creation",
-	// "line_item.deletion", "conversation.creation", "conversation.deletion",
+	// Any of "company.associationChange", "company.creation", "company.deletion",
+	// "company.merge", "company.propertyChange", "company.restore",
+	// "contact.associationChange", "contact.creation", "contact.deletion",
+	// "contact.merge", "contact.privacyDeletion", "contact.propertyChange",
+	// "contact.restore", "conversation.creation", "conversation.deletion",
 	// "conversation.newMessage", "conversation.privacyDeletion",
-	// "conversation.propertyChange", "contact.merge", "company.merge", "deal.merge",
-	// "ticket.merge", "product.merge", "line_item.merge", "contact.restore",
-	// "company.restore", "deal.restore", "ticket.restore", "product.restore",
-	// "line_item.restore", "contact.associationChange", "company.associationChange",
-	// "deal.associationChange", "ticket.associationChange",
-	// "line_item.associationChange", "object.propertyChange", "object.creation",
-	// "object.deletion", "object.merge", "object.restore", "object.associationChange".
+	// "conversation.propertyChange", "deal.associationChange", "deal.creation",
+	// "deal.deletion", "deal.merge", "deal.propertyChange", "deal.restore",
+	// "line_item.associationChange", "line_item.creation", "line_item.deletion",
+	// "line_item.merge", "line_item.propertyChange", "line_item.restore",
+	// "object.associationChange", "object.creation", "object.deletion",
+	// "object.merge", "object.propertyChange", "object.restore", "product.creation",
+	// "product.deletion", "product.merge", "product.propertyChange",
+	// "product.restore", "ticket.associationChange", "ticket.creation",
+	// "ticket.deletion", "ticket.merge", "ticket.propertyChange", "ticket.restore".
 	EventType SubscriptionCreateRequestEventType `json:"eventType,omitzero,required"`
 	// Determines if the subscription is active or paused. Defaults to false.
 	Active       param.Opt[bool]   `json:"active,omitzero"`
@@ -206,53 +206,53 @@ func (r *SubscriptionCreateRequestParam) UnmarshalJSON(data []byte) error {
 type SubscriptionCreateRequestEventType string
 
 const (
-	SubscriptionCreateRequestEventTypeContactPropertyChange       SubscriptionCreateRequestEventType = "contact.propertyChange"
-	SubscriptionCreateRequestEventTypeCompanyPropertyChange       SubscriptionCreateRequestEventType = "company.propertyChange"
-	SubscriptionCreateRequestEventTypeDealPropertyChange          SubscriptionCreateRequestEventType = "deal.propertyChange"
-	SubscriptionCreateRequestEventTypeTicketPropertyChange        SubscriptionCreateRequestEventType = "ticket.propertyChange"
-	SubscriptionCreateRequestEventTypeProductPropertyChange       SubscriptionCreateRequestEventType = "product.propertyChange"
-	SubscriptionCreateRequestEventTypeLineItemPropertyChange      SubscriptionCreateRequestEventType = "line_item.propertyChange"
-	SubscriptionCreateRequestEventTypeContactCreation             SubscriptionCreateRequestEventType = "contact.creation"
-	SubscriptionCreateRequestEventTypeContactDeletion             SubscriptionCreateRequestEventType = "contact.deletion"
-	SubscriptionCreateRequestEventTypeContactPrivacyDeletion      SubscriptionCreateRequestEventType = "contact.privacyDeletion"
+	SubscriptionCreateRequestEventTypeCompanyAssociationChange    SubscriptionCreateRequestEventType = "company.associationChange"
 	SubscriptionCreateRequestEventTypeCompanyCreation             SubscriptionCreateRequestEventType = "company.creation"
 	SubscriptionCreateRequestEventTypeCompanyDeletion             SubscriptionCreateRequestEventType = "company.deletion"
-	SubscriptionCreateRequestEventTypeDealCreation                SubscriptionCreateRequestEventType = "deal.creation"
-	SubscriptionCreateRequestEventTypeDealDeletion                SubscriptionCreateRequestEventType = "deal.deletion"
-	SubscriptionCreateRequestEventTypeTicketCreation              SubscriptionCreateRequestEventType = "ticket.creation"
-	SubscriptionCreateRequestEventTypeTicketDeletion              SubscriptionCreateRequestEventType = "ticket.deletion"
-	SubscriptionCreateRequestEventTypeProductCreation             SubscriptionCreateRequestEventType = "product.creation"
-	SubscriptionCreateRequestEventTypeProductDeletion             SubscriptionCreateRequestEventType = "product.deletion"
-	SubscriptionCreateRequestEventTypeLineItemCreation            SubscriptionCreateRequestEventType = "line_item.creation"
-	SubscriptionCreateRequestEventTypeLineItemDeletion            SubscriptionCreateRequestEventType = "line_item.deletion"
+	SubscriptionCreateRequestEventTypeCompanyMerge                SubscriptionCreateRequestEventType = "company.merge"
+	SubscriptionCreateRequestEventTypeCompanyPropertyChange       SubscriptionCreateRequestEventType = "company.propertyChange"
+	SubscriptionCreateRequestEventTypeCompanyRestore              SubscriptionCreateRequestEventType = "company.restore"
+	SubscriptionCreateRequestEventTypeContactAssociationChange    SubscriptionCreateRequestEventType = "contact.associationChange"
+	SubscriptionCreateRequestEventTypeContactCreation             SubscriptionCreateRequestEventType = "contact.creation"
+	SubscriptionCreateRequestEventTypeContactDeletion             SubscriptionCreateRequestEventType = "contact.deletion"
+	SubscriptionCreateRequestEventTypeContactMerge                SubscriptionCreateRequestEventType = "contact.merge"
+	SubscriptionCreateRequestEventTypeContactPrivacyDeletion      SubscriptionCreateRequestEventType = "contact.privacyDeletion"
+	SubscriptionCreateRequestEventTypeContactPropertyChange       SubscriptionCreateRequestEventType = "contact.propertyChange"
+	SubscriptionCreateRequestEventTypeContactRestore              SubscriptionCreateRequestEventType = "contact.restore"
 	SubscriptionCreateRequestEventTypeConversationCreation        SubscriptionCreateRequestEventType = "conversation.creation"
 	SubscriptionCreateRequestEventTypeConversationDeletion        SubscriptionCreateRequestEventType = "conversation.deletion"
 	SubscriptionCreateRequestEventTypeConversationNewMessage      SubscriptionCreateRequestEventType = "conversation.newMessage"
 	SubscriptionCreateRequestEventTypeConversationPrivacyDeletion SubscriptionCreateRequestEventType = "conversation.privacyDeletion"
 	SubscriptionCreateRequestEventTypeConversationPropertyChange  SubscriptionCreateRequestEventType = "conversation.propertyChange"
-	SubscriptionCreateRequestEventTypeContactMerge                SubscriptionCreateRequestEventType = "contact.merge"
-	SubscriptionCreateRequestEventTypeCompanyMerge                SubscriptionCreateRequestEventType = "company.merge"
-	SubscriptionCreateRequestEventTypeDealMerge                   SubscriptionCreateRequestEventType = "deal.merge"
-	SubscriptionCreateRequestEventTypeTicketMerge                 SubscriptionCreateRequestEventType = "ticket.merge"
-	SubscriptionCreateRequestEventTypeProductMerge                SubscriptionCreateRequestEventType = "product.merge"
-	SubscriptionCreateRequestEventTypeLineItemMerge               SubscriptionCreateRequestEventType = "line_item.merge"
-	SubscriptionCreateRequestEventTypeContactRestore              SubscriptionCreateRequestEventType = "contact.restore"
-	SubscriptionCreateRequestEventTypeCompanyRestore              SubscriptionCreateRequestEventType = "company.restore"
-	SubscriptionCreateRequestEventTypeDealRestore                 SubscriptionCreateRequestEventType = "deal.restore"
-	SubscriptionCreateRequestEventTypeTicketRestore               SubscriptionCreateRequestEventType = "ticket.restore"
-	SubscriptionCreateRequestEventTypeProductRestore              SubscriptionCreateRequestEventType = "product.restore"
-	SubscriptionCreateRequestEventTypeLineItemRestore             SubscriptionCreateRequestEventType = "line_item.restore"
-	SubscriptionCreateRequestEventTypeContactAssociationChange    SubscriptionCreateRequestEventType = "contact.associationChange"
-	SubscriptionCreateRequestEventTypeCompanyAssociationChange    SubscriptionCreateRequestEventType = "company.associationChange"
 	SubscriptionCreateRequestEventTypeDealAssociationChange       SubscriptionCreateRequestEventType = "deal.associationChange"
-	SubscriptionCreateRequestEventTypeTicketAssociationChange     SubscriptionCreateRequestEventType = "ticket.associationChange"
+	SubscriptionCreateRequestEventTypeDealCreation                SubscriptionCreateRequestEventType = "deal.creation"
+	SubscriptionCreateRequestEventTypeDealDeletion                SubscriptionCreateRequestEventType = "deal.deletion"
+	SubscriptionCreateRequestEventTypeDealMerge                   SubscriptionCreateRequestEventType = "deal.merge"
+	SubscriptionCreateRequestEventTypeDealPropertyChange          SubscriptionCreateRequestEventType = "deal.propertyChange"
+	SubscriptionCreateRequestEventTypeDealRestore                 SubscriptionCreateRequestEventType = "deal.restore"
 	SubscriptionCreateRequestEventTypeLineItemAssociationChange   SubscriptionCreateRequestEventType = "line_item.associationChange"
-	SubscriptionCreateRequestEventTypeObjectPropertyChange        SubscriptionCreateRequestEventType = "object.propertyChange"
+	SubscriptionCreateRequestEventTypeLineItemCreation            SubscriptionCreateRequestEventType = "line_item.creation"
+	SubscriptionCreateRequestEventTypeLineItemDeletion            SubscriptionCreateRequestEventType = "line_item.deletion"
+	SubscriptionCreateRequestEventTypeLineItemMerge               SubscriptionCreateRequestEventType = "line_item.merge"
+	SubscriptionCreateRequestEventTypeLineItemPropertyChange      SubscriptionCreateRequestEventType = "line_item.propertyChange"
+	SubscriptionCreateRequestEventTypeLineItemRestore             SubscriptionCreateRequestEventType = "line_item.restore"
+	SubscriptionCreateRequestEventTypeObjectAssociationChange     SubscriptionCreateRequestEventType = "object.associationChange"
 	SubscriptionCreateRequestEventTypeObjectCreation              SubscriptionCreateRequestEventType = "object.creation"
 	SubscriptionCreateRequestEventTypeObjectDeletion              SubscriptionCreateRequestEventType = "object.deletion"
 	SubscriptionCreateRequestEventTypeObjectMerge                 SubscriptionCreateRequestEventType = "object.merge"
+	SubscriptionCreateRequestEventTypeObjectPropertyChange        SubscriptionCreateRequestEventType = "object.propertyChange"
 	SubscriptionCreateRequestEventTypeObjectRestore               SubscriptionCreateRequestEventType = "object.restore"
-	SubscriptionCreateRequestEventTypeObjectAssociationChange     SubscriptionCreateRequestEventType = "object.associationChange"
+	SubscriptionCreateRequestEventTypeProductCreation             SubscriptionCreateRequestEventType = "product.creation"
+	SubscriptionCreateRequestEventTypeProductDeletion             SubscriptionCreateRequestEventType = "product.deletion"
+	SubscriptionCreateRequestEventTypeProductMerge                SubscriptionCreateRequestEventType = "product.merge"
+	SubscriptionCreateRequestEventTypeProductPropertyChange       SubscriptionCreateRequestEventType = "product.propertyChange"
+	SubscriptionCreateRequestEventTypeProductRestore              SubscriptionCreateRequestEventType = "product.restore"
+	SubscriptionCreateRequestEventTypeTicketAssociationChange     SubscriptionCreateRequestEventType = "ticket.associationChange"
+	SubscriptionCreateRequestEventTypeTicketCreation              SubscriptionCreateRequestEventType = "ticket.creation"
+	SubscriptionCreateRequestEventTypeTicketDeletion              SubscriptionCreateRequestEventType = "ticket.deletion"
+	SubscriptionCreateRequestEventTypeTicketMerge                 SubscriptionCreateRequestEventType = "ticket.merge"
+	SubscriptionCreateRequestEventTypeTicketPropertyChange        SubscriptionCreateRequestEventType = "ticket.propertyChange"
+	SubscriptionCreateRequestEventTypeTicketRestore               SubscriptionCreateRequestEventType = "ticket.restore"
 )
 
 // List of event subscriptions for your app
@@ -300,21 +300,21 @@ type SubscriptionResponse struct {
 	// Type of event to listen for. Can be one of `create`, `delete`,
 	// `deletedForPrivacy`, or `propertyChange`.
 	//
-	// Any of "contact.propertyChange", "company.propertyChange",
-	// "deal.propertyChange", "ticket.propertyChange", "product.propertyChange",
-	// "line_item.propertyChange", "contact.creation", "contact.deletion",
-	// "contact.privacyDeletion", "company.creation", "company.deletion",
-	// "deal.creation", "deal.deletion", "ticket.creation", "ticket.deletion",
-	// "product.creation", "product.deletion", "line_item.creation",
-	// "line_item.deletion", "conversation.creation", "conversation.deletion",
+	// Any of "company.associationChange", "company.creation", "company.deletion",
+	// "company.merge", "company.propertyChange", "company.restore",
+	// "contact.associationChange", "contact.creation", "contact.deletion",
+	// "contact.merge", "contact.privacyDeletion", "contact.propertyChange",
+	// "contact.restore", "conversation.creation", "conversation.deletion",
 	// "conversation.newMessage", "conversation.privacyDeletion",
-	// "conversation.propertyChange", "contact.merge", "company.merge", "deal.merge",
-	// "ticket.merge", "product.merge", "line_item.merge", "contact.restore",
-	// "company.restore", "deal.restore", "ticket.restore", "product.restore",
-	// "line_item.restore", "contact.associationChange", "company.associationChange",
-	// "deal.associationChange", "ticket.associationChange",
-	// "line_item.associationChange", "object.propertyChange", "object.creation",
-	// "object.deletion", "object.merge", "object.restore", "object.associationChange".
+	// "conversation.propertyChange", "deal.associationChange", "deal.creation",
+	// "deal.deletion", "deal.merge", "deal.propertyChange", "deal.restore",
+	// "line_item.associationChange", "line_item.creation", "line_item.deletion",
+	// "line_item.merge", "line_item.propertyChange", "line_item.restore",
+	// "object.associationChange", "object.creation", "object.deletion",
+	// "object.merge", "object.propertyChange", "object.restore", "product.creation",
+	// "product.deletion", "product.merge", "product.propertyChange",
+	// "product.restore", "ticket.associationChange", "ticket.creation",
+	// "ticket.deletion", "ticket.merge", "ticket.propertyChange", "ticket.restore".
 	EventType SubscriptionResponseEventType `json:"eventType,required"`
 	// The identifier of the object type associated with the subscription.
 	ObjectTypeID string `json:"objectTypeId"`
@@ -349,53 +349,53 @@ func (r *SubscriptionResponse) UnmarshalJSON(data []byte) error {
 type SubscriptionResponseEventType string
 
 const (
-	SubscriptionResponseEventTypeContactPropertyChange       SubscriptionResponseEventType = "contact.propertyChange"
-	SubscriptionResponseEventTypeCompanyPropertyChange       SubscriptionResponseEventType = "company.propertyChange"
-	SubscriptionResponseEventTypeDealPropertyChange          SubscriptionResponseEventType = "deal.propertyChange"
-	SubscriptionResponseEventTypeTicketPropertyChange        SubscriptionResponseEventType = "ticket.propertyChange"
-	SubscriptionResponseEventTypeProductPropertyChange       SubscriptionResponseEventType = "product.propertyChange"
-	SubscriptionResponseEventTypeLineItemPropertyChange      SubscriptionResponseEventType = "line_item.propertyChange"
-	SubscriptionResponseEventTypeContactCreation             SubscriptionResponseEventType = "contact.creation"
-	SubscriptionResponseEventTypeContactDeletion             SubscriptionResponseEventType = "contact.deletion"
-	SubscriptionResponseEventTypeContactPrivacyDeletion      SubscriptionResponseEventType = "contact.privacyDeletion"
+	SubscriptionResponseEventTypeCompanyAssociationChange    SubscriptionResponseEventType = "company.associationChange"
 	SubscriptionResponseEventTypeCompanyCreation             SubscriptionResponseEventType = "company.creation"
 	SubscriptionResponseEventTypeCompanyDeletion             SubscriptionResponseEventType = "company.deletion"
-	SubscriptionResponseEventTypeDealCreation                SubscriptionResponseEventType = "deal.creation"
-	SubscriptionResponseEventTypeDealDeletion                SubscriptionResponseEventType = "deal.deletion"
-	SubscriptionResponseEventTypeTicketCreation              SubscriptionResponseEventType = "ticket.creation"
-	SubscriptionResponseEventTypeTicketDeletion              SubscriptionResponseEventType = "ticket.deletion"
-	SubscriptionResponseEventTypeProductCreation             SubscriptionResponseEventType = "product.creation"
-	SubscriptionResponseEventTypeProductDeletion             SubscriptionResponseEventType = "product.deletion"
-	SubscriptionResponseEventTypeLineItemCreation            SubscriptionResponseEventType = "line_item.creation"
-	SubscriptionResponseEventTypeLineItemDeletion            SubscriptionResponseEventType = "line_item.deletion"
+	SubscriptionResponseEventTypeCompanyMerge                SubscriptionResponseEventType = "company.merge"
+	SubscriptionResponseEventTypeCompanyPropertyChange       SubscriptionResponseEventType = "company.propertyChange"
+	SubscriptionResponseEventTypeCompanyRestore              SubscriptionResponseEventType = "company.restore"
+	SubscriptionResponseEventTypeContactAssociationChange    SubscriptionResponseEventType = "contact.associationChange"
+	SubscriptionResponseEventTypeContactCreation             SubscriptionResponseEventType = "contact.creation"
+	SubscriptionResponseEventTypeContactDeletion             SubscriptionResponseEventType = "contact.deletion"
+	SubscriptionResponseEventTypeContactMerge                SubscriptionResponseEventType = "contact.merge"
+	SubscriptionResponseEventTypeContactPrivacyDeletion      SubscriptionResponseEventType = "contact.privacyDeletion"
+	SubscriptionResponseEventTypeContactPropertyChange       SubscriptionResponseEventType = "contact.propertyChange"
+	SubscriptionResponseEventTypeContactRestore              SubscriptionResponseEventType = "contact.restore"
 	SubscriptionResponseEventTypeConversationCreation        SubscriptionResponseEventType = "conversation.creation"
 	SubscriptionResponseEventTypeConversationDeletion        SubscriptionResponseEventType = "conversation.deletion"
 	SubscriptionResponseEventTypeConversationNewMessage      SubscriptionResponseEventType = "conversation.newMessage"
 	SubscriptionResponseEventTypeConversationPrivacyDeletion SubscriptionResponseEventType = "conversation.privacyDeletion"
 	SubscriptionResponseEventTypeConversationPropertyChange  SubscriptionResponseEventType = "conversation.propertyChange"
-	SubscriptionResponseEventTypeContactMerge                SubscriptionResponseEventType = "contact.merge"
-	SubscriptionResponseEventTypeCompanyMerge                SubscriptionResponseEventType = "company.merge"
-	SubscriptionResponseEventTypeDealMerge                   SubscriptionResponseEventType = "deal.merge"
-	SubscriptionResponseEventTypeTicketMerge                 SubscriptionResponseEventType = "ticket.merge"
-	SubscriptionResponseEventTypeProductMerge                SubscriptionResponseEventType = "product.merge"
-	SubscriptionResponseEventTypeLineItemMerge               SubscriptionResponseEventType = "line_item.merge"
-	SubscriptionResponseEventTypeContactRestore              SubscriptionResponseEventType = "contact.restore"
-	SubscriptionResponseEventTypeCompanyRestore              SubscriptionResponseEventType = "company.restore"
-	SubscriptionResponseEventTypeDealRestore                 SubscriptionResponseEventType = "deal.restore"
-	SubscriptionResponseEventTypeTicketRestore               SubscriptionResponseEventType = "ticket.restore"
-	SubscriptionResponseEventTypeProductRestore              SubscriptionResponseEventType = "product.restore"
-	SubscriptionResponseEventTypeLineItemRestore             SubscriptionResponseEventType = "line_item.restore"
-	SubscriptionResponseEventTypeContactAssociationChange    SubscriptionResponseEventType = "contact.associationChange"
-	SubscriptionResponseEventTypeCompanyAssociationChange    SubscriptionResponseEventType = "company.associationChange"
 	SubscriptionResponseEventTypeDealAssociationChange       SubscriptionResponseEventType = "deal.associationChange"
-	SubscriptionResponseEventTypeTicketAssociationChange     SubscriptionResponseEventType = "ticket.associationChange"
+	SubscriptionResponseEventTypeDealCreation                SubscriptionResponseEventType = "deal.creation"
+	SubscriptionResponseEventTypeDealDeletion                SubscriptionResponseEventType = "deal.deletion"
+	SubscriptionResponseEventTypeDealMerge                   SubscriptionResponseEventType = "deal.merge"
+	SubscriptionResponseEventTypeDealPropertyChange          SubscriptionResponseEventType = "deal.propertyChange"
+	SubscriptionResponseEventTypeDealRestore                 SubscriptionResponseEventType = "deal.restore"
 	SubscriptionResponseEventTypeLineItemAssociationChange   SubscriptionResponseEventType = "line_item.associationChange"
-	SubscriptionResponseEventTypeObjectPropertyChange        SubscriptionResponseEventType = "object.propertyChange"
+	SubscriptionResponseEventTypeLineItemCreation            SubscriptionResponseEventType = "line_item.creation"
+	SubscriptionResponseEventTypeLineItemDeletion            SubscriptionResponseEventType = "line_item.deletion"
+	SubscriptionResponseEventTypeLineItemMerge               SubscriptionResponseEventType = "line_item.merge"
+	SubscriptionResponseEventTypeLineItemPropertyChange      SubscriptionResponseEventType = "line_item.propertyChange"
+	SubscriptionResponseEventTypeLineItemRestore             SubscriptionResponseEventType = "line_item.restore"
+	SubscriptionResponseEventTypeObjectAssociationChange     SubscriptionResponseEventType = "object.associationChange"
 	SubscriptionResponseEventTypeObjectCreation              SubscriptionResponseEventType = "object.creation"
 	SubscriptionResponseEventTypeObjectDeletion              SubscriptionResponseEventType = "object.deletion"
 	SubscriptionResponseEventTypeObjectMerge                 SubscriptionResponseEventType = "object.merge"
+	SubscriptionResponseEventTypeObjectPropertyChange        SubscriptionResponseEventType = "object.propertyChange"
 	SubscriptionResponseEventTypeObjectRestore               SubscriptionResponseEventType = "object.restore"
-	SubscriptionResponseEventTypeObjectAssociationChange     SubscriptionResponseEventType = "object.associationChange"
+	SubscriptionResponseEventTypeProductCreation             SubscriptionResponseEventType = "product.creation"
+	SubscriptionResponseEventTypeProductDeletion             SubscriptionResponseEventType = "product.deletion"
+	SubscriptionResponseEventTypeProductMerge                SubscriptionResponseEventType = "product.merge"
+	SubscriptionResponseEventTypeProductPropertyChange       SubscriptionResponseEventType = "product.propertyChange"
+	SubscriptionResponseEventTypeProductRestore              SubscriptionResponseEventType = "product.restore"
+	SubscriptionResponseEventTypeTicketAssociationChange     SubscriptionResponseEventType = "ticket.associationChange"
+	SubscriptionResponseEventTypeTicketCreation              SubscriptionResponseEventType = "ticket.creation"
+	SubscriptionResponseEventTypeTicketDeletion              SubscriptionResponseEventType = "ticket.deletion"
+	SubscriptionResponseEventTypeTicketMerge                 SubscriptionResponseEventType = "ticket.merge"
+	SubscriptionResponseEventTypeTicketPropertyChange        SubscriptionResponseEventType = "ticket.propertyChange"
+	SubscriptionResponseEventTypeTicketRestore               SubscriptionResponseEventType = "ticket.restore"
 )
 
 // Configuration details for webhook throttling.

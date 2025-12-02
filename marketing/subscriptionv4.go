@@ -13,7 +13,7 @@ import (
 )
 
 // SubscriptionV4Service contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -47,7 +47,7 @@ type ActionResponseWithResultsPublicStatus struct {
 	// Indicates the current status of the operation, with possible values: PENDING,
 	// PROCESSING, CANCELED, COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status ActionResponseWithResultsPublicStatusStatus `json:"status,required"`
 	// A list of errors that occurred during the operation.
 	Errors []shared.StandardError `json:"errors"`
@@ -83,10 +83,10 @@ func (r *ActionResponseWithResultsPublicStatus) UnmarshalJSON(data []byte) error
 type ActionResponseWithResultsPublicStatusStatus string
 
 const (
-	ActionResponseWithResultsPublicStatusStatusPending    ActionResponseWithResultsPublicStatusStatus = "PENDING"
-	ActionResponseWithResultsPublicStatusStatusProcessing ActionResponseWithResultsPublicStatusStatus = "PROCESSING"
 	ActionResponseWithResultsPublicStatusStatusCanceled   ActionResponseWithResultsPublicStatusStatus = "CANCELED"
 	ActionResponseWithResultsPublicStatusStatusComplete   ActionResponseWithResultsPublicStatusStatus = "COMPLETE"
+	ActionResponseWithResultsPublicStatusStatusPending    ActionResponseWithResultsPublicStatusStatus = "PENDING"
+	ActionResponseWithResultsPublicStatusStatusProcessing ActionResponseWithResultsPublicStatusStatus = "PROCESSING"
 )
 
 type ActionResponseWithResultsPublicWideStatus struct {
@@ -99,7 +99,7 @@ type ActionResponseWithResultsPublicWideStatus struct {
 	// The current status of the operation, which can be PENDING, PROCESSING, CANCELED,
 	// or COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status ActionResponseWithResultsPublicWideStatusStatus `json:"status,required"`
 	// An array of error objects detailing any issues encountered during the operation.
 	Errors []shared.StandardError `json:"errors"`
@@ -136,10 +136,10 @@ func (r *ActionResponseWithResultsPublicWideStatus) UnmarshalJSON(data []byte) e
 type ActionResponseWithResultsPublicWideStatusStatus string
 
 const (
-	ActionResponseWithResultsPublicWideStatusStatusPending    ActionResponseWithResultsPublicWideStatusStatus = "PENDING"
-	ActionResponseWithResultsPublicWideStatusStatusProcessing ActionResponseWithResultsPublicWideStatusStatus = "PROCESSING"
 	ActionResponseWithResultsPublicWideStatusStatusCanceled   ActionResponseWithResultsPublicWideStatusStatus = "CANCELED"
 	ActionResponseWithResultsPublicWideStatusStatusComplete   ActionResponseWithResultsPublicWideStatusStatus = "COMPLETE"
+	ActionResponseWithResultsPublicWideStatusStatusPending    ActionResponseWithResultsPublicWideStatusStatus = "PENDING"
+	ActionResponseWithResultsPublicWideStatusStatusProcessing ActionResponseWithResultsPublicWideStatusStatus = "PROCESSING"
 )
 
 type ActionResponseWithResultsSubscriptionDefinition struct {
@@ -152,7 +152,7 @@ type ActionResponseWithResultsSubscriptionDefinition struct {
 	// The current status of the operation, which can be PENDING, PROCESSING, CANCELED,
 	// or COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status ActionResponseWithResultsSubscriptionDefinitionStatus `json:"status,required"`
 	// An array of errors that occurred during the operation.
 	Errors []shared.StandardError `json:"errors"`
@@ -188,10 +188,10 @@ func (r *ActionResponseWithResultsSubscriptionDefinition) UnmarshalJSON(data []b
 type ActionResponseWithResultsSubscriptionDefinitionStatus string
 
 const (
-	ActionResponseWithResultsSubscriptionDefinitionStatusPending    ActionResponseWithResultsSubscriptionDefinitionStatus = "PENDING"
-	ActionResponseWithResultsSubscriptionDefinitionStatusProcessing ActionResponseWithResultsSubscriptionDefinitionStatus = "PROCESSING"
 	ActionResponseWithResultsSubscriptionDefinitionStatusCanceled   ActionResponseWithResultsSubscriptionDefinitionStatus = "CANCELED"
 	ActionResponseWithResultsSubscriptionDefinitionStatusComplete   ActionResponseWithResultsSubscriptionDefinitionStatus = "COMPLETE"
+	ActionResponseWithResultsSubscriptionDefinitionStatusPending    ActionResponseWithResultsSubscriptionDefinitionStatus = "PENDING"
+	ActionResponseWithResultsSubscriptionDefinitionStatusProcessing ActionResponseWithResultsSubscriptionDefinitionStatus = "PROCESSING"
 )
 
 // The property Inputs is required.
@@ -219,7 +219,7 @@ type BatchResponsePublicBulkOptOutFromAllResponse struct {
 	// The current status of the bulk opt-out operation, which can be PENDING,
 	// PROCESSING, CANCELED, or COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicBulkOptOutFromAllResponseStatus `json:"status,required"`
 	// An array of error objects detailing any issues encountered during the bulk
 	// opt-out operation.
@@ -256,10 +256,10 @@ func (r *BatchResponsePublicBulkOptOutFromAllResponse) UnmarshalJSON(data []byte
 type BatchResponsePublicBulkOptOutFromAllResponseStatus string
 
 const (
-	BatchResponsePublicBulkOptOutFromAllResponseStatusPending    BatchResponsePublicBulkOptOutFromAllResponseStatus = "PENDING"
-	BatchResponsePublicBulkOptOutFromAllResponseStatusProcessing BatchResponsePublicBulkOptOutFromAllResponseStatus = "PROCESSING"
 	BatchResponsePublicBulkOptOutFromAllResponseStatusCanceled   BatchResponsePublicBulkOptOutFromAllResponseStatus = "CANCELED"
 	BatchResponsePublicBulkOptOutFromAllResponseStatusComplete   BatchResponsePublicBulkOptOutFromAllResponseStatus = "COMPLETE"
+	BatchResponsePublicBulkOptOutFromAllResponseStatusPending    BatchResponsePublicBulkOptOutFromAllResponseStatus = "PENDING"
+	BatchResponsePublicBulkOptOutFromAllResponseStatusProcessing BatchResponsePublicBulkOptOutFromAllResponseStatus = "PROCESSING"
 )
 
 type BatchResponsePublicStatus struct {
@@ -272,7 +272,7 @@ type BatchResponsePublicStatus struct {
 	// The current status of the batch operation, which can be PENDING, PROCESSING,
 	// CANCELED, or COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicStatusStatus `json:"status,required"`
 	// An array of error objects detailing any issues encountered.
 	Errors []shared.StandardError `json:"errors"`
@@ -308,10 +308,10 @@ func (r *BatchResponsePublicStatus) UnmarshalJSON(data []byte) error {
 type BatchResponsePublicStatusStatus string
 
 const (
-	BatchResponsePublicStatusStatusPending    BatchResponsePublicStatusStatus = "PENDING"
-	BatchResponsePublicStatusStatusProcessing BatchResponsePublicStatusStatus = "PROCESSING"
 	BatchResponsePublicStatusStatusCanceled   BatchResponsePublicStatusStatus = "CANCELED"
 	BatchResponsePublicStatusStatusComplete   BatchResponsePublicStatusStatus = "COMPLETE"
+	BatchResponsePublicStatusStatusPending    BatchResponsePublicStatusStatus = "PENDING"
+	BatchResponsePublicStatusStatusProcessing BatchResponsePublicStatusStatus = "PROCESSING"
 )
 
 type BatchResponsePublicStatusBulkResponse struct {
@@ -325,7 +325,7 @@ type BatchResponsePublicStatusBulkResponse struct {
 	// The current status of the batch process, with possible values: PENDING,
 	// PROCESSING, CANCELED, COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicStatusBulkResponseStatus `json:"status,required"`
 	// A collection of related links associated with the batch response.
 	Links map[string]string `json:"links"`
@@ -355,10 +355,10 @@ func (r *BatchResponsePublicStatusBulkResponse) UnmarshalJSON(data []byte) error
 type BatchResponsePublicStatusBulkResponseStatus string
 
 const (
-	BatchResponsePublicStatusBulkResponseStatusPending    BatchResponsePublicStatusBulkResponseStatus = "PENDING"
-	BatchResponsePublicStatusBulkResponseStatusProcessing BatchResponsePublicStatusBulkResponseStatus = "PROCESSING"
 	BatchResponsePublicStatusBulkResponseStatusCanceled   BatchResponsePublicStatusBulkResponseStatus = "CANCELED"
 	BatchResponsePublicStatusBulkResponseStatusComplete   BatchResponsePublicStatusBulkResponseStatus = "COMPLETE"
+	BatchResponsePublicStatusBulkResponseStatusPending    BatchResponsePublicStatusBulkResponseStatus = "PENDING"
+	BatchResponsePublicStatusBulkResponseStatusProcessing BatchResponsePublicStatusBulkResponseStatus = "PROCESSING"
 )
 
 type BatchResponsePublicWideStatusBulkResponse struct {
@@ -372,7 +372,7 @@ type BatchResponsePublicWideStatusBulkResponse struct {
 	// The current status of the batch process, with possible values: PENDING,
 	// PROCESSING, CANCELED, COMPLETE.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicWideStatusBulkResponseStatus `json:"status,required"`
 	// A collection of related links associated with the batch response.
 	Links map[string]string `json:"links"`
@@ -402,10 +402,10 @@ func (r *BatchResponsePublicWideStatusBulkResponse) UnmarshalJSON(data []byte) e
 type BatchResponsePublicWideStatusBulkResponseStatus string
 
 const (
-	BatchResponsePublicWideStatusBulkResponseStatusPending    BatchResponsePublicWideStatusBulkResponseStatus = "PENDING"
-	BatchResponsePublicWideStatusBulkResponseStatusProcessing BatchResponsePublicWideStatusBulkResponseStatus = "PROCESSING"
 	BatchResponsePublicWideStatusBulkResponseStatusCanceled   BatchResponsePublicWideStatusBulkResponseStatus = "CANCELED"
 	BatchResponsePublicWideStatusBulkResponseStatusComplete   BatchResponsePublicWideStatusBulkResponseStatus = "COMPLETE"
+	BatchResponsePublicWideStatusBulkResponseStatusPending    BatchResponsePublicWideStatusBulkResponseStatus = "PENDING"
+	BatchResponsePublicWideStatusBulkResponseStatusProcessing BatchResponsePublicWideStatusBulkResponseStatus = "PROCESSING"
 )
 
 // The property SubscriberIDString is required.
@@ -455,7 +455,7 @@ type PartialPublicStatusRequestParam struct {
 	// The current subscription status of the contact, which can be 'SUBSCRIBED',
 	// 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
 	//
-	// Any of "SUBSCRIBED", "UNSUBSCRIBED", "NOT_SPECIFIED".
+	// Any of "NOT_SPECIFIED", "SUBSCRIBED", "UNSUBSCRIBED".
 	StatusState PartialPublicStatusRequestStatusState `json:"statusState,omitzero,required"`
 	// The unique identifier of the subscription to be updated.
 	SubscriptionID int64 `json:"subscriptionId,required"`
@@ -466,9 +466,9 @@ type PartialPublicStatusRequestParam struct {
 	// 'PERFORMANCE_OF_CONTRACT', 'CONSENT_WITH_NOTICE', 'NON_GDPR',
 	// 'PROCESS_AND_STORE', and 'LEGITIMATE_INTEREST_OTHER'.
 	//
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegalBasis PartialPublicStatusRequestLegalBasis `json:"legalBasis,omitzero"`
 	paramObj
 }
@@ -493,9 +493,9 @@ const (
 type PartialPublicStatusRequestStatusState string
 
 const (
+	PartialPublicStatusRequestStatusStateNotSpecified PartialPublicStatusRequestStatusState = "NOT_SPECIFIED"
 	PartialPublicStatusRequestStatusStateSubscribed   PartialPublicStatusRequestStatusState = "SUBSCRIBED"
 	PartialPublicStatusRequestStatusStateUnsubscribed PartialPublicStatusRequestStatusState = "UNSUBSCRIBED"
-	PartialPublicStatusRequestStatusStateNotSpecified PartialPublicStatusRequestStatusState = "NOT_SPECIFIED"
 )
 
 // The legal basis for communication, with options including
@@ -505,13 +505,13 @@ const (
 type PartialPublicStatusRequestLegalBasis string
 
 const (
-	PartialPublicStatusRequestLegalBasisLegitimateInterestPql    PartialPublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	PartialPublicStatusRequestLegalBasisLegitimateInterestClient PartialPublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	PartialPublicStatusRequestLegalBasisPerformanceOfContract    PartialPublicStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	PartialPublicStatusRequestLegalBasisConsentWithNotice        PartialPublicStatusRequestLegalBasis = "CONSENT_WITH_NOTICE"
-	PartialPublicStatusRequestLegalBasisNonGdpr                  PartialPublicStatusRequestLegalBasis = "NON_GDPR"
-	PartialPublicStatusRequestLegalBasisProcessAndStore          PartialPublicStatusRequestLegalBasis = "PROCESS_AND_STORE"
+	PartialPublicStatusRequestLegalBasisLegitimateInterestClient PartialPublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	PartialPublicStatusRequestLegalBasisLegitimateInterestOther  PartialPublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	PartialPublicStatusRequestLegalBasisLegitimateInterestPql    PartialPublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	PartialPublicStatusRequestLegalBasisNonGdpr                  PartialPublicStatusRequestLegalBasis = "NON_GDPR"
+	PartialPublicStatusRequestLegalBasisPerformanceOfContract    PartialPublicStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	PartialPublicStatusRequestLegalBasisProcessAndStore          PartialPublicStatusRequestLegalBasis = "PROCESS_AND_STORE"
 )
 
 type PublicBulkOptOutFromAllResponse struct {
@@ -544,7 +544,7 @@ type PublicStatus struct {
 	// The current subscription status of the contact, which can be 'SUBSCRIBED',
 	// 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
 	//
-	// Any of "SUBSCRIBED", "UNSUBSCRIBED", "NOT_SPECIFIED".
+	// Any of "NOT_SPECIFIED", "SUBSCRIBED", "UNSUBSCRIBED".
 	Status PublicStatusStatus `json:"status,required"`
 	// The contact's email address.
 	SubscriberIDString string `json:"subscriberIdString,required"`
@@ -559,17 +559,17 @@ type PublicStatus struct {
 	// 'PERFORMANCE_OF_CONTRACT', 'CONSENT_WITH_NOTICE', 'NON_GDPR',
 	// 'PROCESS_AND_STORE', and 'LEGITIMATE_INTEREST_OTHER'.
 	//
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegalBasis PublicStatusLegalBasis `json:"legalBasis"`
 	// An explanation for the legal basis used for communication.
 	LegalBasisExplanation string `json:"legalBasisExplanation"`
 	// The reason for the successful change in subscription status, such as
 	// 'RESUBSCRIBE_OCCURRED' or 'NO_STATUS_CHANGE'.
 	//
-	// Any of "RESUBSCRIBE_OCCURRED", "NO_STATUS_CHANGE",
-	// "UNSUBSCRIBE_FROM_ALL_OCCURRED", "REQUESTED_CHANGE_OCCURRED".
+	// Any of "NO_STATUS_CHANGE", "REQUESTED_CHANGE_OCCURRED", "RESUBSCRIBE_OCCURRED",
+	// "UNSUBSCRIBE_FROM_ALL_OCCURRED".
 	SetStatusSuccessReason PublicStatusSetStatusSuccessReason `json:"setStatusSuccessReason"`
 	// The name of the subscription.
 	SubscriptionName string `json:"subscriptionName"`
@@ -609,9 +609,9 @@ const (
 type PublicStatusStatus string
 
 const (
+	PublicStatusStatusNotSpecified PublicStatusStatus = "NOT_SPECIFIED"
 	PublicStatusStatusSubscribed   PublicStatusStatus = "SUBSCRIBED"
 	PublicStatusStatusUnsubscribed PublicStatusStatus = "UNSUBSCRIBED"
-	PublicStatusStatusNotSpecified PublicStatusStatus = "NOT_SPECIFIED"
 )
 
 // The legal basis for communication, with options including
@@ -621,13 +621,13 @@ const (
 type PublicStatusLegalBasis string
 
 const (
-	PublicStatusLegalBasisLegitimateInterestPql    PublicStatusLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	PublicStatusLegalBasisLegitimateInterestClient PublicStatusLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	PublicStatusLegalBasisPerformanceOfContract    PublicStatusLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	PublicStatusLegalBasisConsentWithNotice        PublicStatusLegalBasis = "CONSENT_WITH_NOTICE"
-	PublicStatusLegalBasisNonGdpr                  PublicStatusLegalBasis = "NON_GDPR"
-	PublicStatusLegalBasisProcessAndStore          PublicStatusLegalBasis = "PROCESS_AND_STORE"
+	PublicStatusLegalBasisLegitimateInterestClient PublicStatusLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	PublicStatusLegalBasisLegitimateInterestOther  PublicStatusLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	PublicStatusLegalBasisLegitimateInterestPql    PublicStatusLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	PublicStatusLegalBasisNonGdpr                  PublicStatusLegalBasis = "NON_GDPR"
+	PublicStatusLegalBasisPerformanceOfContract    PublicStatusLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	PublicStatusLegalBasisProcessAndStore          PublicStatusLegalBasis = "PROCESS_AND_STORE"
 )
 
 // The reason for the successful change in subscription status, such as
@@ -635,10 +635,10 @@ const (
 type PublicStatusSetStatusSuccessReason string
 
 const (
-	PublicStatusSetStatusSuccessReasonResubscribeOccurred        PublicStatusSetStatusSuccessReason = "RESUBSCRIBE_OCCURRED"
 	PublicStatusSetStatusSuccessReasonNoStatusChange             PublicStatusSetStatusSuccessReason = "NO_STATUS_CHANGE"
-	PublicStatusSetStatusSuccessReasonUnsubscribeFromAllOccurred PublicStatusSetStatusSuccessReason = "UNSUBSCRIBE_FROM_ALL_OCCURRED"
 	PublicStatusSetStatusSuccessReasonRequestedChangeOccurred    PublicStatusSetStatusSuccessReason = "REQUESTED_CHANGE_OCCURRED"
+	PublicStatusSetStatusSuccessReasonResubscribeOccurred        PublicStatusSetStatusSuccessReason = "RESUBSCRIBE_OCCURRED"
+	PublicStatusSetStatusSuccessReasonUnsubscribeFromAllOccurred PublicStatusSetStatusSuccessReason = "UNSUBSCRIBE_FROM_ALL_OCCURRED"
 )
 
 type PublicStatusBulkResponse struct {
@@ -670,7 +670,7 @@ type PublicStatusRequestParam struct {
 	Channel PublicStatusRequestChannel `json:"channel,omitzero,required"`
 	// The status of the contact's subscription.
 	//
-	// Any of "SUBSCRIBED", "UNSUBSCRIBED", "NOT_SPECIFIED".
+	// Any of "NOT_SPECIFIED", "SUBSCRIBED", "UNSUBSCRIBED".
 	StatusState PublicStatusRequestStatusState `json:"statusState,omitzero,required"`
 	// The contact's email address.
 	SubscriberIDString string `json:"subscriberIdString,required"`
@@ -680,9 +680,9 @@ type PublicStatusRequestParam struct {
 	LegalBasisExplanation param.Opt[string] `json:"legalBasisExplanation,omitzero"`
 	// The legal basis for communication.
 	//
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegalBasis PublicStatusRequestLegalBasis `json:"legalBasis,omitzero"`
 	paramObj
 }
@@ -706,22 +706,22 @@ const (
 type PublicStatusRequestStatusState string
 
 const (
+	PublicStatusRequestStatusStateNotSpecified PublicStatusRequestStatusState = "NOT_SPECIFIED"
 	PublicStatusRequestStatusStateSubscribed   PublicStatusRequestStatusState = "SUBSCRIBED"
 	PublicStatusRequestStatusStateUnsubscribed PublicStatusRequestStatusState = "UNSUBSCRIBED"
-	PublicStatusRequestStatusStateNotSpecified PublicStatusRequestStatusState = "NOT_SPECIFIED"
 )
 
 // The legal basis for communication.
 type PublicStatusRequestLegalBasis string
 
 const (
-	PublicStatusRequestLegalBasisLegitimateInterestPql    PublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	PublicStatusRequestLegalBasisLegitimateInterestClient PublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	PublicStatusRequestLegalBasisPerformanceOfContract    PublicStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	PublicStatusRequestLegalBasisConsentWithNotice        PublicStatusRequestLegalBasis = "CONSENT_WITH_NOTICE"
-	PublicStatusRequestLegalBasisNonGdpr                  PublicStatusRequestLegalBasis = "NON_GDPR"
-	PublicStatusRequestLegalBasisProcessAndStore          PublicStatusRequestLegalBasis = "PROCESS_AND_STORE"
+	PublicStatusRequestLegalBasisLegitimateInterestClient PublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	PublicStatusRequestLegalBasisLegitimateInterestOther  PublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	PublicStatusRequestLegalBasisLegitimateInterestPql    PublicStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	PublicStatusRequestLegalBasisNonGdpr                  PublicStatusRequestLegalBasis = "NON_GDPR"
+	PublicStatusRequestLegalBasisPerformanceOfContract    PublicStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	PublicStatusRequestLegalBasisProcessAndStore          PublicStatusRequestLegalBasis = "PROCESS_AND_STORE"
 )
 
 type PublicWideStatus struct {
@@ -732,7 +732,7 @@ type PublicWideStatus struct {
 	// The subscription status of the contact, which can be 'SUBSCRIBED',
 	// 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
 	//
-	// Any of "SUBSCRIBED", "UNSUBSCRIBED", "NOT_SPECIFIED".
+	// Any of "NOT_SPECIFIED", "SUBSCRIBED", "UNSUBSCRIBED".
 	Status PublicWideStatusStatus `json:"status,required"`
 	// The email address of the contact.
 	SubscriberIDString string `json:"subscriberIdString,required"`
@@ -740,7 +740,7 @@ type PublicWideStatus struct {
 	Timestamp time.Time `json:"timestamp,required" format:"date-time"`
 	// The type of wide status, which can be 'PORTAL_WIDE' or 'BUSINESS_UNIT_WIDE'.
 	//
-	// Any of "PORTAL_WIDE", "BUSINESS_UNIT_WIDE".
+	// Any of "BUSINESS_UNIT_WIDE", "PORTAL_WIDE".
 	WideStatusType PublicWideStatusWideStatusType `json:"wideStatusType,required"`
 	// The ID of the business unit associated with the status.
 	BusinessUnitID int64 `json:"businessUnitId"`
@@ -775,17 +775,17 @@ const (
 type PublicWideStatusStatus string
 
 const (
+	PublicWideStatusStatusNotSpecified PublicWideStatusStatus = "NOT_SPECIFIED"
 	PublicWideStatusStatusSubscribed   PublicWideStatusStatus = "SUBSCRIBED"
 	PublicWideStatusStatusUnsubscribed PublicWideStatusStatus = "UNSUBSCRIBED"
-	PublicWideStatusStatusNotSpecified PublicWideStatusStatus = "NOT_SPECIFIED"
 )
 
 // The type of wide status, which can be 'PORTAL_WIDE' or 'BUSINESS_UNIT_WIDE'.
 type PublicWideStatusWideStatusType string
 
 const (
-	PublicWideStatusWideStatusTypePortalWide       PublicWideStatusWideStatusType = "PORTAL_WIDE"
 	PublicWideStatusWideStatusTypeBusinessUnitWide PublicWideStatusWideStatusType = "BUSINESS_UNIT_WIDE"
+	PublicWideStatusWideStatusTypePortalWide       PublicWideStatusWideStatusType = "PORTAL_WIDE"
 )
 
 type PublicWideStatusBulkResponse struct {

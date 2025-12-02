@@ -22,7 +22,7 @@ import (
 )
 
 // PageLandingPageService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -297,37 +297,84 @@ func (r *PageLandingPageService) GetRevision(ctx context.Context, revisionID str
 }
 
 // Retrieves all the previous versions of a Folder.
-func (r *PageLandingPageService) ListFolderRevisions(ctx context.Context, objectID string, query PageLandingPageListFolderRevisionsParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalVersionContentFolder, err error) {
+func (r *PageLandingPageService) ListFolderRevisions(ctx context.Context, objectID string, query PageLandingPageListFolderRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[VersionContentFolder], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
 	}
 	path := fmt.Sprintf("cms/v3/pages/landing-pages/folders/%s/revisions", objectID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieves all the previous versions of a Folder.
+func (r *PageLandingPageService) ListFolderRevisionsAutoPaging(ctx context.Context, objectID string, query PageLandingPageListFolderRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[VersionContentFolder] {
+	return pagination.NewPageAutoPager(r.ListFolderRevisions(ctx, objectID, query, opts...))
 }
 
 // Get the list of Landing Page Folders. Supports paging and filtering. This method
 // would be useful for an integration that examined these models and used an
 // external service to suggest edits.
-func (r *PageLandingPageService) ListFolders(ctx context.Context, query PageLandingPageListFoldersParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalContentFolderForwardPaging, err error) {
+func (r *PageLandingPageService) ListFolders(ctx context.Context, query PageLandingPageListFoldersParams, opts ...option.RequestOption) (res *pagination.Page[ContentFolder], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "cms/v3/pages/landing-pages/folders"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Get the list of Landing Page Folders. Supports paging and filtering. This method
+// would be useful for an integration that examined these models and used an
+// external service to suggest edits.
+func (r *PageLandingPageService) ListFoldersAutoPaging(ctx context.Context, query PageLandingPageListFoldersParams, opts ...option.RequestOption) *pagination.PageAutoPager[ContentFolder] {
+	return pagination.NewPageAutoPager(r.ListFolders(ctx, query, opts...))
 }
 
 // Retrieves all the previous versions of a Landing Page.
-func (r *PageLandingPageService) ListRevisions(ctx context.Context, objectID string, query PageLandingPageListRevisionsParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalVersionPage, err error) {
+func (r *PageLandingPageService) ListRevisions(ctx context.Context, objectID string, query PageLandingPageListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[VersionPage], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
 	}
 	path := fmt.Sprintf("cms/v3/pages/landing-pages/%s/revisions", objectID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieves all the previous versions of a Landing Page.
+func (r *PageLandingPageService) ListRevisionsAutoPaging(ctx context.Context, objectID string, query PageLandingPageListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[VersionPage] {
+	return pagination.NewPageAutoPager(r.ListRevisions(ctx, objectID, query, opts...))
 }
 
 // Take any changes from the draft version of the Landing Page and apply them to

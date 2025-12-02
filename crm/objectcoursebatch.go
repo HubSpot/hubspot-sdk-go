@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectCourseBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,7 @@ func NewObjectCourseBatchService(opts ...option.RequestOption) (r ObjectCourseBa
 	return
 }
 
-// Create a batch of courses
+// Create a batch of objects
 func (r *ObjectCourseBatchService) New(ctx context.Context, body ObjectCourseBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-410/batch/create"
@@ -43,7 +43,7 @@ func (r *ObjectCourseBatchService) New(ctx context.Context, body ObjectCourseBat
 	return
 }
 
-// Update a batch of courses by internal ID, or unique property values
+// Update a batch of objects
 func (r *ObjectCourseBatchService) Update(ctx context.Context, body ObjectCourseBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-410/batch/update"
@@ -51,7 +51,7 @@ func (r *ObjectCourseBatchService) Update(ctx context.Context, body ObjectCourse
 	return
 }
 
-// Archive a batch of courses by ID
+// Archive a batch of objects
 func (r *ObjectCourseBatchService) Delete(ctx context.Context, body ObjectCourseBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)

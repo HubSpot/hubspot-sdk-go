@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectObjectNewWithOptionalParams(t *testing.T) {
+func TestObjectObjectNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,14 +28,11 @@ func TestObjectObjectNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Objects.New(
+	_, err := client.Crm.Objects.Objects.New(
 		context.TODO(),
 		"objectType",
 		crm.ObjectObjectNewParams{
 			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -45,6 +42,9 @@ func TestObjectObjectNewWithOptionalParams(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 			},
 		},
 	)
@@ -70,20 +70,14 @@ func TestObjectObjectUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Objects.Update(
+	_, err := client.Crm.Objects.Objects.Update(
 		context.TODO(),
 		"objectId",
 		crm.ObjectObjectUpdateParams{
 			ObjectType: "objectType",
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -111,7 +105,7 @@ func TestObjectObjectListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Objects.List(
+	_, err := client.Crm.Objects.Objects.List(
 		context.TODO(),
 		"objectType",
 		crm.ObjectObjectListParams{
@@ -145,7 +139,7 @@ func TestObjectObjectDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Objects.Delete(
+	err := client.Crm.Objects.Objects.Delete(
 		context.TODO(),
 		"objectId",
 		crm.ObjectObjectDeleteParams{
@@ -174,7 +168,7 @@ func TestObjectObjectGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Objects.Get(
+	_, err := client.Crm.Objects.Objects.Get(
 		context.TODO(),
 		"objectId",
 		crm.ObjectObjectGetParams{
@@ -208,25 +202,25 @@ func TestObjectObjectSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Objects.Search(
+	_, err := client.Crm.Objects.Objects.Search(
 		context.TODO(),
 		"objectType",
 		crm.ObjectObjectSearchParams{
 			PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-				After: hubspotsdk.String("after"),
+				After: "after",
 				FilterGroups: []crm.FilterGroupParam{{
 					Filters: []crm.FilterParam{{
-						Operator:     crm.FilterOperatorEq,
-						PropertyName: "",
-						HighValue:    hubspotsdk.String(""),
-						Value:        hubspotsdk.String(""),
+						Operator:     crm.FilterOperatorBetween,
+						PropertyName: "propertyName",
+						HighValue:    hubspotsdk.String("highValue"),
+						Value:        hubspotsdk.String("value"),
 						Values:       []string{"string"},
 					}},
 				}},
-				Limit:      hubspotsdk.Int(0),
+				Limit:      0,
 				Properties: []string{"string"},
-				Query:      hubspotsdk.String("query"),
 				Sorts:      []string{"string"},
+				Query:      hubspotsdk.String("query"),
 			},
 		},
 	)

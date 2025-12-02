@@ -8,16 +8,19 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // PropertyGroupService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -66,14 +69,14 @@ func (r *PropertyGroupService) Update(ctx context.Context, groupName string, par
 
 // Read all existing property groups for the specified object type and HubSpot
 // account.
-func (r *PropertyGroupService) List(ctx context.Context, objectType string, opts ...option.RequestOption) (res *CollectionResponsePropertyGroup, err error) {
+func (r *PropertyGroupService) List(ctx context.Context, objectType string, query PropertyGroupListParams, opts ...option.RequestOption) (res *CollectionResponsePropertyGroup, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return
 	}
 	path := fmt.Sprintf("crm/v3/properties/%s/groups", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -95,9 +98,9 @@ func (r *PropertyGroupService) Delete(ctx context.Context, groupName string, bod
 }
 
 // Read a property group identified by {groupName}.
-func (r *PropertyGroupService) Get(ctx context.Context, groupName string, query PropertyGroupGetParams, opts ...option.RequestOption) (res *PropertyGroup, err error) {
+func (r *PropertyGroupService) Get(ctx context.Context, groupName string, params PropertyGroupGetParams, opts ...option.RequestOption) (res *PropertyGroup, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if query.ObjectType == "" {
+	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return
 	}
@@ -105,8 +108,8 @@ func (r *PropertyGroupService) Get(ctx context.Context, groupName string, query 
 		err = errors.New("missing required groupName parameter")
 		return
 	}
-	path := fmt.Sprintf("crm/v3/properties/%s/groups/%s", query.ObjectType, groupName)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	path := fmt.Sprintf("crm/v3/properties/%s/groups/%s", params.ObjectType, groupName)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return
 }
 
@@ -135,12 +138,35 @@ func (r *PropertyGroupUpdateParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.PropertyGroupUpdate)
 }
 
+type PropertyGroupListParams struct {
+	Locale param.Opt[string] `query:"locale,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [PropertyGroupListParams]'s query parameters as
+// `url.Values`.
+func (r PropertyGroupListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
 type PropertyGroupDeleteParams struct {
 	ObjectType string `path:"objectType,required" json:"-"`
 	paramObj
 }
 
 type PropertyGroupGetParams struct {
-	ObjectType string `path:"objectType,required" json:"-"`
+	ObjectType string            `path:"objectType,required" json:"-"`
+	Locale     param.Opt[string] `query:"locale,omitzero" json:"-"`
 	paramObj
+}
+
+// URLQuery serializes [PropertyGroupGetParams]'s query parameters as `url.Values`.
+func (r PropertyGroupGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

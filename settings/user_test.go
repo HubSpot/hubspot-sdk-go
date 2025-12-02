@@ -71,7 +71,7 @@ func TestUserUpdateWithOptionalParams(t *testing.T) {
 				RoleID:           hubspotsdk.String("100"),
 				SecondaryTeamIDs: []string{"102"},
 			},
-			IDProperty: settings.UserUpdateParamsIDPropertyUserID,
+			IDProperty: settings.UserUpdateParamsIDPropertyEmail,
 		},
 	)
 	if err != nil {
@@ -126,7 +126,7 @@ func TestUserDeleteWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"userId",
 		settings.UserDeleteParams{
-			IDProperty: settings.UserDeleteParamsIDPropertyUserID,
+			IDProperty: settings.UserDeleteParamsIDPropertyEmail,
 		},
 	)
 	if err != nil {
@@ -155,7 +155,7 @@ func TestUserGetWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"userId",
 		settings.UserGetParams{
-			IDProperty: settings.UserGetParamsIDPropertyUserID,
+			IDProperty: settings.UserGetParamsIDPropertyEmail,
 		},
 	)
 	if err != nil {

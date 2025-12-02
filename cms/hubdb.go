@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -15,7 +14,7 @@ import (
 )
 
 // HubdbService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -80,21 +79,28 @@ func (r *BatchInputHubDBTableRowV3RequestParam) UnmarshalJSON(data []byte) error
 }
 
 type BatchResponseHubDBTableRowV3 struct {
-	CompletedAt time.Time         `json:"completedAt" format:"date-time"`
-	Links       map[string]string `json:"links"`
-	RequestedAt time.Time         `json:"requestedAt" format:"date-time"`
-	Results     []HubDBTableRowV3 `json:"results"`
-	StartedAt   time.Time         `json:"startedAt" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status BatchResponseHubDBTableRowV3Status `json:"status"`
+	// The timestamp indicating when the batch processing was completed.
+	CompletedAt time.Time         `json:"completedAt,required" format:"date-time"`
+	Results     []HubDBTableRowV3 `json:"results,required"`
+	// The timestamp indicating when the batch processing began.
+	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
+	// The current status of the batch operation, with possible values: CANCELED,
+	// COMPLETE, PENDING, PROCESSING.
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponseHubDBTableRowV3Status `json:"status,required"`
+	// A collection of related links associated with the batch response.
+	Links map[string]string `json:"links"`
+	// The timestamp indicating when the batch request was made.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
-		Links       respjson.Field
-		RequestedAt respjson.Field
 		Results     respjson.Field
 		StartedAt   respjson.Field
 		Status      respjson.Field
+		Links       respjson.Field
+		RequestedAt respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -106,13 +112,15 @@ func (r *BatchResponseHubDBTableRowV3) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the batch operation, with possible values: CANCELED,
+// COMPLETE, PENDING, PROCESSING.
 type BatchResponseHubDBTableRowV3Status string
 
 const (
-	BatchResponseHubDBTableRowV3StatusPending    BatchResponseHubDBTableRowV3Status = "PENDING"
-	BatchResponseHubDBTableRowV3StatusProcessing BatchResponseHubDBTableRowV3Status = "PROCESSING"
 	BatchResponseHubDBTableRowV3StatusCanceled   BatchResponseHubDBTableRowV3Status = "CANCELED"
 	BatchResponseHubDBTableRowV3StatusComplete   BatchResponseHubDBTableRowV3Status = "COMPLETE"
+	BatchResponseHubDBTableRowV3StatusPending    BatchResponseHubDBTableRowV3Status = "PENDING"
+	BatchResponseHubDBTableRowV3StatusProcessing BatchResponseHubDBTableRowV3Status = "PROCESSING"
 )
 
 type BoundedNextPage struct {
@@ -170,23 +178,23 @@ func (r *CollectionResponseWithTotalHubDBTableV3ForwardPaging) UnmarshalJSON(dat
 }
 
 type Column struct {
+	// Column Id
+	ID          string `json:"id,required"`
+	Deleted     bool   `json:"deleted,required"`
+	Description string `json:"description,required"`
 	// Label of the column
 	Label string `json:"label,required"`
 	// Name of the column
 	Name string `json:"name,required"`
 	// Type of the column
 	//
-	// Any of "NULL", "TEXT", "NUMBER", "URL", "IMAGE", "SELECT", "MULTISELECT",
-	// "BOOLEAN", "LOCATION", "DATE", "DATETIME", "CURRENCY", "RICHTEXT", "FOREIGN_ID",
-	// "VIDEO", "CTA", "FILE", "JSON", "COMPOSITE", "CODE", "HUBSPOT_VIDEO", "EMBED".
-	Type ColumnType `json:"type,required"`
-	// Column Id
-	ID              string     `json:"id"`
+	// Any of "BOOLEAN", "CODE", "COMPOSITE", "CTA", "CURRENCY", "DATE", "DATETIME",
+	// "EMBED", "FILE", "FOREIGN_ID", "HUBSPOT_VIDEO", "IMAGE", "JSON", "LOCATION",
+	// "MULTISELECT", "NULL", "NUMBER", "RICHTEXT", "SELECT", "TEXT", "URL", "VIDEO".
+	Type            ColumnType `json:"type,required"`
 	CreatedAt       time.Time  `json:"createdAt" format:"date-time"`
 	CreatedBy       SimpleUser `json:"createdBy"`
 	CreatedByUserID int64      `json:"createdByUserId"`
-	Deleted         bool       `json:"deleted"`
-	Description     string     `json:"description"`
 	// Foreign Column id
 	ForeignColumnID int64 `json:"foreignColumnId"`
 	// Foreign Ids
@@ -208,15 +216,15 @@ type Column struct {
 	Width int64 `json:"width"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		ID               respjson.Field
+		Deleted          respjson.Field
+		Description      respjson.Field
 		Label            respjson.Field
 		Name             respjson.Field
 		Type             respjson.Field
-		ID               respjson.Field
 		CreatedAt        respjson.Field
 		CreatedBy        respjson.Field
 		CreatedByUserID  respjson.Field
-		Deleted          respjson.Field
-		Description      respjson.Field
 		ForeignColumnID  respjson.Field
 		ForeignIDs       respjson.Field
 		ForeignIDsByID   respjson.Field
@@ -243,28 +251,28 @@ func (r *Column) UnmarshalJSON(data []byte) error {
 type ColumnType string
 
 const (
-	ColumnTypeNull         ColumnType = "NULL"
-	ColumnTypeText         ColumnType = "TEXT"
-	ColumnTypeNumber       ColumnType = "NUMBER"
-	ColumnTypeURL          ColumnType = "URL"
-	ColumnTypeImage        ColumnType = "IMAGE"
-	ColumnTypeSelect       ColumnType = "SELECT"
-	ColumnTypeMultiselect  ColumnType = "MULTISELECT"
 	ColumnTypeBoolean      ColumnType = "BOOLEAN"
-	ColumnTypeLocation     ColumnType = "LOCATION"
+	ColumnTypeCode         ColumnType = "CODE"
+	ColumnTypeComposite    ColumnType = "COMPOSITE"
+	ColumnTypeCta          ColumnType = "CTA"
+	ColumnTypeCurrency     ColumnType = "CURRENCY"
 	ColumnTypeDate         ColumnType = "DATE"
 	ColumnTypeDatetime     ColumnType = "DATETIME"
-	ColumnTypeCurrency     ColumnType = "CURRENCY"
-	ColumnTypeRichtext     ColumnType = "RICHTEXT"
-	ColumnTypeForeignID    ColumnType = "FOREIGN_ID"
-	ColumnTypeVideo        ColumnType = "VIDEO"
-	ColumnTypeCta          ColumnType = "CTA"
-	ColumnTypeFile         ColumnType = "FILE"
-	ColumnTypeJson         ColumnType = "JSON"
-	ColumnTypeComposite    ColumnType = "COMPOSITE"
-	ColumnTypeCode         ColumnType = "CODE"
-	ColumnTypeHubspotVideo ColumnType = "HUBSPOT_VIDEO"
 	ColumnTypeEmbed        ColumnType = "EMBED"
+	ColumnTypeFile         ColumnType = "FILE"
+	ColumnTypeForeignID    ColumnType = "FOREIGN_ID"
+	ColumnTypeHubspotVideo ColumnType = "HUBSPOT_VIDEO"
+	ColumnTypeImage        ColumnType = "IMAGE"
+	ColumnTypeJson         ColumnType = "JSON"
+	ColumnTypeLocation     ColumnType = "LOCATION"
+	ColumnTypeMultiselect  ColumnType = "MULTISELECT"
+	ColumnTypeNull         ColumnType = "NULL"
+	ColumnTypeNumber       ColumnType = "NUMBER"
+	ColumnTypeRichtext     ColumnType = "RICHTEXT"
+	ColumnTypeSelect       ColumnType = "SELECT"
+	ColumnTypeText         ColumnType = "TEXT"
+	ColumnTypeURL          ColumnType = "URL"
+	ColumnTypeVideo        ColumnType = "VIDEO"
 )
 
 // The properties ID, Label, Name, Options, Type are required.
@@ -279,9 +287,9 @@ type ColumnRequestParam struct {
 	Options []shared.OptionParam `json:"options,omitzero,required"`
 	// Type of the column
 	//
-	// Any of "NULL", "TEXT", "NUMBER", "URL", "IMAGE", "SELECT", "MULTISELECT",
-	// "BOOLEAN", "LOCATION", "DATE", "DATETIME", "CURRENCY", "RICHTEXT", "FOREIGN_ID",
-	// "VIDEO", "CTA", "FILE", "JSON", "COMPOSITE", "CODE", "HUBSPOT_VIDEO", "EMBED".
+	// Any of "BOOLEAN", "CODE", "COMPOSITE", "CTA", "CURRENCY", "DATE", "DATETIME",
+	// "EMBED", "FILE", "FOREIGN_ID", "HUBSPOT_VIDEO", "IMAGE", "JSON", "LOCATION",
+	// "MULTISELECT", "NULL", "NUMBER", "RICHTEXT", "SELECT", "TEXT", "URL", "VIDEO".
 	Type ColumnRequestType `json:"type,omitzero,required"`
 	// The id of the column from another table to which the column refers/points to.
 	ForeignColumnID param.Opt[int64] `json:"foreignColumnId,omitzero"`
@@ -304,28 +312,28 @@ func (r *ColumnRequestParam) UnmarshalJSON(data []byte) error {
 type ColumnRequestType string
 
 const (
-	ColumnRequestTypeNull         ColumnRequestType = "NULL"
-	ColumnRequestTypeText         ColumnRequestType = "TEXT"
-	ColumnRequestTypeNumber       ColumnRequestType = "NUMBER"
-	ColumnRequestTypeURL          ColumnRequestType = "URL"
-	ColumnRequestTypeImage        ColumnRequestType = "IMAGE"
-	ColumnRequestTypeSelect       ColumnRequestType = "SELECT"
-	ColumnRequestTypeMultiselect  ColumnRequestType = "MULTISELECT"
 	ColumnRequestTypeBoolean      ColumnRequestType = "BOOLEAN"
-	ColumnRequestTypeLocation     ColumnRequestType = "LOCATION"
+	ColumnRequestTypeCode         ColumnRequestType = "CODE"
+	ColumnRequestTypeComposite    ColumnRequestType = "COMPOSITE"
+	ColumnRequestTypeCta          ColumnRequestType = "CTA"
+	ColumnRequestTypeCurrency     ColumnRequestType = "CURRENCY"
 	ColumnRequestTypeDate         ColumnRequestType = "DATE"
 	ColumnRequestTypeDatetime     ColumnRequestType = "DATETIME"
-	ColumnRequestTypeCurrency     ColumnRequestType = "CURRENCY"
-	ColumnRequestTypeRichtext     ColumnRequestType = "RICHTEXT"
-	ColumnRequestTypeForeignID    ColumnRequestType = "FOREIGN_ID"
-	ColumnRequestTypeVideo        ColumnRequestType = "VIDEO"
-	ColumnRequestTypeCta          ColumnRequestType = "CTA"
-	ColumnRequestTypeFile         ColumnRequestType = "FILE"
-	ColumnRequestTypeJson         ColumnRequestType = "JSON"
-	ColumnRequestTypeComposite    ColumnRequestType = "COMPOSITE"
-	ColumnRequestTypeCode         ColumnRequestType = "CODE"
-	ColumnRequestTypeHubspotVideo ColumnRequestType = "HUBSPOT_VIDEO"
 	ColumnRequestTypeEmbed        ColumnRequestType = "EMBED"
+	ColumnRequestTypeFile         ColumnRequestType = "FILE"
+	ColumnRequestTypeForeignID    ColumnRequestType = "FOREIGN_ID"
+	ColumnRequestTypeHubspotVideo ColumnRequestType = "HUBSPOT_VIDEO"
+	ColumnRequestTypeImage        ColumnRequestType = "IMAGE"
+	ColumnRequestTypeJson         ColumnRequestType = "JSON"
+	ColumnRequestTypeLocation     ColumnRequestType = "LOCATION"
+	ColumnRequestTypeMultiselect  ColumnRequestType = "MULTISELECT"
+	ColumnRequestTypeNull         ColumnRequestType = "NULL"
+	ColumnRequestTypeNumber       ColumnRequestType = "NUMBER"
+	ColumnRequestTypeRichtext     ColumnRequestType = "RICHTEXT"
+	ColumnRequestTypeSelect       ColumnRequestType = "SELECT"
+	ColumnRequestTypeText         ColumnRequestType = "TEXT"
+	ColumnRequestTypeURL          ColumnRequestType = "URL"
+	ColumnRequestTypeVideo        ColumnRequestType = "VIDEO"
 )
 
 type ForeignID struct {
@@ -384,26 +392,25 @@ func (r *HubDBTableRowBatchCloneRequestParam) UnmarshalJSON(data []byte) error {
 }
 
 type HubDBTableRowV3 struct {
-	// List of key value pairs with the column name and column value
-	Values map[string]any `json:"values,required"`
 	// The id of the table row
-	ID string `json:"id"`
+	ID string `json:"id,required"`
 	// Specifies the value for the column child table id
-	ChildTableID string `json:"childTableId"`
+	ChildTableID string `json:"childTableId,required"`
 	// Timestamp at which the row is created
-	CreatedAt time.Time `json:"createdAt" format:"date-time"`
+	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
 	// Specifies the value for `hs_name` column, which will be used as title in the
 	// dynamic pages
-	Name string `json:"name"`
+	Name string `json:"name,required"`
 	// Specifies the value for `hs_path` column, which will be used as slug in the
 	// dynamic pages
-	Path        string    `json:"path"`
-	PublishedAt time.Time `json:"publishedAt" format:"date-time"`
+	Path        string    `json:"path,required"`
+	PublishedAt time.Time `json:"publishedAt,required" format:"date-time"`
 	// Timestamp at which the row is updated last time
-	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
+	// List of key value pairs with the column name and column value
+	Values map[string]any `json:"values,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Values       respjson.Field
 		ID           respjson.Field
 		ChildTableID respjson.Field
 		CreatedAt    respjson.Field
@@ -411,6 +418,7 @@ type HubDBTableRowV3 struct {
 		Path         respjson.Field
 		PublishedAt  respjson.Field
 		UpdatedAt    respjson.Field
+		Values       respjson.Field
 		ExtraFields  map[string]respjson.Field
 		raw          string
 	} `json:"-"`
@@ -422,15 +430,15 @@ func (r *HubDBTableRowV3) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties ID, Values are required.
+// The properties ChildTableID, DisplayIndex, Values are required.
 type HubDBTableRowV3BatchUpdateRequestParam struct {
-	// The id of the table row
-	ID string `json:"id,required"`
+	// Specifies the value for the column child table id
+	ChildTableID int64 `json:"childTableId,required"`
+	DisplayIndex int64 `json:"displayIndex,required"`
 	// List of key value pairs with the column name and column value
 	Values map[string]Variant `json:"values,omitzero,required"`
-	// Specifies the value for the column child table id
-	ChildTableID param.Opt[int64] `json:"childTableId,omitzero"`
-	DisplayIndex param.Opt[int64] `json:"displayIndex,omitzero"`
+	// The id of the table row
+	ID param.Opt[string] `json:"id,omitzero"`
 	// Specifies the value for `hs_name` column, which will be used as title in the
 	// dynamic pages
 	Name param.Opt[string] `json:"name,omitzero"`
@@ -448,13 +456,13 @@ func (r *HubDBTableRowV3BatchUpdateRequestParam) UnmarshalJSON(data []byte) erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property Values is required.
+// The properties ChildTableID, DisplayIndex, Values are required.
 type HubDBTableRowV3RequestParam struct {
+	// Specifies the value for the column child table id
+	ChildTableID int64 `json:"childTableId,required"`
+	DisplayIndex int64 `json:"displayIndex,required"`
 	// List of key value pairs with the column name and column value
 	Values map[string]Variant `json:"values,omitzero,required"`
-	// Specifies the value for the column child table id
-	ChildTableID param.Opt[int64] `json:"childTableId,omitzero"`
-	DisplayIndex param.Opt[int64] `json:"displayIndex,omitzero"`
 	// Specifies the value for `hs_name` column, which will be used as title in the
 	// dynamic pages
 	Name param.Opt[string] `json:"name,omitzero"`
@@ -473,64 +481,64 @@ func (r *HubDBTableRowV3RequestParam) UnmarshalJSON(data []byte) error {
 }
 
 type HubDBTableV3 struct {
-	DeletedAt time.Time `json:"deletedAt,required" format:"date-time"`
-	// Label of the table
-	Label string `json:"label,required"`
-	// Name of the table
-	Name string `json:"name,required"`
 	// Id of the table
-	ID string `json:"id"`
+	ID string `json:"id,required"`
 	// Specifies whether child tables can be created
-	AllowChildTables bool `json:"allowChildTables"`
+	AllowChildTables bool `json:"allowChildTables,required"`
 	// Specifies whether the table can be read by public without authorization
-	AllowPublicAPIAccess bool `json:"allowPublicApiAccess"`
+	AllowPublicAPIAccess bool `json:"allowPublicApiAccess,required"`
 	// Number of columns including deleted
-	ColumnCount int64 `json:"columnCount"`
+	ColumnCount int64 `json:"columnCount,required"`
 	// List of columns in the table
-	Columns []Column `json:"columns"`
+	Columns []Column `json:"columns,required"`
 	// Timestamp at which the table is created
-	CreatedAt time.Time  `json:"createdAt" format:"date-time"`
-	CreatedBy SimpleUser `json:"createdBy"`
-	Deleted   bool       `json:"deleted"`
+	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
+	Deleted   bool      `json:"deleted,required"`
+	DeletedAt time.Time `json:"deletedAt,required" format:"date-time"`
 	// Specifies the key value pairs of the
 	// [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages)
 	// with the associated column IDs.
-	DynamicMetaTags map[string]int64 `json:"dynamicMetaTags"`
+	DynamicMetaTags map[string]int64 `json:"dynamicMetaTags,required"`
 	// Specifies creation of multi-level dynamic pages using child tables
-	EnableChildTablePages bool `json:"enableChildTablePages"`
-	IsOrderedManually     bool `json:"isOrderedManually"`
-	Published             bool `json:"published"`
+	EnableChildTablePages bool `json:"enableChildTablePages,required"`
+	// Label of the table
+	Label string `json:"label,required"`
+	// Name of the table
+	Name      string `json:"name,required"`
+	Published bool   `json:"published,required"`
 	// Timestamp at which the table is published recently
-	PublishedAt time.Time `json:"publishedAt" format:"date-time"`
+	PublishedAt time.Time `json:"publishedAt,required" format:"date-time"`
 	// Number of rows in the table
-	RowCount int64 `json:"rowCount"`
+	RowCount int64 `json:"rowCount,required"`
 	// Timestamp at which the table is updated recently
-	UpdatedAt time.Time  `json:"updatedAt" format:"date-time"`
-	UpdatedBy SimpleUser `json:"updatedBy"`
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
 	// Specifies whether the table can be used for creation of dynamic pages
-	UseForPages bool `json:"useForPages"`
+	UseForPages       bool       `json:"useForPages,required"`
+	CreatedBy         SimpleUser `json:"createdBy"`
+	IsOrderedManually bool       `json:"isOrderedManually"`
+	UpdatedBy         SimpleUser `json:"updatedBy"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		DeletedAt             respjson.Field
-		Label                 respjson.Field
-		Name                  respjson.Field
 		ID                    respjson.Field
 		AllowChildTables      respjson.Field
 		AllowPublicAPIAccess  respjson.Field
 		ColumnCount           respjson.Field
 		Columns               respjson.Field
 		CreatedAt             respjson.Field
-		CreatedBy             respjson.Field
 		Deleted               respjson.Field
+		DeletedAt             respjson.Field
 		DynamicMetaTags       respjson.Field
 		EnableChildTablePages respjson.Field
-		IsOrderedManually     respjson.Field
+		Label                 respjson.Field
+		Name                  respjson.Field
 		Published             respjson.Field
 		PublishedAt           respjson.Field
 		RowCount              respjson.Field
 		UpdatedAt             respjson.Field
-		UpdatedBy             respjson.Field
 		UseForPages           respjson.Field
+		CreatedBy             respjson.Field
+		IsOrderedManually     respjson.Field
+		UpdatedBy             respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
 	} `json:"-"`
@@ -542,26 +550,27 @@ func (r *HubDBTableV3) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties Label, Name are required.
+// The properties AllowChildTables, AllowPublicAPIAccess, Columns, DynamicMetaTags,
+// EnableChildTablePages, Label, Name, UseForPages are required.
 type HubDBTableV3RequestParam struct {
+	// Specifies whether child tables can be created
+	AllowChildTables bool `json:"allowChildTables,required"`
+	// Specifies whether the table can be read by public without authorization
+	AllowPublicAPIAccess bool `json:"allowPublicApiAccess,required"`
+	// List of columns in the table
+	Columns []ColumnRequestParam `json:"columns,omitzero,required"`
+	// Specifies the key value pairs of the
+	// [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages)
+	// with the associated column IDs.
+	DynamicMetaTags map[string]int64 `json:"dynamicMetaTags,omitzero,required"`
+	// Specifies creation of multi-level dynamic pages using child tables
+	EnableChildTablePages bool `json:"enableChildTablePages,required"`
 	// Label of the table
 	Label string `json:"label,required"`
 	// Name of the table
 	Name string `json:"name,required"`
-	// Specifies whether child tables can be created
-	AllowChildTables param.Opt[bool] `json:"allowChildTables,omitzero"`
-	// Specifies whether the table can be read by public without authorization
-	AllowPublicAPIAccess param.Opt[bool] `json:"allowPublicApiAccess,omitzero"`
-	// Specifies creation of multi-level dynamic pages using child tables
-	EnableChildTablePages param.Opt[bool] `json:"enableChildTablePages,omitzero"`
 	// Specifies whether the table can be used for creation of dynamic pages
-	UseForPages param.Opt[bool] `json:"useForPages,omitzero"`
-	// List of columns in the table
-	Columns []ColumnRequestParam `json:"columns,omitzero"`
-	// Specifies the key value pairs of the
-	// [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages)
-	// with the associated column IDs.
-	DynamicMetaTags map[string]int64 `json:"dynamicMetaTags,omitzero"`
+	UseForPages bool `json:"useForPages,required"`
 	paramObj
 }
 
@@ -652,11 +661,13 @@ func (r *SimpleUser) UnmarshalJSON(data []byte) error {
 
 type StreamingCollectionResponseWithTotalHubDBTableRowV3 struct {
 	Results []shared.HubDBTableRowV3Wrapper `json:"results,required"`
-	Total   int64                           `json:"total,required"`
+	// The total number of rows available in the collection.
+	Total int64 `json:"total,required"`
+	// Indicates the type of response, which is 'STREAMING' by default.
+	//
 	// Any of "STREAMING".
-	Type StreamingCollectionResponseWithTotalHubDBTableRowV3Type `json:"type,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Type   StreamingCollectionResponseWithTotalHubDBTableRowV3Type `json:"type,required"`
+	Paging shared.Paging                                           `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -674,6 +685,7 @@ func (r *StreamingCollectionResponseWithTotalHubDBTableRowV3) UnmarshalJSON(data
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the type of response, which is 'STREAMING' by default.
 type StreamingCollectionResponseWithTotalHubDBTableRowV3Type string
 
 const (
@@ -690,7 +702,7 @@ type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union struct {
 	Results []shared.HubDBTableRowV3Wrapper `json:"results"`
 	Total   int64                           `json:"total"`
 	Type    string                          `json:"type"`
-	// This field is a union of [BoundedPaging], [marketing.Paging]
+	// This field is a union of [BoundedPaging], [shared.Paging]
 	Paging UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPaging `json:"paging"`
 	JSON   struct {
 		Results respjson.Field
@@ -730,7 +742,7 @@ func (r *UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) UnmarshalJS
 type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPaging struct {
 	// This field is a union of [BoundedNextPage], [shared.NextPage]
 	Next UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPagingNext `json:"next"`
-	// This field is from variant [marketing.Paging].
+	// This field is from variant [shared.Paging].
 	Prev shared.PreviousPage `json:"prev"`
 	JSON struct {
 		Next respjson.Field

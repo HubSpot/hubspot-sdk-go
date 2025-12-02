@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // AccountService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -44,7 +44,7 @@ type APIUsage struct {
 	CurrentUsage int64 `json:"currentUsage,required"`
 	// Status of fetching the information, including if the data came from the cache.
 	//
-	// Any of "SUCCESS", "TIMEOUT", "FAILURE", "CACHED", "NOTFOUND".
+	// Any of "CACHED", "FAILURE", "NOTFOUND", "SUCCESS", "TIMEOUT".
 	FetchStatus APIUsageFetchStatus `json:"fetchStatus,required"`
 	// Name of the limit type.
 	Name string `json:"name,required"`
@@ -75,17 +75,16 @@ func (r *APIUsage) UnmarshalJSON(data []byte) error {
 type APIUsageFetchStatus string
 
 const (
+	APIUsageFetchStatusCached   APIUsageFetchStatus = "CACHED"
+	APIUsageFetchStatusFailure  APIUsageFetchStatus = "FAILURE"
+	APIUsageFetchStatusNotfound APIUsageFetchStatus = "NOTFOUND"
 	APIUsageFetchStatusSuccess  APIUsageFetchStatus = "SUCCESS"
 	APIUsageFetchStatusTimeout  APIUsageFetchStatus = "TIMEOUT"
-	APIUsageFetchStatusFailure  APIUsageFetchStatus = "FAILURE"
-	APIUsageFetchStatusCached   APIUsageFetchStatus = "CACHED"
-	APIUsageFetchStatusNotfound APIUsageFetchStatus = "NOTFOUND"
 )
 
 type CollectionResponseAPIUsage struct {
-	Results []APIUsage `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Results []APIUsage    `json:"results,required"`
+	Paging  shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -102,7 +101,7 @@ func (r *CollectionResponseAPIUsage) UnmarshalJSON(data []byte) error {
 }
 
 type PortalInformationResponse struct {
-	// Any of "STANDARD", "DEVELOPER_TEST", "SANDBOX", "APP_DEVELOPER".
+	// Any of "APP_DEVELOPER", "DEVELOPER_TEST", "SANDBOX", "STANDARD".
 	AccountType           PortalInformationResponseAccountType `json:"accountType,required"`
 	AdditionalCurrencies  []string                             `json:"additionalCurrencies,required"`
 	CompanyCurrency       string                               `json:"companyCurrency,required"`
@@ -137,8 +136,8 @@ func (r *PortalInformationResponse) UnmarshalJSON(data []byte) error {
 type PortalInformationResponseAccountType string
 
 const (
-	PortalInformationResponseAccountTypeStandard      PortalInformationResponseAccountType = "STANDARD"
+	PortalInformationResponseAccountTypeAppDeveloper  PortalInformationResponseAccountType = "APP_DEVELOPER"
 	PortalInformationResponseAccountTypeDeveloperTest PortalInformationResponseAccountType = "DEVELOPER_TEST"
 	PortalInformationResponseAccountTypeSandbox       PortalInformationResponseAccountType = "SANDBOX"
-	PortalInformationResponseAccountTypeAppDeveloper  PortalInformationResponseAccountType = "APP_DEVELOPER"
+	PortalInformationResponseAccountTypeStandard      PortalInformationResponseAccountType = "STANDARD"
 )

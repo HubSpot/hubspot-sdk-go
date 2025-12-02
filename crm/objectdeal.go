@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectDealService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -118,7 +118,7 @@ func (r *ObjectDealService) Get(ctx context.Context, dealID string, query Object
 	return
 }
 
-// Merge two deals with same type
+// Combine two deals of the same type into a single deal.
 func (r *ObjectDealService) Merge(ctx context.Context, body ObjectDealMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-3/merge"
@@ -126,6 +126,7 @@ func (r *ObjectDealService) Merge(ctx context.Context, body ObjectDealMergeParam
 	return
 }
 
+// Search for deals using specified criteria and filters.
 func (r *ObjectDealService) Search(ctx context.Context, body ObjectDealSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-3/search"

@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectFeedbackSubmissionService contains methods and other services that help
-// with interacting with the Hubspot API.
+// with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -80,6 +80,8 @@ func (r *ObjectFeedbackSubmissionService) Get(ctx context.Context, feedbackSubmi
 	return
 }
 
+// Execute a search to retrieve feedback submissions based on defined filters,
+// properties, and sorting options.
 func (r *ObjectFeedbackSubmissionService) Search(ctx context.Context, body ObjectFeedbackSubmissionSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/feedback_submissions/search"

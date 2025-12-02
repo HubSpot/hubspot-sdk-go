@@ -31,11 +31,13 @@ func TestCustomChannelChannelAccountStagingTokenUpdate(t *testing.T) {
 		context.TODO(),
 		"accountToken",
 		conversations.CustomChannelChannelAccountStagingTokenUpdateParams{
-			ChannelID:   "channelId",
-			AccountName: "accountName",
-			DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
-				Type:  "type",
-				Value: "value",
+			ChannelID: 0,
+			PublicChannelAccountStagingTokenUpdateRequest: conversations.PublicChannelAccountStagingTokenUpdateRequestParam{
+				AccountName: "accountName",
+				DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
+					Type:  "type",
+					Value: "value",
+				},
 			},
 		},
 	)

@@ -28,7 +28,7 @@ func TestTimelineTokenNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Tokens.New(
+	_, err := client.Crm.Timeline.Tokens.New(
 		context.TODO(),
 		"eventTemplateId",
 		crm.TimelineTokenNewParams{
@@ -72,7 +72,7 @@ func TestTimelineTokenUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Tokens.Update(
+	_, err := client.Crm.Timeline.Tokens.Update(
 		context.TODO(),
 		"tokenName",
 		crm.TimelineTokenUpdateParams{
@@ -116,7 +116,7 @@ func TestTimelineTokenDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Timeline.Tokens.Delete(
+	err := client.Crm.Timeline.Tokens.Delete(
 		context.TODO(),
 		"tokenName",
 		crm.TimelineTokenDeleteParams{

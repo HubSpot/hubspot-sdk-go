@@ -13,7 +13,7 @@ import (
 )
 
 // AssociationV4ReportService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -33,7 +33,7 @@ func NewAssociationV4ReportService(opts ...option.RequestOption) (r AssociationV
 
 // Requests a report of all objects in the portal which have a high usage of
 // associations
-func (r *AssociationV4ReportService) GetHighUsageReport(ctx context.Context, userID int64, opts ...option.RequestOption) (res *ReportCreationResponse, err error) {
+func (r *AssociationV4ReportService) RequestHighUsageReport(ctx context.Context, userID int64, opts ...option.RequestOption) (res *ReportCreationResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v4/associations/usage/high-usage-report/%v", userID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)

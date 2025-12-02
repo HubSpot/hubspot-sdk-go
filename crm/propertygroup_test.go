@@ -28,7 +28,7 @@ func TestPropertyGroupNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Groups.New(
+	_, err := client.Crm.Properties.Groups.New(
 		context.TODO(),
 		"objectType",
 		crm.PropertyGroupNewParams{
@@ -61,7 +61,7 @@ func TestPropertyGroupUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Groups.Update(
+	_, err := client.Crm.Properties.Groups.Update(
 		context.TODO(),
 		"groupName",
 		crm.PropertyGroupUpdateParams{
@@ -81,7 +81,7 @@ func TestPropertyGroupUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPropertyGroupList(t *testing.T) {
+func TestPropertyGroupListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -94,7 +94,13 @@ func TestPropertyGroupList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Groups.List(context.TODO(), "objectType")
+	_, err := client.Crm.Properties.Groups.List(
+		context.TODO(),
+		"objectType",
+		crm.PropertyGroupListParams{
+			Locale: hubspotsdk.String("locale"),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -117,7 +123,7 @@ func TestPropertyGroupDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Properties.Groups.Delete(
+	err := client.Crm.Properties.Groups.Delete(
 		context.TODO(),
 		"groupName",
 		crm.PropertyGroupDeleteParams{
@@ -133,7 +139,7 @@ func TestPropertyGroupDelete(t *testing.T) {
 	}
 }
 
-func TestPropertyGroupGet(t *testing.T) {
+func TestPropertyGroupGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -146,11 +152,12 @@ func TestPropertyGroupGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Groups.Get(
+	_, err := client.Crm.Properties.Groups.Get(
 		context.TODO(),
 		"groupName",
 		crm.PropertyGroupGetParams{
 			ObjectType: "objectType",
+			Locale:     hubspotsdk.String("locale"),
 		},
 	)
 	if err != nil {

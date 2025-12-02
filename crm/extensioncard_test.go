@@ -27,7 +27,7 @@ func TestExtensionCardNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Cards.New(
+	_, err := client.Crm.Extensions.Cards.New(
 		context.TODO(),
 		0,
 		crm.ExtensionCardNewParams{
@@ -43,7 +43,7 @@ func TestExtensionCardNew(t *testing.T) {
 						Options: []crm.DisplayOptionParam{{
 							Label: "label",
 							Name:  "name",
-							Type:  crm.DisplayOptionTypeDefault,
+							Type:  crm.DisplayOptionTypeDanger,
 						}},
 					}},
 				},
@@ -82,7 +82,7 @@ func TestExtensionCardUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Cards.Update(
+	_, err := client.Crm.Extensions.Cards.Update(
 		context.TODO(),
 		"cardId",
 		crm.ExtensionCardUpdateParams{
@@ -99,7 +99,7 @@ func TestExtensionCardUpdateWithOptionalParams(t *testing.T) {
 						Options: []crm.DisplayOptionParam{{
 							Label: "label",
 							Name:  "name",
-							Type:  crm.DisplayOptionTypeDefault,
+							Type:  crm.DisplayOptionTypeDanger,
 						}},
 					}},
 				},
@@ -138,7 +138,7 @@ func TestExtensionCardList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Cards.List(context.TODO(), 0)
+	_, err := client.Crm.Extensions.Cards.List(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -161,7 +161,7 @@ func TestExtensionCardDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Extensions.Cards.Delete(
+	err := client.Crm.Extensions.Cards.Delete(
 		context.TODO(),
 		"cardId",
 		crm.ExtensionCardDeleteParams{
@@ -190,7 +190,7 @@ func TestExtensionCardGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Cards.Get(
+	_, err := client.Crm.Extensions.Cards.Get(
 		context.TODO(),
 		"cardId",
 		crm.ExtensionCardGetParams{
@@ -219,7 +219,7 @@ func TestExtensionCardGetSampleResponse(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Cards.GetSampleResponse(context.TODO())
+	_, err := client.Crm.Extensions.Cards.GetSampleResponse(context.TODO())
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

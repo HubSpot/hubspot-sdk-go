@@ -15,7 +15,6 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -23,7 +22,7 @@ import (
 )
 
 // PropertyService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -119,35 +118,9 @@ func (r *PropertyService) Get(ctx context.Context, propertyName string, params P
 	return
 }
 
-// The properties Archived, Inputs are required.
-type BatchReadInputPropertyNameParam struct {
-	Archived bool                       `json:"archived,required"`
-	Inputs   []shared.PropertyNameParam `json:"inputs,omitzero,required"`
-	// Any of "non_sensitive", "sensitive", "highly_sensitive".
-	DataSensitivity BatchReadInputPropertyNameDataSensitivity `json:"dataSensitivity,omitzero"`
-	paramObj
-}
-
-func (r BatchReadInputPropertyNameParam) MarshalJSON() (data []byte, err error) {
-	type shadow BatchReadInputPropertyNameParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BatchReadInputPropertyNameParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BatchReadInputPropertyNameDataSensitivity string
-
-const (
-	BatchReadInputPropertyNameDataSensitivityNonSensitive    BatchReadInputPropertyNameDataSensitivity = "non_sensitive"
-	BatchReadInputPropertyNameDataSensitivitySensitive       BatchReadInputPropertyNameDataSensitivity = "sensitive"
-	BatchReadInputPropertyNameDataSensitivityHighlySensitive BatchReadInputPropertyNameDataSensitivity = "highly_sensitive"
-)
-
 type CollectionResponseProperty struct {
 	Results []shared.Property `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging     `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -165,8 +138,7 @@ func (r *CollectionResponseProperty) UnmarshalJSON(data []byte) error {
 
 type CollectionResponsePropertyGroup struct {
 	Results []PropertyGroup `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging   `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -352,7 +324,10 @@ func (r *PropertyUpdateParams) UnmarshalJSON(data []byte) error {
 type PropertyListParams struct {
 	// Whether to return only results that have been archived.
 	Archived   param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Locale     param.Opt[string] `query:"locale,omitzero" json:"-"`
 	Properties param.Opt[string] `query:"properties,omitzero" json:"-"`
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
+	DataSensitivity PropertyListParamsDataSensitivity `query:"dataSensitivity,omitzero" json:"-"`
 	paramObj
 }
 
@@ -364,6 +339,14 @@ func (r PropertyListParams) URLQuery() (v url.Values, err error) {
 	})
 }
 
+type PropertyListParamsDataSensitivity string
+
+const (
+	PropertyListParamsDataSensitivityHighlySensitive PropertyListParamsDataSensitivity = "highly_sensitive"
+	PropertyListParamsDataSensitivityNonSensitive    PropertyListParamsDataSensitivity = "non_sensitive"
+	PropertyListParamsDataSensitivitySensitive       PropertyListParamsDataSensitivity = "sensitive"
+)
+
 type PropertyDeleteParams struct {
 	ObjectType string `path:"objectType,required" json:"-"`
 	paramObj
@@ -373,7 +356,10 @@ type PropertyGetParams struct {
 	ObjectType string `path:"objectType,required" json:"-"`
 	// Whether to return only results that have been archived.
 	Archived   param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Locale     param.Opt[string] `query:"locale,omitzero" json:"-"`
 	Properties param.Opt[string] `query:"properties,omitzero" json:"-"`
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
+	DataSensitivity PropertyGetParamsDataSensitivity `query:"dataSensitivity,omitzero" json:"-"`
 	paramObj
 }
 
@@ -384,3 +370,11 @@ func (r PropertyGetParams) URLQuery() (v url.Values, err error) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
+
+type PropertyGetParamsDataSensitivity string
+
+const (
+	PropertyGetParamsDataSensitivityHighlySensitive PropertyGetParamsDataSensitivity = "highly_sensitive"
+	PropertyGetParamsDataSensitivityNonSensitive    PropertyGetParamsDataSensitivity = "non_sensitive"
+	PropertyGetParamsDataSensitivitySensitive       PropertyGetParamsDataSensitivity = "sensitive"
+)

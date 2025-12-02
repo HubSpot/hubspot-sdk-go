@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestActorBatchRead(t *testing.T) {
+func TestActorBatchReadWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -32,6 +32,7 @@ func TestActorBatchRead(t *testing.T) {
 		BatchInputString: shared.BatchInputStringParam{
 			Inputs: []string{"string"},
 		},
+		Property: hubspotsdk.String("property"),
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -42,7 +43,7 @@ func TestActorBatchRead(t *testing.T) {
 	}
 }
 
-func TestActorGet(t *testing.T) {
+func TestActorGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -55,7 +56,13 @@ func TestActorGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Actors.Get(context.TODO(), "actorId")
+	_, err := client.Conversations.Actors.Get(
+		context.TODO(),
+		"actorId",
+		conversations.ActorGetParams{
+			Property: hubspotsdk.String("property"),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

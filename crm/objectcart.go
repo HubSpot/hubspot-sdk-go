@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectCartService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -118,6 +118,8 @@ func (r *ObjectCartService) Get(ctx context.Context, cartID string, query Object
 	return
 }
 
+// Execute a search for carts based on the specified search criteria, such as
+// filters and properties, and retrieve the matching results.
 func (r *ObjectCartService) Search(ctx context.Context, body ObjectCartSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/carts/search"

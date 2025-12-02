@@ -27,7 +27,7 @@ func TestListMappingBatchNewIDMapping(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Mapping.BatchNewIDMapping(context.TODO(), crm.ListMappingBatchNewIDMappingParams{
+	_, err := client.Crm.Lists.Mapping.BatchNewIDMapping(context.TODO(), crm.ListMappingBatchNewIDMappingParams{
 		Body: []string{"string"},
 	})
 	if err != nil {
@@ -52,7 +52,7 @@ func TestListMappingGetIDMappingWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Mapping.GetIDMapping(context.TODO(), crm.ListMappingGetIDMappingParams{
+	_, err := client.Crm.Lists.Mapping.GetIDMapping(context.TODO(), crm.ListMappingGetIDMappingParams{
 		LegacyListID: hubspotsdk.String("legacyListId"),
 	})
 	if err != nil {

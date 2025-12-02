@@ -33,7 +33,7 @@ func TestBlogPostBatchNew(t *testing.T) {
 		BatchInputBlogPost: cms.BatchInputBlogPostParam{
 			Inputs: []cms.BlogPostParam{{
 				ID:                  "id",
-				AbStatus:            cms.BlogPostAbStatusMaster,
+				AbStatus:            cms.BlogPostAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          0,
 				ArchivedInDashboard: true,
@@ -193,7 +193,7 @@ func TestBlogPostBatchNew(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,

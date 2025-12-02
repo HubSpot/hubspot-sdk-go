@@ -16,7 +16,6 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
@@ -25,7 +24,7 @@ import (
 )
 
 // WorkflowService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,7 +42,6 @@ func NewWorkflowService(opts ...option.RequestOption) (r WorkflowService) {
 	return
 }
 
-// Create a new workflow.
 func (r *WorkflowService) New(ctx context.Context, body WorkflowNewParams, opts ...option.RequestOption) (res *APIFlowUnion, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "automation/v4/flows"
@@ -51,7 +49,6 @@ func (r *WorkflowService) New(ctx context.Context, body WorkflowNewParams, opts 
 	return
 }
 
-// Update a workflow by ID.
 func (r *WorkflowService) Update(ctx context.Context, flowID string, body WorkflowUpdateParams, opts ...option.RequestOption) (res *APIFlowUnion, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if flowID == "" {
@@ -63,7 +60,6 @@ func (r *WorkflowService) Update(ctx context.Context, flowID string, body Workfl
 	return
 }
 
-// Retrieve all workflows from an account.
 func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, opts ...option.RequestOption) (res *pagination.Page[APIFlowListing], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -81,14 +77,10 @@ func (r *WorkflowService) List(ctx context.Context, query WorkflowListParams, op
 	return res, nil
 }
 
-// Retrieve all workflows from an account.
 func (r *WorkflowService) ListAutoPaging(ctx context.Context, query WorkflowListParams, opts ...option.RequestOption) *pagination.PageAutoPager[APIFlowListing] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Fully delete a workflow by ID. Deleted workflows cannot be restored via the API.
-// If you need to restore an accidentally deleted flow, you'll need to contact
-// support.
 func (r *WorkflowService) Delete(ctx context.Context, flowID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -97,7 +89,6 @@ func (r *WorkflowService) Delete(ctx context.Context, flowID int64, opts ...opti
 	return
 }
 
-// Retrieve a batch of workflows by ID.
 func (r *WorkflowService) BatchGet(ctx context.Context, body WorkflowBatchGetParams, opts ...option.RequestOption) (res *BatchResponseAPIFlow, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "automation/v4/flows/batch/read"
@@ -105,7 +96,6 @@ func (r *WorkflowService) BatchGet(ctx context.Context, body WorkflowBatchGetPar
 	return
 }
 
-// Retrieve the IDs of v3 workflows that have been migrated to the v4 API.
 func (r *WorkflowService) BatchGetIDMappings(ctx context.Context, body WorkflowBatchGetIDMappingsParams, opts ...option.RequestOption) (res *BatchResponseFlowIDWorkflowIDMappingResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "automation/v4/workflow-id-mappings/batch/read"
@@ -113,7 +103,6 @@ func (r *WorkflowService) BatchGetIDMappings(ctx context.Context, body WorkflowB
 	return
 }
 
-// Retrieve all details for a specific workflow by ID.
 func (r *WorkflowService) Get(ctx context.Context, flowID string, opts ...option.RequestOption) (res *APIFlowUnion, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if flowID == "" {
@@ -125,21 +114,30 @@ func (r *WorkflowService) Get(ctx context.Context, flowID string, opts ...option
 	return
 }
 
-// Retrieve emails sent by a workflow by ID.
-func (r *WorkflowService) ListEmailCampaigns(ctx context.Context, query WorkflowListEmailCampaignsParams, opts ...option.RequestOption) (res *CollectionResponseAPIFlowEmailCampaign, err error) {
+func (r *WorkflowService) ListEmailCampaigns(ctx context.Context, query WorkflowListEmailCampaignsParams, opts ...option.RequestOption) (res *pagination.Page[APIFlowEmailCampaign], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "automation/v4/flows/email-campaigns"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+func (r *WorkflowService) ListEmailCampaignsAutoPaging(ctx context.Context, query WorkflowListEmailCampaignsParams, opts ...option.RequestOption) *pagination.PageAutoPager[APIFlowEmailCampaign] {
+	return pagination.NewPageAutoPager(r.ListEmailCampaigns(ctx, query, opts...))
 }
 
 type APIAbTestBranchAction struct {
-	// The ID for this action.
 	ActionID     string          `json:"actionId,required"`
 	TestBranches []APIConnection `json:"testBranches,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "AB_TEST_BRANCH".
 	Type APIAbTestBranchActionType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -167,8 +165,6 @@ func (r APIAbTestBranchAction) ToParam() APIAbTestBranchActionParam {
 	return param.Override[APIAbTestBranchActionParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APIAbTestBranchActionType string
 
 const (
@@ -177,12 +173,8 @@ const (
 
 // The properties ActionID, TestBranches, Type are required.
 type APIAbTestBranchActionParam struct {
-	// The ID for this action.
 	ActionID     string               `json:"actionId,required"`
 	TestBranches []APIConnectionParam `json:"testBranches,omitzero,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "AB_TEST_BRANCH".
 	Type APIAbTestBranchActionType `json:"type,omitzero,required"`
 	paramObj
@@ -197,15 +189,8 @@ func (r *APIAbTestBranchActionParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIActionDataValue struct {
-	// Which action to pull data from.
 	ActionID string `json:"actionId,required"`
-	// The output field name for that action
-	DataKey string `json:"dataKey,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
+	DataKey  string `json:"dataKey,required"`
 	// Any of "FIELD_DATA".
 	Type APIActionDataValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -233,10 +218,6 @@ func (r APIActionDataValue) ToParam() APIActionDataValueParam {
 	return param.Override[APIActionDataValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIActionDataValueType string
 
 const (
@@ -245,15 +226,8 @@ const (
 
 // The properties ActionID, DataKey, Type are required.
 type APIActionDataValueParam struct {
-	// Which action to pull data from.
 	ActionID string `json:"actionId,required"`
-	// The output field name for that action
-	DataKey string `json:"dataKey,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
+	DataKey  string `json:"dataKey,required"`
 	// Any of "FIELD_DATA".
 	Type APIActionDataValueType `json:"type,omitzero,required"`
 	paramObj
@@ -268,13 +242,7 @@ func (r *APIActionDataValueParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIAppendObjectPropertyValue struct {
-	// The name of the property to append data from
 	AppendPropertyName string `json:"appendPropertyName,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "APPEND_OBJECT_PROPERTY".
 	Type APIAppendObjectPropertyValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -302,10 +270,6 @@ func (r APIAppendObjectPropertyValue) ToParam() APIAppendObjectPropertyValuePara
 	return param.Override[APIAppendObjectPropertyValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIAppendObjectPropertyValueType string
 
 const (
@@ -314,13 +278,7 @@ const (
 
 // The properties AppendPropertyName, Type are required.
 type APIAppendObjectPropertyValueParam struct {
-	// The name of the property to append data from
 	AppendPropertyName string `json:"appendPropertyName,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "APPEND_OBJECT_PROPERTY".
 	Type APIAppendObjectPropertyValueType `json:"type,omitzero,required"`
 	paramObj
@@ -335,7 +293,7 @@ func (r *APIAppendObjectPropertyValueParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIAssociationDataSource struct {
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory APIAssociationDataSourceAssociationCategory `json:"associationCategory,required"`
 	AssociationTypeID   int64                                       `json:"associationTypeId,required"`
 	Name                string                                      `json:"name,required"`
@@ -376,8 +334,8 @@ type APIAssociationDataSourceAssociationCategory string
 
 const (
 	APIAssociationDataSourceAssociationCategoryHubspotDefined    APIAssociationDataSourceAssociationCategory = "HUBSPOT_DEFINED"
-	APIAssociationDataSourceAssociationCategoryUserDefined       APIAssociationDataSourceAssociationCategory = "USER_DEFINED"
 	APIAssociationDataSourceAssociationCategoryIntegratorDefined APIAssociationDataSourceAssociationCategory = "INTEGRATOR_DEFINED"
+	APIAssociationDataSourceAssociationCategoryUserDefined       APIAssociationDataSourceAssociationCategory = "USER_DEFINED"
 )
 
 type APIAssociationDataSourceType string
@@ -389,7 +347,7 @@ const (
 // The properties AssociationCategory, AssociationTypeID, Name, ObjectTypeID, Type
 // are required.
 type APIAssociationDataSourceParam struct {
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory APIAssociationDataSourceAssociationCategory `json:"associationCategory,omitzero,required"`
 	AssociationTypeID   int64                                       `json:"associationTypeId,required"`
 	Name                string                                      `json:"name,required"`
@@ -409,11 +367,12 @@ func (r *APIAssociationDataSourceParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIAssociationTimestampDataSource struct {
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory APIAssociationTimestampDataSourceAssociationCategory `json:"associationCategory,required"`
-	AssociationTypeID   int64                                                `json:"associationTypeId,required"`
-	Name                string                                               `json:"name,required"`
-	ObjectTypeID        string                                               `json:"objectTypeId,required"`
+	// The ID representing the type of association.
+	AssociationTypeID int64  `json:"associationTypeId,required"`
+	Name              string `json:"name,required"`
+	ObjectTypeID      string `json:"objectTypeId,required"`
 	// Any of "ASSOCIATION_TIMESTAMP".
 	Type APIAssociationTimestampDataSourceType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -448,8 +407,8 @@ type APIAssociationTimestampDataSourceAssociationCategory string
 
 const (
 	APIAssociationTimestampDataSourceAssociationCategoryHubspotDefined    APIAssociationTimestampDataSourceAssociationCategory = "HUBSPOT_DEFINED"
-	APIAssociationTimestampDataSourceAssociationCategoryUserDefined       APIAssociationTimestampDataSourceAssociationCategory = "USER_DEFINED"
 	APIAssociationTimestampDataSourceAssociationCategoryIntegratorDefined APIAssociationTimestampDataSourceAssociationCategory = "INTEGRATOR_DEFINED"
+	APIAssociationTimestampDataSourceAssociationCategoryUserDefined       APIAssociationTimestampDataSourceAssociationCategory = "USER_DEFINED"
 )
 
 type APIAssociationTimestampDataSourceType string
@@ -461,11 +420,12 @@ const (
 // The properties AssociationCategory, AssociationTypeID, Name, ObjectTypeID, Type
 // are required.
 type APIAssociationTimestampDataSourceParam struct {
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory APIAssociationTimestampDataSourceAssociationCategory `json:"associationCategory,omitzero,required"`
-	AssociationTypeID   int64                                                `json:"associationTypeId,required"`
-	Name                string                                               `json:"name,required"`
-	ObjectTypeID        string                                               `json:"objectTypeId,required"`
+	// The ID representing the type of association.
+	AssociationTypeID int64  `json:"associationTypeId,required"`
+	Name              string `json:"name,required"`
+	ObjectTypeID      string `json:"objectTypeId,required"`
 	// Any of "ASSOCIATION_TIMESTAMP".
 	Type APIAssociationTimestampDataSourceType `json:"type,omitzero,required"`
 	paramObj
@@ -480,16 +440,10 @@ func (r *APIAssociationTimestampDataSourceParam) UnmarshalJSON(data []byte) erro
 }
 
 type APIAuthKeyWebhookAuthSettings struct {
-	// Where in the request this auth key should be located: "HEADER" or "QUERY_PARAM"
-	//
 	// Any of "HEADER", "QUERY_PARAM".
-	Location APIAuthKeyWebhookAuthSettingsLocation `json:"location,required"`
-	// The name to use for this auth key.
-	Name string `json:"name,required"`
-	// The secret to pass through in this auth key.
-	SecretName string `json:"secretName,required"`
-	// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
-	//
+	Location   APIAuthKeyWebhookAuthSettingsLocation `json:"location,required"`
+	Name       string                                `json:"name,required"`
+	SecretName string                                `json:"secretName,required"`
 	// Any of "AUTH_KEY".
 	Type APIAuthKeyWebhookAuthSettingsType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -519,7 +473,6 @@ func (r APIAuthKeyWebhookAuthSettings) ToParam() APIAuthKeyWebhookAuthSettingsPa
 	return param.Override[APIAuthKeyWebhookAuthSettingsParam](json.RawMessage(r.RawJSON()))
 }
 
-// Where in the request this auth key should be located: "HEADER" or "QUERY_PARAM"
 type APIAuthKeyWebhookAuthSettingsLocation string
 
 const (
@@ -527,7 +480,6 @@ const (
 	APIAuthKeyWebhookAuthSettingsLocationQueryParam APIAuthKeyWebhookAuthSettingsLocation = "QUERY_PARAM"
 )
 
-// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
 type APIAuthKeyWebhookAuthSettingsType string
 
 const (
@@ -536,16 +488,10 @@ const (
 
 // The properties Location, Name, SecretName, Type are required.
 type APIAuthKeyWebhookAuthSettingsParam struct {
-	// Where in the request this auth key should be located: "HEADER" or "QUERY_PARAM"
-	//
 	// Any of "HEADER", "QUERY_PARAM".
-	Location APIAuthKeyWebhookAuthSettingsLocation `json:"location,omitzero,required"`
-	// The name to use for this auth key.
-	Name string `json:"name,required"`
-	// The secret to pass through in this auth key.
-	SecretName string `json:"secretName,required"`
-	// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
-	//
+	Location   APIAuthKeyWebhookAuthSettingsLocation `json:"location,omitzero,required"`
+	Name       string                                `json:"name,required"`
+	SecretName string                                `json:"secretName,required"`
 	// Any of "AUTH_KEY".
 	Type APIAuthKeyWebhookAuthSettingsType `json:"type,omitzero,required"`
 	paramObj
@@ -561,8 +507,8 @@ func (r *APIAuthKeyWebhookAuthSettingsParam) UnmarshalJSON(data []byte) error {
 
 type APIBlockedDate struct {
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month APIBlockedDateMonth `json:"month,required"`
 	Year  int64               `json:"year"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -593,25 +539,25 @@ func (r APIBlockedDate) ToParam() APIBlockedDateParam {
 type APIBlockedDateMonth string
 
 const (
-	APIBlockedDateMonthJanuary   APIBlockedDateMonth = "JANUARY"
-	APIBlockedDateMonthFebruary  APIBlockedDateMonth = "FEBRUARY"
-	APIBlockedDateMonthMarch     APIBlockedDateMonth = "MARCH"
 	APIBlockedDateMonthApril     APIBlockedDateMonth = "APRIL"
-	APIBlockedDateMonthMay       APIBlockedDateMonth = "MAY"
-	APIBlockedDateMonthJune      APIBlockedDateMonth = "JUNE"
-	APIBlockedDateMonthJuly      APIBlockedDateMonth = "JULY"
 	APIBlockedDateMonthAugust    APIBlockedDateMonth = "AUGUST"
-	APIBlockedDateMonthSeptember APIBlockedDateMonth = "SEPTEMBER"
-	APIBlockedDateMonthOctober   APIBlockedDateMonth = "OCTOBER"
-	APIBlockedDateMonthNovember  APIBlockedDateMonth = "NOVEMBER"
 	APIBlockedDateMonthDecember  APIBlockedDateMonth = "DECEMBER"
+	APIBlockedDateMonthFebruary  APIBlockedDateMonth = "FEBRUARY"
+	APIBlockedDateMonthJanuary   APIBlockedDateMonth = "JANUARY"
+	APIBlockedDateMonthJuly      APIBlockedDateMonth = "JULY"
+	APIBlockedDateMonthJune      APIBlockedDateMonth = "JUNE"
+	APIBlockedDateMonthMarch     APIBlockedDateMonth = "MARCH"
+	APIBlockedDateMonthMay       APIBlockedDateMonth = "MAY"
+	APIBlockedDateMonthNovember  APIBlockedDateMonth = "NOVEMBER"
+	APIBlockedDateMonthOctober   APIBlockedDateMonth = "OCTOBER"
+	APIBlockedDateMonthSeptember APIBlockedDateMonth = "SEPTEMBER"
 )
 
 // The properties DayOfMonth, Month are required.
 type APIBlockedDateParam struct {
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month APIBlockedDateMonth `json:"month,omitzero,required"`
 	Year  param.Opt[int64]    `json:"year,omitzero"`
 	paramObj
@@ -674,7 +620,7 @@ type APIContactFlow struct {
 	CanEnrollFromSalesforce bool                        `json:"canEnrollFromSalesforce,required"`
 	CreatedAt               time.Time                   `json:"createdAt,required" format:"date-time"`
 	// Any of "PENDING", "COMPLETE".
-	CRMObjectCreationStatus APIContactFlowCRMObjectCreationStatus `json:"crmObjectCreationStatus,required"`
+	CrmObjectCreationStatus APIContactFlowCrmObjectCreationStatus `json:"crmObjectCreationStatus,required"`
 	CustomProperties        map[string]string                     `json:"customProperties,required"`
 	DataSources             []APIContactFlowDataSourceUnion       `json:"dataSources,required"`
 	// Any of "WORKFLOW", "ACTION_SET", "UNKNOWN".
@@ -704,7 +650,7 @@ type APIContactFlow struct {
 		BlockedDates            respjson.Field
 		CanEnrollFromSalesforce respjson.Field
 		CreatedAt               respjson.Field
-		CRMObjectCreationStatus respjson.Field
+		CrmObjectCreationStatus respjson.Field
 		CustomProperties        respjson.Field
 		DataSources             respjson.Field
 		FlowType                respjson.Field
@@ -844,11 +790,11 @@ func (r *APIContactFlowActionUnion) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type APIContactFlowCRMObjectCreationStatus string
+type APIContactFlowCrmObjectCreationStatus string
 
 const (
-	APIContactFlowCRMObjectCreationStatusPending  APIContactFlowCRMObjectCreationStatus = "PENDING"
-	APIContactFlowCRMObjectCreationStatusComplete APIContactFlowCRMObjectCreationStatus = "COMPLETE"
+	APIContactFlowCrmObjectCreationStatusPending  APIContactFlowCrmObjectCreationStatus = "PENDING"
+	APIContactFlowCrmObjectCreationStatusComplete APIContactFlowCrmObjectCreationStatus = "COMPLETE"
 )
 
 // APIContactFlowDataSourceUnion contains all possible properties and values from
@@ -3215,11 +3161,7 @@ type apiContactFlowPutRequestGoalFilterBranchUnionParamFilters struct{ any }
 func (u apiContactFlowPutRequestGoalFilterBranchUnionParamFilters) AsAny() any { return u.any }
 
 type APIContactPropertyAnchor struct {
-	// A date property on the contact to use as the anchor point of this workflow.
 	ContactProperty string `json:"contactProperty,required"`
-	// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-	// "STATIC_DATE_ANCHOR"
-	//
 	// Any of "CONTACT_PROPERTY_ANCHOR".
 	Type APIContactPropertyAnchorType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3247,8 +3189,6 @@ func (r APIContactPropertyAnchor) ToParam() APIContactPropertyAnchorParam {
 	return param.Override[APIContactPropertyAnchorParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-// "STATIC_DATE_ANCHOR"
 type APIContactPropertyAnchorType string
 
 const (
@@ -3257,11 +3197,7 @@ const (
 
 // The properties ContactProperty, Type are required.
 type APIContactPropertyAnchorParam struct {
-	// A date property on the contact to use as the anchor point of this workflow.
 	ContactProperty string `json:"contactProperty,required"`
-	// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-	// "STATIC_DATE_ANCHOR"
-	//
 	// Any of "CONTACT_PROPERTY_ANCHOR".
 	Type APIContactPropertyAnchorType `json:"type,omitzero,required"`
 	paramObj
@@ -3276,23 +3212,12 @@ func (r *APIContactPropertyAnchorParam) UnmarshalJSON(data []byte) error {
 }
 
 type APICustomCodeAction struct {
-	// The ID for this action.
-	ActionID    string             `json:"actionId,required"`
-	InputFields []APIInputVariable `json:"inputFields,required"`
-	// The list of output fields that this custom action makes available to the rest of
-	// the flow.
+	ActionID     string                      `json:"actionId,required"`
+	InputFields  []APIInputVariable          `json:"inputFields,required"`
 	OutputFields []APIEnumerationOutputField `json:"outputFields,required"`
-	// The runtime to use to execute the source code. Supported runtimes are:
-	// "NODE16X", "NODE20X", "PYTHON39"
-	Runtime string `json:"runtime,required"`
-	// The names of any "secrets" setup in this portal that will be used in this
-	// action.
-	SecretNames []string `json:"secretNames,required"`
-	// The source code to execute when this action executes.
-	SourceCode string `json:"sourceCode,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
+	Runtime      string                      `json:"runtime,required"`
+	SecretNames  []string                    `json:"secretNames,required"`
+	SourceCode   string                      `json:"sourceCode,required"`
 	// Any of "CUSTOM_CODE".
 	Type       APICustomCodeActionType `json:"type,required"`
 	Connection APIConnection           `json:"connection"`
@@ -3326,8 +3251,6 @@ func (r APICustomCodeAction) ToParam() APICustomCodeActionParam {
 	return param.Override[APICustomCodeActionParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APICustomCodeActionType string
 
 const (
@@ -3337,23 +3260,12 @@ const (
 // The properties ActionID, InputFields, OutputFields, Runtime, SecretNames,
 // SourceCode, Type are required.
 type APICustomCodeActionParam struct {
-	// The ID for this action.
-	ActionID    string                  `json:"actionId,required"`
-	InputFields []APIInputVariableParam `json:"inputFields,omitzero,required"`
-	// The list of output fields that this custom action makes available to the rest of
-	// the flow.
+	ActionID     string                           `json:"actionId,required"`
+	InputFields  []APIInputVariableParam          `json:"inputFields,omitzero,required"`
 	OutputFields []APIEnumerationOutputFieldParam `json:"outputFields,omitzero,required"`
-	// The runtime to use to execute the source code. Supported runtimes are:
-	// "NODE16X", "NODE20X", "PYTHON39"
-	Runtime string `json:"runtime,required"`
-	// The names of any "secrets" setup in this portal that will be used in this
-	// action.
-	SecretNames []string `json:"secretNames,omitzero,required"`
-	// The source code to execute when this action executes.
-	SourceCode string `json:"sourceCode,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
+	Runtime      string                           `json:"runtime,required"`
+	SecretNames  []string                         `json:"secretNames,omitzero,required"`
+	SourceCode   string                           `json:"sourceCode,required"`
 	// Any of "CUSTOM_CODE".
 	Type       APICustomCodeActionType `json:"type,omitzero,required"`
 	Connection APIConnectionParam      `json:"connection,omitzero"`
@@ -3370,9 +3282,6 @@ func (r *APICustomCodeActionParam) UnmarshalJSON(data []byte) error {
 
 type APIDailyEnrollmentSchedule struct {
 	TimeOfDay APITimeOfDay `json:"timeOfDay,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "DAILY".
 	Type APIDailyEnrollmentScheduleType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -3400,8 +3309,6 @@ func (r APIDailyEnrollmentSchedule) ToParam() APIDailyEnrollmentScheduleParam {
 	return param.Override[APIDailyEnrollmentScheduleParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
 type APIDailyEnrollmentScheduleType string
 
 const (
@@ -3411,9 +3318,6 @@ const (
 // The properties TimeOfDay, Type are required.
 type APIDailyEnrollmentScheduleParam struct {
 	TimeOfDay APITimeOfDayParam `json:"timeOfDay,omitzero,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "DAILY".
 	Type APIDailyEnrollmentScheduleType `json:"type,omitzero,required"`
 	paramObj
@@ -3713,20 +3617,11 @@ func (r *APIEnumerationOutputFieldParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIEventBasedEnrollmentCriteria struct {
-	EventFilterBranches []shared.PublicUnifiedEventsFilterBranch `json:"eventFilterBranches,required"`
-	// If you want to listen to list-membership events (an object was added to a list,
-	// an object was removed from a list) you need to use this
-	// `listMembershipFilterBranches` property instead of `eventFilterBranches`,
-	// because list membership events work differently.
+	EventFilterBranches          []shared.PublicUnifiedEventsFilterBranch                         `json:"eventFilterBranches,required"`
 	ListMembershipFilterBranches []APIEventBasedEnrollmentCriteriaListMembershipFilterBranchUnion `json:"listMembershipFilterBranches,required"`
-	// Whether or not the same object can enroll in this workflow twice.
-	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
+	ShouldReEnroll               bool                                                             `json:"shouldReEnroll,required"`
 	// Any of "EVENT_BASED".
-	Type APIEventBasedEnrollmentCriteriaType `json:"type,required"`
-	// List-based criteria to further refine which contacts will enroll in this flow.
+	Type               APIEventBasedEnrollmentCriteriaType                    `json:"type,required"`
 	RefinementCriteria APIEventBasedEnrollmentCriteriaRefinementCriteriaUnion `json:"refinementCriteria"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -3982,8 +3877,6 @@ func (r *APIEventBasedEnrollmentCriteriaListMembershipFilterBranchUnionFilters) 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of enrollment criteria this is, this can be "LIST_BASED",
-// "EVENT_BASED", or "MANUAL".
 type APIEventBasedEnrollmentCriteriaType string
 
 const (
@@ -4215,20 +4108,11 @@ func (r *APIEventBasedEnrollmentCriteriaRefinementCriteriaUnionFilters) Unmarsha
 // The properties EventFilterBranches, ListMembershipFilterBranches,
 // ShouldReEnroll, Type are required.
 type APIEventBasedEnrollmentCriteriaParam struct {
-	EventFilterBranches []shared.PublicUnifiedEventsFilterBranchParam `json:"eventFilterBranches,omitzero,required"`
-	// If you want to listen to list-membership events (an object was added to a list,
-	// an object was removed from a list) you need to use this
-	// `listMembershipFilterBranches` property instead of `eventFilterBranches`,
-	// because list membership events work differently.
+	EventFilterBranches          []shared.PublicUnifiedEventsFilterBranchParam                         `json:"eventFilterBranches,omitzero,required"`
 	ListMembershipFilterBranches []APIEventBasedEnrollmentCriteriaListMembershipFilterBranchUnionParam `json:"listMembershipFilterBranches,omitzero,required"`
-	// Whether or not the same object can enroll in this workflow twice.
-	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
+	ShouldReEnroll               bool                                                                  `json:"shouldReEnroll,required"`
 	// Any of "EVENT_BASED".
-	Type APIEventBasedEnrollmentCriteriaType `json:"type,omitzero,required"`
-	// List-based criteria to further refine which contacts will enroll in this flow.
+	Type               APIEventBasedEnrollmentCriteriaType                         `json:"type,omitzero,required"`
 	RefinementCriteria APIEventBasedEnrollmentCriteriaRefinementCriteriaUnionParam `json:"refinementCriteria,omitzero"`
 	paramObj
 }
@@ -4762,13 +4646,7 @@ type apiEventBasedEnrollmentCriteriaRefinementCriteriaUnionParamFilters struct{ 
 func (u apiEventBasedEnrollmentCriteriaRefinementCriteriaUnionParamFilters) AsAny() any { return u.any }
 
 type APIFetchedObjectPropertyValue struct {
-	// The token to use to identify the object property to use
 	PropertyToken string `json:"propertyToken,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "FETCHED_OBJECT_PROPERTY".
 	Type APIFetchedObjectPropertyValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4796,10 +4674,6 @@ func (r APIFetchedObjectPropertyValue) ToParam() APIFetchedObjectPropertyValuePa
 	return param.Override[APIFetchedObjectPropertyValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIFetchedObjectPropertyValueType string
 
 const (
@@ -4808,13 +4682,7 @@ const (
 
 // The properties PropertyToken, Type are required.
 type APIFetchedObjectPropertyValueParam struct {
-	// The token to use to identify the object property to use
 	PropertyToken string `json:"propertyToken,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "FETCHED_OBJECT_PROPERTY".
 	Type APIFetchedObjectPropertyValueType `json:"type,omitzero,required"`
 	paramObj
@@ -4841,7 +4709,7 @@ type APIFlowUnion struct {
 	// This field is from variant [APIContactFlow].
 	CanEnrollFromSalesforce bool      `json:"canEnrollFromSalesforce"`
 	CreatedAt               time.Time `json:"createdAt"`
-	CRMObjectCreationStatus string    `json:"crmObjectCreationStatus"`
+	CrmObjectCreationStatus string    `json:"crmObjectCreationStatus"`
 	CustomProperties        string    `json:"customProperties"`
 	// This field is a union of [[]APIContactFlowDataSourceUnion],
 	// [[]APIPlatformFlowDataSourceUnion]
@@ -4880,7 +4748,7 @@ type APIFlowUnion struct {
 		BlockedDates            respjson.Field
 		CanEnrollFromSalesforce respjson.Field
 		CreatedAt               respjson.Field
-		CRMObjectCreationStatus respjson.Field
+		CrmObjectCreationStatus respjson.Field
 		CustomProperties        respjson.Field
 		DataSources             respjson.Field
 		FlowType                respjson.Field
@@ -5099,10 +4967,7 @@ const (
 
 // The properties FlowMigrationStatuses, Type are required.
 type APIFlowBatchFetchMigrationFlowIDCoordinateParam struct {
-	// The flowId from the V4 API
 	FlowMigrationStatuses string `json:"flowMigrationStatuses,required"`
-	// The type of input this is, can be FLOW_ID or WORKFLOW_ID
-	//
 	// Any of "FLOW_ID".
 	Type APIFlowBatchFetchMigrationFlowIDCoordinateType `json:"type,omitzero,required"`
 	paramObj
@@ -5116,7 +4981,6 @@ func (r *APIFlowBatchFetchMigrationFlowIDCoordinateParam) UnmarshalJSON(data []b
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of input this is, can be FLOW_ID or WORKFLOW_ID
 type APIFlowBatchFetchMigrationFlowIDCoordinateType string
 
 const (
@@ -5125,10 +4989,7 @@ const (
 
 // The properties FlowMigrationStatusForClassicWorkflows, Type are required.
 type APIFlowBatchFetchMigrationWorkflowIDCoordinateParam struct {
-	// The workflowId from the V3 API
 	FlowMigrationStatusForClassicWorkflows string `json:"flowMigrationStatusForClassicWorkflows,required"`
-	// The type of input this is, can be FLOW_ID or WORKFLOW_ID
-	//
 	// Any of "WORKFLOW_ID".
 	Type APIFlowBatchFetchMigrationWorkflowIDCoordinateType `json:"type,omitzero,required"`
 	paramObj
@@ -5142,7 +5003,6 @@ func (r *APIFlowBatchFetchMigrationWorkflowIDCoordinateParam) UnmarshalJSON(data
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of input this is, can be FLOW_ID or WORKFLOW_ID
 type APIFlowBatchFetchMigrationWorkflowIDCoordinateType string
 
 const (
@@ -5748,27 +5608,15 @@ func (r *APIFlowEmailCampaign) UnmarshalJSON(data []byte) error {
 }
 
 type APIFlowListing struct {
-	// The unique ID for this flow. This is auto-generated when creating the flow.
-	ID string `json:"id,required"`
-	// The timestamp this flow was created.
-	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
-	// Deprecated. Will be removed.
-	FlowType string `json:"flowType,required"`
-	// This controls whether or not the flow is "enabled" if it's actively listening
-	// for enrollment triggers and executing actions. If this is `false` the flow is
-	// not accepting any enrollments or executing any actions.
-	IsEnabled bool `json:"isEnabled,required"`
-	// The CRM object type for objects that can be enrolled into this flow.
-	ObjectTypeID string `json:"objectTypeId,required"`
-	// Deprecated. Will be removed.
-	RevisionID string `json:"revisionId,required"`
-	// The timestamp this flow was last updated.
-	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// The user-provided name for this flow. Names get auto-created for workflows that
-	// are created without a name.
-	Name string `json:"name"`
-	// An optional unique key for this flow. This is only unique per-portal.
-	Uuid string `json:"uuid"`
+	ID           string    `json:"id,required"`
+	CreatedAt    time.Time `json:"createdAt,required" format:"date-time"`
+	FlowType     string    `json:"flowType,required"`
+	IsEnabled    bool      `json:"isEnabled,required"`
+	ObjectTypeID string    `json:"objectTypeId,required"`
+	RevisionID   string    `json:"revisionId,required"`
+	UpdatedAt    time.Time `json:"updatedAt,required" format:"date-time"`
+	Name         string    `json:"name"`
+	Uuid         string    `json:"uuid"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID           respjson.Field
@@ -6255,13 +6103,7 @@ func (u apiFlowPutRequestUnionParamEnrollmentSchedule) GetDaysOfMonth() []int64 
 }
 
 type APIIncrementValue struct {
-	// The amount be which to increment
 	IncrementAmount float64 `json:"incrementAmount,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "INCREMENT".
 	Type APIIncrementValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -6288,10 +6130,6 @@ func (r APIIncrementValue) ToParam() APIIncrementValueParam {
 	return param.Override[APIIncrementValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIIncrementValueType string
 
 const (
@@ -6300,13 +6138,7 @@ const (
 
 // The properties IncrementAmount, Type are required.
 type APIIncrementValueParam struct {
-	// The amount be which to increment
 	IncrementAmount float64 `json:"incrementAmount,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "INCREMENT".
 	Type APIIncrementValueType `json:"type,omitzero,required"`
 	paramObj
@@ -6640,21 +6472,12 @@ func (u APIInputVariableValueUnionParam) GetType() *string {
 }
 
 type APIListBasedEnrollmentCriteria struct {
-	// The list filter branch that represents the enrollment trigger to this flow.
-	ListFilterBranch APIListBasedEnrollmentCriteriaListFilterBranchUnion `json:"listFilterBranch,required"`
-	// A list of filter branches to listen for in order to re-enroll objects into this
-	// workflow.
+	ListFilterBranch                   APIListBasedEnrollmentCriteriaListFilterBranchUnion                   `json:"listFilterBranch,required"`
 	ReEnrollmentTriggersFilterBranches []APIListBasedEnrollmentCriteriaReEnrollmentTriggersFilterBranchUnion `json:"reEnrollmentTriggersFilterBranches,required"`
-	// Whether or not the same object can enroll in this workflow twice.
-	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
+	ShouldReEnroll                     bool                                                                  `json:"shouldReEnroll,required"`
 	// Any of "LIST_BASED".
-	Type APIListBasedEnrollmentCriteriaType `json:"type,required"`
-	// Whether or not to remove objects from this workflow if they stop meeting the
-	// enrollment criteria.
-	UnEnrollObjectsNotMeetingCriteria bool `json:"unEnrollObjectsNotMeetingCriteria,required"`
+	Type                              APIListBasedEnrollmentCriteriaType `json:"type,required"`
+	UnEnrollObjectsNotMeetingCriteria bool                               `json:"unEnrollObjectsNotMeetingCriteria,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ListFilterBranch                   respjson.Field
@@ -7131,8 +6954,6 @@ func (r *APIListBasedEnrollmentCriteriaReEnrollmentTriggersFilterBranchUnionFilt
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of enrollment criteria this is, this can be "LIST_BASED",
-// "EVENT_BASED", or "MANUAL".
 type APIListBasedEnrollmentCriteriaType string
 
 const (
@@ -7142,21 +6963,12 @@ const (
 // The properties ListFilterBranch, ReEnrollmentTriggersFilterBranches,
 // ShouldReEnroll, Type, UnEnrollObjectsNotMeetingCriteria are required.
 type APIListBasedEnrollmentCriteriaParam struct {
-	// The list filter branch that represents the enrollment trigger to this flow.
-	ListFilterBranch APIListBasedEnrollmentCriteriaListFilterBranchUnionParam `json:"listFilterBranch,omitzero,required"`
-	// A list of filter branches to listen for in order to re-enroll objects into this
-	// workflow.
+	ListFilterBranch                   APIListBasedEnrollmentCriteriaListFilterBranchUnionParam                   `json:"listFilterBranch,omitzero,required"`
 	ReEnrollmentTriggersFilterBranches []APIListBasedEnrollmentCriteriaReEnrollmentTriggersFilterBranchUnionParam `json:"reEnrollmentTriggersFilterBranches,omitzero,required"`
-	// Whether or not the same object can enroll in this workflow twice.
-	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
+	ShouldReEnroll                     bool                                                                       `json:"shouldReEnroll,required"`
 	// Any of "LIST_BASED".
-	Type APIListBasedEnrollmentCriteriaType `json:"type,omitzero,required"`
-	// Whether or not to remove objects from this workflow if they stop meeting the
-	// enrollment criteria.
-	UnEnrollObjectsNotMeetingCriteria bool `json:"unEnrollObjectsNotMeetingCriteria,required"`
+	Type                              APIListBasedEnrollmentCriteriaType `json:"type,omitzero,required"`
+	UnEnrollObjectsNotMeetingCriteria bool                               `json:"unEnrollObjectsNotMeetingCriteria,required"`
 	paramObj
 }
 
@@ -7689,11 +7501,8 @@ func (u apiListBasedEnrollmentCriteriaReEnrollmentTriggersFilterBranchUnionParam
 }
 
 type APIListBranch struct {
-	// The name of this branch
-	BranchName string        `json:"branchName"`
-	Connection APIConnection `json:"connection"`
-	// The list criteria that determine when to execute this branch. The first matching
-	// branch will execute.
+	BranchName   string                         `json:"branchName"`
+	Connection   APIConnection                  `json:"connection"`
 	FilterBranch APIListBranchFilterBranchUnion `json:"filterBranch"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -7940,11 +7749,8 @@ func (r *APIListBranchFilterBranchUnionFilters) UnmarshalJSON(data []byte) error
 }
 
 type APIListBranchParam struct {
-	// The name of this branch
-	BranchName param.Opt[string]  `json:"branchName,omitzero"`
-	Connection APIConnectionParam `json:"connection,omitzero"`
-	// The list criteria that determine when to execute this branch. The first matching
-	// branch will execute.
+	BranchName   param.Opt[string]                   `json:"branchName,omitzero"`
+	Connection   APIConnectionParam                  `json:"connection,omitzero"`
 	FilterBranch APIListBranchFilterBranchUnionParam `json:"filterBranch,omitzero"`
 	paramObj
 }
@@ -8215,18 +8021,12 @@ type apiListBranchFilterBranchUnionParamFilters struct{ any }
 func (u apiListBranchFilterBranchUnionParamFilters) AsAny() any { return u.any }
 
 type APIListBranchAction struct {
-	// The ID for this action.
 	ActionID     string          `json:"actionId,required"`
 	ListBranches []APIListBranch `json:"listBranches,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "LIST_BRANCH".
-	Type          APIListBranchActionType `json:"type,required"`
-	DefaultBranch APIConnection           `json:"defaultBranch"`
-	// The name of the default branch, the branch that gets executed if the object does
-	// not match any of the `listBranch` criteria.
-	DefaultBranchName string `json:"defaultBranchName"`
+	Type              APIListBranchActionType `json:"type,required"`
+	DefaultBranch     APIConnection           `json:"defaultBranch"`
+	DefaultBranchName string                  `json:"defaultBranchName"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ActionID          respjson.Field
@@ -8254,8 +8054,6 @@ func (r APIListBranchAction) ToParam() APIListBranchActionParam {
 	return param.Override[APIListBranchActionParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APIListBranchActionType string
 
 const (
@@ -8264,18 +8062,12 @@ const (
 
 // The properties ActionID, ListBranches, Type are required.
 type APIListBranchActionParam struct {
-	// The ID for this action.
 	ActionID     string               `json:"actionId,required"`
 	ListBranches []APIListBranchParam `json:"listBranches,omitzero,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "LIST_BRANCH".
-	Type APIListBranchActionType `json:"type,omitzero,required"`
-	// The name of the default branch, the branch that gets executed if the object does
-	// not match any of the `listBranch` criteria.
-	DefaultBranchName param.Opt[string]  `json:"defaultBranchName,omitzero"`
-	DefaultBranch     APIConnectionParam `json:"defaultBranch,omitzero"`
+	Type              APIListBranchActionType `json:"type,omitzero,required"`
+	DefaultBranchName param.Opt[string]       `json:"defaultBranchName,omitzero"`
+	DefaultBranch     APIConnectionParam      `json:"defaultBranch,omitzero"`
 	paramObj
 }
 
@@ -8288,11 +8080,7 @@ func (r *APIListBranchActionParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIManualEnrollmentCriteria struct {
-	// Whether or not the same object can enroll in this workflow twice.
 	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
 	// Any of "MANUAL".
 	Type APIManualEnrollmentCriteriaType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -8320,8 +8108,6 @@ func (r APIManualEnrollmentCriteria) ToParam() APIManualEnrollmentCriteriaParam 
 	return param.Override[APIManualEnrollmentCriteriaParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of enrollment criteria this is, this can be "LIST_BASED",
-// "EVENT_BASED", or "MANUAL".
 type APIManualEnrollmentCriteriaType string
 
 const (
@@ -8330,11 +8116,7 @@ const (
 
 // The properties ShouldReEnroll, Type are required.
 type APIManualEnrollmentCriteriaParam struct {
-	// Whether or not the same object can enroll in this workflow twice.
 	ShouldReEnroll bool `json:"shouldReEnroll,required"`
-	// The type of enrollment criteria this is, this can be "LIST_BASED",
-	// "EVENT_BASED", or "MANUAL".
-	//
 	// Any of "MANUAL".
 	Type APIManualEnrollmentCriteriaType `json:"type,omitzero,required"`
 	paramObj
@@ -8349,14 +8131,9 @@ func (r *APIManualEnrollmentCriteriaParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIMonthlyRelativeDaysEnrollmentSchedule struct {
-	// Can be either "LAST_DAY_OF_MONTH" or "FIRST_MONDAY_OF_MONTH"
-	//
-	// Any of "LAST_DAY_OF_MONTH", "FIRST_MONDAY_OF_MONTH".
+	// Any of "FIRST_MONDAY_OF_MONTH", "LAST_DAY_OF_MONTH".
 	MonthlyRelativeDays APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays `json:"monthlyRelativeDays,required"`
 	TimeOfDay           APITimeOfDay                                                `json:"timeOfDay,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "MONTHLY_RELATIVE_DAYS".
 	Type APIMonthlyRelativeDaysEnrollmentScheduleType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -8385,16 +8162,13 @@ func (r APIMonthlyRelativeDaysEnrollmentSchedule) ToParam() APIMonthlyRelativeDa
 	return param.Override[APIMonthlyRelativeDaysEnrollmentScheduleParam](json.RawMessage(r.RawJSON()))
 }
 
-// Can be either "LAST_DAY_OF_MONTH" or "FIRST_MONDAY_OF_MONTH"
 type APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays string
 
 const (
-	APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDaysLastDayOfMonth     APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays = "LAST_DAY_OF_MONTH"
 	APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDaysFirstMondayOfMonth APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays = "FIRST_MONDAY_OF_MONTH"
+	APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDaysLastDayOfMonth     APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays = "LAST_DAY_OF_MONTH"
 )
 
-// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
 type APIMonthlyRelativeDaysEnrollmentScheduleType string
 
 const (
@@ -8403,14 +8177,9 @@ const (
 
 // The properties MonthlyRelativeDays, TimeOfDay, Type are required.
 type APIMonthlyRelativeDaysEnrollmentScheduleParam struct {
-	// Can be either "LAST_DAY_OF_MONTH" or "FIRST_MONDAY_OF_MONTH"
-	//
-	// Any of "LAST_DAY_OF_MONTH", "FIRST_MONDAY_OF_MONTH".
+	// Any of "FIRST_MONDAY_OF_MONTH", "LAST_DAY_OF_MONTH".
 	MonthlyRelativeDays APIMonthlyRelativeDaysEnrollmentScheduleMonthlyRelativeDays `json:"monthlyRelativeDays,omitzero,required"`
 	TimeOfDay           APITimeOfDayParam                                           `json:"timeOfDay,omitzero,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "MONTHLY_RELATIVE_DAYS".
 	Type APIMonthlyRelativeDaysEnrollmentScheduleType `json:"type,omitzero,required"`
 	paramObj
@@ -8425,12 +8194,8 @@ func (r *APIMonthlyRelativeDaysEnrollmentScheduleParam) UnmarshalJSON(data []byt
 }
 
 type APIMonthlySpecificDaysEnrollmentSchedule struct {
-	// Which days of the month to run this workflow on.
 	DaysOfMonth []int64      `json:"daysOfMonth,required"`
 	TimeOfDay   APITimeOfDay `json:"timeOfDay,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "MONTHLY_SPECIFIC_DAYS".
 	Type APIMonthlySpecificDaysEnrollmentScheduleType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -8459,8 +8224,6 @@ func (r APIMonthlySpecificDaysEnrollmentSchedule) ToParam() APIMonthlySpecificDa
 	return param.Override[APIMonthlySpecificDaysEnrollmentScheduleParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
 type APIMonthlySpecificDaysEnrollmentScheduleType string
 
 const (
@@ -8469,12 +8232,8 @@ const (
 
 // The properties DaysOfMonth, TimeOfDay, Type are required.
 type APIMonthlySpecificDaysEnrollmentScheduleParam struct {
-	// Which days of the month to run this workflow on.
 	DaysOfMonth []int64           `json:"daysOfMonth,omitzero,required"`
 	TimeOfDay   APITimeOfDayParam `json:"timeOfDay,omitzero,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "MONTHLY_SPECIFIC_DAYS".
 	Type APIMonthlySpecificDaysEnrollmentScheduleType `json:"type,omitzero,required"`
 	paramObj
@@ -8489,13 +8248,7 @@ func (r *APIMonthlySpecificDaysEnrollmentScheduleParam) UnmarshalJSON(data []byt
 }
 
 type APIObjectPropertyValue struct {
-	// The property name to pull data from.
 	PropertyName string `json:"propertyName,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "OBJECT_PROPERTY".
 	Type APIObjectPropertyValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -8522,10 +8275,6 @@ func (r APIObjectPropertyValue) ToParam() APIObjectPropertyValueParam {
 	return param.Override[APIObjectPropertyValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIObjectPropertyValueType string
 
 const (
@@ -8534,13 +8283,7 @@ const (
 
 // The properties PropertyName, Type are required.
 type APIObjectPropertyValueParam struct {
-	// The property name to pull data from.
 	PropertyName string `json:"propertyName,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "OBJECT_PROPERTY".
 	Type APIObjectPropertyValueType `json:"type,omitzero,required"`
 	paramObj
@@ -8560,7 +8303,7 @@ type APIPlatformFlow struct {
 	BlockedDates []APIBlockedDate             `json:"blockedDates,required"`
 	CreatedAt    time.Time                    `json:"createdAt,required" format:"date-time"`
 	// Any of "PENDING", "COMPLETE".
-	CRMObjectCreationStatus APIPlatformFlowCRMObjectCreationStatus `json:"crmObjectCreationStatus,required"`
+	CrmObjectCreationStatus APIPlatformFlowCrmObjectCreationStatus `json:"crmObjectCreationStatus,required"`
 	CustomProperties        map[string]string                      `json:"customProperties,required"`
 	DataSources             []APIPlatformFlowDataSourceUnion       `json:"dataSources,required"`
 	// Any of "WORKFLOW", "ACTION_SET", "UNKNOWN".
@@ -8586,7 +8329,7 @@ type APIPlatformFlow struct {
 		Actions                 respjson.Field
 		BlockedDates            respjson.Field
 		CreatedAt               respjson.Field
-		CRMObjectCreationStatus respjson.Field
+		CrmObjectCreationStatus respjson.Field
 		CustomProperties        respjson.Field
 		DataSources             respjson.Field
 		FlowType                respjson.Field
@@ -8723,11 +8466,11 @@ func (r *APIPlatformFlowActionUnion) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type APIPlatformFlowCRMObjectCreationStatus string
+type APIPlatformFlowCrmObjectCreationStatus string
 
 const (
-	APIPlatformFlowCRMObjectCreationStatusPending  APIPlatformFlowCRMObjectCreationStatus = "PENDING"
-	APIPlatformFlowCRMObjectCreationStatusComplete APIPlatformFlowCRMObjectCreationStatus = "COMPLETE"
+	APIPlatformFlowCrmObjectCreationStatusPending  APIPlatformFlowCrmObjectCreationStatus = "PENDING"
+	APIPlatformFlowCrmObjectCreationStatusComplete APIPlatformFlowCrmObjectCreationStatus = "COMPLETE"
 )
 
 // APIPlatformFlowDataSourceUnion contains all possible properties and values from
@@ -10975,11 +10718,6 @@ func (r *APIPropertyBasedEnrollmentScheduleParam) UnmarshalJSON(data []byte) err
 
 type APIRelativeDateTimeValue struct {
 	TimeDelay APITimeDelay `json:"timeDelay,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "RELATIVE_DATETIME".
 	Type APIRelativeDateTimeValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -11007,10 +10745,6 @@ func (r APIRelativeDateTimeValue) ToParam() APIRelativeDateTimeValueParam {
 	return param.Override[APIRelativeDateTimeValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIRelativeDateTimeValueType string
 
 const (
@@ -11020,11 +10754,6 @@ const (
 // The properties TimeDelay, Type are required.
 type APIRelativeDateTimeValueParam struct {
 	TimeDelay APITimeDelayParam `json:"timeDelay,omitzero,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "RELATIVE_DATETIME".
 	Type APIRelativeDateTimeValueType `json:"type,omitzero,required"`
 	paramObj
@@ -11039,10 +10768,7 @@ func (r *APIRelativeDateTimeValueParam) UnmarshalJSON(data []byte) error {
 }
 
 type APISignatureWebhookAuthSettings struct {
-	// The appId that this signature will be generated for.
 	AppID int64 `json:"appId,required"`
-	// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
-	//
 	// Any of "SIGNATURE".
 	Type APISignatureWebhookAuthSettingsType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -11070,7 +10796,6 @@ func (r APISignatureWebhookAuthSettings) ToParam() APISignatureWebhookAuthSettin
 	return param.Override[APISignatureWebhookAuthSettingsParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
 type APISignatureWebhookAuthSettingsType string
 
 const (
@@ -11079,10 +10804,7 @@ const (
 
 // The properties AppID, Type are required.
 type APISignatureWebhookAuthSettingsParam struct {
-	// The appId that this signature will be generated for.
 	AppID int64 `json:"appId,required"`
-	// The type of webhook auth settings this is, can be: "AUTH_KEY" or "SIGNATURE"
-	//
 	// Any of "SIGNATURE".
 	Type APISignatureWebhookAuthSettingsType `json:"type,omitzero,required"`
 	paramObj
@@ -11097,18 +10819,10 @@ func (r *APISignatureWebhookAuthSettingsParam) UnmarshalJSON(data []byte) error 
 }
 
 type APISingleConnectionAction struct {
-	// The ID for this action.
-	ActionID string `json:"actionId,required"`
-	// The ID of the actionType to use.
-	ActionTypeID string `json:"actionTypeId,required"`
-	// The version of this actionType to use.
-	ActionTypeVersion int64 `json:"actionTypeVersion,required"`
-	// The fields to pass into this action. Different action types accept different
-	// fields.
-	Fields map[string]any `json:"fields,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
+	ActionID          string         `json:"actionId,required"`
+	ActionTypeID      string         `json:"actionTypeId,required"`
+	ActionTypeVersion int64          `json:"actionTypeVersion,required"`
+	Fields            map[string]any `json:"fields,required"`
 	// Any of "SINGLE_CONNECTION".
 	Type       APISingleConnectionActionType `json:"type,required"`
 	Connection APIConnection                 `json:"connection"`
@@ -11141,8 +10855,6 @@ func (r APISingleConnectionAction) ToParam() APISingleConnectionActionParam {
 	return param.Override[APISingleConnectionActionParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APISingleConnectionActionType string
 
 const (
@@ -11152,18 +10864,10 @@ const (
 // The properties ActionID, ActionTypeID, ActionTypeVersion, Fields, Type are
 // required.
 type APISingleConnectionActionParam struct {
-	// The ID for this action.
-	ActionID string `json:"actionId,required"`
-	// The ID of the actionType to use.
-	ActionTypeID string `json:"actionTypeId,required"`
-	// The version of this actionType to use.
-	ActionTypeVersion int64 `json:"actionTypeVersion,required"`
-	// The fields to pass into this action. Different action types accept different
-	// fields.
-	Fields map[string]any `json:"fields,omitzero,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
+	ActionID          string         `json:"actionId,required"`
+	ActionTypeID      string         `json:"actionTypeId,required"`
+	ActionTypeVersion int64          `json:"actionTypeVersion,required"`
+	Fields            map[string]any `json:"fields,omitzero,required"`
 	// Any of "SINGLE_CONNECTION".
 	Type       APISingleConnectionActionType `json:"type,omitzero,required"`
 	Connection APIConnectionParam            `json:"connection,omitzero"`
@@ -11233,13 +10937,7 @@ func (r *APISortParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIStaticAppendValue struct {
-	// The value to append
 	StaticAppendValue string `json:"staticAppendValue,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "STATIC_APPEND_VALUE".
 	Type APIStaticAppendValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -11266,10 +10964,6 @@ func (r APIStaticAppendValue) ToParam() APIStaticAppendValueParam {
 	return param.Override[APIStaticAppendValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIStaticAppendValueType string
 
 const (
@@ -11278,13 +10972,7 @@ const (
 
 // The properties StaticAppendValue, Type are required.
 type APIStaticAppendValueParam struct {
-	// The value to append
 	StaticAppendValue string `json:"staticAppendValue,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "STATIC_APPEND_VALUE".
 	Type APIStaticAppendValueType `json:"type,omitzero,required"`
 	paramObj
@@ -11299,8 +10987,6 @@ func (r *APIStaticAppendValueParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIStaticBranch struct {
-	// If value to check for. If the value of the `inputValue` matches this
-	// `branchValue` than this `connection` will get traversed.
 	BranchValue string        `json:"branchValue,required"`
 	Connection  APIConnection `json:"connection"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -11329,8 +11015,6 @@ func (r APIStaticBranch) ToParam() APIStaticBranchParam {
 
 // The property BranchValue is required.
 type APIStaticBranchParam struct {
-	// If value to check for. If the value of the `inputValue` matches this
-	// `branchValue` than this `connection` will get traversed.
 	BranchValue string             `json:"branchValue,required"`
 	Connection  APIConnectionParam `json:"connection,omitzero"`
 	paramObj
@@ -11345,20 +11029,13 @@ func (r *APIStaticBranchParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIStaticBranchAction struct {
-	// The ID for this action.
-	ActionID string `json:"actionId,required"`
-	// The input value to branch off of.
+	ActionID       string                               `json:"actionId,required"`
 	InputValue     APIStaticBranchActionInputValueUnion `json:"inputValue,required"`
 	StaticBranches []APIStaticBranch                    `json:"staticBranches,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "STATIC_BRANCH".
-	Type          APIStaticBranchActionType `json:"type,required"`
-	DefaultBranch APIConnection             `json:"defaultBranch"`
-	// The name of the default branch, the branch that gets executed if `inputValue`
-	// does not match any of the `staticBranches`.
-	DefaultBranchName string `json:"defaultBranchName"`
+	Type              APIStaticBranchActionType `json:"type,required"`
+	DefaultBranch     APIConnection             `json:"defaultBranch"`
+	DefaultBranchName string                    `json:"defaultBranchName"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ActionID          respjson.Field
@@ -11492,8 +11169,6 @@ func (r *APIStaticBranchActionInputValueUnion) UnmarshalJSON(data []byte) error 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APIStaticBranchActionType string
 
 const (
@@ -11502,20 +11177,13 @@ const (
 
 // The properties ActionID, InputValue, StaticBranches, Type are required.
 type APIStaticBranchActionParam struct {
-	// The ID for this action.
-	ActionID string `json:"actionId,required"`
-	// The input value to branch off of.
+	ActionID       string                                    `json:"actionId,required"`
 	InputValue     APIStaticBranchActionInputValueUnionParam `json:"inputValue,omitzero,required"`
 	StaticBranches []APIStaticBranchParam                    `json:"staticBranches,omitzero,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "STATIC_BRANCH".
-	Type APIStaticBranchActionType `json:"type,omitzero,required"`
-	// The name of the default branch, the branch that gets executed if `inputValue`
-	// does not match any of the `staticBranches`.
-	DefaultBranchName param.Opt[string]  `json:"defaultBranchName,omitzero"`
-	DefaultBranch     APIConnectionParam `json:"defaultBranch,omitzero"`
+	Type              APIStaticBranchActionType `json:"type,omitzero,required"`
+	DefaultBranchName param.Opt[string]         `json:"defaultBranchName,omitzero"`
+	DefaultBranch     APIConnectionParam        `json:"defaultBranch,omitzero"`
 	paramObj
 }
 
@@ -11700,21 +11368,13 @@ func (u APIStaticBranchActionInputValueUnionParam) GetType() *string {
 }
 
 type APIStaticDateAnchor struct {
-	// The day of the date to anchor on
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// The month of the date to anchor on
-	//
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month APIStaticDateAnchorMonth `json:"month,required"`
-	// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-	// "STATIC_DATE_ANCHOR"
-	//
 	// Any of "STATIC_DATE_ANCHOR".
 	Type APIStaticDateAnchorType `json:"type,required"`
-	// The year of the date to anchor on. If this is not provided then this flow will
-	// re-run each year.
-	Year int64 `json:"year"`
+	Year int64                   `json:"year"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		DayOfMonth  respjson.Field
@@ -11741,26 +11401,23 @@ func (r APIStaticDateAnchor) ToParam() APIStaticDateAnchorParam {
 	return param.Override[APIStaticDateAnchorParam](json.RawMessage(r.RawJSON()))
 }
 
-// The month of the date to anchor on
 type APIStaticDateAnchorMonth string
 
 const (
-	APIStaticDateAnchorMonthJanuary   APIStaticDateAnchorMonth = "JANUARY"
-	APIStaticDateAnchorMonthFebruary  APIStaticDateAnchorMonth = "FEBRUARY"
-	APIStaticDateAnchorMonthMarch     APIStaticDateAnchorMonth = "MARCH"
 	APIStaticDateAnchorMonthApril     APIStaticDateAnchorMonth = "APRIL"
-	APIStaticDateAnchorMonthMay       APIStaticDateAnchorMonth = "MAY"
-	APIStaticDateAnchorMonthJune      APIStaticDateAnchorMonth = "JUNE"
-	APIStaticDateAnchorMonthJuly      APIStaticDateAnchorMonth = "JULY"
 	APIStaticDateAnchorMonthAugust    APIStaticDateAnchorMonth = "AUGUST"
-	APIStaticDateAnchorMonthSeptember APIStaticDateAnchorMonth = "SEPTEMBER"
-	APIStaticDateAnchorMonthOctober   APIStaticDateAnchorMonth = "OCTOBER"
-	APIStaticDateAnchorMonthNovember  APIStaticDateAnchorMonth = "NOVEMBER"
 	APIStaticDateAnchorMonthDecember  APIStaticDateAnchorMonth = "DECEMBER"
+	APIStaticDateAnchorMonthFebruary  APIStaticDateAnchorMonth = "FEBRUARY"
+	APIStaticDateAnchorMonthJanuary   APIStaticDateAnchorMonth = "JANUARY"
+	APIStaticDateAnchorMonthJuly      APIStaticDateAnchorMonth = "JULY"
+	APIStaticDateAnchorMonthJune      APIStaticDateAnchorMonth = "JUNE"
+	APIStaticDateAnchorMonthMarch     APIStaticDateAnchorMonth = "MARCH"
+	APIStaticDateAnchorMonthMay       APIStaticDateAnchorMonth = "MAY"
+	APIStaticDateAnchorMonthNovember  APIStaticDateAnchorMonth = "NOVEMBER"
+	APIStaticDateAnchorMonthOctober   APIStaticDateAnchorMonth = "OCTOBER"
+	APIStaticDateAnchorMonthSeptember APIStaticDateAnchorMonth = "SEPTEMBER"
 )
 
-// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-// "STATIC_DATE_ANCHOR"
 type APIStaticDateAnchorType string
 
 const (
@@ -11769,21 +11426,13 @@ const (
 
 // The properties DayOfMonth, Month, Type are required.
 type APIStaticDateAnchorParam struct {
-	// The day of the date to anchor on
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// The month of the date to anchor on
-	//
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month APIStaticDateAnchorMonth `json:"month,omitzero,required"`
-	// The type of event anchor this is, can be: "CONTACT_PROPERTY_ANCHOR" or
-	// "STATIC_DATE_ANCHOR"
-	//
 	// Any of "STATIC_DATE_ANCHOR".
 	Type APIStaticDateAnchorType `json:"type,omitzero,required"`
-	// The year of the date to anchor on. If this is not provided then this flow will
-	// re-run each year.
-	Year param.Opt[int64] `json:"year,omitzero"`
+	Year param.Opt[int64]        `json:"year,omitzero"`
 	paramObj
 }
 
@@ -11907,13 +11556,7 @@ func (r *APIStaticTimeZoneStrategyParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIStaticValue struct {
-	// A static value to use as the input
 	StaticValue string `json:"staticValue,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "STATIC_VALUE".
 	Type APIStaticValueType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -11940,10 +11583,6 @@ func (r APIStaticValue) ToParam() APIStaticValueParam {
 	return param.Override[APIStaticValueParam](json.RawMessage(r.RawJSON()))
 }
 
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
 type APIStaticValueType string
 
 const (
@@ -11952,13 +11591,7 @@ const (
 
 // The properties StaticValue, Type are required.
 type APIStaticValueParam struct {
-	// A static value to use as the input
 	StaticValue string `json:"staticValue,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
 	// Any of "STATIC_VALUE".
 	Type APIStaticValueType `json:"type,omitzero,required"`
 	paramObj
@@ -11977,9 +11610,9 @@ type APITimeDelay struct {
 	// "SUNDAY".
 	DaysOfWeek []string `json:"daysOfWeek,required"`
 	Delta      int64    `json:"delta,required"`
-	// Any of "NANOS", "MICROS", "MILLIS", "SECONDS", "MINUTES", "HOURS", "HALF_DAYS",
-	// "DAYS", "WEEKS", "MONTHS", "YEARS", "DECADES", "CENTURIES", "MILLENNIA", "ERAS",
-	// "FOREVER".
+	// Any of "CENTURIES", "DAYS", "DECADES", "ERAS", "FOREVER", "HALF_DAYS", "HOURS",
+	// "MICROS", "MILLENNIA", "MILLIS", "MINUTES", "MONTHS", "NANOS", "SECONDS",
+	// "WEEKS", "YEARS".
 	TimeUnit         APITimeDelayTimeUnit      `json:"timeUnit,required"`
 	TimeOfDay        APITimeOfDay              `json:"timeOfDay"`
 	TimeZoneStrategy APIStaticTimeZoneStrategy `json:"timeZoneStrategy"`
@@ -12013,22 +11646,22 @@ func (r APITimeDelay) ToParam() APITimeDelayParam {
 type APITimeDelayTimeUnit string
 
 const (
-	APITimeDelayTimeUnitNanos     APITimeDelayTimeUnit = "NANOS"
-	APITimeDelayTimeUnitMicros    APITimeDelayTimeUnit = "MICROS"
-	APITimeDelayTimeUnitMillis    APITimeDelayTimeUnit = "MILLIS"
-	APITimeDelayTimeUnitSeconds   APITimeDelayTimeUnit = "SECONDS"
-	APITimeDelayTimeUnitMinutes   APITimeDelayTimeUnit = "MINUTES"
-	APITimeDelayTimeUnitHours     APITimeDelayTimeUnit = "HOURS"
-	APITimeDelayTimeUnitHalfDays  APITimeDelayTimeUnit = "HALF_DAYS"
-	APITimeDelayTimeUnitDays      APITimeDelayTimeUnit = "DAYS"
-	APITimeDelayTimeUnitWeeks     APITimeDelayTimeUnit = "WEEKS"
-	APITimeDelayTimeUnitMonths    APITimeDelayTimeUnit = "MONTHS"
-	APITimeDelayTimeUnitYears     APITimeDelayTimeUnit = "YEARS"
-	APITimeDelayTimeUnitDecades   APITimeDelayTimeUnit = "DECADES"
 	APITimeDelayTimeUnitCenturies APITimeDelayTimeUnit = "CENTURIES"
-	APITimeDelayTimeUnitMillennia APITimeDelayTimeUnit = "MILLENNIA"
+	APITimeDelayTimeUnitDays      APITimeDelayTimeUnit = "DAYS"
+	APITimeDelayTimeUnitDecades   APITimeDelayTimeUnit = "DECADES"
 	APITimeDelayTimeUnitEras      APITimeDelayTimeUnit = "ERAS"
 	APITimeDelayTimeUnitForever   APITimeDelayTimeUnit = "FOREVER"
+	APITimeDelayTimeUnitHalfDays  APITimeDelayTimeUnit = "HALF_DAYS"
+	APITimeDelayTimeUnitHours     APITimeDelayTimeUnit = "HOURS"
+	APITimeDelayTimeUnitMicros    APITimeDelayTimeUnit = "MICROS"
+	APITimeDelayTimeUnitMillennia APITimeDelayTimeUnit = "MILLENNIA"
+	APITimeDelayTimeUnitMillis    APITimeDelayTimeUnit = "MILLIS"
+	APITimeDelayTimeUnitMinutes   APITimeDelayTimeUnit = "MINUTES"
+	APITimeDelayTimeUnitMonths    APITimeDelayTimeUnit = "MONTHS"
+	APITimeDelayTimeUnitNanos     APITimeDelayTimeUnit = "NANOS"
+	APITimeDelayTimeUnitSeconds   APITimeDelayTimeUnit = "SECONDS"
+	APITimeDelayTimeUnitWeeks     APITimeDelayTimeUnit = "WEEKS"
+	APITimeDelayTimeUnitYears     APITimeDelayTimeUnit = "YEARS"
 )
 
 // The properties DaysOfWeek, Delta, TimeUnit are required.
@@ -12037,9 +11670,9 @@ type APITimeDelayParam struct {
 	// "SUNDAY".
 	DaysOfWeek []string `json:"daysOfWeek,omitzero,required"`
 	Delta      int64    `json:"delta,required"`
-	// Any of "NANOS", "MICROS", "MILLIS", "SECONDS", "MINUTES", "HOURS", "HALF_DAYS",
-	// "DAYS", "WEEKS", "MONTHS", "YEARS", "DECADES", "CENTURIES", "MILLENNIA", "ERAS",
-	// "FOREVER".
+	// Any of "CENTURIES", "DAYS", "DECADES", "ERAS", "FOREVER", "HALF_DAYS", "HOURS",
+	// "MICROS", "MILLENNIA", "MILLIS", "MINUTES", "MONTHS", "NANOS", "SECONDS",
+	// "WEEKS", "YEARS".
 	TimeUnit         APITimeDelayTimeUnit           `json:"timeUnit,omitzero,required"`
 	TimeOfDay        APITimeOfDayParam              `json:"timeOfDay,omitzero"`
 	TimeZoneStrategy APIStaticTimeZoneStrategyParam `json:"timeZoneStrategy,omitzero"`
@@ -12096,89 +11729,12 @@ func (r *APITimeOfDayParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type APITimestampValue struct {
-	// Currently only EXECUTION_TIME is supported.
-	//
-	// Any of "EXECUTION_TIME".
-	TimestampType APITimestampValueTimestampType `json:"timestampType,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
-	// Any of "TIMESTAMP".
-	Type APITimestampValueType `json:"type,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		TimestampType respjson.Field
-		Type          respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r APITimestampValue) RawJSON() string { return r.JSON.raw }
-func (r *APITimestampValue) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this APITimestampValue to a APITimestampValueParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// APITimestampValueParam.Overrides()
-func (r APITimestampValue) ToParam() APITimestampValueParam {
-	return param.Override[APITimestampValueParam](json.RawMessage(r.RawJSON()))
-}
-
-// Currently only EXECUTION_TIME is supported.
-type APITimestampValueTimestampType string
-
-const (
-	APITimestampValueTimestampTypeExecutionTime APITimestampValueTimestampType = "EXECUTION_TIME"
-)
-
-// This is the type of input value. This can be one of: "FIELD_DATA",
-// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-type APITimestampValueType string
-
-const (
-	APITimestampValueTypeTimestamp APITimestampValueType = "TIMESTAMP"
-)
-
-// The properties TimestampType, Type are required.
-type APITimestampValueParam struct {
-	// Currently only EXECUTION_TIME is supported.
-	//
-	// Any of "EXECUTION_TIME".
-	TimestampType APITimestampValueTimestampType `json:"timestampType,omitzero,required"`
-	// This is the type of input value. This can be one of: "FIELD_DATA",
-	// "OBJECT_PROPERTY", "STATIC_VALUE", "RELATIVE_DATETIME", "TIMESTAMP",
-	// "INCREMENT", "FETCHED_OBJECT_PROPERTY", "APPEND_OBJECT_PROPERTY",
-	// "STATIC_APPEND_VALUE", "ENROLLMENT_EVENT_PROPERTY"
-	//
-	// Any of "TIMESTAMP".
-	Type APITimestampValueType `json:"type,omitzero,required"`
-	paramObj
-}
-
-func (r APITimestampValueParam) MarshalJSON() (data []byte, err error) {
-	type shadow APITimestampValueParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *APITimestampValueParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type APITimeWindow struct {
-	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-	// "SUNDAY".
+	// Any of "FRIDAY", "MONDAY", "SATURDAY", "SUNDAY", "THURSDAY", "TUESDAY",
+	// "WEDNESDAY".
 	Day       APITimeWindowDay `json:"day,required"`
-	EndTime   APITimeOfDay     `json:"endTime,required"`
-	StartTime APITimeOfDay     `json:"startTime,required"`
+	EndTime   APITimeOfDay     `json:"endTime"`
+	StartTime APITimeOfDay     `json:"startTime"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Day         respjson.Field
@@ -12207,22 +11763,22 @@ func (r APITimeWindow) ToParam() APITimeWindowParam {
 type APITimeWindowDay string
 
 const (
-	APITimeWindowDayMonday    APITimeWindowDay = "MONDAY"
-	APITimeWindowDayTuesday   APITimeWindowDay = "TUESDAY"
-	APITimeWindowDayWednesday APITimeWindowDay = "WEDNESDAY"
-	APITimeWindowDayThursday  APITimeWindowDay = "THURSDAY"
 	APITimeWindowDayFriday    APITimeWindowDay = "FRIDAY"
+	APITimeWindowDayMonday    APITimeWindowDay = "MONDAY"
 	APITimeWindowDaySaturday  APITimeWindowDay = "SATURDAY"
 	APITimeWindowDaySunday    APITimeWindowDay = "SUNDAY"
+	APITimeWindowDayThursday  APITimeWindowDay = "THURSDAY"
+	APITimeWindowDayTuesday   APITimeWindowDay = "TUESDAY"
+	APITimeWindowDayWednesday APITimeWindowDay = "WEDNESDAY"
 )
 
-// The properties Day, EndTime, StartTime are required.
+// The property Day is required.
 type APITimeWindowParam struct {
-	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-	// "SUNDAY".
+	// Any of "FRIDAY", "MONDAY", "SATURDAY", "SUNDAY", "THURSDAY", "TUESDAY",
+	// "WEDNESDAY".
 	Day       APITimeWindowDay  `json:"day,omitzero,required"`
-	EndTime   APITimeOfDayParam `json:"endTime,omitzero,required"`
-	StartTime APITimeOfDayParam `json:"startTime,omitzero,required"`
+	EndTime   APITimeOfDayParam `json:"endTime,omitzero"`
+	StartTime APITimeOfDayParam `json:"startTime,omitzero"`
 	paramObj
 }
 
@@ -12234,15 +11790,66 @@ func (r *APITimeWindowParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type APITimestampValue struct {
+	// Any of "EXECUTION_TIME".
+	TimestampType APITimestampValueTimestampType `json:"timestampType,required"`
+	// Any of "TIMESTAMP".
+	Type APITimestampValueType `json:"type,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		TimestampType respjson.Field
+		Type          respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r APITimestampValue) RawJSON() string { return r.JSON.raw }
+func (r *APITimestampValue) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this APITimestampValue to a APITimestampValueParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// APITimestampValueParam.Overrides()
+func (r APITimestampValue) ToParam() APITimestampValueParam {
+	return param.Override[APITimestampValueParam](json.RawMessage(r.RawJSON()))
+}
+
+type APITimestampValueTimestampType string
+
+const (
+	APITimestampValueTimestampTypeExecutionTime APITimestampValueTimestampType = "EXECUTION_TIME"
+)
+
+type APITimestampValueType string
+
+const (
+	APITimestampValueTypeTimestamp APITimestampValueType = "TIMESTAMP"
+)
+
+// The properties TimestampType, Type are required.
+type APITimestampValueParam struct {
+	// Any of "EXECUTION_TIME".
+	TimestampType APITimestampValueTimestampType `json:"timestampType,omitzero,required"`
+	// Any of "TIMESTAMP".
+	Type APITimestampValueType `json:"type,omitzero,required"`
+	paramObj
+}
+
+func (r APITimestampValueParam) MarshalJSON() (data []byte, err error) {
+	type shadow APITimestampValueParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *APITimestampValueParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type APIUnEnrollmentSetting struct {
-	// The IDs of the flows to unenroll an object in if it's enrolled in this flow.
 	FlowIDs []string `json:"flowIds,required"`
-	// The type of unenrollment to perform:
-	//
-	// "ALL" - unenroll the object from all other flows
-	//
-	// "SELECTIVE" - only unenroll the object from the flows specified in `flowIds`
-	//
 	// Any of "ALL", "SELECTIVE".
 	Type APIUnEnrollmentSettingType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -12269,11 +11876,6 @@ func (r APIUnEnrollmentSetting) ToParam() APIUnEnrollmentSettingParam {
 	return param.Override[APIUnEnrollmentSettingParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of unenrollment to perform:
-//
-// "ALL" - unenroll the object from all other flows
-//
-// "SELECTIVE" - only unenroll the object from the flows specified in `flowIds`
 type APIUnEnrollmentSettingType string
 
 const (
@@ -12283,14 +11885,7 @@ const (
 
 // The properties FlowIDs, Type are required.
 type APIUnEnrollmentSettingParam struct {
-	// The IDs of the flows to unenroll an object in if it's enrolled in this flow.
 	FlowIDs []string `json:"flowIds,omitzero,required"`
-	// The type of unenrollment to perform:
-	//
-	// "ALL" - unenroll the object from all other flows
-	//
-	// "SELECTIVE" - only unenroll the object from the flows specified in `flowIds`
-	//
 	// Any of "ALL", "SELECTIVE".
 	Type APIUnEnrollmentSettingType `json:"type,omitzero,required"`
 	paramObj
@@ -12305,22 +11900,14 @@ func (r *APIUnEnrollmentSettingParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIWebhookAction struct {
-	// The ID for this action.
 	ActionID string `json:"actionId,required"`
-	// The HTTP method to use when calling the webhook URL
-	//
 	// Any of "CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT",
 	// "TRACE".
 	Method      APIWebhookActionMethod `json:"method,required"`
 	QueryParams []APIInputVariable     `json:"queryParams,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "WEBHOOK".
-	Type APIWebhookActionType `json:"type,required"`
-	// The URL to call each time this action is executed.
-	WebhookURL string `json:"webhookUrl,required"`
-	// The type of auth to use when calling the webhook endpoint.
+	Type         APIWebhookActionType              `json:"type,required"`
+	WebhookURL   string                            `json:"webhookUrl,required"`
 	AuthSettings APIWebhookActionAuthSettingsUnion `json:"authSettings"`
 	Connection   APIConnection                     `json:"connection"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -12352,7 +11939,6 @@ func (r APIWebhookAction) ToParam() APIWebhookActionParam {
 	return param.Override[APIWebhookActionParam](json.RawMessage(r.RawJSON()))
 }
 
-// The HTTP method to use when calling the webhook URL
 type APIWebhookActionMethod string
 
 const (
@@ -12367,8 +11953,6 @@ const (
 	APIWebhookActionMethodTrace   APIWebhookActionMethod = "TRACE"
 )
 
-// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
 type APIWebhookActionType string
 
 const (
@@ -12418,22 +12002,14 @@ func (r *APIWebhookActionAuthSettingsUnion) UnmarshalJSON(data []byte) error {
 
 // The properties ActionID, Method, QueryParams, Type, WebhookURL are required.
 type APIWebhookActionParam struct {
-	// The ID for this action.
 	ActionID string `json:"actionId,required"`
-	// The HTTP method to use when calling the webhook URL
-	//
 	// Any of "CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT",
 	// "TRACE".
 	Method      APIWebhookActionMethod  `json:"method,omitzero,required"`
 	QueryParams []APIInputVariableParam `json:"queryParams,omitzero,required"`
-	// The type of action this is, can be: "STATIC_BRANCH", "LIST_BRANCH",
-	// "AB_TEST_BRANCH", "CUSTOM_CODE", "WEBHOOK", or "SINGLE_CONNECTION"
-	//
 	// Any of "WEBHOOK".
-	Type APIWebhookActionType `json:"type,omitzero,required"`
-	// The URL to call each time this action is executed.
-	WebhookURL string `json:"webhookUrl,required"`
-	// The type of auth to use when calling the webhook endpoint.
+	Type         APIWebhookActionType                   `json:"type,omitzero,required"`
+	WebhookURL   string                                 `json:"webhookUrl,required"`
 	AuthSettings APIWebhookActionAuthSettingsUnionParam `json:"authSettings,omitzero"`
 	Connection   APIConnectionParam                     `json:"connection,omitzero"`
 	paramObj
@@ -12515,15 +12091,10 @@ func (u APIWebhookActionAuthSettingsUnionParam) GetType() *string {
 }
 
 type APIWeeklyEnrollmentSchedule struct {
-	// Which days of the week to allow enrollments.
-	//
 	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
 	// "SUNDAY".
 	DaysOfWeek []string     `json:"daysOfWeek,required"`
 	TimeOfDay  APITimeOfDay `json:"timeOfDay,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "WEEKLY".
 	Type APIWeeklyEnrollmentScheduleType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -12552,8 +12123,6 @@ func (r APIWeeklyEnrollmentSchedule) ToParam() APIWeeklyEnrollmentScheduleParam 
 	return param.Override[APIWeeklyEnrollmentScheduleParam](json.RawMessage(r.RawJSON()))
 }
 
-// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
 type APIWeeklyEnrollmentScheduleType string
 
 const (
@@ -12562,15 +12131,10 @@ const (
 
 // The properties DaysOfWeek, TimeOfDay, Type are required.
 type APIWeeklyEnrollmentScheduleParam struct {
-	// Which days of the week to allow enrollments.
-	//
 	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
 	// "SUNDAY".
 	DaysOfWeek []string          `json:"daysOfWeek,omitzero,required"`
 	TimeOfDay  APITimeOfDayParam `json:"timeOfDay,omitzero,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "WEEKLY".
 	Type APIWeeklyEnrollmentScheduleType `json:"type,omitzero,required"`
 	paramObj
@@ -12585,17 +12149,11 @@ func (r *APIWeeklyEnrollmentScheduleParam) UnmarshalJSON(data []byte) error {
 }
 
 type APIYearlyEnrollmentSchedule struct {
-	// The day of the date each year to run this flow.
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// The month of the date each year to run this flow.
-	//
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month     APIYearlyEnrollmentScheduleMonth `json:"month,required"`
 	TimeOfDay APITimeOfDay                     `json:"timeOfDay,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "YEARLY".
 	Type APIYearlyEnrollmentScheduleType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -12625,26 +12183,23 @@ func (r APIYearlyEnrollmentSchedule) ToParam() APIYearlyEnrollmentScheduleParam 
 	return param.Override[APIYearlyEnrollmentScheduleParam](json.RawMessage(r.RawJSON()))
 }
 
-// The month of the date each year to run this flow.
 type APIYearlyEnrollmentScheduleMonth string
 
 const (
-	APIYearlyEnrollmentScheduleMonthJanuary   APIYearlyEnrollmentScheduleMonth = "JANUARY"
-	APIYearlyEnrollmentScheduleMonthFebruary  APIYearlyEnrollmentScheduleMonth = "FEBRUARY"
-	APIYearlyEnrollmentScheduleMonthMarch     APIYearlyEnrollmentScheduleMonth = "MARCH"
 	APIYearlyEnrollmentScheduleMonthApril     APIYearlyEnrollmentScheduleMonth = "APRIL"
-	APIYearlyEnrollmentScheduleMonthMay       APIYearlyEnrollmentScheduleMonth = "MAY"
-	APIYearlyEnrollmentScheduleMonthJune      APIYearlyEnrollmentScheduleMonth = "JUNE"
-	APIYearlyEnrollmentScheduleMonthJuly      APIYearlyEnrollmentScheduleMonth = "JULY"
 	APIYearlyEnrollmentScheduleMonthAugust    APIYearlyEnrollmentScheduleMonth = "AUGUST"
-	APIYearlyEnrollmentScheduleMonthSeptember APIYearlyEnrollmentScheduleMonth = "SEPTEMBER"
-	APIYearlyEnrollmentScheduleMonthOctober   APIYearlyEnrollmentScheduleMonth = "OCTOBER"
-	APIYearlyEnrollmentScheduleMonthNovember  APIYearlyEnrollmentScheduleMonth = "NOVEMBER"
 	APIYearlyEnrollmentScheduleMonthDecember  APIYearlyEnrollmentScheduleMonth = "DECEMBER"
+	APIYearlyEnrollmentScheduleMonthFebruary  APIYearlyEnrollmentScheduleMonth = "FEBRUARY"
+	APIYearlyEnrollmentScheduleMonthJanuary   APIYearlyEnrollmentScheduleMonth = "JANUARY"
+	APIYearlyEnrollmentScheduleMonthJuly      APIYearlyEnrollmentScheduleMonth = "JULY"
+	APIYearlyEnrollmentScheduleMonthJune      APIYearlyEnrollmentScheduleMonth = "JUNE"
+	APIYearlyEnrollmentScheduleMonthMarch     APIYearlyEnrollmentScheduleMonth = "MARCH"
+	APIYearlyEnrollmentScheduleMonthMay       APIYearlyEnrollmentScheduleMonth = "MAY"
+	APIYearlyEnrollmentScheduleMonthNovember  APIYearlyEnrollmentScheduleMonth = "NOVEMBER"
+	APIYearlyEnrollmentScheduleMonthOctober   APIYearlyEnrollmentScheduleMonth = "OCTOBER"
+	APIYearlyEnrollmentScheduleMonthSeptember APIYearlyEnrollmentScheduleMonth = "SEPTEMBER"
 )
 
-// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
 type APIYearlyEnrollmentScheduleType string
 
 const (
@@ -12653,17 +12208,11 @@ const (
 
 // The properties DayOfMonth, Month, TimeOfDay, Type are required.
 type APIYearlyEnrollmentScheduleParam struct {
-	// The day of the date each year to run this flow.
 	DayOfMonth int64 `json:"dayOfMonth,required"`
-	// The month of the date each year to run this flow.
-	//
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	Month     APIYearlyEnrollmentScheduleMonth `json:"month,omitzero,required"`
 	TimeOfDay APITimeOfDayParam                `json:"timeOfDay,omitzero,required"`
-	// The type of enrollment schedule this is, can be: "DAILY", "WEEKLY",
-	// "MONTHLY_SPECIFIC_DAYS", "MONTHLY_RELATIVE_DAYS", "YEARLY"
-	//
 	// Any of "YEARLY".
 	Type APIYearlyEnrollmentScheduleType `json:"type,omitzero,required"`
 	paramObj
@@ -12681,7 +12230,7 @@ type BatchResponseAPIFlow struct {
 	CompletedAt time.Time      `json:"completedAt,required" format:"date-time"`
 	Results     []APIFlowUnion `json:"results,required"`
 	StartedAt   time.Time      `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseAPIFlowStatus `json:"status,required"`
 	Links       map[string]string          `json:"links"`
 	RequestedAt time.Time                  `json:"requestedAt" format:"date-time"`
@@ -12707,17 +12256,17 @@ func (r *BatchResponseAPIFlow) UnmarshalJSON(data []byte) error {
 type BatchResponseAPIFlowStatus string
 
 const (
-	BatchResponseAPIFlowStatusPending    BatchResponseAPIFlowStatus = "PENDING"
-	BatchResponseAPIFlowStatusProcessing BatchResponseAPIFlowStatus = "PROCESSING"
 	BatchResponseAPIFlowStatusCanceled   BatchResponseAPIFlowStatus = "CANCELED"
 	BatchResponseAPIFlowStatusComplete   BatchResponseAPIFlowStatus = "COMPLETE"
+	BatchResponseAPIFlowStatusPending    BatchResponseAPIFlowStatus = "PENDING"
+	BatchResponseAPIFlowStatusProcessing BatchResponseAPIFlowStatus = "PROCESSING"
 )
 
 type BatchResponseFlowIDWorkflowIDMappingResponse struct {
 	CompletedAt time.Time                         `json:"completedAt,required" format:"date-time"`
 	Results     []FlowIDWorkflowIDMappingResponse `json:"results,required"`
 	StartedAt   time.Time                         `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseFlowIDWorkflowIDMappingResponseStatus `json:"status,required"`
 	Links       map[string]string                                  `json:"links"`
 	RequestedAt time.Time                                          `json:"requestedAt" format:"date-time"`
@@ -12743,16 +12292,15 @@ func (r *BatchResponseFlowIDWorkflowIDMappingResponse) UnmarshalJSON(data []byte
 type BatchResponseFlowIDWorkflowIDMappingResponseStatus string
 
 const (
-	BatchResponseFlowIDWorkflowIDMappingResponseStatusPending    BatchResponseFlowIDWorkflowIDMappingResponseStatus = "PENDING"
-	BatchResponseFlowIDWorkflowIDMappingResponseStatusProcessing BatchResponseFlowIDWorkflowIDMappingResponseStatus = "PROCESSING"
 	BatchResponseFlowIDWorkflowIDMappingResponseStatusCanceled   BatchResponseFlowIDWorkflowIDMappingResponseStatus = "CANCELED"
 	BatchResponseFlowIDWorkflowIDMappingResponseStatusComplete   BatchResponseFlowIDWorkflowIDMappingResponseStatus = "COMPLETE"
+	BatchResponseFlowIDWorkflowIDMappingResponseStatusPending    BatchResponseFlowIDWorkflowIDMappingResponseStatus = "PENDING"
+	BatchResponseFlowIDWorkflowIDMappingResponseStatusProcessing BatchResponseFlowIDWorkflowIDMappingResponseStatus = "PROCESSING"
 )
 
 type CollectionResponseAPIFlowEmailCampaign struct {
 	Results []APIFlowEmailCampaign `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging          `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -12829,12 +12377,8 @@ func (r *WorkflowUpdateParams) UnmarshalJSON(data []byte) error {
 }
 
 type WorkflowListParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
 	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Opt[int64]  `query:"limit,omitzero" json:"-"`
 	paramObj
 }
 
@@ -12871,15 +12415,10 @@ func (r *WorkflowBatchGetIDMappingsParams) UnmarshalJSON(data []byte) error {
 }
 
 type WorkflowListEmailCampaignsParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
 	After  param.Opt[string] `query:"after,omitzero" json:"-"`
 	Before param.Opt[string] `query:"before,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	// The ID of the workflow.
-	FlowID []string `query:"flowId,omitzero" json:"-"`
+	Limit  param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	FlowID []string          `query:"flowId,omitzero" json:"-"`
 	paramObj
 }
 

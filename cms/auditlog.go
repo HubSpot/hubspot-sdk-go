@@ -16,10 +16,11 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // AuditLogService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -38,7 +39,7 @@ func NewAuditLogService(opts ...option.RequestOption) (r AuditLogService) {
 }
 
 // Returns audit logs based on filters.
-func (r *AuditLogService) List(ctx context.Context, query AuditLogListParams, opts ...option.RequestOption) (res *pagination.Page[AuditLogListResponse], err error) {
+func (r *AuditLogService) List(ctx context.Context, query AuditLogListParams, opts ...option.RequestOption) (res *pagination.Page[PublicAuditLog], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -56,16 +57,35 @@ func (r *AuditLogService) List(ctx context.Context, query AuditLogListParams, op
 }
 
 // Returns audit logs based on filters.
-func (r *AuditLogService) ListAutoPaging(ctx context.Context, query AuditLogListParams, opts ...option.RequestOption) *pagination.PageAutoPager[AuditLogListResponse] {
+func (r *AuditLogService) ListAutoPaging(ctx context.Context, query AuditLogListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicAuditLog] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-type AuditLogListResponse struct {
+// The collection of audit logs.
+type CollectionResponsePublicAuditLog struct {
+	Results []PublicAuditLog `json:"results,required"`
+	Paging  shared.Paging    `json:"paging"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		Paging      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CollectionResponsePublicAuditLog) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponsePublicAuditLog) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PublicAuditLog struct {
 	// The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED,
 	// UNPUBLISHED).
 	//
-	// Any of "CREATED", "UPDATED", "PUBLISHED", "DELETED", "UNPUBLISHED", "RESTORE".
-	Event AuditLogListResponseEvent `json:"event,required"`
+	// Any of "CREATED", "DELETED", "PUBLISHED", "RESTORE", "UNPUBLISHED", "UPDATED".
+	Event PublicAuditLogEvent `json:"event,required"`
 	// The name of the user who caused the event.
 	FullName string `json:"fullName,required"`
 	// The ID of the object.
@@ -74,16 +94,19 @@ type AuditLogListResponse struct {
 	ObjectName string `json:"objectName,required"`
 	// The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)
 	//
-	// Any of "BLOG", "BLOG_POST", "LANDING_PAGE", "WEBSITE_PAGE", "TEMPLATE",
-	// "MODULE", "GLOBAL_MODULE", "SERVERLESS_FUNCTION", "DOMAIN", "URL_MAPPING",
-	// "EMAIL", "CONTENT_SETTINGS", "HUBDB_TABLE", "KNOWLEDGE_BASE_ARTICLE",
-	// "KNOWLEDGE_BASE", "THEME", "CSS", "JS", "CTA", "FILE".
-	ObjectType AuditLogListResponseObjectType `json:"objectType,required"`
+	// Any of "BLOG", "BLOG_POST", "CONTENT_SETTINGS", "CSS", "CTA", "DOMAIN", "EMAIL",
+	// "FILE", "GLOBAL_MODULE", "HUBDB_TABLE", "JS", "KNOWLEDGE_BASE",
+	// "KNOWLEDGE_BASE_ARTICLE", "LANDING_PAGE", "MODULE", "SERVERLESS_FUNCTION",
+	// "TEMPLATE", "THEME", "URL_MAPPING", "WEBSITE_PAGE".
+	ObjectType PublicAuditLogObjectType `json:"objectType,required"`
 	// The timestamp at which the event occurred.
 	Timestamp time.Time `json:"timestamp,required" format:"date-time"`
 	// The ID of the user who caused the event.
 	UserID string `json:"userId,required"`
-	Meta   any    `json:"meta"`
+	// Supplementary metadata associated with the audit log entry. It provides
+	// additional context about the audited event (ex: rows deleted/updated for a HubDB
+	// event, the specific fields that were changed for a Content Settings event).
+	Meta any `json:"meta"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Event       respjson.Field
@@ -100,48 +123,48 @@ type AuditLogListResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r AuditLogListResponse) RawJSON() string { return r.JSON.raw }
-func (r *AuditLogListResponse) UnmarshalJSON(data []byte) error {
+func (r PublicAuditLog) RawJSON() string { return r.JSON.raw }
+func (r *PublicAuditLog) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 // The type of event that took place (CREATED, UPDATED, PUBLISHED, DELETED,
 // UNPUBLISHED).
-type AuditLogListResponseEvent string
+type PublicAuditLogEvent string
 
 const (
-	AuditLogListResponseEventCreated     AuditLogListResponseEvent = "CREATED"
-	AuditLogListResponseEventUpdated     AuditLogListResponseEvent = "UPDATED"
-	AuditLogListResponseEventPublished   AuditLogListResponseEvent = "PUBLISHED"
-	AuditLogListResponseEventDeleted     AuditLogListResponseEvent = "DELETED"
-	AuditLogListResponseEventUnpublished AuditLogListResponseEvent = "UNPUBLISHED"
-	AuditLogListResponseEventRestore     AuditLogListResponseEvent = "RESTORE"
+	PublicAuditLogEventCreated     PublicAuditLogEvent = "CREATED"
+	PublicAuditLogEventDeleted     PublicAuditLogEvent = "DELETED"
+	PublicAuditLogEventPublished   PublicAuditLogEvent = "PUBLISHED"
+	PublicAuditLogEventRestore     PublicAuditLogEvent = "RESTORE"
+	PublicAuditLogEventUnpublished PublicAuditLogEvent = "UNPUBLISHED"
+	PublicAuditLogEventUpdated     PublicAuditLogEvent = "UPDATED"
 )
 
 // The type of the object (BLOG, LANDING_PAGE, DOMAIN, HUBDB_TABLE etc.)
-type AuditLogListResponseObjectType string
+type PublicAuditLogObjectType string
 
 const (
-	AuditLogListResponseObjectTypeBlog                 AuditLogListResponseObjectType = "BLOG"
-	AuditLogListResponseObjectTypeBlogPost             AuditLogListResponseObjectType = "BLOG_POST"
-	AuditLogListResponseObjectTypeLandingPage          AuditLogListResponseObjectType = "LANDING_PAGE"
-	AuditLogListResponseObjectTypeWebsitePage          AuditLogListResponseObjectType = "WEBSITE_PAGE"
-	AuditLogListResponseObjectTypeTemplate             AuditLogListResponseObjectType = "TEMPLATE"
-	AuditLogListResponseObjectTypeModule               AuditLogListResponseObjectType = "MODULE"
-	AuditLogListResponseObjectTypeGlobalModule         AuditLogListResponseObjectType = "GLOBAL_MODULE"
-	AuditLogListResponseObjectTypeServerlessFunction   AuditLogListResponseObjectType = "SERVERLESS_FUNCTION"
-	AuditLogListResponseObjectTypeDomain               AuditLogListResponseObjectType = "DOMAIN"
-	AuditLogListResponseObjectTypeURLMapping           AuditLogListResponseObjectType = "URL_MAPPING"
-	AuditLogListResponseObjectTypeEmail                AuditLogListResponseObjectType = "EMAIL"
-	AuditLogListResponseObjectTypeContentSettings      AuditLogListResponseObjectType = "CONTENT_SETTINGS"
-	AuditLogListResponseObjectTypeHubdbTable           AuditLogListResponseObjectType = "HUBDB_TABLE"
-	AuditLogListResponseObjectTypeKnowledgeBaseArticle AuditLogListResponseObjectType = "KNOWLEDGE_BASE_ARTICLE"
-	AuditLogListResponseObjectTypeKnowledgeBase        AuditLogListResponseObjectType = "KNOWLEDGE_BASE"
-	AuditLogListResponseObjectTypeTheme                AuditLogListResponseObjectType = "THEME"
-	AuditLogListResponseObjectTypeCss                  AuditLogListResponseObjectType = "CSS"
-	AuditLogListResponseObjectTypeJs                   AuditLogListResponseObjectType = "JS"
-	AuditLogListResponseObjectTypeCta                  AuditLogListResponseObjectType = "CTA"
-	AuditLogListResponseObjectTypeFile                 AuditLogListResponseObjectType = "FILE"
+	PublicAuditLogObjectTypeBlog                 PublicAuditLogObjectType = "BLOG"
+	PublicAuditLogObjectTypeBlogPost             PublicAuditLogObjectType = "BLOG_POST"
+	PublicAuditLogObjectTypeContentSettings      PublicAuditLogObjectType = "CONTENT_SETTINGS"
+	PublicAuditLogObjectTypeCss                  PublicAuditLogObjectType = "CSS"
+	PublicAuditLogObjectTypeCta                  PublicAuditLogObjectType = "CTA"
+	PublicAuditLogObjectTypeDomain               PublicAuditLogObjectType = "DOMAIN"
+	PublicAuditLogObjectTypeEmail                PublicAuditLogObjectType = "EMAIL"
+	PublicAuditLogObjectTypeFile                 PublicAuditLogObjectType = "FILE"
+	PublicAuditLogObjectTypeGlobalModule         PublicAuditLogObjectType = "GLOBAL_MODULE"
+	PublicAuditLogObjectTypeHubdbTable           PublicAuditLogObjectType = "HUBDB_TABLE"
+	PublicAuditLogObjectTypeJs                   PublicAuditLogObjectType = "JS"
+	PublicAuditLogObjectTypeKnowledgeBase        PublicAuditLogObjectType = "KNOWLEDGE_BASE"
+	PublicAuditLogObjectTypeKnowledgeBaseArticle PublicAuditLogObjectType = "KNOWLEDGE_BASE_ARTICLE"
+	PublicAuditLogObjectTypeLandingPage          PublicAuditLogObjectType = "LANDING_PAGE"
+	PublicAuditLogObjectTypeModule               PublicAuditLogObjectType = "MODULE"
+	PublicAuditLogObjectTypeServerlessFunction   PublicAuditLogObjectType = "SERVERLESS_FUNCTION"
+	PublicAuditLogObjectTypeTemplate             PublicAuditLogObjectType = "TEMPLATE"
+	PublicAuditLogObjectTypeTheme                PublicAuditLogObjectType = "THEME"
+	PublicAuditLogObjectTypeURLMapping           PublicAuditLogObjectType = "URL_MAPPING"
+	PublicAuditLogObjectTypeWebsitePage          PublicAuditLogObjectType = "WEBSITE_PAGE"
 )
 
 type AuditLogListParams struct {

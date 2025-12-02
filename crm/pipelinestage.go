@@ -16,7 +16,7 @@ import (
 )
 
 // PipelineStageService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -34,9 +34,7 @@ func NewPipelineStageService(opts ...option.RequestOption) (r PipelineStageServi
 	return
 }
 
-// Create a new stage associated with the pipeline identified by `{pipelineId}`.
-// The entire stage object, including its unique ID, will be returned in the
-// response.
+// Create a new stage within the specified pipeline.
 func (r *PipelineStageService) New(ctx context.Context, pipelineID string, params PipelineStageNewParams, opts ...option.RequestOption) (res *PipelineStage, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.ObjectType == "" {
@@ -52,10 +50,7 @@ func (r *PipelineStageService) New(ctx context.Context, pipelineID string, param
 	return
 }
 
-// Perform a partial update of the pipeline stage identified by `{stageId}`
-// associated with the pipeline identified by `{pipelineId}`. Any properties not
-// included in this update will keep their existing values. The updated stage will
-// be returned in the response.
+// Perform a partial update on a specific stage of a pipeline.
 func (r *PipelineStageService) Update(ctx context.Context, stageID string, params PipelineStageUpdateParams, opts ...option.RequestOption) (res *PipelineStage, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.ObjectType == "" {
@@ -91,8 +86,7 @@ func (r *PipelineStageService) List(ctx context.Context, pipelineID string, quer
 	return
 }
 
-// Delete the pipeline stage identified by `{stageId}` associated with the pipeline
-// identified by `{pipelineId}`.
+// Delete a specific stage from a pipeline.
 func (r *PipelineStageService) Delete(ctx context.Context, stageID string, body PipelineStageDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -113,8 +107,7 @@ func (r *PipelineStageService) Delete(ctx context.Context, stageID string, body 
 	return
 }
 
-// Return the stage identified by `{stageId}` associated with the pipeline
-// identified by `{pipelineId}`.
+// Retrieve a specific stage from a pipeline using its ID.
 func (r *PipelineStageService) Get(ctx context.Context, stageID string, query PipelineStageGetParams, opts ...option.RequestOption) (res *PipelineStage, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if query.ObjectType == "" {

@@ -27,17 +27,17 @@ type ActionResponse = shared.ActionResponse
 // This is an alias to an internal type.
 type ActionResponseStatus = shared.ActionResponseStatus
 
-// Equals "PENDING"
-const ActionResponseStatusPending = shared.ActionResponseStatusPending
-
-// Equals "PROCESSING"
-const ActionResponseStatusProcessing = shared.ActionResponseStatusProcessing
-
 // Equals "CANCELED"
 const ActionResponseStatusCanceled = shared.ActionResponseStatusCanceled
 
 // Equals "COMPLETE"
 const ActionResponseStatusComplete = shared.ActionResponseStatusComplete
+
+// Equals "PENDING"
+const ActionResponseStatusPending = shared.ActionResponseStatusPending
+
+// Equals "PROCESSING"
+const ActionResponseStatusProcessing = shared.ActionResponseStatusProcessing
 
 // This is an alias to an internal type.
 type AssociationDefinitionEggParam = shared.AssociationDefinitionEggParam
@@ -56,11 +56,11 @@ type AssociationSpecAssociationCategory = shared.AssociationSpecAssociationCateg
 // Equals "HUBSPOT_DEFINED"
 const AssociationSpecAssociationCategoryHubspotDefined = shared.AssociationSpecAssociationCategoryHubspotDefined
 
-// Equals "USER_DEFINED"
-const AssociationSpecAssociationCategoryUserDefined = shared.AssociationSpecAssociationCategoryUserDefined
-
 // Equals "INTEGRATOR_DEFINED"
 const AssociationSpecAssociationCategoryIntegratorDefined = shared.AssociationSpecAssociationCategoryIntegratorDefined
+
+// Equals "USER_DEFINED"
+const AssociationSpecAssociationCategoryUserDefined = shared.AssociationSpecAssociationCategoryUserDefined
 
 // Defines the type, direction, and details of the relationship between two CRM
 // objects.
@@ -83,22 +83,37 @@ type BatchInputPublicObjectIDParam = shared.BatchInputPublicObjectIDParam
 type BatchInputStringParam = shared.BatchInputStringParam
 
 // This is an alias to an internal type.
+type BatchReadInputPropertyNameParam = shared.BatchReadInputPropertyNameParam
+
+// This is an alias to an internal type.
+type BatchReadInputPropertyNameDataSensitivity = shared.BatchReadInputPropertyNameDataSensitivity
+
+// Equals "highly_sensitive"
+const BatchReadInputPropertyNameDataSensitivityHighlySensitive = shared.BatchReadInputPropertyNameDataSensitivityHighlySensitive
+
+// Equals "non_sensitive"
+const BatchReadInputPropertyNameDataSensitivityNonSensitive = shared.BatchReadInputPropertyNameDataSensitivityNonSensitive
+
+// Equals "sensitive"
+const BatchReadInputPropertyNameDataSensitivitySensitive = shared.BatchReadInputPropertyNameDataSensitivitySensitive
+
+// This is an alias to an internal type.
 type BatchResponseProperty = shared.BatchResponseProperty
 
 // This is an alias to an internal type.
 type BatchResponsePropertyStatus = shared.BatchResponsePropertyStatus
-
-// Equals "PENDING"
-const BatchResponsePropertyStatusPending = shared.BatchResponsePropertyStatusPending
-
-// Equals "PROCESSING"
-const BatchResponsePropertyStatusProcessing = shared.BatchResponsePropertyStatusProcessing
 
 // Equals "CANCELED"
 const BatchResponsePropertyStatusCanceled = shared.BatchResponsePropertyStatusCanceled
 
 // Equals "COMPLETE"
 const BatchResponsePropertyStatusComplete = shared.BatchResponsePropertyStatusComplete
+
+// Equals "PENDING"
+const BatchResponsePropertyStatusPending = shared.BatchResponsePropertyStatusPending
+
+// Equals "PROCESSING"
+const BatchResponsePropertyStatusProcessing = shared.BatchResponsePropertyStatusProcessing
 
 // This is an alias to an internal type.
 type CollectionResponseObjectSchemaNoPaging = shared.CollectionResponseObjectSchemaNoPaging
@@ -129,18 +144,21 @@ type ObjectTypeDefinitionLabels = shared.ObjectTypeDefinitionLabels
 // This is an alias to an internal type.
 type ObjectTypeDefinitionLabelsParam = shared.ObjectTypeDefinitionLabelsParam
 
-// A HubSpot property option
+// The options available when a property is an enumeration
 //
 // This is an alias to an internal type.
 type Option = shared.Option
 
-// A HubSpot property option
+// The options available when a property is an enumeration
 //
 // This is an alias to an internal type.
 type OptionParam = shared.OptionParam
 
 // This is an alias to an internal type.
 type OptionInputParam = shared.OptionInputParam
+
+// This is an alias to an internal type.
+type Paging = shared.Paging
 
 // specifies the paging information needed to retrieve the previous set of results
 // in a paginated API response
@@ -159,14 +177,14 @@ type Property = shared.Property
 // This is an alias to an internal type.
 type PropertyDataSensitivity = shared.PropertyDataSensitivity
 
+// Equals "highly_sensitive"
+const PropertyDataSensitivityHighlySensitive = shared.PropertyDataSensitivityHighlySensitive
+
 // Equals "non_sensitive"
 const PropertyDataSensitivityNonSensitive = shared.PropertyDataSensitivityNonSensitive
 
 // Equals "sensitive"
 const PropertyDataSensitivitySensitive = shared.PropertyDataSensitivitySensitive
-
-// Equals "highly_sensitive"
-const PropertyDataSensitivityHighlySensitive = shared.PropertyDataSensitivityHighlySensitive
 
 // This is an alias to an internal type.
 type PropertyCreateParam = shared.PropertyCreateParam
@@ -237,14 +255,14 @@ const PropertyCreateTypeString = shared.PropertyCreateTypeString
 // This is an alias to an internal type.
 type PropertyCreateDataSensitivity = shared.PropertyCreateDataSensitivity
 
+// Equals "highly_sensitive"
+const PropertyCreateDataSensitivityHighlySensitive = shared.PropertyCreateDataSensitivityHighlySensitive
+
 // Equals "non_sensitive"
 const PropertyCreateDataSensitivityNonSensitive = shared.PropertyCreateDataSensitivityNonSensitive
 
 // Equals "sensitive"
 const PropertyCreateDataSensitivitySensitive = shared.PropertyCreateDataSensitivitySensitive
-
-// Equals "highly_sensitive"
-const PropertyCreateDataSensitivityHighlySensitive = shared.PropertyCreateDataSensitivityHighlySensitive
 
 // This is an alias to an internal type.
 type PropertyGroupCreateParam = shared.PropertyGroupCreateParam
@@ -426,41 +444,41 @@ const PublicCalendarDatePropertyOperationOperationTypeCalendarDate = shared.Publ
 // This is an alias to an internal type.
 type PublicCalendarDatePropertyOperationFiscalYearStart = shared.PublicCalendarDatePropertyOperationFiscalYearStart
 
-// Equals "JANUARY"
-const PublicCalendarDatePropertyOperationFiscalYearStartJanuary = shared.PublicCalendarDatePropertyOperationFiscalYearStartJanuary
-
-// Equals "FEBRUARY"
-const PublicCalendarDatePropertyOperationFiscalYearStartFebruary = shared.PublicCalendarDatePropertyOperationFiscalYearStartFebruary
-
-// Equals "MARCH"
-const PublicCalendarDatePropertyOperationFiscalYearStartMarch = shared.PublicCalendarDatePropertyOperationFiscalYearStartMarch
-
 // Equals "APRIL"
 const PublicCalendarDatePropertyOperationFiscalYearStartApril = shared.PublicCalendarDatePropertyOperationFiscalYearStartApril
-
-// Equals "MAY"
-const PublicCalendarDatePropertyOperationFiscalYearStartMay = shared.PublicCalendarDatePropertyOperationFiscalYearStartMay
-
-// Equals "JUNE"
-const PublicCalendarDatePropertyOperationFiscalYearStartJune = shared.PublicCalendarDatePropertyOperationFiscalYearStartJune
-
-// Equals "JULY"
-const PublicCalendarDatePropertyOperationFiscalYearStartJuly = shared.PublicCalendarDatePropertyOperationFiscalYearStartJuly
 
 // Equals "AUGUST"
 const PublicCalendarDatePropertyOperationFiscalYearStartAugust = shared.PublicCalendarDatePropertyOperationFiscalYearStartAugust
 
-// Equals "SEPTEMBER"
-const PublicCalendarDatePropertyOperationFiscalYearStartSeptember = shared.PublicCalendarDatePropertyOperationFiscalYearStartSeptember
+// Equals "DECEMBER"
+const PublicCalendarDatePropertyOperationFiscalYearStartDecember = shared.PublicCalendarDatePropertyOperationFiscalYearStartDecember
 
-// Equals "OCTOBER"
-const PublicCalendarDatePropertyOperationFiscalYearStartOctober = shared.PublicCalendarDatePropertyOperationFiscalYearStartOctober
+// Equals "FEBRUARY"
+const PublicCalendarDatePropertyOperationFiscalYearStartFebruary = shared.PublicCalendarDatePropertyOperationFiscalYearStartFebruary
+
+// Equals "JANUARY"
+const PublicCalendarDatePropertyOperationFiscalYearStartJanuary = shared.PublicCalendarDatePropertyOperationFiscalYearStartJanuary
+
+// Equals "JULY"
+const PublicCalendarDatePropertyOperationFiscalYearStartJuly = shared.PublicCalendarDatePropertyOperationFiscalYearStartJuly
+
+// Equals "JUNE"
+const PublicCalendarDatePropertyOperationFiscalYearStartJune = shared.PublicCalendarDatePropertyOperationFiscalYearStartJune
+
+// Equals "MARCH"
+const PublicCalendarDatePropertyOperationFiscalYearStartMarch = shared.PublicCalendarDatePropertyOperationFiscalYearStartMarch
+
+// Equals "MAY"
+const PublicCalendarDatePropertyOperationFiscalYearStartMay = shared.PublicCalendarDatePropertyOperationFiscalYearStartMay
 
 // Equals "NOVEMBER"
 const PublicCalendarDatePropertyOperationFiscalYearStartNovember = shared.PublicCalendarDatePropertyOperationFiscalYearStartNovember
 
-// Equals "DECEMBER"
-const PublicCalendarDatePropertyOperationFiscalYearStartDecember = shared.PublicCalendarDatePropertyOperationFiscalYearStartDecember
+// Equals "OCTOBER"
+const PublicCalendarDatePropertyOperationFiscalYearStartOctober = shared.PublicCalendarDatePropertyOperationFiscalYearStartOctober
+
+// Equals "SEPTEMBER"
+const PublicCalendarDatePropertyOperationFiscalYearStartSeptember = shared.PublicCalendarDatePropertyOperationFiscalYearStartSeptember
 
 // This is an alias to an internal type.
 type PublicCalendarDatePropertyOperationParam = shared.PublicCalendarDatePropertyOperationParam
@@ -597,6 +615,9 @@ const PublicEmailEventFilterFilterTypeEmailEvent = shared.PublicEmailEventFilter
 // This is an alias to an internal type.
 type PublicEmailEventFilterOperator = shared.PublicEmailEventFilterOperator
 
+// Equals "BOUNCED"
+const PublicEmailEventFilterOperatorBounced = shared.PublicEmailEventFilterOperatorBounced
+
 // Equals "LINK_CLICKED"
 const PublicEmailEventFilterOperatorLinkClicked = shared.PublicEmailEventFilterOperatorLinkClicked
 
@@ -612,20 +633,14 @@ const PublicEmailEventFilterOperatorOpenedButLinkNotClicked = shared.PublicEmail
 // Equals "OPENED_BUT_NOT_REPLIED"
 const PublicEmailEventFilterOperatorOpenedButNotReplied = shared.PublicEmailEventFilterOperatorOpenedButNotReplied
 
-// Equals "REPLIED"
-const PublicEmailEventFilterOperatorReplied = shared.PublicEmailEventFilterOperatorReplied
-
-// Equals "UNSUBSCRIBED"
-const PublicEmailEventFilterOperatorUnsubscribed = shared.PublicEmailEventFilterOperatorUnsubscribed
-
-// Equals "BOUNCED"
-const PublicEmailEventFilterOperatorBounced = shared.PublicEmailEventFilterOperatorBounced
-
 // Equals "RECEIVED"
 const PublicEmailEventFilterOperatorReceived = shared.PublicEmailEventFilterOperatorReceived
 
 // Equals "RECEIVED_BUT_NOT_OPENED"
 const PublicEmailEventFilterOperatorReceivedButNotOpened = shared.PublicEmailEventFilterOperatorReceivedButNotOpened
+
+// Equals "REPLIED"
+const PublicEmailEventFilterOperatorReplied = shared.PublicEmailEventFilterOperatorReplied
 
 // Equals "SENT"
 const PublicEmailEventFilterOperatorSent = shared.PublicEmailEventFilterOperatorSent
@@ -635,6 +650,9 @@ const PublicEmailEventFilterOperatorSentButLinkNotClicked = shared.PublicEmailEv
 
 // Equals "SENT_BUT_NOT_RECEIVED"
 const PublicEmailEventFilterOperatorSentButNotReceived = shared.PublicEmailEventFilterOperatorSentButNotReceived
+
+// Equals "UNSUBSCRIBED"
+const PublicEmailEventFilterOperatorUnsubscribed = shared.PublicEmailEventFilterOperatorUnsubscribed
 
 // This is an alias to an internal type.
 type PublicEmailEventFilterPruningRefineByUnion = shared.PublicEmailEventFilterPruningRefineByUnion
@@ -796,30 +814,6 @@ type PublicFormSubmissionOnPageFilterCoalescingRefineByUnionParam = shared.Publi
 type PublicFormSubmissionOnPageFilterPruningRefineByUnionParam = shared.PublicFormSubmissionOnPageFilterPruningRefineByUnionParam
 
 // This is an alias to an internal type.
-type PublicIndexedTimePoint = shared.PublicIndexedTimePoint
-
-// This is an alias to an internal type.
-type PublicIndexedTimePointIndexReferenceUnion = shared.PublicIndexedTimePointIndexReferenceUnion
-
-// This is an alias to an internal type.
-type PublicIndexedTimePointTimeType = shared.PublicIndexedTimePointTimeType
-
-// Equals "INDEXED"
-const PublicIndexedTimePointTimeTypeIndexed = shared.PublicIndexedTimePointTimeTypeIndexed
-
-// This is an alias to an internal type.
-type PublicIndexedTimePointParam = shared.PublicIndexedTimePointParam
-
-// This is an alias to an internal type.
-type PublicIndexedTimePointIndexReferenceUnionParam = shared.PublicIndexedTimePointIndexReferenceUnionParam
-
-// This is an alias to an internal type.
-type PublicIndexOffset = shared.PublicIndexOffset
-
-// This is an alias to an internal type.
-type PublicIndexOffsetParam = shared.PublicIndexOffsetParam
-
-// This is an alias to an internal type.
 type PublicInListFilter = shared.PublicInListFilter
 
 // This is an alias to an internal type.
@@ -836,6 +830,30 @@ type PublicInListFilterMetadata = shared.PublicInListFilterMetadata
 
 // This is an alias to an internal type.
 type PublicInListFilterMetadataParam = shared.PublicInListFilterMetadataParam
+
+// This is an alias to an internal type.
+type PublicIndexOffset = shared.PublicIndexOffset
+
+// This is an alias to an internal type.
+type PublicIndexOffsetParam = shared.PublicIndexOffsetParam
+
+// This is an alias to an internal type.
+type PublicIndexedTimePoint = shared.PublicIndexedTimePoint
+
+// This is an alias to an internal type.
+type PublicIndexedTimePointIndexReferenceUnion = shared.PublicIndexedTimePointIndexReferenceUnion
+
+// This is an alias to an internal type.
+type PublicIndexedTimePointTimeType = shared.PublicIndexedTimePointTimeType
+
+// Equals "INDEXED"
+const PublicIndexedTimePointTimeTypeIndexed = shared.PublicIndexedTimePointTimeTypeIndexed
+
+// This is an alias to an internal type.
+type PublicIndexedTimePointParam = shared.PublicIndexedTimePointParam
+
+// This is an alias to an internal type.
+type PublicIndexedTimePointIndexReferenceUnionParam = shared.PublicIndexedTimePointIndexReferenceUnionParam
 
 // This is an alias to an internal type.
 type PublicIntegrationEventFilter = shared.PublicIntegrationEventFilter
@@ -952,18 +970,6 @@ type PublicNumAssociationsFilterParam = shared.PublicNumAssociationsFilterParam
 type PublicNumAssociationsFilterCoalescingRefineByUnionParam = shared.PublicNumAssociationsFilterCoalescingRefineByUnionParam
 
 // This is an alias to an internal type.
-type PublicNumberPropertyOperation = shared.PublicNumberPropertyOperation
-
-// This is an alias to an internal type.
-type PublicNumberPropertyOperationOperationType = shared.PublicNumberPropertyOperationOperationType
-
-// Equals "NUMBER"
-const PublicNumberPropertyOperationOperationTypeNumber = shared.PublicNumberPropertyOperationOperationTypeNumber
-
-// This is an alias to an internal type.
-type PublicNumberPropertyOperationParam = shared.PublicNumberPropertyOperationParam
-
-// This is an alias to an internal type.
 type PublicNumOccurrencesRefineBy = shared.PublicNumOccurrencesRefineBy
 
 // This is an alias to an internal type.
@@ -974,6 +980,18 @@ const PublicNumOccurrencesRefineByTypeNumOccurrences = shared.PublicNumOccurrenc
 
 // This is an alias to an internal type.
 type PublicNumOccurrencesRefineByParam = shared.PublicNumOccurrencesRefineByParam
+
+// This is an alias to an internal type.
+type PublicNumberPropertyOperation = shared.PublicNumberPropertyOperation
+
+// This is an alias to an internal type.
+type PublicNumberPropertyOperationOperationType = shared.PublicNumberPropertyOperationOperationType
+
+// Equals "NUMBER"
+const PublicNumberPropertyOperationOperationTypeNumber = shared.PublicNumberPropertyOperationOperationTypeNumber
+
+// This is an alias to an internal type.
+type PublicNumberPropertyOperationParam = shared.PublicNumberPropertyOperationParam
 
 // This is an alias to an internal type.
 type PublicObjectID = shared.PublicObjectID
@@ -1416,26 +1434,26 @@ type PublicWeekReference = shared.PublicWeekReference
 // This is an alias to an internal type.
 type PublicWeekReferenceDayOfWeek = shared.PublicWeekReferenceDayOfWeek
 
-// Equals "MONDAY"
-const PublicWeekReferenceDayOfWeekMonday = shared.PublicWeekReferenceDayOfWeekMonday
-
-// Equals "TUESDAY"
-const PublicWeekReferenceDayOfWeekTuesday = shared.PublicWeekReferenceDayOfWeekTuesday
-
-// Equals "WEDNESDAY"
-const PublicWeekReferenceDayOfWeekWednesday = shared.PublicWeekReferenceDayOfWeekWednesday
-
-// Equals "THURSDAY"
-const PublicWeekReferenceDayOfWeekThursday = shared.PublicWeekReferenceDayOfWeekThursday
-
 // Equals "FRIDAY"
 const PublicWeekReferenceDayOfWeekFriday = shared.PublicWeekReferenceDayOfWeekFriday
+
+// Equals "MONDAY"
+const PublicWeekReferenceDayOfWeekMonday = shared.PublicWeekReferenceDayOfWeekMonday
 
 // Equals "SATURDAY"
 const PublicWeekReferenceDayOfWeekSaturday = shared.PublicWeekReferenceDayOfWeekSaturday
 
 // Equals "SUNDAY"
 const PublicWeekReferenceDayOfWeekSunday = shared.PublicWeekReferenceDayOfWeekSunday
+
+// Equals "THURSDAY"
+const PublicWeekReferenceDayOfWeekThursday = shared.PublicWeekReferenceDayOfWeekThursday
+
+// Equals "TUESDAY"
+const PublicWeekReferenceDayOfWeekTuesday = shared.PublicWeekReferenceDayOfWeekTuesday
+
+// Equals "WEDNESDAY"
+const PublicWeekReferenceDayOfWeekWednesday = shared.PublicWeekReferenceDayOfWeekWednesday
 
 // This is an alias to an internal type.
 type PublicWeekReferenceReferenceType = shared.PublicWeekReferenceReferenceType

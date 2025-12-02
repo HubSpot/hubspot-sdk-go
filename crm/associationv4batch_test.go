@@ -28,7 +28,7 @@ func TestAssociationV4BatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Batch.New(
+	_, err := client.Crm.Associations.V4.Batch.New(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationV4BatchNewParams{
@@ -41,8 +41,8 @@ func TestAssociationV4BatchNew(t *testing.T) {
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
 					},
-					Types: []crm.AssociationSpec1Param{{
-						AssociationCategory: crm.AssociationSpec1AssociationCategoryHubspotDefined,
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
 						AssociationTypeID:   0,
 					}},
 				}},
@@ -71,7 +71,7 @@ func TestAssociationV4BatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Batch.Delete(
+	_, err := client.Crm.Associations.V4.Batch.Delete(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationV4BatchDeleteParams{
@@ -110,7 +110,7 @@ func TestAssociationV4BatchNewDefault(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Batch.NewDefault(
+	_, err := client.Crm.Associations.V4.Batch.NewDefault(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationV4BatchNewDefaultParams{
@@ -149,7 +149,7 @@ func TestAssociationV4BatchDeleteLabels(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Batch.DeleteLabels(
+	_, err := client.Crm.Associations.V4.Batch.DeleteLabels(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationV4BatchDeleteLabelsParams{
@@ -162,8 +162,8 @@ func TestAssociationV4BatchDeleteLabels(t *testing.T) {
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
 					},
-					Types: []crm.AssociationSpec1Param{{
-						AssociationCategory: crm.AssociationSpec1AssociationCategoryHubspotDefined,
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
 						AssociationTypeID:   0,
 					}},
 				}},
@@ -192,7 +192,7 @@ func TestAssociationV4BatchGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Batch.Get(
+	_, err := client.Crm.Associations.V4.Batch.Get(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationV4BatchGetParams{

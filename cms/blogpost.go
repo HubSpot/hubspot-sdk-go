@@ -16,7 +16,6 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
@@ -25,7 +24,7 @@ import (
 )
 
 // BlogPostService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -334,7 +333,7 @@ type BatchResponseBlogPost struct {
 	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
 	// Status of batch operation.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseBlogPostStatus `json:"status,required"`
 	// Links associated with batch operation.
 	Links map[string]string `json:"links"`
@@ -363,18 +362,18 @@ func (r *BatchResponseBlogPost) UnmarshalJSON(data []byte) error {
 type BatchResponseBlogPostStatus string
 
 const (
-	BatchResponseBlogPostStatusPending    BatchResponseBlogPostStatus = "PENDING"
-	BatchResponseBlogPostStatusProcessing BatchResponseBlogPostStatus = "PROCESSING"
 	BatchResponseBlogPostStatusCanceled   BatchResponseBlogPostStatus = "CANCELED"
 	BatchResponseBlogPostStatusComplete   BatchResponseBlogPostStatus = "COMPLETE"
+	BatchResponseBlogPostStatusPending    BatchResponseBlogPostStatus = "PENDING"
+	BatchResponseBlogPostStatusProcessing BatchResponseBlogPostStatus = "PROCESSING"
 )
 
 // Model definition for a Blog Post.
 type BlogPost struct {
 	// The unique ID of the blog post.
 	ID string `json:"id,required"`
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus BlogPostAbStatus `json:"abStatus,required"`
 	AbTestID string           `json:"abTestId,required"`
 	// The timestamp (ISO8601 format) when this Blog Post was deleted.
@@ -397,8 +396,8 @@ type BlogPost struct {
 	ContentGroupID string `json:"contentGroupId,required"`
 	// An ENUM descibing the type of this object. Should always be BLOG_POST.
 	//
-	// Any of "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-	// "14", "15".
+	// Any of "0", "1", "10", "11", "12", "13", "14", "15", "2", "3", "4", "5", "6",
+	// "7", "8", "9".
 	ContentTypeCategory BlogPostContentTypeCategory `json:"contentTypeCategory,required"`
 	Created             time.Time                   `json:"created,required" format:"date-time"`
 	// The ID of the user that created the post.
@@ -407,15 +406,15 @@ type BlogPost struct {
 	// A generated ENUM descibing the current state of this Blog Post. Should always
 	// match state.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
-	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT".
+	// Any of "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT",
+	// "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_FOR_FORM",
+	// "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	CurrentState BlogPostCurrentState `json:"currentState,required"`
 	// The domain that the post lives on. If null, the post will default to the domain
 	// of the parent blog.
@@ -467,7 +466,7 @@ type BlogPost struct {
 	// "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at", "en-au",
 	// "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca", "en-cc",
 	// "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-de", "en-dg", "en-dk",
-	// "en-dm", "en-ee", "en-er", "en-fr", "en-fi", "en-fj", "en-fk", "en-fm", "en-gb",
+	// "en-dm", "en-ee", "en-er", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb",
 	// "en-gd", "en-gg", "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-ie",
 	// "en-il", "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn",
 	// "en-ky", "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp",
@@ -490,47 +489,47 @@ type BlogPost struct {
 	// "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt",
 	// "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl",
 	// "gl-es", "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke",
-	// "gv", "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi",
-	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
-	// "ia", "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is",
-	// "it", "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo",
-	// "jgo-cm", "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab",
-	// "kab-dz", "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml",
-	// "ki", "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks",
-	// "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku",
-	// "ku-tr", "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt",
-	// "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
-	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
-	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer",
-	// "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm",
-	// "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in",
-	// "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua",
-	// "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no",
-	// "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl",
-	// "nl-aw", "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx",
-	// "nmg", "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss",
-	// "nyn", "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru",
-	// "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv", "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il",
+	// "hi", "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy",
+	// "hy-am", "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is",
+	// "is-is", "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo",
+	// "jgo-cm", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam",
+	// "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke",
+	// "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh",
+	// "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb",
+	// "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky",
+	// "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln",
+	// "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir",
+	// "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv",
+	// "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu",
+	// "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk",
+	// "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn",
+	// "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
+	// "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
+	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om",
+	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
+	// "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language       BlogPostLanguage         `json:"language,required"`
 	LayoutSections map[string]LayoutSection `json:"layoutSections,required"`
 	// Optional override to set the URL to be used in the rel=canonical link tag on the
@@ -574,9 +573,9 @@ type BlogPost struct {
 	TagIDs              []int64        `json:"tagIds,required"`
 	ThemeSettingsValues map[string]any `json:"themeSettingsValues,required"`
 	// ID of the primary blog post that this post was translated from.
-	TranslatedFromID string                              `json:"translatedFromId,required"`
-	Translations     map[string]ContentLanguageVariation `json:"translations,required"`
-	Updated          time.Time                           `json:"updated,required" format:"date-time"`
+	TranslatedFromID string                                   `json:"translatedFromId,required"`
+	Translations     map[string]PagesContentLanguageVariation `json:"translations,required"`
+	Updated          time.Time                                `json:"updated,required" format:"date-time"`
 	// The ID of the user that updated the post.
 	UpdatedByID string `json:"updatedById,required"`
 	// A generated field representing the URL of this blog post.
@@ -674,14 +673,14 @@ func (r BlogPost) ToParam() BlogPostParam {
 type BlogPostAbStatus string
 
 const (
-	BlogPostAbStatusMaster                BlogPostAbStatus = "master"
-	BlogPostAbStatusVariant               BlogPostAbStatus = "variant"
+	BlogPostAbStatusAutomatedLoserVariant BlogPostAbStatus = "automated_loser_variant"
+	BlogPostAbStatusAutomatedMaster       BlogPostAbStatus = "automated_master"
+	BlogPostAbStatusAutomatedVariant      BlogPostAbStatus = "automated_variant"
 	BlogPostAbStatusLoserVariant          BlogPostAbStatus = "loser_variant"
 	BlogPostAbStatusMabMaster             BlogPostAbStatus = "mab_master"
 	BlogPostAbStatusMabVariant            BlogPostAbStatus = "mab_variant"
-	BlogPostAbStatusAutomatedMaster       BlogPostAbStatus = "automated_master"
-	BlogPostAbStatusAutomatedVariant      BlogPostAbStatus = "automated_variant"
-	BlogPostAbStatusAutomatedLoserVariant BlogPostAbStatus = "automated_loser_variant"
+	BlogPostAbStatusMaster                BlogPostAbStatus = "master"
+	BlogPostAbStatusVariant               BlogPostAbStatus = "variant"
 )
 
 // An ENUM descibing the type of this object. Should always be BLOG_POST.
@@ -690,6 +689,12 @@ type BlogPostContentTypeCategory string
 const (
 	BlogPostContentTypeCategory0  BlogPostContentTypeCategory = "0"
 	BlogPostContentTypeCategory1  BlogPostContentTypeCategory = "1"
+	BlogPostContentTypeCategory10 BlogPostContentTypeCategory = "10"
+	BlogPostContentTypeCategory11 BlogPostContentTypeCategory = "11"
+	BlogPostContentTypeCategory12 BlogPostContentTypeCategory = "12"
+	BlogPostContentTypeCategory13 BlogPostContentTypeCategory = "13"
+	BlogPostContentTypeCategory14 BlogPostContentTypeCategory = "14"
+	BlogPostContentTypeCategory15 BlogPostContentTypeCategory = "15"
 	BlogPostContentTypeCategory2  BlogPostContentTypeCategory = "2"
 	BlogPostContentTypeCategory3  BlogPostContentTypeCategory = "3"
 	BlogPostContentTypeCategory4  BlogPostContentTypeCategory = "4"
@@ -698,12 +703,6 @@ const (
 	BlogPostContentTypeCategory7  BlogPostContentTypeCategory = "7"
 	BlogPostContentTypeCategory8  BlogPostContentTypeCategory = "8"
 	BlogPostContentTypeCategory9  BlogPostContentTypeCategory = "9"
-	BlogPostContentTypeCategory10 BlogPostContentTypeCategory = "10"
-	BlogPostContentTypeCategory11 BlogPostContentTypeCategory = "11"
-	BlogPostContentTypeCategory12 BlogPostContentTypeCategory = "12"
-	BlogPostContentTypeCategory13 BlogPostContentTypeCategory = "13"
-	BlogPostContentTypeCategory14 BlogPostContentTypeCategory = "14"
-	BlogPostContentTypeCategory15 BlogPostContentTypeCategory = "15"
 )
 
 // A generated ENUM descibing the current state of this Blog Post. Should always
@@ -712,12 +711,17 @@ type BlogPostCurrentState string
 
 const (
 	BlogPostCurrentStateAutomated               BlogPostCurrentState = "AUTOMATED"
+	BlogPostCurrentStateAutomatedAb             BlogPostCurrentState = "AUTOMATED_AB"
+	BlogPostCurrentStateAutomatedAbVariant      BlogPostCurrentState = "AUTOMATED_AB_VARIANT"
 	BlogPostCurrentStateAutomatedDraft          BlogPostCurrentState = "AUTOMATED_DRAFT"
-	BlogPostCurrentStateAutomatedSending        BlogPostCurrentState = "AUTOMATED_SENDING"
+	BlogPostCurrentStateAutomatedDraftAb        BlogPostCurrentState = "AUTOMATED_DRAFT_AB"
+	BlogPostCurrentStateAutomatedDraftAbvariant BlogPostCurrentState = "AUTOMATED_DRAFT_ABVARIANT"
 	BlogPostCurrentStateAutomatedForForm        BlogPostCurrentState = "AUTOMATED_FOR_FORM"
 	BlogPostCurrentStateAutomatedForFormBuffer  BlogPostCurrentState = "AUTOMATED_FOR_FORM_BUFFER"
 	BlogPostCurrentStateAutomatedForFormDraft   BlogPostCurrentState = "AUTOMATED_FOR_FORM_DRAFT"
 	BlogPostCurrentStateAutomatedForFormLegacy  BlogPostCurrentState = "AUTOMATED_FOR_FORM_LEGACY"
+	BlogPostCurrentStateAutomatedLoserAbvariant BlogPostCurrentState = "AUTOMATED_LOSER_ABVARIANT"
+	BlogPostCurrentStateAutomatedSending        BlogPostCurrentState = "AUTOMATED_SENDING"
 	BlogPostCurrentStateBlogEmailDraft          BlogPostCurrentState = "BLOG_EMAIL_DRAFT"
 	BlogPostCurrentStateBlogEmailPublished      BlogPostCurrentState = "BLOG_EMAIL_PUBLISHED"
 	BlogPostCurrentStateDraft                   BlogPostCurrentState = "DRAFT"
@@ -737,11 +741,6 @@ const (
 	BlogPostCurrentStateScheduled               BlogPostCurrentState = "SCHEDULED"
 	BlogPostCurrentStateScheduledAb             BlogPostCurrentState = "SCHEDULED_AB"
 	BlogPostCurrentStateScheduledOrPublished    BlogPostCurrentState = "SCHEDULED_OR_PUBLISHED"
-	BlogPostCurrentStateAutomatedAb             BlogPostCurrentState = "AUTOMATED_AB"
-	BlogPostCurrentStateAutomatedAbVariant      BlogPostCurrentState = "AUTOMATED_AB_VARIANT"
-	BlogPostCurrentStateAutomatedDraftAb        BlogPostCurrentState = "AUTOMATED_DRAFT_AB"
-	BlogPostCurrentStateAutomatedDraftAbvariant BlogPostCurrentState = "AUTOMATED_DRAFT_ABVARIANT"
-	BlogPostCurrentStateAutomatedLoserAbvariant BlogPostCurrentState = "AUTOMATED_LOSER_ABVARIANT"
 )
 
 // The explicitly defined ISO 639 language code of the post. If null, the post will
@@ -908,11 +907,11 @@ const (
 	BlogPostLanguageEnDm   BlogPostLanguage = "en-dm"
 	BlogPostLanguageEnEe   BlogPostLanguage = "en-ee"
 	BlogPostLanguageEnEr   BlogPostLanguage = "en-er"
-	BlogPostLanguageEnFr   BlogPostLanguage = "en-fr"
 	BlogPostLanguageEnFi   BlogPostLanguage = "en-fi"
 	BlogPostLanguageEnFj   BlogPostLanguage = "en-fj"
 	BlogPostLanguageEnFk   BlogPostLanguage = "en-fk"
 	BlogPostLanguageEnFm   BlogPostLanguage = "en-fm"
+	BlogPostLanguageEnFr   BlogPostLanguage = "en-fr"
 	BlogPostLanguageEnGB   BlogPostLanguage = "en-gb"
 	BlogPostLanguageEnGd   BlogPostLanguage = "en-gd"
 	BlogPostLanguageEnGg   BlogPostLanguage = "en-gg"
@@ -1124,6 +1123,7 @@ const (
 	BlogPostLanguageHaw    BlogPostLanguage = "haw"
 	BlogPostLanguageHawUs  BlogPostLanguage = "haw-us"
 	BlogPostLanguageHe     BlogPostLanguage = "he"
+	BlogPostLanguageHeIl   BlogPostLanguage = "he-il"
 	BlogPostLanguageHi     BlogPostLanguage = "hi"
 	BlogPostLanguageHiIn   BlogPostLanguage = "hi-in"
 	BlogPostLanguageHr     BlogPostLanguage = "hr"
@@ -1138,11 +1138,11 @@ const (
 	BlogPostLanguageIa     BlogPostLanguage = "ia"
 	BlogPostLanguageIa001  BlogPostLanguage = "ia-001"
 	BlogPostLanguageID     BlogPostLanguage = "id"
+	BlogPostLanguageIDID   BlogPostLanguage = "id-id"
 	BlogPostLanguageIg     BlogPostLanguage = "ig"
 	BlogPostLanguageIgNg   BlogPostLanguage = "ig-ng"
 	BlogPostLanguageIi     BlogPostLanguage = "ii"
 	BlogPostLanguageIiCn   BlogPostLanguage = "ii-cn"
-	BlogPostLanguageIDID   BlogPostLanguage = "id-id"
 	BlogPostLanguageIs     BlogPostLanguage = "is"
 	BlogPostLanguageIsIs   BlogPostLanguage = "is-is"
 	BlogPostLanguageIt     BlogPostLanguage = "it"
@@ -1150,13 +1150,10 @@ const (
 	BlogPostLanguageItIt   BlogPostLanguage = "it-it"
 	BlogPostLanguageItSm   BlogPostLanguage = "it-sm"
 	BlogPostLanguageItVa   BlogPostLanguage = "it-va"
-	BlogPostLanguageHeIl   BlogPostLanguage = "he-il"
 	BlogPostLanguageJa     BlogPostLanguage = "ja"
 	BlogPostLanguageJaJp   BlogPostLanguage = "ja-jp"
 	BlogPostLanguageJgo    BlogPostLanguage = "jgo"
 	BlogPostLanguageJgoCm  BlogPostLanguage = "jgo-cm"
-	BlogPostLanguageYi     BlogPostLanguage = "yi"
-	BlogPostLanguageYi001  BlogPostLanguage = "yi-001"
 	BlogPostLanguageJmc    BlogPostLanguage = "jmc"
 	BlogPostLanguageJmcTz  BlogPostLanguage = "jmc-tz"
 	BlogPostLanguageJv     BlogPostLanguage = "jv"
@@ -1200,10 +1197,10 @@ const (
 	BlogPostLanguageKsfCm  BlogPostLanguage = "ksf-cm"
 	BlogPostLanguageKsh    BlogPostLanguage = "ksh"
 	BlogPostLanguageKshDe  BlogPostLanguage = "ksh-de"
-	BlogPostLanguageKw     BlogPostLanguage = "kw"
-	BlogPostLanguageKwGB   BlogPostLanguage = "kw-gb"
 	BlogPostLanguageKu     BlogPostLanguage = "ku"
 	BlogPostLanguageKuTr   BlogPostLanguage = "ku-tr"
+	BlogPostLanguageKw     BlogPostLanguage = "kw"
+	BlogPostLanguageKwGB   BlogPostLanguage = "kw-gb"
 	BlogPostLanguageKy     BlogPostLanguage = "ky"
 	BlogPostLanguageKyKg   BlogPostLanguage = "ky-kg"
 	BlogPostLanguageLag    BlogPostLanguage = "lag"
@@ -1290,8 +1287,8 @@ const (
 	BlogPostLanguageNl     BlogPostLanguage = "nl"
 	BlogPostLanguageNlAw   BlogPostLanguage = "nl-aw"
 	BlogPostLanguageNlBe   BlogPostLanguage = "nl-be"
-	BlogPostLanguageNlCh   BlogPostLanguage = "nl-ch"
 	BlogPostLanguageNlBq   BlogPostLanguage = "nl-bq"
+	BlogPostLanguageNlCh   BlogPostLanguage = "nl-ch"
 	BlogPostLanguageNlCw   BlogPostLanguage = "nl-cw"
 	BlogPostLanguageNlLu   BlogPostLanguage = "nl-lu"
 	BlogPostLanguageNlNl   BlogPostLanguage = "nl-nl"
@@ -1487,6 +1484,8 @@ const (
 	BlogPostLanguageXogUg  BlogPostLanguage = "xog-ug"
 	BlogPostLanguageYav    BlogPostLanguage = "yav"
 	BlogPostLanguageYavCm  BlogPostLanguage = "yav-cm"
+	BlogPostLanguageYi     BlogPostLanguage = "yi"
+	BlogPostLanguageYi001  BlogPostLanguage = "yi-001"
 	BlogPostLanguageYo     BlogPostLanguage = "yo"
 	BlogPostLanguageYoBj   BlogPostLanguage = "yo-bj"
 	BlogPostLanguageYoNg   BlogPostLanguage = "yo-ng"
@@ -1497,12 +1496,12 @@ const (
 	BlogPostLanguageZghMa  BlogPostLanguage = "zgh-ma"
 	BlogPostLanguageZh     BlogPostLanguage = "zh"
 	BlogPostLanguageZhCn   BlogPostLanguage = "zh-cn"
+	BlogPostLanguageZhHans BlogPostLanguage = "zh-hans"
+	BlogPostLanguageZhHant BlogPostLanguage = "zh-hant"
 	BlogPostLanguageZhHk   BlogPostLanguage = "zh-hk"
 	BlogPostLanguageZhMo   BlogPostLanguage = "zh-mo"
 	BlogPostLanguageZhSg   BlogPostLanguage = "zh-sg"
 	BlogPostLanguageZhTw   BlogPostLanguage = "zh-tw"
-	BlogPostLanguageZhHans BlogPostLanguage = "zh-hans"
-	BlogPostLanguageZhHant BlogPostLanguage = "zh-hant"
 	BlogPostLanguageZu     BlogPostLanguage = "zu"
 	BlogPostLanguageZuZa   BlogPostLanguage = "zu-za"
 )
@@ -1525,8 +1524,8 @@ const (
 type BlogPostParam struct {
 	// The unique ID of the blog post.
 	ID string `json:"id,required"`
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus BlogPostAbStatus `json:"abStatus,omitzero,required"`
 	AbTestID string           `json:"abTestId,required"`
 	// The timestamp (ISO8601 format) when this Blog Post was deleted.
@@ -1549,8 +1548,8 @@ type BlogPostParam struct {
 	ContentGroupID string `json:"contentGroupId,required"`
 	// An ENUM descibing the type of this object. Should always be BLOG_POST.
 	//
-	// Any of "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13",
-	// "14", "15".
+	// Any of "0", "1", "10", "11", "12", "13", "14", "15", "2", "3", "4", "5", "6",
+	// "7", "8", "9".
 	ContentTypeCategory BlogPostContentTypeCategory `json:"contentTypeCategory,omitzero,required"`
 	Created             time.Time                   `json:"created,required" format:"date-time"`
 	// The ID of the user that created the post.
@@ -1559,15 +1558,15 @@ type BlogPostParam struct {
 	// A generated ENUM descibing the current state of this Blog Post. Should always
 	// match state.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
-	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT".
+	// Any of "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT",
+	// "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_FOR_FORM",
+	// "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	CurrentState BlogPostCurrentState `json:"currentState,omitzero,required"`
 	// The domain that the post lives on. If null, the post will default to the domain
 	// of the parent blog.
@@ -1619,7 +1618,7 @@ type BlogPostParam struct {
 	// "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at", "en-au",
 	// "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca", "en-cc",
 	// "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-de", "en-dg", "en-dk",
-	// "en-dm", "en-ee", "en-er", "en-fr", "en-fi", "en-fj", "en-fk", "en-fm", "en-gb",
+	// "en-dm", "en-ee", "en-er", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb",
 	// "en-gd", "en-gg", "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-ie",
 	// "en-il", "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn",
 	// "en-ky", "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp",
@@ -1642,47 +1641,47 @@ type BlogPostParam struct {
 	// "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt",
 	// "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl",
 	// "gl-es", "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke",
-	// "gv", "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi",
-	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
-	// "ia", "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is",
-	// "it", "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo",
-	// "jgo-cm", "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab",
-	// "kab-dz", "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml",
-	// "ki", "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks",
-	// "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku",
-	// "ku-tr", "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt",
-	// "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
-	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
-	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer",
-	// "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm",
-	// "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in",
-	// "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua",
-	// "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no",
-	// "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl",
-	// "nl-aw", "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx",
-	// "nmg", "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss",
-	// "nyn", "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru",
-	// "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv", "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il",
+	// "hi", "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy",
+	// "hy-am", "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is",
+	// "is-is", "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo",
+	// "jgo-cm", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam",
+	// "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke",
+	// "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh",
+	// "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb",
+	// "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky",
+	// "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln",
+	// "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir",
+	// "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv",
+	// "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu",
+	// "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk",
+	// "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn",
+	// "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
+	// "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
+	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om",
+	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
+	// "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language       BlogPostLanguage              `json:"language,omitzero,required"`
 	LayoutSections map[string]LayoutSectionParam `json:"layoutSections,omitzero,required"`
 	// Optional override to set the URL to be used in the rel=canonical link tag on the
@@ -1726,9 +1725,9 @@ type BlogPostParam struct {
 	TagIDs              []int64        `json:"tagIds,omitzero,required"`
 	ThemeSettingsValues map[string]any `json:"themeSettingsValues,omitzero,required"`
 	// ID of the primary blog post that this post was translated from.
-	TranslatedFromID string                                   `json:"translatedFromId,required"`
-	Translations     map[string]ContentLanguageVariationParam `json:"translations,omitzero,required"`
-	Updated          time.Time                                `json:"updated,required" format:"date-time"`
+	TranslatedFromID string                                        `json:"translatedFromId,required"`
+	Translations     map[string]PagesContentLanguageVariationParam `json:"translations,omitzero,required"`
+	Updated          time.Time                                     `json:"updated,required" format:"date-time"`
 	// The ID of the user that updated the post.
 	UpdatedByID string `json:"updatedById,required"`
 	// A generated field representing the URL of this blog post.
@@ -1844,9 +1843,8 @@ type CollectionResponseWithTotalVersionBlogPost struct {
 	// Collection of blog post versions.
 	Results []VersionBlogPost `json:"results,required"`
 	// Total number of blog post versions.
-	Total int64 `json:"total,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Total  int64         `json:"total,required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field

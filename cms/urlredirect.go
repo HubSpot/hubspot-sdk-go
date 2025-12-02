@@ -4,6 +4,7 @@ package cms
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,15 +14,17 @@ import (
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // URLRedirectService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -40,7 +43,7 @@ func NewURLRedirectService(opts ...option.RequestOption) (r URLRedirectService) 
 }
 
 // Creates and configures a new URL redirect.
-func (r *URLRedirectService) New(ctx context.Context, body URLRedirectNewParams, opts ...option.RequestOption) (res *URLRedirectNewResponse, err error) {
+func (r *URLRedirectService) New(ctx context.Context, body URLRedirectNewParams, opts ...option.RequestOption) (res *URLMapping, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "cms/v3/url-redirects/"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -48,7 +51,7 @@ func (r *URLRedirectService) New(ctx context.Context, body URLRedirectNewParams,
 }
 
 // Updates the settings for an existing URL redirect.
-func (r *URLRedirectService) Update(ctx context.Context, urlRedirectID string, body URLRedirectUpdateParams, opts ...option.RequestOption) (res *URLRedirectUpdateResponse, err error) {
+func (r *URLRedirectService) Update(ctx context.Context, urlRedirectID string, body URLRedirectUpdateParams, opts ...option.RequestOption) (res *URLMapping, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if urlRedirectID == "" {
 		err = errors.New("missing required urlRedirectId parameter")
@@ -61,7 +64,7 @@ func (r *URLRedirectService) Update(ctx context.Context, urlRedirectID string, b
 
 // Returns all existing URL redirects. Results can be limited and filtered by
 // creation or updated date.
-func (r *URLRedirectService) List(ctx context.Context, query URLRedirectListParams, opts ...option.RequestOption) (res *pagination.Page[URLRedirectListResponse], err error) {
+func (r *URLRedirectService) List(ctx context.Context, query URLRedirectListParams, opts ...option.RequestOption) (res *pagination.Page[URLMapping], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -80,7 +83,7 @@ func (r *URLRedirectService) List(ctx context.Context, query URLRedirectListPara
 
 // Returns all existing URL redirects. Results can be limited and filtered by
 // creation or updated date.
-func (r *URLRedirectService) ListAutoPaging(ctx context.Context, query URLRedirectListParams, opts ...option.RequestOption) *pagination.PageAutoPager[URLRedirectListResponse] {
+func (r *URLRedirectService) ListAutoPaging(ctx context.Context, query URLRedirectListParams, opts ...option.RequestOption) *pagination.PageAutoPager[URLMapping] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
@@ -98,7 +101,7 @@ func (r *URLRedirectService) Delete(ctx context.Context, urlRedirectID string, o
 }
 
 // Returns the details for a single existing URL redirect by ID.
-func (r *URLRedirectService) Get(ctx context.Context, urlRedirectID string, opts ...option.RequestOption) (res *URLRedirectGetResponse, err error) {
+func (r *URLRedirectService) Get(ctx context.Context, urlRedirectID string, opts ...option.RequestOption) (res *URLMapping, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if urlRedirectID == "" {
 		err = errors.New("missing required urlRedirectId parameter")
@@ -109,7 +112,27 @@ func (r *URLRedirectService) Get(ctx context.Context, urlRedirectID string, opts
 	return
 }
 
-type URLRedirectNewResponse struct {
+type CollectionResponseWithTotalURLMappingForwardPaging struct {
+	Results []URLMapping         `json:"results,required"`
+	Total   int64                `json:"total,required"`
+	Paging  shared.ForwardPaging `json:"paging"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		Total       respjson.Field
+		Paging      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CollectionResponseWithTotalURLMappingForwardPaging) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponseWithTotalURLMappingForwardPaging) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type URLMapping struct {
 	// The unique ID of this URL redirect.
 	ID string `json:"id,required"`
 	// The destination URL, where the target URL should be redirected if it matches the
@@ -162,208 +185,24 @@ type URLRedirectNewResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r URLRedirectNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *URLRedirectNewResponse) UnmarshalJSON(data []byte) error {
+func (r URLMapping) RawJSON() string { return r.JSON.raw }
+func (r *URLMapping) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type URLRedirectUpdateResponse struct {
-	// The unique ID of this URL redirect.
-	ID string `json:"id,required"`
-	// The destination URL, where the target URL should be redirected if it matches the
-	// `routePrefix`.
-	Destination string `json:"destination,required"`
-	// Whether the `routePrefix` should match on the entire URL, including the domain.
-	IsMatchFullURL bool `json:"isMatchFullUrl,required"`
-	// Whether the `routePrefix` should match on the entire URL path, including the
-	// query string.
-	IsMatchQueryString bool `json:"isMatchQueryString,required"`
-	// Whether the URL redirect mapping should apply only if a live page on the URL
-	// isn't found. If False, the URL redirect mapping will take precedence over any
-	// existing page.
-	IsOnlyAfterNotFound bool `json:"isOnlyAfterNotFound,required"`
-	// Whether the `routePrefix` should match based on pattern.
-	IsPattern bool `json:"isPattern,required"`
-	// Whether the `routePrefix` should match both HTTP and HTTPS protocols.
-	IsProtocolAgnostic bool `json:"isProtocolAgnostic,required"`
-	// Whether a trailing slash will be ignored.
-	IsTrailingSlashOptional bool `json:"isTrailingSlashOptional,required"`
-	// Used to prioritize URL redirection. If a given URL matches more than one
-	// redirect, the one with the **lower** precedence will be used.
-	Precedence int64 `json:"precedence,required"`
-	// The type of redirect to create. Options include: 301 (permanent), 302
-	// (temporary), or 305 (proxy). Find more details
-	// [here](https://knowledge.hubspot.com/cos-general/how-to-redirect-a-hubspot-page).
-	RedirectStyle int64 `json:"redirectStyle,required"`
-	// The target incoming URL, path, or pattern to match for redirection.
-	RoutePrefix string    `json:"routePrefix,required"`
-	Created     time.Time `json:"created" format:"date-time"`
-	Updated     time.Time `json:"updated" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                      respjson.Field
-		Destination             respjson.Field
-		IsMatchFullURL          respjson.Field
-		IsMatchQueryString      respjson.Field
-		IsOnlyAfterNotFound     respjson.Field
-		IsPattern               respjson.Field
-		IsProtocolAgnostic      respjson.Field
-		IsTrailingSlashOptional respjson.Field
-		Precedence              respjson.Field
-		RedirectStyle           respjson.Field
-		RoutePrefix             respjson.Field
-		Created                 respjson.Field
-		Updated                 respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
+// ToParam converts this URLMapping to a URLMappingParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// URLMappingParam.Overrides()
+func (r URLMapping) ToParam() URLMappingParam {
+	return param.Override[URLMappingParam](json.RawMessage(r.RawJSON()))
 }
 
-// Returns the unmodified JSON received from the API
-func (r URLRedirectUpdateResponse) RawJSON() string { return r.JSON.raw }
-func (r *URLRedirectUpdateResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type URLRedirectListResponse struct {
-	// The unique ID of this URL redirect.
-	ID string `json:"id,required"`
-	// The destination URL, where the target URL should be redirected if it matches the
-	// `routePrefix`.
-	Destination string `json:"destination,required"`
-	// Whether the `routePrefix` should match on the entire URL, including the domain.
-	IsMatchFullURL bool `json:"isMatchFullUrl,required"`
-	// Whether the `routePrefix` should match on the entire URL path, including the
-	// query string.
-	IsMatchQueryString bool `json:"isMatchQueryString,required"`
-	// Whether the URL redirect mapping should apply only if a live page on the URL
-	// isn't found. If False, the URL redirect mapping will take precedence over any
-	// existing page.
-	IsOnlyAfterNotFound bool `json:"isOnlyAfterNotFound,required"`
-	// Whether the `routePrefix` should match based on pattern.
-	IsPattern bool `json:"isPattern,required"`
-	// Whether the `routePrefix` should match both HTTP and HTTPS protocols.
-	IsProtocolAgnostic bool `json:"isProtocolAgnostic,required"`
-	// Whether a trailing slash will be ignored.
-	IsTrailingSlashOptional bool `json:"isTrailingSlashOptional,required"`
-	// Used to prioritize URL redirection. If a given URL matches more than one
-	// redirect, the one with the **lower** precedence will be used.
-	Precedence int64 `json:"precedence,required"`
-	// The type of redirect to create. Options include: 301 (permanent), 302
-	// (temporary), or 305 (proxy). Find more details
-	// [here](https://knowledge.hubspot.com/cos-general/how-to-redirect-a-hubspot-page).
-	RedirectStyle int64 `json:"redirectStyle,required"`
-	// The target incoming URL, path, or pattern to match for redirection.
-	RoutePrefix string    `json:"routePrefix,required"`
-	Created     time.Time `json:"created" format:"date-time"`
-	Updated     time.Time `json:"updated" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                      respjson.Field
-		Destination             respjson.Field
-		IsMatchFullURL          respjson.Field
-		IsMatchQueryString      respjson.Field
-		IsOnlyAfterNotFound     respjson.Field
-		IsPattern               respjson.Field
-		IsProtocolAgnostic      respjson.Field
-		IsTrailingSlashOptional respjson.Field
-		Precedence              respjson.Field
-		RedirectStyle           respjson.Field
-		RoutePrefix             respjson.Field
-		Created                 respjson.Field
-		Updated                 respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r URLRedirectListResponse) RawJSON() string { return r.JSON.raw }
-func (r *URLRedirectListResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type URLRedirectGetResponse struct {
-	// The unique ID of this URL redirect.
-	ID string `json:"id,required"`
-	// The destination URL, where the target URL should be redirected if it matches the
-	// `routePrefix`.
-	Destination string `json:"destination,required"`
-	// Whether the `routePrefix` should match on the entire URL, including the domain.
-	IsMatchFullURL bool `json:"isMatchFullUrl,required"`
-	// Whether the `routePrefix` should match on the entire URL path, including the
-	// query string.
-	IsMatchQueryString bool `json:"isMatchQueryString,required"`
-	// Whether the URL redirect mapping should apply only if a live page on the URL
-	// isn't found. If False, the URL redirect mapping will take precedence over any
-	// existing page.
-	IsOnlyAfterNotFound bool `json:"isOnlyAfterNotFound,required"`
-	// Whether the `routePrefix` should match based on pattern.
-	IsPattern bool `json:"isPattern,required"`
-	// Whether the `routePrefix` should match both HTTP and HTTPS protocols.
-	IsProtocolAgnostic bool `json:"isProtocolAgnostic,required"`
-	// Whether a trailing slash will be ignored.
-	IsTrailingSlashOptional bool `json:"isTrailingSlashOptional,required"`
-	// Used to prioritize URL redirection. If a given URL matches more than one
-	// redirect, the one with the **lower** precedence will be used.
-	Precedence int64 `json:"precedence,required"`
-	// The type of redirect to create. Options include: 301 (permanent), 302
-	// (temporary), or 305 (proxy). Find more details
-	// [here](https://knowledge.hubspot.com/cos-general/how-to-redirect-a-hubspot-page).
-	RedirectStyle int64 `json:"redirectStyle,required"`
-	// The target incoming URL, path, or pattern to match for redirection.
-	RoutePrefix string    `json:"routePrefix,required"`
-	Created     time.Time `json:"created" format:"date-time"`
-	Updated     time.Time `json:"updated" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                      respjson.Field
-		Destination             respjson.Field
-		IsMatchFullURL          respjson.Field
-		IsMatchQueryString      respjson.Field
-		IsOnlyAfterNotFound     respjson.Field
-		IsPattern               respjson.Field
-		IsProtocolAgnostic      respjson.Field
-		IsTrailingSlashOptional respjson.Field
-		Precedence              respjson.Field
-		RedirectStyle           respjson.Field
-		RoutePrefix             respjson.Field
-		Created                 respjson.Field
-		Updated                 respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r URLRedirectGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *URLRedirectGetResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type URLRedirectNewParams struct {
-	Destination             string           `json:"destination,required"`
-	RedirectStyle           int64            `json:"redirectStyle,required"`
-	RoutePrefix             string           `json:"routePrefix,required"`
-	IsMatchFullURL          param.Opt[bool]  `json:"isMatchFullUrl,omitzero"`
-	IsMatchQueryString      param.Opt[bool]  `json:"isMatchQueryString,omitzero"`
-	IsOnlyAfterNotFound     param.Opt[bool]  `json:"isOnlyAfterNotFound,omitzero"`
-	IsPattern               param.Opt[bool]  `json:"isPattern,omitzero"`
-	IsProtocolAgnostic      param.Opt[bool]  `json:"isProtocolAgnostic,omitzero"`
-	IsTrailingSlashOptional param.Opt[bool]  `json:"isTrailingSlashOptional,omitzero"`
-	Precedence              param.Opt[int64] `json:"precedence,omitzero"`
-	paramObj
-}
-
-func (r URLRedirectNewParams) MarshalJSON() (data []byte, err error) {
-	type shadow URLRedirectNewParams
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *URLRedirectNewParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type URLRedirectUpdateParams struct {
+// The properties ID, Destination, IsMatchFullURL, IsMatchQueryString,
+// IsOnlyAfterNotFound, IsPattern, IsProtocolAgnostic, IsTrailingSlashOptional,
+// Precedence, RedirectStyle, RoutePrefix are required.
+type URLMappingParam struct {
 	// The unique ID of this URL redirect.
 	ID string `json:"id,required"`
 	// The destination URL, where the target URL should be redirected if it matches the
@@ -398,12 +237,59 @@ type URLRedirectUpdateParams struct {
 	paramObj
 }
 
-func (r URLRedirectUpdateParams) MarshalJSON() (data []byte, err error) {
-	type shadow URLRedirectUpdateParams
+func (r URLMappingParam) MarshalJSON() (data []byte, err error) {
+	type shadow URLMappingParam
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *URLRedirectUpdateParams) UnmarshalJSON(data []byte) error {
+func (r *URLMappingParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties Destination, RedirectStyle, RoutePrefix are required.
+type URLMappingCreateRequestBodyParam struct {
+	Destination             string           `json:"destination,required"`
+	RedirectStyle           int64            `json:"redirectStyle,required"`
+	RoutePrefix             string           `json:"routePrefix,required"`
+	IsMatchFullURL          param.Opt[bool]  `json:"isMatchFullUrl,omitzero"`
+	IsMatchQueryString      param.Opt[bool]  `json:"isMatchQueryString,omitzero"`
+	IsOnlyAfterNotFound     param.Opt[bool]  `json:"isOnlyAfterNotFound,omitzero"`
+	IsPattern               param.Opt[bool]  `json:"isPattern,omitzero"`
+	IsProtocolAgnostic      param.Opt[bool]  `json:"isProtocolAgnostic,omitzero"`
+	IsTrailingSlashOptional param.Opt[bool]  `json:"isTrailingSlashOptional,omitzero"`
+	Precedence              param.Opt[int64] `json:"precedence,omitzero"`
+	paramObj
+}
+
+func (r URLMappingCreateRequestBodyParam) MarshalJSON() (data []byte, err error) {
+	type shadow URLMappingCreateRequestBodyParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *URLMappingCreateRequestBodyParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type URLRedirectNewParams struct {
+	URLMappingCreateRequestBody URLMappingCreateRequestBodyParam
+	paramObj
+}
+
+func (r URLRedirectNewParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.URLMappingCreateRequestBody)
+}
+func (r *URLRedirectNewParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.URLMappingCreateRequestBody)
+}
+
+type URLRedirectUpdateParams struct {
+	URLMapping URLMappingParam
+	paramObj
+}
+
+func (r URLRedirectUpdateParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.URLMapping)
+}
+func (r *URLRedirectUpdateParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.URLMapping)
 }
 
 type URLRedirectListParams struct {
@@ -427,7 +313,8 @@ type URLRedirectListParams struct {
 	UpdatedAt param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
 	// Only return redirects last updated before this date.
 	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
-	Sort          []string             `query:"sort,omitzero" json:"-"`
+	// A query parameter to specify the order in which the URL redirects are returned.
+	Sort []string `query:"sort,omitzero" json:"-"`
 	paramObj
 }
 

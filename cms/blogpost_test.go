@@ -31,7 +31,7 @@ func TestBlogPostNew(t *testing.T) {
 	_, err := client.Cms.Blogs.Posts.New(context.TODO(), cms.BlogPostNewParams{
 		BlogPost: cms.BlogPostParam{
 			ID:                  "id",
-			AbStatus:            cms.BlogPostAbStatusMaster,
+			AbStatus:            cms.BlogPostAbStatusAutomatedLoserVariant,
 			AbTestID:            "abTestId",
 			ArchivedAt:          0,
 			ArchivedInDashboard: true,
@@ -191,7 +191,7 @@ func TestBlogPostNew(t *testing.T) {
 				"foo": map[string]any{},
 			},
 			TranslatedFromID: "translatedFromId",
-			Translations: map[string]cms.ContentLanguageVariationParam{
+			Translations: map[string]cms.PagesContentLanguageVariationParam{
 				"foo": {
 					ID:                       0,
 					ArchivedInDashboard:      true,
@@ -249,7 +249,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 		cms.BlogPostUpdateParams{
 			BlogPost: cms.BlogPostParam{
 				ID:                  "id",
-				AbStatus:            cms.BlogPostAbStatusMaster,
+				AbStatus:            cms.BlogPostAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          0,
 				ArchivedInDashboard: true,
@@ -409,7 +409,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,
@@ -918,7 +918,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 		cms.BlogPostUpdateDraftParams{
 			BlogPost: cms.BlogPostParam{
 				ID:                  "id",
-				AbStatus:            cms.BlogPostAbStatusMaster,
+				AbStatus:            cms.BlogPostAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          0,
 				ArchivedInDashboard: true,
@@ -1078,7 +1078,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,

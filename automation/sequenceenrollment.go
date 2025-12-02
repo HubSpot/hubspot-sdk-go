@@ -8,15 +8,17 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
 // SequenceEnrollmentService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -36,10 +38,10 @@ func NewSequenceEnrollmentService(opts ...option.RequestOption) (r SequenceEnrol
 
 // Enroll a contact into a sequence using the specified user ID and sequence
 // details.
-func (r *SequenceEnrollmentService) Enroll(ctx context.Context, body SequenceEnrollmentEnrollParams, opts ...option.RequestOption) (res *PublicSequenceEnrollmentLiteResponse, err error) {
+func (r *SequenceEnrollmentService) Enroll(ctx context.Context, params SequenceEnrollmentEnrollParams, opts ...option.RequestOption) (res *PublicSequenceEnrollmentLiteResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "automation/v4/sequences/enrollments"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -56,6 +58,7 @@ func (r *SequenceEnrollmentService) GetByContactID(ctx context.Context, contactI
 }
 
 type SequenceEnrollmentEnrollParams struct {
+	UserID                          string `query:"userId,required" json:"-"`
 	PublicSequenceEnrollmentRequest PublicSequenceEnrollmentRequestParam
 	paramObj
 }
@@ -65,4 +68,13 @@ func (r SequenceEnrollmentEnrollParams) MarshalJSON() (data []byte, err error) {
 }
 func (r *SequenceEnrollmentEnrollParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.PublicSequenceEnrollmentRequest)
+}
+
+// URLQuery serializes [SequenceEnrollmentEnrollParams]'s query parameters as
+// `url.Values`.
+func (r SequenceEnrollmentEnrollParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

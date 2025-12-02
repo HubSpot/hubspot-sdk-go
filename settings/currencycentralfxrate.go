@@ -14,7 +14,7 @@ import (
 )
 
 // CurrencyCentralFxRateService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -32,6 +32,8 @@ func NewCurrencyCentralFxRateService(opts ...option.RequestOption) (r CurrencyCe
 	return
 }
 
+// Create a new currency with central exchange rates in the portal. Unsupported
+// currencies cannot be added here.
 func (r *CurrencyCentralFxRateService) NewCurrency(ctx context.Context, body CurrencyCentralFxRateNewCurrencyParams, opts ...option.RequestOption) (res *ExchangeRate, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "settings/v3/currencies/central-fx-rates/add-currency"
@@ -39,6 +41,8 @@ func (r *CurrencyCentralFxRateService) NewCurrency(ctx context.Context, body Cur
 	return
 }
 
+// Retrieve details on whether the central exchange rates feature is enabled for
+// the portal.
 func (r *CurrencyCentralFxRateService) GetInformation(ctx context.Context, opts ...option.RequestOption) (res *CentralExchangeRatesInformation, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "settings/v3/currencies/central-fx-rates/information"
@@ -46,6 +50,8 @@ func (r *CurrencyCentralFxRateService) GetInformation(ctx context.Context, opts 
 	return
 }
 
+// Retrieve a list of currency codes that are not supported by the central exchange
+// rates. Unsupported currencies will need to be manually updated.
 func (r *CurrencyCentralFxRateService) GetUnsupportedCurrencies(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseCurrencyCodeInfoNoPaging, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "settings/v3/currencies/central-fx-rates/unsupported-currencies"

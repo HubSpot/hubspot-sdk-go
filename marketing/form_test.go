@@ -41,7 +41,7 @@ func TestFormNewWithOptionalParams(t *testing.T) {
 				NotifyContactOwner:          true,
 				NotifyRecipients:            []string{"string"},
 				PostSubmitAction: marketing.FormPostSubmitActionParam{
-					Type:  marketing.FormPostSubmitActionTypeThankYou,
+					Type:  marketing.FormPostSubmitActionTypeRedirectURL,
 					Value: "value",
 				},
 				PrePopulateKnownValues: true,
@@ -63,13 +63,13 @@ func TestFormNewWithOptionalParams(t *testing.T) {
 					LabelTextSize:         "labelTextSize",
 					LegalConsentTextColor: "legalConsentTextColor",
 					LegalConsentTextSize:  "legalConsentTextSize",
-					SubmitAlignment:       marketing.FormStyleSubmitAlignmentLeft,
+					SubmitAlignment:       marketing.FormStyleSubmitAlignmentCenter,
 					SubmitColor:           "submitColor",
 					SubmitFontColor:       "submitFontColor",
 					SubmitSize:            "submitSize",
 				},
 				SubmitButtonText: "submitButtonText",
-				Theme:            marketing.FormDisplayOptionsThemeDefaultStyle,
+				Theme:            marketing.FormDisplayOptionsThemeCanvas,
 				CssClass:         hubspotsdk.String("cssClass"),
 			},
 			FieldGroups: []marketing.FieldGroupParam{{
@@ -77,7 +77,7 @@ func TestFormNewWithOptionalParams(t *testing.T) {
 					OfEmail: &marketing.EmailFieldParam{
 						DependentFields: []marketing.DependentFieldParam{{
 							DependentCondition: marketing.DependentFieldFilterParam{
-								Operator:   marketing.DependentFieldFilterOperatorEq,
+								Operator:   marketing.DependentFieldFilterOperatorBetween,
 								RangeEnd:   "rangeEnd",
 								RangeStart: "rangeStart",
 								Value:      "value",
@@ -119,7 +119,7 @@ func TestFormNewWithOptionalParams(t *testing.T) {
 					},
 				}},
 				GroupType:    marketing.FieldGroupGroupTypeDefaultGroup,
-				RichTextType: marketing.FieldGroupRichTextTypeText,
+				RichTextType: marketing.FieldGroupRichTextTypeImage,
 				RichText:     hubspotsdk.String("richText"),
 			}},
 			FormType: marketing.FormDefinitionCreateRequestBaseFormTypeHubspot,
@@ -171,7 +171,7 @@ func TestFormUpdateWithOptionalParams(t *testing.T) {
 					NotifyContactOwner:          true,
 					NotifyRecipients:            []string{"string"},
 					PostSubmitAction: marketing.FormPostSubmitActionParam{
-						Type:  marketing.FormPostSubmitActionTypeThankYou,
+						Type:  marketing.FormPostSubmitActionTypeRedirectURL,
 						Value: "value",
 					},
 					PrePopulateKnownValues: true,
@@ -192,13 +192,13 @@ func TestFormUpdateWithOptionalParams(t *testing.T) {
 						LabelTextSize:         "labelTextSize",
 						LegalConsentTextColor: "legalConsentTextColor",
 						LegalConsentTextSize:  "legalConsentTextSize",
-						SubmitAlignment:       marketing.FormStyleSubmitAlignmentLeft,
+						SubmitAlignment:       marketing.FormStyleSubmitAlignmentCenter,
 						SubmitColor:           "submitColor",
 						SubmitFontColor:       "submitFontColor",
 						SubmitSize:            "submitSize",
 					},
 					SubmitButtonText: "submitButtonText",
-					Theme:            marketing.FormDisplayOptionsThemeDefaultStyle,
+					Theme:            marketing.FormDisplayOptionsThemeCanvas,
 					CssClass:         hubspotsdk.String("cssClass"),
 				},
 				FieldGroups: []marketing.FieldGroupParam{{
@@ -206,7 +206,7 @@ func TestFormUpdateWithOptionalParams(t *testing.T) {
 						OfEmail: &marketing.EmailFieldParam{
 							DependentFields: []marketing.DependentFieldParam{{
 								DependentCondition: marketing.DependentFieldFilterParam{
-									Operator:   marketing.DependentFieldFilterOperatorEq,
+									Operator:   marketing.DependentFieldFilterOperatorBetween,
 									RangeEnd:   "rangeEnd",
 									RangeStart: "rangeStart",
 									Value:      "value",
@@ -248,7 +248,7 @@ func TestFormUpdateWithOptionalParams(t *testing.T) {
 						},
 					}},
 					GroupType:    marketing.FieldGroupGroupTypeDefaultGroup,
-					RichTextType: marketing.FieldGroupRichTextTypeText,
+					RichTextType: marketing.FieldGroupRichTextTypeImage,
 					RichText:     hubspotsdk.String("richText"),
 				}},
 				LegalConsentOptions: marketing.HubSpotFormDefinitionPatchRequestLegalConsentOptionsUnionParam{
@@ -379,7 +379,7 @@ func TestFormReplaceWithOptionalParams(t *testing.T) {
 					NotifyContactOwner:          true,
 					NotifyRecipients:            []string{"string"},
 					PostSubmitAction: marketing.FormPostSubmitActionParam{
-						Type:  marketing.FormPostSubmitActionTypeThankYou,
+						Type:  marketing.FormPostSubmitActionTypeRedirectURL,
 						Value: "value",
 					},
 					PrePopulateKnownValues: true,
@@ -401,13 +401,13 @@ func TestFormReplaceWithOptionalParams(t *testing.T) {
 						LabelTextSize:         "labelTextSize",
 						LegalConsentTextColor: "legalConsentTextColor",
 						LegalConsentTextSize:  "legalConsentTextSize",
-						SubmitAlignment:       marketing.FormStyleSubmitAlignmentLeft,
+						SubmitAlignment:       marketing.FormStyleSubmitAlignmentCenter,
 						SubmitColor:           "submitColor",
 						SubmitFontColor:       "submitFontColor",
 						SubmitSize:            "submitSize",
 					},
 					SubmitButtonText: "submitButtonText",
-					Theme:            marketing.FormDisplayOptionsThemeDefaultStyle,
+					Theme:            marketing.FormDisplayOptionsThemeCanvas,
 					CssClass:         hubspotsdk.String("cssClass"),
 				},
 				FieldGroups: []marketing.FieldGroupParam{{
@@ -415,7 +415,7 @@ func TestFormReplaceWithOptionalParams(t *testing.T) {
 						OfEmail: &marketing.EmailFieldParam{
 							DependentFields: []marketing.DependentFieldParam{{
 								DependentCondition: marketing.DependentFieldFilterParam{
-									Operator:   marketing.DependentFieldFilterOperatorEq,
+									Operator:   marketing.DependentFieldFilterOperatorBetween,
 									RangeEnd:   "rangeEnd",
 									RangeStart: "rangeStart",
 									Value:      "value",
@@ -457,7 +457,7 @@ func TestFormReplaceWithOptionalParams(t *testing.T) {
 						},
 					}},
 					GroupType:    marketing.FieldGroupGroupTypeDefaultGroup,
-					RichTextType: marketing.FieldGroupRichTextTypeText,
+					RichTextType: marketing.FieldGroupRichTextTypeImage,
 					RichText:     hubspotsdk.String("richText"),
 				}},
 				FormType: marketing.HubSpotFormDefinitionFormTypeHubspot,

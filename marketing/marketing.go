@@ -12,7 +12,7 @@ import (
 )
 
 // MarketingService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -48,7 +48,7 @@ func NewMarketingService(opts ...option.RequestOption) (r MarketingService) {
 type EmailSendStatusView struct {
 	// Status of the send request.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status EmailSendStatusViewStatus `json:"status,required"`
 	// Identifier used to query the status of the send.
 	StatusID string `json:"statusId,required"`
@@ -61,22 +61,21 @@ type EmailSendStatusView struct {
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// Result of the send.
 	//
-	// Any of "SENT", "IDEMPOTENT_IGNORE", "QUEUED", "IDEMPOTENT_FAIL", "THROTTLED",
-	// "EMAIL_DISABLED", "PORTAL_SUSPENDED", "INVALID_TO_ADDRESS", "BLOCKED_DOMAIN",
-	// "PREVIOUSLY_BOUNCED", "EMAIL_UNCONFIRMED", "PREVIOUS_SPAM",
+	// Any of "ADDRESS_LIST_BOMBED", "ADDRESS_ONLY_ACCEPTED_ON_PROD",
+	// "ADDRESS_OPTED_OUT", "BLOCKED_ADDRESS", "BLOCKED_DOMAIN", "CAMPAIGN_CANCELLED",
+	// "CANCELLED_ABUSE", "CORRUPT_INPUT", "EMAIL_DISABLED", "EMAIL_UNCONFIRMED",
+	// "GDPR_DOI_ENABLED", "GRAYMAIL_SUPPRESSED", "HUBL_LIMIT_EXCEEDED",
+	// "IDEMPOTENT_FAIL", "IDEMPOTENT_IGNORE", "INVALID_FROM_ADDRESS",
+	// "INVALID_TO_ADDRESS", "LOW_CONTACT_QUALITY_SCORE", "MISSING_CONTENT",
+	// "MISSING_REQUIRED_PARAMETER", "MISSING_TEMPLATE_PROPERTIES", "MTA_IGNORE",
+	// "NON_MARKETABLE_CONTACT", "PORTAL_AUTHENTICATION_FAILURE", "PORTAL_EXPIRED",
+	// "PORTAL_MISSING_MARKETING_SCOPE", "PORTAL_NOT_AUTHORIZED_FOR_APPLICATION",
+	// "PORTAL_OVER_LIMIT", "PORTAL_SUSPENDED", "PREVIOUS_SPAM", "PREVIOUSLY_BOUNCED",
+	// "PREVIOUSLY_UNSUBSCRIBED_BRAND", "PREVIOUSLY_UNSUBSCRIBED_BUSINESS_UNIT",
 	// "PREVIOUSLY_UNSUBSCRIBED_MESSAGE", "PREVIOUSLY_UNSUBSCRIBED_PORTAL",
-	// "INVALID_FROM_ADDRESS", "CAMPAIGN_CANCELLED", "VALIDATION_FAILED", "MTA_IGNORE",
-	// "BLOCKED_ADDRESS", "PORTAL_OVER_LIMIT", "PORTAL_EXPIRED",
-	// "PORTAL_MISSING_MARKETING_SCOPE", "MISSING_TEMPLATE_PROPERTIES",
-	// "MISSING_REQUIRED_PARAMETER", "PORTAL_AUTHENTICATION_FAILURE",
-	// "MISSING_CONTENT", "CORRUPT_INPUT", "TEMPLATE_RENDER_EXCEPTION",
-	// "GRAYMAIL_SUPPRESSED", "UNCONFIGURED_SENDING_DOMAIN", "UNDELIVERABLE",
-	// "CANCELLED_ABUSE", "QUARANTINED_ADDRESS", "ADDRESS_ONLY_ACCEPTED_ON_PROD",
-	// "PORTAL_NOT_AUTHORIZED_FOR_APPLICATION", "ADDRESS_LIST_BOMBED",
-	// "ADDRESS_OPTED_OUT", "RECIPIENT_FATIGUE_SUPPRESSED", "TOO_MANY_RECIPIENTS",
-	// "PREVIOUSLY_UNSUBSCRIBED_BRAND", "NON_MARKETABLE_CONTACT",
-	// "PREVIOUSLY_UNSUBSCRIBED_BUSINESS_UNIT", "GDPR_DOI_ENABLED",
-	// "HUBL_LIMIT_EXCEEDED", "LOW_CONTACT_QUALITY_SCORE".
+	// "QUARANTINED_ADDRESS", "QUEUED", "RECIPIENT_FATIGUE_SUPPRESSED", "SENT",
+	// "TEMPLATE_RENDER_EXCEPTION", "THROTTLED", "TOO_MANY_RECIPIENTS",
+	// "UNCONFIGURED_SENDING_DOMAIN", "UNDELIVERABLE", "VALIDATION_FAILED".
 	SendResult EmailSendStatusViewSendResult `json:"sendResult"`
 	// Time when the send began processing.
 	StartedAt time.Time `json:"startedAt" format:"date-time"`
@@ -105,61 +104,61 @@ func (r *EmailSendStatusView) UnmarshalJSON(data []byte) error {
 type EmailSendStatusViewStatus string
 
 const (
-	EmailSendStatusViewStatusPending    EmailSendStatusViewStatus = "PENDING"
-	EmailSendStatusViewStatusProcessing EmailSendStatusViewStatus = "PROCESSING"
 	EmailSendStatusViewStatusCanceled   EmailSendStatusViewStatus = "CANCELED"
 	EmailSendStatusViewStatusComplete   EmailSendStatusViewStatus = "COMPLETE"
+	EmailSendStatusViewStatusPending    EmailSendStatusViewStatus = "PENDING"
+	EmailSendStatusViewStatusProcessing EmailSendStatusViewStatus = "PROCESSING"
 )
 
 // Result of the send.
 type EmailSendStatusViewSendResult string
 
 const (
-	EmailSendStatusViewSendResultSent                               EmailSendStatusViewSendResult = "SENT"
-	EmailSendStatusViewSendResultIdempotentIgnore                   EmailSendStatusViewSendResult = "IDEMPOTENT_IGNORE"
-	EmailSendStatusViewSendResultQueued                             EmailSendStatusViewSendResult = "QUEUED"
-	EmailSendStatusViewSendResultIdempotentFail                     EmailSendStatusViewSendResult = "IDEMPOTENT_FAIL"
-	EmailSendStatusViewSendResultThrottled                          EmailSendStatusViewSendResult = "THROTTLED"
-	EmailSendStatusViewSendResultEmailDisabled                      EmailSendStatusViewSendResult = "EMAIL_DISABLED"
-	EmailSendStatusViewSendResultPortalSuspended                    EmailSendStatusViewSendResult = "PORTAL_SUSPENDED"
-	EmailSendStatusViewSendResultInvalidToAddress                   EmailSendStatusViewSendResult = "INVALID_TO_ADDRESS"
-	EmailSendStatusViewSendResultBlockedDomain                      EmailSendStatusViewSendResult = "BLOCKED_DOMAIN"
-	EmailSendStatusViewSendResultPreviouslyBounced                  EmailSendStatusViewSendResult = "PREVIOUSLY_BOUNCED"
-	EmailSendStatusViewSendResultEmailUnconfirmed                   EmailSendStatusViewSendResult = "EMAIL_UNCONFIRMED"
-	EmailSendStatusViewSendResultPreviousSpam                       EmailSendStatusViewSendResult = "PREVIOUS_SPAM"
-	EmailSendStatusViewSendResultPreviouslyUnsubscribedMessage      EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_MESSAGE"
-	EmailSendStatusViewSendResultPreviouslyUnsubscribedPortal       EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_PORTAL"
-	EmailSendStatusViewSendResultInvalidFromAddress                 EmailSendStatusViewSendResult = "INVALID_FROM_ADDRESS"
-	EmailSendStatusViewSendResultCampaignCancelled                  EmailSendStatusViewSendResult = "CAMPAIGN_CANCELLED"
-	EmailSendStatusViewSendResultValidationFailed                   EmailSendStatusViewSendResult = "VALIDATION_FAILED"
-	EmailSendStatusViewSendResultMtaIgnore                          EmailSendStatusViewSendResult = "MTA_IGNORE"
+	EmailSendStatusViewSendResultAddressListBombed                  EmailSendStatusViewSendResult = "ADDRESS_LIST_BOMBED"
+	EmailSendStatusViewSendResultAddressOnlyAcceptedOnProd          EmailSendStatusViewSendResult = "ADDRESS_ONLY_ACCEPTED_ON_PROD"
+	EmailSendStatusViewSendResultAddressOptedOut                    EmailSendStatusViewSendResult = "ADDRESS_OPTED_OUT"
 	EmailSendStatusViewSendResultBlockedAddress                     EmailSendStatusViewSendResult = "BLOCKED_ADDRESS"
-	EmailSendStatusViewSendResultPortalOverLimit                    EmailSendStatusViewSendResult = "PORTAL_OVER_LIMIT"
+	EmailSendStatusViewSendResultBlockedDomain                      EmailSendStatusViewSendResult = "BLOCKED_DOMAIN"
+	EmailSendStatusViewSendResultCampaignCancelled                  EmailSendStatusViewSendResult = "CAMPAIGN_CANCELLED"
+	EmailSendStatusViewSendResultCancelledAbuse                     EmailSendStatusViewSendResult = "CANCELLED_ABUSE"
+	EmailSendStatusViewSendResultCorruptInput                       EmailSendStatusViewSendResult = "CORRUPT_INPUT"
+	EmailSendStatusViewSendResultEmailDisabled                      EmailSendStatusViewSendResult = "EMAIL_DISABLED"
+	EmailSendStatusViewSendResultEmailUnconfirmed                   EmailSendStatusViewSendResult = "EMAIL_UNCONFIRMED"
+	EmailSendStatusViewSendResultGdprDoiEnabled                     EmailSendStatusViewSendResult = "GDPR_DOI_ENABLED"
+	EmailSendStatusViewSendResultGraymailSuppressed                 EmailSendStatusViewSendResult = "GRAYMAIL_SUPPRESSED"
+	EmailSendStatusViewSendResultHublLimitExceeded                  EmailSendStatusViewSendResult = "HUBL_LIMIT_EXCEEDED"
+	EmailSendStatusViewSendResultIdempotentFail                     EmailSendStatusViewSendResult = "IDEMPOTENT_FAIL"
+	EmailSendStatusViewSendResultIdempotentIgnore                   EmailSendStatusViewSendResult = "IDEMPOTENT_IGNORE"
+	EmailSendStatusViewSendResultInvalidFromAddress                 EmailSendStatusViewSendResult = "INVALID_FROM_ADDRESS"
+	EmailSendStatusViewSendResultInvalidToAddress                   EmailSendStatusViewSendResult = "INVALID_TO_ADDRESS"
+	EmailSendStatusViewSendResultLowContactQualityScore             EmailSendStatusViewSendResult = "LOW_CONTACT_QUALITY_SCORE"
+	EmailSendStatusViewSendResultMissingContent                     EmailSendStatusViewSendResult = "MISSING_CONTENT"
+	EmailSendStatusViewSendResultMissingRequiredParameter           EmailSendStatusViewSendResult = "MISSING_REQUIRED_PARAMETER"
+	EmailSendStatusViewSendResultMissingTemplateProperties          EmailSendStatusViewSendResult = "MISSING_TEMPLATE_PROPERTIES"
+	EmailSendStatusViewSendResultMtaIgnore                          EmailSendStatusViewSendResult = "MTA_IGNORE"
+	EmailSendStatusViewSendResultNonMarketableContact               EmailSendStatusViewSendResult = "NON_MARKETABLE_CONTACT"
+	EmailSendStatusViewSendResultPortalAuthenticationFailure        EmailSendStatusViewSendResult = "PORTAL_AUTHENTICATION_FAILURE"
 	EmailSendStatusViewSendResultPortalExpired                      EmailSendStatusViewSendResult = "PORTAL_EXPIRED"
 	EmailSendStatusViewSendResultPortalMissingMarketingScope        EmailSendStatusViewSendResult = "PORTAL_MISSING_MARKETING_SCOPE"
-	EmailSendStatusViewSendResultMissingTemplateProperties          EmailSendStatusViewSendResult = "MISSING_TEMPLATE_PROPERTIES"
-	EmailSendStatusViewSendResultMissingRequiredParameter           EmailSendStatusViewSendResult = "MISSING_REQUIRED_PARAMETER"
-	EmailSendStatusViewSendResultPortalAuthenticationFailure        EmailSendStatusViewSendResult = "PORTAL_AUTHENTICATION_FAILURE"
-	EmailSendStatusViewSendResultMissingContent                     EmailSendStatusViewSendResult = "MISSING_CONTENT"
-	EmailSendStatusViewSendResultCorruptInput                       EmailSendStatusViewSendResult = "CORRUPT_INPUT"
+	EmailSendStatusViewSendResultPortalNotAuthorizedForApplication  EmailSendStatusViewSendResult = "PORTAL_NOT_AUTHORIZED_FOR_APPLICATION"
+	EmailSendStatusViewSendResultPortalOverLimit                    EmailSendStatusViewSendResult = "PORTAL_OVER_LIMIT"
+	EmailSendStatusViewSendResultPortalSuspended                    EmailSendStatusViewSendResult = "PORTAL_SUSPENDED"
+	EmailSendStatusViewSendResultPreviousSpam                       EmailSendStatusViewSendResult = "PREVIOUS_SPAM"
+	EmailSendStatusViewSendResultPreviouslyBounced                  EmailSendStatusViewSendResult = "PREVIOUSLY_BOUNCED"
+	EmailSendStatusViewSendResultPreviouslyUnsubscribedBrand        EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_BRAND"
+	EmailSendStatusViewSendResultPreviouslyUnsubscribedBusinessUnit EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_BUSINESS_UNIT"
+	EmailSendStatusViewSendResultPreviouslyUnsubscribedMessage      EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_MESSAGE"
+	EmailSendStatusViewSendResultPreviouslyUnsubscribedPortal       EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_PORTAL"
+	EmailSendStatusViewSendResultQuarantinedAddress                 EmailSendStatusViewSendResult = "QUARANTINED_ADDRESS"
+	EmailSendStatusViewSendResultQueued                             EmailSendStatusViewSendResult = "QUEUED"
+	EmailSendStatusViewSendResultRecipientFatigueSuppressed         EmailSendStatusViewSendResult = "RECIPIENT_FATIGUE_SUPPRESSED"
+	EmailSendStatusViewSendResultSent                               EmailSendStatusViewSendResult = "SENT"
 	EmailSendStatusViewSendResultTemplateRenderException            EmailSendStatusViewSendResult = "TEMPLATE_RENDER_EXCEPTION"
-	EmailSendStatusViewSendResultGraymailSuppressed                 EmailSendStatusViewSendResult = "GRAYMAIL_SUPPRESSED"
+	EmailSendStatusViewSendResultThrottled                          EmailSendStatusViewSendResult = "THROTTLED"
+	EmailSendStatusViewSendResultTooManyRecipients                  EmailSendStatusViewSendResult = "TOO_MANY_RECIPIENTS"
 	EmailSendStatusViewSendResultUnconfiguredSendingDomain          EmailSendStatusViewSendResult = "UNCONFIGURED_SENDING_DOMAIN"
 	EmailSendStatusViewSendResultUndeliverable                      EmailSendStatusViewSendResult = "UNDELIVERABLE"
-	EmailSendStatusViewSendResultCancelledAbuse                     EmailSendStatusViewSendResult = "CANCELLED_ABUSE"
-	EmailSendStatusViewSendResultQuarantinedAddress                 EmailSendStatusViewSendResult = "QUARANTINED_ADDRESS"
-	EmailSendStatusViewSendResultAddressOnlyAcceptedOnProd          EmailSendStatusViewSendResult = "ADDRESS_ONLY_ACCEPTED_ON_PROD"
-	EmailSendStatusViewSendResultPortalNotAuthorizedForApplication  EmailSendStatusViewSendResult = "PORTAL_NOT_AUTHORIZED_FOR_APPLICATION"
-	EmailSendStatusViewSendResultAddressListBombed                  EmailSendStatusViewSendResult = "ADDRESS_LIST_BOMBED"
-	EmailSendStatusViewSendResultAddressOptedOut                    EmailSendStatusViewSendResult = "ADDRESS_OPTED_OUT"
-	EmailSendStatusViewSendResultRecipientFatigueSuppressed         EmailSendStatusViewSendResult = "RECIPIENT_FATIGUE_SUPPRESSED"
-	EmailSendStatusViewSendResultTooManyRecipients                  EmailSendStatusViewSendResult = "TOO_MANY_RECIPIENTS"
-	EmailSendStatusViewSendResultPreviouslyUnsubscribedBrand        EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_BRAND"
-	EmailSendStatusViewSendResultNonMarketableContact               EmailSendStatusViewSendResult = "NON_MARKETABLE_CONTACT"
-	EmailSendStatusViewSendResultPreviouslyUnsubscribedBusinessUnit EmailSendStatusViewSendResult = "PREVIOUSLY_UNSUBSCRIBED_BUSINESS_UNIT"
-	EmailSendStatusViewSendResultGdprDoiEnabled                     EmailSendStatusViewSendResult = "GDPR_DOI_ENABLED"
-	EmailSendStatusViewSendResultHublLimitExceeded                  EmailSendStatusViewSendResult = "HUBL_LIMIT_EXCEEDED"
-	EmailSendStatusViewSendResultLowContactQualityScore             EmailSendStatusViewSendResult = "LOW_CONTACT_QUALITY_SCORE"
+	EmailSendStatusViewSendResultValidationFailed                   EmailSendStatusViewSendResult = "VALIDATION_FAILED"
 )
 
 // The ID of a send event.

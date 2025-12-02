@@ -34,9 +34,9 @@ func TestSubscriptionV4StatusUpdateWithOptionalParams(t *testing.T) {
 		marketing.SubscriptionV4StatusUpdateParams{
 			PartialPublicStatusRequest: marketing.PartialPublicStatusRequestParam{
 				Channel:               marketing.PartialPublicStatusRequestChannelEmail,
-				StatusState:           marketing.PartialPublicStatusRequestStatusStateSubscribed,
+				StatusState:           marketing.PartialPublicStatusRequestStatusStateNotSpecified,
 				SubscriptionID:        0,
-				LegalBasis:            marketing.PartialPublicStatusRequestLegalBasisLegitimateInterestPql,
+				LegalBasis:            marketing.PartialPublicStatusRequestLegalBasisConsentWithNotice,
 				LegalBasisExplanation: hubspotsdk.String("legalBasisExplanation"),
 			},
 		},
@@ -155,10 +155,10 @@ func TestSubscriptionV4StatusBatchUpdate(t *testing.T) {
 		BatchInputPublicStatusRequest: marketing.BatchInputPublicStatusRequestParam{
 			Inputs: []marketing.PublicStatusRequestParam{{
 				Channel:               marketing.PublicStatusRequestChannelEmail,
-				StatusState:           marketing.PublicStatusRequestStatusStateSubscribed,
+				StatusState:           marketing.PublicStatusRequestStatusStateNotSpecified,
 				SubscriberIDString:    "subscriberIdString",
 				SubscriptionID:        0,
-				LegalBasis:            marketing.PublicStatusRequestLegalBasisLegitimateInterestPql,
+				LegalBasis:            marketing.PublicStatusRequestLegalBasisConsentWithNotice,
 				LegalBasisExplanation: hubspotsdk.String("legalBasisExplanation"),
 			}},
 		},

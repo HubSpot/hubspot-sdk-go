@@ -16,7 +16,7 @@ import (
 )
 
 // ExtensionCallingSettingService contains methods and other services that help
-// with interacting with the Hubspot API.
+// with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -34,8 +34,6 @@ func NewExtensionCallingSettingService(opts ...option.RequestOption) (r Extensio
 	return
 }
 
-// Set the menu label, target iframe URL, and dimensions for your calling
-// extension.
 func (r *ExtensionCallingSettingService) New(ctx context.Context, appID int64, body ExtensionCallingSettingNewParams, opts ...option.RequestOption) (res *webhooks.SettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings", appID)
@@ -43,7 +41,6 @@ func (r *ExtensionCallingSettingService) New(ctx context.Context, appID int64, b
 	return
 }
 
-// Update existing calling extension settings.
 func (r *ExtensionCallingSettingService) Update(ctx context.Context, appID int64, body ExtensionCallingSettingUpdateParams, opts ...option.RequestOption) (res *webhooks.SettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings", appID)
@@ -51,8 +48,6 @@ func (r *ExtensionCallingSettingService) Update(ctx context.Context, appID int64
 	return
 }
 
-// Delete a calling extension. This will remove your service as an option for all
-// connected accounts.
 func (r *ExtensionCallingSettingService) Delete(ctx context.Context, appID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -61,7 +56,6 @@ func (r *ExtensionCallingSettingService) Delete(ctx context.Context, appID int64
 	return
 }
 
-// Retrieve the settings configured for the app.
 func (r *ExtensionCallingSettingService) Get(ctx context.Context, appID int64, opts ...option.RequestOption) (res *webhooks.SettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings", appID)

@@ -1,0 +1,269 @@
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+
+package crm
+
+import (
+	"context"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"net/url"
+	"slices"
+
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+)
+
+// ObjectProjectService contains methods and other services that help with
+// interacting with the hubspot API.
+//
+// Note, unlike clients, this service does not read variables from the environment
+// automatically. You should not instantiate this service directly, and instead use
+// the [NewObjectProjectService] method instead.
+type ObjectProjectService struct {
+	Options      []option.RequestOption
+	Associations ObjectProjectAssociationService
+	Batch        ObjectProjectBatchService
+}
+
+// NewObjectProjectService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
+func NewObjectProjectService(opts ...option.RequestOption) (r ObjectProjectService) {
+	r = ObjectProjectService{}
+	r.Options = opts
+	r.Associations = NewObjectProjectAssociationService(opts...)
+	r.Batch = NewObjectProjectBatchService(opts...)
+	return
+}
+
+// Create a project with the given properties and return a copy of the object,
+// including the ID.
+func (r *ObjectProjectService) New(ctx context.Context, body ObjectProjectNewParams, opts ...option.RequestOption) (res *CreatedResponseSimplePublicObject, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "crm/objects/v3/projects"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// Perform a partial update of an Object identified by `{projectId}`or optionally a
+// unique property value as specified by the `idProperty` query param.
+// `{projectId}` refers to the internal object ID by default, and the `idProperty`
+// query param refers to a property whose values are unique for the object.
+// Provided property values will be overwritten. Read-only and non-existent
+// properties will result in an error. Properties values can be cleared by passing
+// an empty string.
+func (r *ObjectProjectService) Update(ctx context.Context, projectID string, params ObjectProjectUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if projectID == "" {
+		err = errors.New("missing required projectId parameter")
+		return
+	}
+	path := fmt.Sprintf("crm/objects/v3/projects/%s", projectID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
+	return
+}
+
+// Read a page of projects. Control what is returned via the `properties` query
+// param.
+func (r *ObjectProjectService) List(ctx context.Context, query ObjectProjectListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
+	var raw *http.Response
+	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	path := "crm/objects/v3/projects"
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Read a page of projects. Control what is returned via the `properties` query
+// param.
+func (r *ObjectProjectService) ListAutoPaging(ctx context.Context, query ObjectProjectListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+}
+
+// Move an Object identified by `{projectId}` to the recycling bin.
+func (r *ObjectProjectService) Delete(ctx context.Context, projectID string, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	if projectID == "" {
+		err = errors.New("missing required projectId parameter")
+		return
+	}
+	path := fmt.Sprintf("crm/objects/v3/projects/%s", projectID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
+}
+
+// Read an Object identified by `{projectId}`. `{projectId}` refers to the internal
+// object ID by default, or optionally any unique property value as specified by
+// the `idProperty` query param. Control what is returned via the `properties`
+// query param.
+func (r *ObjectProjectService) Get(ctx context.Context, projectID string, query ObjectProjectGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if projectID == "" {
+		err = errors.New("missing required projectId parameter")
+		return
+	}
+	path := fmt.Sprintf("crm/objects/v3/projects/%s", projectID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return
+}
+
+// Merge two project records. Learn more about
+// [merging records](https://knowledge.hubspot.com/records/merge-records).
+func (r *ObjectProjectService) Merge(ctx context.Context, body ObjectProjectMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "crm/objects/v3/projects/merge"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// Search for projects by filtering on properties, searching through associations,
+// and sorting results. Learn more about
+// [CRM search](https://developers.hubspot.com/docs/guides/api/crm/search#make-a-search-request).
+func (r *ObjectProjectService) Search(ctx context.Context, body ObjectProjectSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := "crm/objects/v3/projects/search"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+type ObjectProjectNewParams struct {
+	// Is the input object used to create a new CRM object, containing the properties
+	// to be set and optional associations to link the new record with other CRM
+	// objects.
+	SimplePublicObjectInputForCreate SimplePublicObjectInputForCreateParam
+	paramObj
+}
+
+func (r ObjectProjectNewParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.SimplePublicObjectInputForCreate)
+}
+func (r *ObjectProjectNewParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.SimplePublicObjectInputForCreate)
+}
+
+type ObjectProjectUpdateParams struct {
+	// Represents the input required to create or update a CRM object, containing an
+	// object with property names and their corresponding values.
+	SimplePublicObjectInput SimplePublicObjectInputParam
+	// The name of a property whose values are unique for this object
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	paramObj
+}
+
+func (r ObjectProjectUpdateParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.SimplePublicObjectInput)
+}
+func (r *ObjectProjectUpdateParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.SimplePublicObjectInput)
+}
+
+// URLQuery serializes [ObjectProjectUpdateParams]'s query parameters as
+// `url.Values`.
+func (r ObjectProjectUpdateParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type ObjectProjectListParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// A comma separated list of object types to retrieve associated IDs for. If any of
+	// the specified associations do not exist, they will be ignored.
+	Associations []string `query:"associations,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned in the response. If any
+	// of the specified properties are not present on the requested object(s), they
+	// will be ignored.
+	Properties []string `query:"properties,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned along with their history
+	// of previous values. If any of the specified properties are not present on the
+	// requested object(s), they will be ignored. Usage of this parameter will reduce
+	// the maximum number of projects that can be read by a single request.
+	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [ObjectProjectListParams]'s query parameters as
+// `url.Values`.
+func (r ObjectProjectListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type ObjectProjectGetParams struct {
+	// Whether to include archived projects
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// The name of a property whose values are unique for this object
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	// A comma separated list of object types to retrieve associated IDs for. If any of
+	// the specified associations do not exist, they will be ignored.
+	Associations []string `query:"associations,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned in the response. If any
+	// of the specified properties are not present on the requested object(s), they
+	// will be ignored.
+	Properties []string `query:"properties,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned along with their history
+	// of previous values. If any of the specified properties are not present on the
+	// requested object(s), they will be ignored.
+	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [ObjectProjectGetParams]'s query parameters as `url.Values`.
+func (r ObjectProjectGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type ObjectProjectMergeParams struct {
+	PublicMergeInput PublicMergeInputParam
+	paramObj
+}
+
+func (r ObjectProjectMergeParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.PublicMergeInput)
+}
+func (r *ObjectProjectMergeParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.PublicMergeInput)
+}
+
+type ObjectProjectSearchParams struct {
+	// Describes a search request
+	PublicObjectSearchRequest PublicObjectSearchRequestParam
+	paramObj
+}
+
+func (r ObjectProjectSearchParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.PublicObjectSearchRequest)
+}
+func (r *ObjectProjectSearchParams) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &r.PublicObjectSearchRequest)
+}

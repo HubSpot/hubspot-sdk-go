@@ -15,7 +15,7 @@ import (
 )
 
 // EmailStatisticService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -83,8 +83,8 @@ type EmailStatisticGetHistogramParams struct {
 	EmailIDs []int64 `query:"emailIds,omitzero" json:"-"`
 	// The interval to aggregate statistics for.
 	//
-	// Any of "YEAR", "QUARTER", "MONTH", "WEEK", "DAY", "HOUR", "QUARTER_HOUR",
-	// "MINUTE", "SECOND".
+	// Any of "DAY", "HOUR", "MINUTE", "MONTH", "QUARTER", "QUARTER_HOUR", "SECOND",
+	// "WEEK", "YEAR".
 	Interval EmailStatisticGetHistogramParamsInterval `query:"interval,omitzero" json:"-"`
 	paramObj
 }
@@ -102,13 +102,13 @@ func (r EmailStatisticGetHistogramParams) URLQuery() (v url.Values, err error) {
 type EmailStatisticGetHistogramParamsInterval string
 
 const (
-	EmailStatisticGetHistogramParamsIntervalYear        EmailStatisticGetHistogramParamsInterval = "YEAR"
-	EmailStatisticGetHistogramParamsIntervalQuarter     EmailStatisticGetHistogramParamsInterval = "QUARTER"
-	EmailStatisticGetHistogramParamsIntervalMonth       EmailStatisticGetHistogramParamsInterval = "MONTH"
-	EmailStatisticGetHistogramParamsIntervalWeek        EmailStatisticGetHistogramParamsInterval = "WEEK"
 	EmailStatisticGetHistogramParamsIntervalDay         EmailStatisticGetHistogramParamsInterval = "DAY"
 	EmailStatisticGetHistogramParamsIntervalHour        EmailStatisticGetHistogramParamsInterval = "HOUR"
-	EmailStatisticGetHistogramParamsIntervalQuarterHour EmailStatisticGetHistogramParamsInterval = "QUARTER_HOUR"
 	EmailStatisticGetHistogramParamsIntervalMinute      EmailStatisticGetHistogramParamsInterval = "MINUTE"
+	EmailStatisticGetHistogramParamsIntervalMonth       EmailStatisticGetHistogramParamsInterval = "MONTH"
+	EmailStatisticGetHistogramParamsIntervalQuarter     EmailStatisticGetHistogramParamsInterval = "QUARTER"
+	EmailStatisticGetHistogramParamsIntervalQuarterHour EmailStatisticGetHistogramParamsInterval = "QUARTER_HOUR"
 	EmailStatisticGetHistogramParamsIntervalSecond      EmailStatisticGetHistogramParamsInterval = "SECOND"
+	EmailStatisticGetHistogramParamsIntervalWeek        EmailStatisticGetHistogramParamsInterval = "WEEK"
+	EmailStatisticGetHistogramParamsIntervalYear        EmailStatisticGetHistogramParamsInterval = "YEAR"
 )

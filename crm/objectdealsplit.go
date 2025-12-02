@@ -19,7 +19,7 @@ import (
 )
 
 // ObjectDealSplitService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -38,7 +38,7 @@ func NewObjectDealSplitService(opts ...option.RequestOption) (r ObjectDealSplitS
 }
 
 // Read a batch of deal split objects by their associated deal object internal ID
-func (r *ObjectDealSplitService) BatchRead(ctx context.Context, body ObjectDealSplitBatchReadParams, opts ...option.RequestOption) (res *ObjectDealSplitBatchReadResponse, err error) {
+func (r *ObjectDealSplitService) BatchRead(ctx context.Context, body ObjectDealSplitBatchReadParams, opts ...option.RequestOption) (res *BatchResponseDealToDealSplits, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/deals/splits/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -48,21 +48,21 @@ func (r *ObjectDealSplitService) BatchRead(ctx context.Context, body ObjectDealS
 // Create or replace deal splits for deals with the provided IDs. Deal split
 // percentages for each deal must sum up to 1.0 (100%) and may have up to 8 decimal
 // places
-func (r *ObjectDealSplitService) BatchUpsert(ctx context.Context, body ObjectDealSplitBatchUpsertParams, opts ...option.RequestOption) (res *ObjectDealSplitBatchUpsertResponse, err error) {
+func (r *ObjectDealSplitService) BatchUpsert(ctx context.Context, body ObjectDealSplitBatchUpsertParams, opts ...option.RequestOption) (res *BatchResponseDealToDealSplits, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/deals/splits/batch/upsert"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
-type ObjectDealSplitBatchReadResponse struct {
-	CompletedAt time.Time                                `json:"completedAt,required" format:"date-time"`
-	Results     []ObjectDealSplitBatchReadResponseResult `json:"results,required"`
-	StartedAt   time.Time                                `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      ObjectDealSplitBatchReadResponseStatus `json:"status,required"`
-	Links       map[string]string                      `json:"links"`
-	RequestedAt time.Time                              `json:"requestedAt" format:"date-time"`
+type BatchResponseDealToDealSplits struct {
+	CompletedAt time.Time          `json:"completedAt,required" format:"date-time"`
+	Results     []DealToDealSplits `json:"results,required"`
+	StartedAt   time.Time          `json:"startedAt,required" format:"date-time"`
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status      BatchResponseDealToDealSplitsStatus `json:"status,required"`
+	Links       map[string]string                   `json:"links"`
+	RequestedAt time.Time                           `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
@@ -77,12 +77,21 @@ type ObjectDealSplitBatchReadResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r ObjectDealSplitBatchReadResponse) RawJSON() string { return r.JSON.raw }
-func (r *ObjectDealSplitBatchReadResponse) UnmarshalJSON(data []byte) error {
+func (r BatchResponseDealToDealSplits) RawJSON() string { return r.JSON.raw }
+func (r *BatchResponseDealToDealSplits) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ObjectDealSplitBatchReadResponseResult struct {
+type BatchResponseDealToDealSplitsStatus string
+
+const (
+	BatchResponseDealToDealSplitsStatusCanceled   BatchResponseDealToDealSplitsStatus = "CANCELED"
+	BatchResponseDealToDealSplitsStatusComplete   BatchResponseDealToDealSplitsStatus = "COMPLETE"
+	BatchResponseDealToDealSplitsStatusPending    BatchResponseDealToDealSplitsStatus = "PENDING"
+	BatchResponseDealToDealSplitsStatusProcessing BatchResponseDealToDealSplitsStatus = "PROCESSING"
+)
+
+type DealToDealSplits struct {
 	ID     string               `json:"id,required"`
 	Splits []SimplePublicObject `json:"splits,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -95,73 +104,54 @@ type ObjectDealSplitBatchReadResponseResult struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r ObjectDealSplitBatchReadResponseResult) RawJSON() string { return r.JSON.raw }
-func (r *ObjectDealSplitBatchReadResponseResult) UnmarshalJSON(data []byte) error {
+func (r DealToDealSplits) RawJSON() string { return r.JSON.raw }
+func (r *DealToDealSplits) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ObjectDealSplitBatchReadResponseStatus string
-
-const (
-	ObjectDealSplitBatchReadResponseStatusPending    ObjectDealSplitBatchReadResponseStatus = "PENDING"
-	ObjectDealSplitBatchReadResponseStatusProcessing ObjectDealSplitBatchReadResponseStatus = "PROCESSING"
-	ObjectDealSplitBatchReadResponseStatusCanceled   ObjectDealSplitBatchReadResponseStatus = "CANCELED"
-	ObjectDealSplitBatchReadResponseStatusComplete   ObjectDealSplitBatchReadResponseStatus = "COMPLETE"
-)
-
-type ObjectDealSplitBatchUpsertResponse struct {
-	CompletedAt time.Time                                  `json:"completedAt,required" format:"date-time"`
-	Results     []ObjectDealSplitBatchUpsertResponseResult `json:"results,required"`
-	StartedAt   time.Time                                  `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      ObjectDealSplitBatchUpsertResponseStatus `json:"status,required"`
-	Links       map[string]string                        `json:"links"`
-	RequestedAt time.Time                                `json:"requestedAt" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CompletedAt respjson.Field
-		Results     respjson.Field
-		StartedAt   respjson.Field
-		Status      respjson.Field
-		Links       respjson.Field
-		RequestedAt respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+// The properties OwnerID, Percentage are required.
+type PublicDealSplitInputParam struct {
+	OwnerID    int64   `json:"ownerId,required"`
+	Percentage float64 `json:"percentage,required"`
+	paramObj
 }
 
-// Returns the unmodified JSON received from the API
-func (r ObjectDealSplitBatchUpsertResponse) RawJSON() string { return r.JSON.raw }
-func (r *ObjectDealSplitBatchUpsertResponse) UnmarshalJSON(data []byte) error {
+func (r PublicDealSplitInputParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicDealSplitInputParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicDealSplitInputParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ObjectDealSplitBatchUpsertResponseResult struct {
-	ID     string               `json:"id,required"`
-	Splits []SimplePublicObject `json:"splits,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Splits      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+// The property Inputs is required.
+type PublicDealSplitsBatchCreateRequestParam struct {
+	Inputs []PublicDealSplitsCreateRequestParam `json:"inputs,omitzero,required"`
+	paramObj
 }
 
-// Returns the unmodified JSON received from the API
-func (r ObjectDealSplitBatchUpsertResponseResult) RawJSON() string { return r.JSON.raw }
-func (r *ObjectDealSplitBatchUpsertResponseResult) UnmarshalJSON(data []byte) error {
+func (r PublicDealSplitsBatchCreateRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicDealSplitsBatchCreateRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicDealSplitsBatchCreateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ObjectDealSplitBatchUpsertResponseStatus string
+// The properties ID, Splits are required.
+type PublicDealSplitsCreateRequestParam struct {
+	ID     int64                       `json:"id,required"`
+	Splits []PublicDealSplitInputParam `json:"splits,omitzero,required"`
+	paramObj
+}
 
-const (
-	ObjectDealSplitBatchUpsertResponseStatusPending    ObjectDealSplitBatchUpsertResponseStatus = "PENDING"
-	ObjectDealSplitBatchUpsertResponseStatusProcessing ObjectDealSplitBatchUpsertResponseStatus = "PROCESSING"
-	ObjectDealSplitBatchUpsertResponseStatusCanceled   ObjectDealSplitBatchUpsertResponseStatus = "CANCELED"
-	ObjectDealSplitBatchUpsertResponseStatusComplete   ObjectDealSplitBatchUpsertResponseStatus = "COMPLETE"
-)
+func (r PublicDealSplitsCreateRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicDealSplitsCreateRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicDealSplitsCreateRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 type ObjectDealSplitBatchReadParams struct {
 	BatchInputPublicObjectID shared.BatchInputPublicObjectIDParam
@@ -176,44 +166,13 @@ func (r *ObjectDealSplitBatchReadParams) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectDealSplitBatchUpsertParams struct {
-	Inputs []ObjectDealSplitBatchUpsertParamsInput `json:"inputs,omitzero,required"`
+	PublicDealSplitsBatchCreateRequest PublicDealSplitsBatchCreateRequestParam
 	paramObj
 }
 
 func (r ObjectDealSplitBatchUpsertParams) MarshalJSON() (data []byte, err error) {
-	type shadow ObjectDealSplitBatchUpsertParams
-	return param.MarshalObject(r, (*shadow)(&r))
+	return shimjson.Marshal(r.PublicDealSplitsBatchCreateRequest)
 }
 func (r *ObjectDealSplitBatchUpsertParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties ID, Splits are required.
-type ObjectDealSplitBatchUpsertParamsInput struct {
-	ID     int64                                        `json:"id,required"`
-	Splits []ObjectDealSplitBatchUpsertParamsInputSplit `json:"splits,omitzero,required"`
-	paramObj
-}
-
-func (r ObjectDealSplitBatchUpsertParamsInput) MarshalJSON() (data []byte, err error) {
-	type shadow ObjectDealSplitBatchUpsertParamsInput
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ObjectDealSplitBatchUpsertParamsInput) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties OwnerID, Percentage are required.
-type ObjectDealSplitBatchUpsertParamsInputSplit struct {
-	OwnerID    int64   `json:"ownerId,required"`
-	Percentage float64 `json:"percentage,required"`
-	paramObj
-}
-
-func (r ObjectDealSplitBatchUpsertParamsInputSplit) MarshalJSON() (data []byte, err error) {
-	type shadow ObjectDealSplitBatchUpsertParamsInputSplit
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ObjectDealSplitBatchUpsertParamsInputSplit) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return json.Unmarshal(data, &r.PublicDealSplitsBatchCreateRequest)
 }

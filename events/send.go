@@ -17,7 +17,7 @@ import (
 )
 
 // SendService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -67,7 +67,7 @@ func (r *BatchedBehavioralEventHTTPCompletionRequestParam) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property EventName is required.
+// The properties EventName, Properties are required.
 type BehavioralEventHTTPCompletionRequestParam struct {
 	// The internal name of the event (`pe<portalID>_eventName`). Can be retrieved
 	// through the
@@ -75,6 +75,10 @@ type BehavioralEventHTTPCompletionRequestParam struct {
 	// or in
 	// [HubSpot's UI](https://knowledge.hubspot.com/reports/create-custom-behavioral-events-with-the-code-wizard#find-internal-name).
 	EventName string `json:"eventName,required"`
+	// The event properties to update. Takes the format of key-value pairs (property
+	// internal name and property value). Learn more about
+	// [HubSpot's default event properties](https://developers.hubspot.com/docs/guides/api/analytics-and-events/custom-events/custom-event-definitions#hubspot-s-default-event-properties).
+	Properties map[string]string `json:"properties,omitzero,required"`
 	// The visitor's email address. Used for associating the event data with a CRM
 	// record.
 	Email param.Opt[string] `json:"email,omitzero"`
@@ -89,10 +93,6 @@ type BehavioralEventHTTPCompletionRequestParam struct {
 	// completion. Can be useful for matching data between HubSpot and other external
 	// systems.
 	Uuid param.Opt[string] `json:"uuid,omitzero"`
-	// The event properties to update. Takes the format of key-value pairs (property
-	// internal name and property value). Learn more about
-	// [HubSpot's default event properties](https://developers.hubspot.com/docs/guides/api/analytics-and-events/custom-events/custom-event-definitions#hubspot-s-default-event-properties).
-	Properties map[string]string `json:"properties,omitzero"`
 	paramObj
 }
 

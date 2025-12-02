@@ -27,7 +27,7 @@ func TestPipelineNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.New(
+	_, err := client.Crm.Pipelines.New(
 		context.TODO(),
 		"objectType",
 		crm.PipelineNewParams{
@@ -72,7 +72,7 @@ func TestPipelineUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Update(
+	_, err := client.Crm.Pipelines.Update(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineUpdateParams{
@@ -108,7 +108,7 @@ func TestPipelineList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.List(context.TODO(), "objectType")
+	_, err := client.Crm.Pipelines.List(context.TODO(), "objectType")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -131,7 +131,7 @@ func TestPipelineDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Pipelines.Delete(
+	err := client.Crm.Pipelines.Delete(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineDeleteParams{
@@ -162,7 +162,7 @@ func TestPipelineGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Get(
+	_, err := client.Crm.Pipelines.Get(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineGetParams{
@@ -191,7 +191,7 @@ func TestPipelineGetAudit(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.GetAudit(
+	_, err := client.Crm.Pipelines.GetAudit(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineGetAuditParams{
@@ -220,7 +220,7 @@ func TestPipelineReplaceWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Replace(
+	_, err := client.Crm.Pipelines.Replace(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineReplaceParams{

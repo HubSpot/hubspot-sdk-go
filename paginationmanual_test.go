@@ -25,7 +25,7 @@ func TestManualPagination(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	page, err := client.CRM.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
+	page, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
 		Limit: hubspotsdk.Int(100),
 	})
 	if err != nil {

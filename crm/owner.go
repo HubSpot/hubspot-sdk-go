@@ -22,7 +22,7 @@ import (
 )
 
 // OwnerService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -90,18 +90,29 @@ func (r *CollectionResponsePublicOwnerForwardPaging) UnmarshalJSON(data []byte) 
 }
 
 type PublicOwner struct {
-	ID        string    `json:"id,required"`
-	Archived  bool      `json:"archived,required"`
+	// The unique identifier of the owner.
+	ID string `json:"id,required"`
+	// Indicates whether the owner is archived.
+	Archived bool `json:"archived,required"`
+	// The date and time when the owner was created.
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
+	// The type of the owner, which can be either PERSON or QUEUE.
+	//
 	// Any of "PERSON", "QUEUE".
-	Type                    PublicOwnerType       `json:"type,required"`
-	UpdatedAt               time.Time             `json:"updatedAt,required" format:"date-time"`
-	Email                   string                `json:"email"`
-	FirstName               string                `json:"firstName"`
-	LastName                string                `json:"lastName"`
-	Teams                   []settings.PublicTeam `json:"teams"`
-	UserID                  int64                 `json:"userId"`
-	UserIDIncludingInactive int64                 `json:"userIdIncludingInactive"`
+	Type PublicOwnerType `json:"type,required"`
+	// The date and time when the owner was last updated.
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
+	// The email address of the owner.
+	Email string `json:"email"`
+	// The first name of the owner.
+	FirstName string `json:"firstName"`
+	// The last name of the owner.
+	LastName string                `json:"lastName"`
+	Teams    []settings.PublicTeam `json:"teams"`
+	// The user ID of the owner.
+	UserID int64 `json:"userId"`
+	// The user ID of the owner, including inactive users.
+	UserIDIncludingInactive int64 `json:"userIdIncludingInactive"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                      respjson.Field
@@ -126,6 +137,7 @@ func (r *PublicOwner) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of the owner, which can be either PERSON or QUEUE.
 type PublicOwnerType string
 
 const (
@@ -134,16 +146,10 @@ const (
 )
 
 type OwnerListParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results (optional).
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// Filter by email address (optional).
-	Email param.Opt[string] `query:"email,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	After    param.Opt[string] `query:"after,omitzero" json:"-"`
+	Archived param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Email    param.Opt[string] `query:"email,omitzero" json:"-"`
+	Limit    param.Opt[int64]  `query:"limit,omitzero" json:"-"`
 	paramObj
 }
 
@@ -156,10 +162,7 @@ func (r OwnerListParams) URLQuery() (v url.Values, err error) {
 }
 
 type OwnerGetParams struct {
-	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// Specifies whether to use 'id' or 'userId' as the identifier for the owner.
-	//
 	// Any of "id", "userId".
 	IDProperty OwnerGetParamsIDProperty `query:"idProperty,omitzero" json:"-"`
 	paramObj
@@ -173,7 +176,6 @@ func (r OwnerGetParams) URLQuery() (v url.Values, err error) {
 	})
 }
 
-// Specifies whether to use 'id' or 'userId' as the identifier for the owner.
 type OwnerGetParamsIDProperty string
 
 const (

@@ -27,7 +27,7 @@ func TestExtensionCallingRecordingSettingNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.RecordingSettings.New(
+	_, err := client.Crm.Extensions.Calling.RecordingSettings.New(
 		context.TODO(),
 		0,
 		crm.ExtensionCallingRecordingSettingNewParams{
@@ -58,7 +58,7 @@ func TestExtensionCallingRecordingSettingUpdateWithOptionalParams(t *testing.T) 
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.RecordingSettings.Update(
+	_, err := client.Crm.Extensions.Calling.RecordingSettings.Update(
 		context.TODO(),
 		0,
 		crm.ExtensionCallingRecordingSettingUpdateParams{
@@ -89,7 +89,7 @@ func TestExtensionCallingRecordingSettingGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.RecordingSettings.Get(context.TODO(), 0)
+	_, err := client.Crm.Extensions.Calling.RecordingSettings.Get(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -112,7 +112,7 @@ func TestExtensionCallingRecordingSettingMarkReady(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Extensions.Calling.RecordingSettings.MarkReady(context.TODO(), crm.ExtensionCallingRecordingSettingMarkReadyParams{
+	err := client.Crm.Extensions.Calling.RecordingSettings.MarkReady(context.TODO(), crm.ExtensionCallingRecordingSettingMarkReadyParams{
 		MarkRecordingAsReadyRequest: crm.MarkRecordingAsReadyRequestParam{
 			EngagementID: 0,
 		},

@@ -27,7 +27,7 @@ func TestListFolderNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Folders.New(context.TODO(), crm.ListFolderNewParams{
+	_, err := client.Crm.Lists.Folders.New(context.TODO(), crm.ListFolderNewParams{
 		ListFolderCreateRequest: crm.ListFolderCreateRequestParam{
 			Name:           "name",
 			ParentFolderID: hubspotsdk.String("parentFolderId"),
@@ -55,7 +55,7 @@ func TestListFolderDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Folders.Delete(context.TODO(), "folderId")
+	err := client.Crm.Lists.Folders.Delete(context.TODO(), "folderId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -78,7 +78,7 @@ func TestListFolderGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Folders.Get(context.TODO(), crm.ListFolderGetParams{
+	_, err := client.Crm.Lists.Folders.Get(context.TODO(), crm.ListFolderGetParams{
 		FolderID: hubspotsdk.String("folderId"),
 	})
 	if err != nil {
@@ -103,7 +103,7 @@ func TestListFolderMove(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Folders.Move(
+	_, err := client.Crm.Lists.Folders.Move(
 		context.TODO(),
 		"newParentFolderId",
 		crm.ListFolderMoveParams{
@@ -132,7 +132,7 @@ func TestListFolderMoveList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Folders.MoveList(context.TODO(), crm.ListFolderMoveListParams{
+	err := client.Crm.Lists.Folders.MoveList(context.TODO(), crm.ListFolderMoveListParams{
 		ListMoveRequest: crm.ListMoveRequestParam{
 			ListID:      "listId",
 			NewFolderID: "newFolderId",
@@ -160,7 +160,7 @@ func TestListFolderRenameWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Folders.Rename(
+	_, err := client.Crm.Lists.Folders.Rename(
 		context.TODO(),
 		"folderId",
 		crm.ListFolderRenameParams{

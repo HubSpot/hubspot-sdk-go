@@ -20,7 +20,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestHubdbTableNewWithOptionalParams(t *testing.T) {
+func TestHubdbTableNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -35,24 +35,20 @@ func TestHubdbTableNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.Hubdb.Tables.New(context.TODO(), cms.HubdbTableNewParams{
 		HubDBTableV3Request: cms.HubDBTableV3RequestParam{
-			Label:                "label",
-			Name:                 "name",
-			AllowChildTables:     hubspotsdk.Bool(true),
-			AllowPublicAPIAccess: hubspotsdk.Bool(true),
+			AllowChildTables:     true,
+			AllowPublicAPIAccess: true,
 			Columns: []cms.ColumnRequestParam{{
 				ID:    0,
 				Label: "label",
 				Name:  "name",
 				Options: []shared.OptionParam{{
-					Description:  "",
-					DisplayOrder: 0,
-					DoubleData:   0,
 					Hidden:       false,
-					Label:        "",
-					ReadOnly:     false,
-					Value:        "",
+					Label:        "Option A",
+					Value:        "A",
+					Description:  hubspotsdk.String("Choice number one"),
+					DisplayOrder: hubspotsdk.Int(1),
 				}},
-				Type:                  cms.ColumnRequestTypeNull,
+				Type:                  cms.ColumnRequestTypeBoolean,
 				ForeignColumnID:       hubspotsdk.Int(0),
 				ForeignTableID:        hubspotsdk.Int(0),
 				MaxNumberOfCharacters: hubspotsdk.Int(0),
@@ -61,8 +57,10 @@ func TestHubdbTableNewWithOptionalParams(t *testing.T) {
 			DynamicMetaTags: map[string]int64{
 				"foo": 0,
 			},
-			EnableChildTablePages: hubspotsdk.Bool(true),
-			UseForPages:           hubspotsdk.Bool(true),
+			EnableChildTablePages: true,
+			Label:                 "label",
+			Name:                  "name",
+			UseForPages:           true,
 		},
 	})
 	if err != nil {
@@ -509,24 +507,20 @@ func TestHubdbTableUpdateDraftWithOptionalParams(t *testing.T) {
 		"tableIdOrName",
 		cms.HubdbTableUpdateDraftParams{
 			HubDBTableV3Request: cms.HubDBTableV3RequestParam{
-				Label:                "label",
-				Name:                 "name",
-				AllowChildTables:     hubspotsdk.Bool(true),
-				AllowPublicAPIAccess: hubspotsdk.Bool(true),
+				AllowChildTables:     true,
+				AllowPublicAPIAccess: true,
 				Columns: []cms.ColumnRequestParam{{
 					ID:    0,
 					Label: "label",
 					Name:  "name",
 					Options: []shared.OptionParam{{
-						Description:  "",
-						DisplayOrder: 0,
-						DoubleData:   0,
 						Hidden:       false,
-						Label:        "",
-						ReadOnly:     false,
-						Value:        "",
+						Label:        "Option A",
+						Value:        "A",
+						Description:  hubspotsdk.String("Choice number one"),
+						DisplayOrder: hubspotsdk.Int(1),
 					}},
-					Type:                  cms.ColumnRequestTypeNull,
+					Type:                  cms.ColumnRequestTypeBoolean,
 					ForeignColumnID:       hubspotsdk.Int(0),
 					ForeignTableID:        hubspotsdk.Int(0),
 					MaxNumberOfCharacters: hubspotsdk.Int(0),
@@ -535,8 +529,10 @@ func TestHubdbTableUpdateDraftWithOptionalParams(t *testing.T) {
 				DynamicMetaTags: map[string]int64{
 					"foo": 0,
 				},
-				EnableChildTablePages: hubspotsdk.Bool(true),
-				UseForPages:           hubspotsdk.Bool(true),
+				EnableChildTablePages: true,
+				Label:                 "label",
+				Name:                  "name",
+				UseForPages:           true,
 			},
 			Archived:             hubspotsdk.Bool(true),
 			IncludeForeignIDs:    hubspotsdk.Bool(true),

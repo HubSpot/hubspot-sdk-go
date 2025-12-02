@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectDealBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,7 @@ func NewObjectDealBatchService(opts ...option.RequestOption) (r ObjectDealBatchS
 	return
 }
 
-// Create a batch of deals
+// Create multiple deals in a single request.
 func (r *ObjectDealBatchService) New(ctx context.Context, body ObjectDealBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-3/batch/create"
@@ -43,7 +43,7 @@ func (r *ObjectDealBatchService) New(ctx context.Context, body ObjectDealBatchNe
 	return
 }
 
-// Update a batch of deals by internal ID, or unique property values
+// Update multiple deals using their internal IDs or unique property values.
 func (r *ObjectDealBatchService) Update(ctx context.Context, body ObjectDealBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-3/batch/update"
@@ -51,7 +51,7 @@ func (r *ObjectDealBatchService) Update(ctx context.Context, body ObjectDealBatc
 	return
 }
 
-// Archive a batch of deals by ID
+// Archive multiple deals using their IDs.
 func (r *ObjectDealBatchService) Delete(ctx context.Context, body ObjectDealBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)

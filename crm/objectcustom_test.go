@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectCustomNewWithOptionalParams(t *testing.T) {
+func TestObjectCustomNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,14 +28,11 @@ func TestObjectCustomNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.New(
+	_, err := client.Crm.Objects.Custom.New(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomNewParams{
 			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -45,6 +42,9 @@ func TestObjectCustomNewWithOptionalParams(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 			},
 		},
 	)
@@ -70,20 +70,14 @@ func TestObjectCustomUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Update(
+	_, err := client.Crm.Objects.Custom.Update(
 		context.TODO(),
 		"objectId",
 		crm.ObjectCustomUpdateParams{
 			ObjectType: "objectType",
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -111,7 +105,7 @@ func TestObjectCustomListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.List(
+	_, err := client.Crm.Objects.Custom.List(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomListParams{
@@ -145,7 +139,7 @@ func TestObjectCustomDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Custom.Delete(
+	err := client.Crm.Objects.Custom.Delete(
 		context.TODO(),
 		"objectId",
 		crm.ObjectCustomDeleteParams{
@@ -174,7 +168,7 @@ func TestObjectCustomGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Get(
+	_, err := client.Crm.Objects.Custom.Get(
 		context.TODO(),
 		"objectId",
 		crm.ObjectCustomGetParams{
@@ -208,7 +202,7 @@ func TestObjectCustomMerge(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Merge(
+	_, err := client.Crm.Objects.Custom.Merge(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomMergeParams{
@@ -240,25 +234,25 @@ func TestObjectCustomSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Search(
+	_, err := client.Crm.Objects.Custom.Search(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomSearchParams{
 			PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-				After: hubspotsdk.String("after"),
+				After: "after",
 				FilterGroups: []crm.FilterGroupParam{{
 					Filters: []crm.FilterParam{{
-						Operator:     crm.FilterOperatorEq,
-						PropertyName: "",
-						HighValue:    hubspotsdk.String(""),
-						Value:        hubspotsdk.String(""),
+						Operator:     crm.FilterOperatorBetween,
+						PropertyName: "propertyName",
+						HighValue:    hubspotsdk.String("highValue"),
+						Value:        hubspotsdk.String("value"),
 						Values:       []string{"string"},
 					}},
 				}},
-				Limit:      hubspotsdk.Int(0),
+				Limit:      0,
 				Properties: []string{"string"},
-				Query:      hubspotsdk.String("query"),
 				Sorts:      []string{"string"},
+				Query:      hubspotsdk.String("query"),
 			},
 		},
 	)

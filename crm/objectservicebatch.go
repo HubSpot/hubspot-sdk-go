@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectServiceBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,7 @@ func NewObjectServiceBatchService(opts ...option.RequestOption) (r ObjectService
 	return
 }
 
-// Create a batch of services
+// Create a batch of objects
 func (r *ObjectServiceBatchService) New(ctx context.Context, body ObjectServiceBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-162/batch/create"
@@ -43,7 +43,7 @@ func (r *ObjectServiceBatchService) New(ctx context.Context, body ObjectServiceB
 	return
 }
 
-// Update a batch of services by internal ID, or unique property values
+// Update a batch of objects
 func (r *ObjectServiceBatchService) Update(ctx context.Context, body ObjectServiceBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-162/batch/update"
@@ -51,7 +51,7 @@ func (r *ObjectServiceBatchService) Update(ctx context.Context, body ObjectServi
 	return
 }
 
-// Archive a batch of services by ID
+// Archive a batch of objects
 func (r *ObjectServiceBatchService) Delete(ctx context.Context, body ObjectServiceBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)

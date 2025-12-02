@@ -28,12 +28,16 @@ func TestOAuthNewAccessTokenWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Auth.OAuth.NewAccessToken(context.TODO(), auth.OAuthNewAccessTokenParams{
-		ClientID:     hubspotsdk.String("client_id"),
-		ClientSecret: hubspotsdk.String("client_secret"),
-		Code:         hubspotsdk.String("code"),
-		GrantType:    auth.OAuthNewAccessTokenParamsGrantTypeAuthorizationCode,
-		RedirectUri:  hubspotsdk.String("redirect_uri"),
-		RefreshToken: hubspotsdk.String("refresh_token"),
+		QueryClientSecret: hubspotsdk.String("client_secret"),
+		QueryRefreshToken: hubspotsdk.String("refresh_token"),
+		ClientID:          hubspotsdk.String("client_id"),
+		BodyClientSecret:  hubspotsdk.String("client_secret"),
+		Code:              hubspotsdk.String("code"),
+		CodeVerifier:      hubspotsdk.String("code_verifier"),
+		GrantType:         auth.OAuthNewAccessTokenParamsGrantTypeAuthorizationCode,
+		RedirectUri:       hubspotsdk.String("redirect_uri"),
+		BodyRefreshToken:  hubspotsdk.String("refresh_token"),
+		Scope:             hubspotsdk.String("scope"),
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

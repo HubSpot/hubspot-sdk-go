@@ -30,43 +30,45 @@ func TestCustomChannelMessageNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Conversations.CustomChannels.Messages.New(
 		context.TODO(),
-		"channelId",
+		0,
 		conversations.CustomChannelMessageNewParams{
-			Attachments: []conversations.CustomChannelMessageNewParamsAttachmentUnion{{
-				OfFile: &conversations.CustomChannelMessageNewParamsAttachmentFile{
-					FileID:        "fileId",
-					Type:          "FILE",
-					FileUsageType: hubspotsdk.String("fileUsageType"),
-				},
-			}},
-			ChannelAccountID:    "channelAccountId",
-			IntegrationThreadID: "integrationThreadId",
-			MessageDirection:    conversations.CustomChannelMessageNewParamsMessageDirectionIncoming,
-			Recipients: []conversations.CustomChannelMessageNewParamsRecipient{{
-				DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
-					Type:  "type",
-					Value: "value",
-				},
-				Name: hubspotsdk.String("name"),
-			}},
-			Senders: []conversations.CustomChannelMessageNewParamsSender{{
-				DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
-					Type:  "type",
-					Value: "value",
-				},
-				Name: hubspotsdk.String("name"),
-			}},
-			Text:                     "text",
-			Timestamp:                time.Now(),
-			InReplyToID:              hubspotsdk.String("inReplyToId"),
-			IntegrationIdempotencyID: hubspotsdk.String("integrationIdempotencyId"),
-			PreResolvedContacts: conversations.CustomChannelMessageNewParamsPreResolvedContacts{
-				Contacts: []conversations.CustomChannelMessageNewParamsPreResolvedContactsContact{{
-					ContactPropertiesLeadingToMatch: []string{"string"},
-					ContactVid:                      0,
+			ChannelIntegrationMessageEgg: conversations.ChannelIntegrationMessageEggParam{
+				Attachments: []conversations.ChannelIntegrationMessageEggAttachmentUnionParam{{
+					OfFile: &conversations.FileAttachmentParam{
+						FileID:        "fileId",
+						Type:          conversations.FileAttachmentTypeFile,
+						FileUsageType: hubspotsdk.String("fileUsageType"),
+					},
 				}},
+				ChannelAccountID: "channelAccountId",
+				MessageDirection: conversations.ChannelIntegrationMessageEggMessageDirectionIncoming,
+				Recipients: []conversations.ChannelIntegrationParticipantParam{{
+					DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
+						Type:  "type",
+						Value: "value",
+					},
+					Name: hubspotsdk.String("name"),
+				}},
+				Senders: []conversations.ChannelIntegrationParticipantParam{{
+					DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
+						Type:  "type",
+						Value: "value",
+					},
+					Name: hubspotsdk.String("name"),
+				}},
+				Text:                     "text",
+				Timestamp:                time.Now(),
+				InReplyToID:              hubspotsdk.String("inReplyToId"),
+				IntegrationIdempotencyID: hubspotsdk.String("integrationIdempotencyId"),
+				IntegrationThreadID:      hubspotsdk.String("integrationThreadId"),
+				PreResolvedContacts: conversations.PreResolvedContactsParam{
+					Contacts: []conversations.PreResolvedContactParam{{
+						ContactPropertiesLeadingToMatch: []string{"string"},
+						ContactVid:                      0,
+					}},
+				},
+				RichText: hubspotsdk.String("richText"),
 			},
-			RichText: hubspotsdk.String("richText"),
 		},
 	)
 	if err != nil {
@@ -95,9 +97,11 @@ func TestCustomChannelMessageUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"messageId",
 		conversations.CustomChannelMessageUpdateParams{
-			ChannelID:    "channelId",
-			StatusType:   conversations.CustomChannelMessageUpdateParamsStatusTypeSent,
-			ErrorMessage: hubspotsdk.String("errorMessage"),
+			ChannelID: 0,
+			PublicChannelIntegrationMessageUpdateRequest: conversations.PublicChannelIntegrationMessageUpdateRequestParam{
+				StatusType:   conversations.PublicChannelIntegrationMessageUpdateRequestStatusTypeFailed,
+				ErrorMessage: hubspotsdk.String("errorMessage"),
+			},
 		},
 	)
 	if err != nil {
@@ -126,7 +130,7 @@ func TestCustomChannelMessageGet(t *testing.T) {
 		context.TODO(),
 		"messageId",
 		conversations.CustomChannelMessageGetParams{
-			ChannelID: "channelId",
+			ChannelID: 0,
 		},
 	)
 	if err != nil {

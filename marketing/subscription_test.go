@@ -77,7 +77,7 @@ func TestSubscriptionSubscribeWithOptionalParams(t *testing.T) {
 		PublicUpdateSubscriptionStatusRequest: marketing.PublicUpdateSubscriptionStatusRequestParam{
 			EmailAddress:          "emailAddress",
 			SubscriptionID:        "subscriptionId",
-			LegalBasis:            marketing.PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestPql,
+			LegalBasis:            marketing.PublicUpdateSubscriptionStatusRequestLegalBasisConsentWithNotice,
 			LegalBasisExplanation: hubspotsdk.String("legalBasisExplanation"),
 		},
 	})
@@ -107,7 +107,7 @@ func TestSubscriptionUnsubscribeWithOptionalParams(t *testing.T) {
 		PublicUpdateSubscriptionStatusRequest: marketing.PublicUpdateSubscriptionStatusRequestParam{
 			EmailAddress:          "emailAddress",
 			SubscriptionID:        "subscriptionId",
-			LegalBasis:            marketing.PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestPql,
+			LegalBasis:            marketing.PublicUpdateSubscriptionStatusRequestLegalBasisConsentWithNotice,
 			LegalBasisExplanation: hubspotsdk.String("legalBasisExplanation"),
 		},
 	})

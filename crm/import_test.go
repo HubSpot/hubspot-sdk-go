@@ -29,7 +29,7 @@ func TestImportNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Imports.New(context.TODO(), crm.ImportNewParams{
+	_, err := client.Crm.Imports.New(context.TODO(), crm.ImportNewParams{
 		Files:         io.Reader(bytes.NewBuffer([]byte("some file contents"))),
 		ImportRequest: hubspotsdk.String("importRequest"),
 	})
@@ -55,7 +55,7 @@ func TestImportListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Imports.List(context.TODO(), crm.ImportListParams{
+	_, err := client.Crm.Imports.List(context.TODO(), crm.ImportListParams{
 		After:  hubspotsdk.String("after"),
 		Before: hubspotsdk.String("before"),
 		Limit:  hubspotsdk.Int(0),
@@ -82,7 +82,7 @@ func TestImportCancel(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Imports.Cancel(context.TODO(), 0)
+	_, err := client.Crm.Imports.Cancel(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -105,7 +105,7 @@ func TestImportGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Imports.Get(context.TODO(), 0)
+	_, err := client.Crm.Imports.Get(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -128,7 +128,7 @@ func TestImportListErrorsWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Imports.ListErrors(
+	_, err := client.Crm.Imports.ListErrors(
 		context.TODO(),
 		0,
 		crm.ImportListErrorsParams{

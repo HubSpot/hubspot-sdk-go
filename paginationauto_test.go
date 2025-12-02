@@ -25,7 +25,7 @@ func TestAutoPagination(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	iter := client.CRM.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
+	iter := client.Crm.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
 		Limit: hubspotsdk.Int(100),
 	})
 	// Prism mock isn't going to give us real pagination

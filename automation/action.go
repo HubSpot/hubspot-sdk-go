@@ -14,7 +14,7 @@ import (
 )
 
 // ActionService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -139,57 +139,55 @@ type FieldTypeDefinition struct {
 	ExternalOptions bool            `json:"externalOptions,required"`
 	Name            string          `json:"name,required"`
 	Options         []shared.Option `json:"options,required"`
-	// Any of "string", "number", "bool", "datetime", "enumeration", "date",
-	// "phone_number", "currency_number", "json", "object_coordinates".
+	// Any of "bool", "currency_number", "date", "datetime", "enumeration", "json",
+	// "number", "object_coordinates", "phone_number", "string".
 	Type                         FieldTypeDefinitionType `json:"type,required"`
 	Description                  string                  `json:"description"`
 	ExternalOptionsReferenceType string                  `json:"externalOptionsReferenceType"`
-	// Any of "booleancheckbox", "checkbox", "date", "file", "number", "phonenumber",
-	// "radio", "select", "text", "textarea", "calculation_equation",
-	// "calculation_rollup", "calculation_score", "calculation_read_time", "unknown",
-	// "html".
+	// Any of "booleancheckbox", "calculation_equation", "calculation_read_time",
+	// "calculation_rollup", "calculation_score", "checkbox", "date", "file", "html",
+	// "number", "phonenumber", "radio", "select", "text", "textarea", "unknown".
 	FieldType  FieldTypeDefinitionFieldType `json:"fieldType"`
 	HelpText   string                       `json:"helpText"`
 	Label      string                       `json:"label"`
 	OptionsURL string                       `json:"optionsUrl"`
-	// Any of "CONTACT", "COMPANY", "DEAL", "ENGAGEMENT", "TICKET", "OWNER", "PRODUCT",
-	// "LINE_ITEM", "BET_DELIVERABLE_SERVICE", "CONTENT", "CONVERSATION", "BET_ALERT",
-	// "PORTAL", "QUOTE", "FORM_SUBMISSION_INBOUNDDB", "QUOTA", "UNSUBSCRIBE",
-	// "COMMUNICATION", "FEEDBACK_SUBMISSION", "ATTRIBUTION", "SALESFORCE_SYNC_ERROR",
-	// "RESTORABLE_CRM_OBJECT", "HUB", "LANDING_PAGE", "PRODUCT_OR_FOLDER", "TASK",
-	// "FORM", "MARKETING_EMAIL", "AD_ACCOUNT", "AD_CAMPAIGN", "AD_GROUP", "AD",
-	// "KEYWORD", "CAMPAIGN", "SOCIAL_CHANNEL", "SOCIAL_POST", "SITE_PAGE",
-	// "BLOG_POST", "IMPORT", "EXPORT", "CTA", "TASK_TEMPLATE",
-	// "AUTOMATION_PLATFORM_FLOW", "OBJECT_LIST", "NOTE", "MEETING_EVENT", "CALL",
-	// "EMAIL", "PUBLISHING_TASK", "CONVERSATION_SESSION",
-	// "CONTACT_CREATE_ATTRIBUTION", "INVOICE", "MARKETING_EVENT",
-	// "CONVERSATION_INBOX", "CHATFLOW", "MEDIA_BRIDGE", "SEQUENCE", "SEQUENCE_STEP",
-	// "FORECAST", "SNIPPET", "TEMPLATE", "DEAL_CREATE_ATTRIBUTION", "QUOTE_TEMPLATE",
-	// "QUOTE_MODULE", "QUOTE_MODULE_FIELD", "QUOTE_FIELD", "SEQUENCE_ENROLLMENT",
-	// "SUBSCRIPTION", "ACCEPTANCE_TEST", "SOCIAL_BROADCAST", "DEAL_SPLIT",
-	// "DEAL_REGISTRATION", "GOAL_TARGET", "GOAL_TARGET_GROUP",
-	// "PORTAL_OBJECT_SYNC_MESSAGE", "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER",
-	// "SEQUENCE_STEP_ENROLLMENT", "APPROVAL", "APPROVAL_STEP", "CTA_VARIANT",
-	// "SALES_DOCUMENT", "DISCOUNT", "FEE", "TAX", "MARKETING_CALENDAR",
-	// "PERMISSIONS_TESTING", "PRIVACY_SCANNER_COOKIE", "DATA_SYNC_STATE",
-	// "WEB_INTERACTIVE", "PLAYBOOK", "FOLDER", "PLAYBOOK_QUESTION",
-	// "PLAYBOOK_SUBMISSION", "PLAYBOOK_SUBMISSION_ANSWER", "COMMERCE_PAYMENT",
-	// "GSC_PROPERTY", "SOX_PROTECTED_DUMMY_TYPE", "BLOG_LISTING_PAGE",
-	// "QUARANTINED_SUBMISSION", "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT",
-	// "MARKETING_CAMPAIGN_UTM", "DISCOUNT_TEMPLATE", "DISCOUNT_CODE",
-	// "FEEDBACK_SURVEY", "CMS_URL", "SALES_TASK", "SALES_WORKLOAD", "USER",
-	// "POSTAL_MAIL", "SCHEMAS_BACKEND_TEST", "PAYMENT_LINK", "SUBMISSION_TAG",
-	// "CAMPAIGN_STEP", "SCHEDULING_PAGE", "SOX_PROTECTED_TEST_TYPE", "ORDER",
-	// "MARKETING_SMS", "PARTNER_ACCOUNT", "CAMPAIGN_TEMPLATE",
-	// "CAMPAIGN_TEMPLATE_STEP", "PLAYLIST", "CLIP", "CAMPAIGN_BUDGET_ITEM",
-	// "CAMPAIGN_SPEND_ITEM", "MIC", "CONTENT_AUDIT", "CONTENT_AUDIT_PAGE",
-	// "PLAYLIST_FOLDER", "LEAD", "ABANDONED_CART", "EXTERNAL_WEB_URL", "VIEW",
-	// "VIEW_BLOCK", "ROSTER", "CART", "AUTOMATION_PLATFORM_FLOW_ACTION",
-	// "SOCIAL_PROFILE", "PARTNER_CLIENT", "ROSTER_MEMBER",
-	// "MARKETING_EVENT_ATTENDANCE", "ALL_PAGES", "AI_FORECAST",
-	// "CRM_PIPELINES_DUMMY_TYPE", "KNOWLEDGE_ARTICLE", "PROPERTY_INFO",
-	// "DATA_PRIVACY_CONSENT", "GOAL_TEMPLATE", "SCORE_CONFIGURATION", "AUDIENCE",
-	// "PARTNER_CLIENT_REVENUE", "AUTOMATION_JOURNEY", "UNKNOWN".
+	// Any of "ABANDONED_CART", "ACCEPTANCE_TEST", "AD", "AD_ACCOUNT", "AD_CAMPAIGN",
+	// "AD_GROUP", "AI_FORECAST", "ALL_PAGES", "APPROVAL", "APPROVAL_STEP",
+	// "ATTRIBUTION", "AUDIENCE", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM_FLOW",
+	// "AUTOMATION_PLATFORM_FLOW_ACTION", "BET_ALERT", "BET_DELIVERABLE_SERVICE",
+	// "BLOG_LISTING_PAGE", "BLOG_POST", "CALL", "CAMPAIGN", "CAMPAIGN_BUDGET_ITEM",
+	// "CAMPAIGN_SPEND_ITEM", "CAMPAIGN_STEP", "CAMPAIGN_TEMPLATE",
+	// "CAMPAIGN_TEMPLATE_STEP", "CART", "CHATFLOW", "CLIP", "CMS_URL",
+	// "COMMERCE_PAYMENT", "COMMUNICATION", "COMPANY", "CONTACT",
+	// "CONTACT_CREATE_ATTRIBUTION", "CONTENT", "CONTENT_AUDIT", "CONTENT_AUDIT_PAGE",
+	// "CONVERSATION", "CONVERSATION_INBOX", "CONVERSATION_SESSION",
+	// "CRM_PIPELINES_DUMMY_TYPE", "CTA", "CTA_VARIANT", "DATA_PRIVACY_CONSENT",
+	// "DATA_SYNC_STATE", "DEAL", "DEAL_CREATE_ATTRIBUTION", "DEAL_REGISTRATION",
+	// "DEAL_SPLIT", "DISCOUNT", "DISCOUNT_CODE", "DISCOUNT_TEMPLATE", "EMAIL",
+	// "ENGAGEMENT", "EXPORT", "EXTERNAL_WEB_URL", "FEE", "FEEDBACK_SUBMISSION",
+	// "FEEDBACK_SURVEY", "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER", "FOLDER",
+	// "FORECAST", "FORM", "FORM_SUBMISSION_INBOUNDDB", "GOAL_TARGET",
+	// "GOAL_TARGET_GROUP", "GOAL_TEMPLATE", "GSC_PROPERTY", "HUB", "IMPORT",
+	// "INVOICE", "KEYWORD", "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LEAD", "LINE_ITEM",
+	// "MARKETING_CALENDAR", "MARKETING_CAMPAIGN_UTM", "MARKETING_EMAIL",
+	// "MARKETING_EVENT", "MARKETING_EVENT_ATTENDANCE", "MARKETING_SMS",
+	// "MEDIA_BRIDGE", "MEETING_EVENT", "MIC", "NOTE", "OBJECT_LIST", "ORDER", "OWNER",
+	// "PARTNER_ACCOUNT", "PARTNER_CLIENT", "PARTNER_CLIENT_REVENUE", "PAYMENT_LINK",
+	// "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT", "PERMISSIONS_TESTING",
+	// "PLAYBOOK", "PLAYBOOK_QUESTION", "PLAYBOOK_SUBMISSION",
+	// "PLAYBOOK_SUBMISSION_ANSWER", "PLAYLIST", "PLAYLIST_FOLDER", "PORTAL",
+	// "PORTAL_OBJECT_SYNC_MESSAGE", "POSTAL_MAIL", "PRIVACY_SCANNER_COOKIE",
+	// "PRODUCT", "PRODUCT_OR_FOLDER", "PROPERTY_INFO", "PUBLISHING_TASK",
+	// "QUARANTINED_SUBMISSION", "QUOTA", "QUOTE", "QUOTE_FIELD", "QUOTE_MODULE",
+	// "QUOTE_MODULE_FIELD", "QUOTE_TEMPLATE", "RESTORABLE_CRM_OBJECT", "ROSTER",
+	// "ROSTER_MEMBER", "SALES_DOCUMENT", "SALES_TASK", "SALES_WORKLOAD",
+	// "SALESFORCE_SYNC_ERROR", "SCHEDULING_PAGE", "SCHEMAS_BACKEND_TEST",
+	// "SCORE_CONFIGURATION", "SEQUENCE", "SEQUENCE_ENROLLMENT", "SEQUENCE_STEP",
+	// "SEQUENCE_STEP_ENROLLMENT", "SITE_PAGE", "SNIPPET", "SOCIAL_BROADCAST",
+	// "SOCIAL_CHANNEL", "SOCIAL_POST", "SOCIAL_PROFILE", "SOX_PROTECTED_DUMMY_TYPE",
+	// "SOX_PROTECTED_TEST_TYPE", "SUBMISSION_TAG", "SUBSCRIPTION", "TASK",
+	// "TASK_TEMPLATE", "TAX", "TEMPLATE", "TICKET", "UNKNOWN", "UNSUBSCRIBE", "USER",
+	// "VIEW", "VIEW_BLOCK", "WEB_INTERACTIVE".
 	ReferencedObjectType FieldTypeDefinitionReferencedObjectType `json:"referencedObjectType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -227,196 +225,196 @@ func (r FieldTypeDefinition) ToParam() FieldTypeDefinitionParam {
 type FieldTypeDefinitionType string
 
 const (
-	FieldTypeDefinitionTypeString            FieldTypeDefinitionType = "string"
-	FieldTypeDefinitionTypeNumber            FieldTypeDefinitionType = "number"
 	FieldTypeDefinitionTypeBool              FieldTypeDefinitionType = "bool"
+	FieldTypeDefinitionTypeCurrencyNumber    FieldTypeDefinitionType = "currency_number"
+	FieldTypeDefinitionTypeDate              FieldTypeDefinitionType = "date"
 	FieldTypeDefinitionTypeDatetime          FieldTypeDefinitionType = "datetime"
 	FieldTypeDefinitionTypeEnumeration       FieldTypeDefinitionType = "enumeration"
-	FieldTypeDefinitionTypeDate              FieldTypeDefinitionType = "date"
-	FieldTypeDefinitionTypePhoneNumber       FieldTypeDefinitionType = "phone_number"
-	FieldTypeDefinitionTypeCurrencyNumber    FieldTypeDefinitionType = "currency_number"
 	FieldTypeDefinitionTypeJson              FieldTypeDefinitionType = "json"
+	FieldTypeDefinitionTypeNumber            FieldTypeDefinitionType = "number"
 	FieldTypeDefinitionTypeObjectCoordinates FieldTypeDefinitionType = "object_coordinates"
+	FieldTypeDefinitionTypePhoneNumber       FieldTypeDefinitionType = "phone_number"
+	FieldTypeDefinitionTypeString            FieldTypeDefinitionType = "string"
 )
 
 type FieldTypeDefinitionFieldType string
 
 const (
 	FieldTypeDefinitionFieldTypeBooleancheckbox     FieldTypeDefinitionFieldType = "booleancheckbox"
+	FieldTypeDefinitionFieldTypeCalculationEquation FieldTypeDefinitionFieldType = "calculation_equation"
+	FieldTypeDefinitionFieldTypeCalculationReadTime FieldTypeDefinitionFieldType = "calculation_read_time"
+	FieldTypeDefinitionFieldTypeCalculationRollup   FieldTypeDefinitionFieldType = "calculation_rollup"
+	FieldTypeDefinitionFieldTypeCalculationScore    FieldTypeDefinitionFieldType = "calculation_score"
 	FieldTypeDefinitionFieldTypeCheckbox            FieldTypeDefinitionFieldType = "checkbox"
 	FieldTypeDefinitionFieldTypeDate                FieldTypeDefinitionFieldType = "date"
 	FieldTypeDefinitionFieldTypeFile                FieldTypeDefinitionFieldType = "file"
+	FieldTypeDefinitionFieldTypeHTML                FieldTypeDefinitionFieldType = "html"
 	FieldTypeDefinitionFieldTypeNumber              FieldTypeDefinitionFieldType = "number"
 	FieldTypeDefinitionFieldTypePhonenumber         FieldTypeDefinitionFieldType = "phonenumber"
 	FieldTypeDefinitionFieldTypeRadio               FieldTypeDefinitionFieldType = "radio"
 	FieldTypeDefinitionFieldTypeSelect              FieldTypeDefinitionFieldType = "select"
 	FieldTypeDefinitionFieldTypeText                FieldTypeDefinitionFieldType = "text"
 	FieldTypeDefinitionFieldTypeTextarea            FieldTypeDefinitionFieldType = "textarea"
-	FieldTypeDefinitionFieldTypeCalculationEquation FieldTypeDefinitionFieldType = "calculation_equation"
-	FieldTypeDefinitionFieldTypeCalculationRollup   FieldTypeDefinitionFieldType = "calculation_rollup"
-	FieldTypeDefinitionFieldTypeCalculationScore    FieldTypeDefinitionFieldType = "calculation_score"
-	FieldTypeDefinitionFieldTypeCalculationReadTime FieldTypeDefinitionFieldType = "calculation_read_time"
 	FieldTypeDefinitionFieldTypeUnknown             FieldTypeDefinitionFieldType = "unknown"
-	FieldTypeDefinitionFieldTypeHTML                FieldTypeDefinitionFieldType = "html"
 )
 
 type FieldTypeDefinitionReferencedObjectType string
 
 const (
-	FieldTypeDefinitionReferencedObjectTypeContact                      FieldTypeDefinitionReferencedObjectType = "CONTACT"
-	FieldTypeDefinitionReferencedObjectTypeCompany                      FieldTypeDefinitionReferencedObjectType = "COMPANY"
-	FieldTypeDefinitionReferencedObjectTypeDeal                         FieldTypeDefinitionReferencedObjectType = "DEAL"
-	FieldTypeDefinitionReferencedObjectTypeEngagement                   FieldTypeDefinitionReferencedObjectType = "ENGAGEMENT"
-	FieldTypeDefinitionReferencedObjectTypeTicket                       FieldTypeDefinitionReferencedObjectType = "TICKET"
-	FieldTypeDefinitionReferencedObjectTypeOwner                        FieldTypeDefinitionReferencedObjectType = "OWNER"
-	FieldTypeDefinitionReferencedObjectTypeProduct                      FieldTypeDefinitionReferencedObjectType = "PRODUCT"
-	FieldTypeDefinitionReferencedObjectTypeLineItem                     FieldTypeDefinitionReferencedObjectType = "LINE_ITEM"
-	FieldTypeDefinitionReferencedObjectTypeBetDeliverableService        FieldTypeDefinitionReferencedObjectType = "BET_DELIVERABLE_SERVICE"
-	FieldTypeDefinitionReferencedObjectTypeContent                      FieldTypeDefinitionReferencedObjectType = "CONTENT"
-	FieldTypeDefinitionReferencedObjectTypeConversation                 FieldTypeDefinitionReferencedObjectType = "CONVERSATION"
-	FieldTypeDefinitionReferencedObjectTypeBetAlert                     FieldTypeDefinitionReferencedObjectType = "BET_ALERT"
-	FieldTypeDefinitionReferencedObjectTypePortal                       FieldTypeDefinitionReferencedObjectType = "PORTAL"
-	FieldTypeDefinitionReferencedObjectTypeQuote                        FieldTypeDefinitionReferencedObjectType = "QUOTE"
-	FieldTypeDefinitionReferencedObjectTypeFormSubmissionInbounddb      FieldTypeDefinitionReferencedObjectType = "FORM_SUBMISSION_INBOUNDDB"
-	FieldTypeDefinitionReferencedObjectTypeQuota                        FieldTypeDefinitionReferencedObjectType = "QUOTA"
-	FieldTypeDefinitionReferencedObjectTypeUnsubscribe                  FieldTypeDefinitionReferencedObjectType = "UNSUBSCRIBE"
-	FieldTypeDefinitionReferencedObjectTypeCommunication                FieldTypeDefinitionReferencedObjectType = "COMMUNICATION"
-	FieldTypeDefinitionReferencedObjectTypeFeedbackSubmission           FieldTypeDefinitionReferencedObjectType = "FEEDBACK_SUBMISSION"
-	FieldTypeDefinitionReferencedObjectTypeAttribution                  FieldTypeDefinitionReferencedObjectType = "ATTRIBUTION"
-	FieldTypeDefinitionReferencedObjectTypeSalesforceSyncError          FieldTypeDefinitionReferencedObjectType = "SALESFORCE_SYNC_ERROR"
-	FieldTypeDefinitionReferencedObjectTypeRestorableCRMObject          FieldTypeDefinitionReferencedObjectType = "RESTORABLE_CRM_OBJECT"
-	FieldTypeDefinitionReferencedObjectTypeHub                          FieldTypeDefinitionReferencedObjectType = "HUB"
-	FieldTypeDefinitionReferencedObjectTypeLandingPage                  FieldTypeDefinitionReferencedObjectType = "LANDING_PAGE"
-	FieldTypeDefinitionReferencedObjectTypeProductOrFolder              FieldTypeDefinitionReferencedObjectType = "PRODUCT_OR_FOLDER"
-	FieldTypeDefinitionReferencedObjectTypeTask                         FieldTypeDefinitionReferencedObjectType = "TASK"
-	FieldTypeDefinitionReferencedObjectTypeForm                         FieldTypeDefinitionReferencedObjectType = "FORM"
-	FieldTypeDefinitionReferencedObjectTypeMarketingEmail               FieldTypeDefinitionReferencedObjectType = "MARKETING_EMAIL"
+	FieldTypeDefinitionReferencedObjectTypeAbandonedCart                FieldTypeDefinitionReferencedObjectType = "ABANDONED_CART"
+	FieldTypeDefinitionReferencedObjectTypeAcceptanceTest               FieldTypeDefinitionReferencedObjectType = "ACCEPTANCE_TEST"
+	FieldTypeDefinitionReferencedObjectTypeAd                           FieldTypeDefinitionReferencedObjectType = "AD"
 	FieldTypeDefinitionReferencedObjectTypeAdAccount                    FieldTypeDefinitionReferencedObjectType = "AD_ACCOUNT"
 	FieldTypeDefinitionReferencedObjectTypeAdCampaign                   FieldTypeDefinitionReferencedObjectType = "AD_CAMPAIGN"
 	FieldTypeDefinitionReferencedObjectTypeAdGroup                      FieldTypeDefinitionReferencedObjectType = "AD_GROUP"
-	FieldTypeDefinitionReferencedObjectTypeAd                           FieldTypeDefinitionReferencedObjectType = "AD"
-	FieldTypeDefinitionReferencedObjectTypeKeyword                      FieldTypeDefinitionReferencedObjectType = "KEYWORD"
-	FieldTypeDefinitionReferencedObjectTypeCampaign                     FieldTypeDefinitionReferencedObjectType = "CAMPAIGN"
-	FieldTypeDefinitionReferencedObjectTypeSocialChannel                FieldTypeDefinitionReferencedObjectType = "SOCIAL_CHANNEL"
-	FieldTypeDefinitionReferencedObjectTypeSocialPost                   FieldTypeDefinitionReferencedObjectType = "SOCIAL_POST"
-	FieldTypeDefinitionReferencedObjectTypeSitePage                     FieldTypeDefinitionReferencedObjectType = "SITE_PAGE"
-	FieldTypeDefinitionReferencedObjectTypeBlogPost                     FieldTypeDefinitionReferencedObjectType = "BLOG_POST"
-	FieldTypeDefinitionReferencedObjectTypeImport                       FieldTypeDefinitionReferencedObjectType = "IMPORT"
-	FieldTypeDefinitionReferencedObjectTypeExport                       FieldTypeDefinitionReferencedObjectType = "EXPORT"
-	FieldTypeDefinitionReferencedObjectTypeCta                          FieldTypeDefinitionReferencedObjectType = "CTA"
-	FieldTypeDefinitionReferencedObjectTypeTaskTemplate                 FieldTypeDefinitionReferencedObjectType = "TASK_TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeAutomationPlatformFlow       FieldTypeDefinitionReferencedObjectType = "AUTOMATION_PLATFORM_FLOW"
-	FieldTypeDefinitionReferencedObjectTypeObjectList                   FieldTypeDefinitionReferencedObjectType = "OBJECT_LIST"
-	FieldTypeDefinitionReferencedObjectTypeNote                         FieldTypeDefinitionReferencedObjectType = "NOTE"
-	FieldTypeDefinitionReferencedObjectTypeMeetingEvent                 FieldTypeDefinitionReferencedObjectType = "MEETING_EVENT"
-	FieldTypeDefinitionReferencedObjectTypeCall                         FieldTypeDefinitionReferencedObjectType = "CALL"
-	FieldTypeDefinitionReferencedObjectTypeEmail                        FieldTypeDefinitionReferencedObjectType = "EMAIL"
-	FieldTypeDefinitionReferencedObjectTypePublishingTask               FieldTypeDefinitionReferencedObjectType = "PUBLISHING_TASK"
-	FieldTypeDefinitionReferencedObjectTypeConversationSession          FieldTypeDefinitionReferencedObjectType = "CONVERSATION_SESSION"
-	FieldTypeDefinitionReferencedObjectTypeContactCreateAttribution     FieldTypeDefinitionReferencedObjectType = "CONTACT_CREATE_ATTRIBUTION"
-	FieldTypeDefinitionReferencedObjectTypeInvoice                      FieldTypeDefinitionReferencedObjectType = "INVOICE"
-	FieldTypeDefinitionReferencedObjectTypeMarketingEvent               FieldTypeDefinitionReferencedObjectType = "MARKETING_EVENT"
-	FieldTypeDefinitionReferencedObjectTypeConversationInbox            FieldTypeDefinitionReferencedObjectType = "CONVERSATION_INBOX"
-	FieldTypeDefinitionReferencedObjectTypeChatflow                     FieldTypeDefinitionReferencedObjectType = "CHATFLOW"
-	FieldTypeDefinitionReferencedObjectTypeMediaBridge                  FieldTypeDefinitionReferencedObjectType = "MEDIA_BRIDGE"
-	FieldTypeDefinitionReferencedObjectTypeSequence                     FieldTypeDefinitionReferencedObjectType = "SEQUENCE"
-	FieldTypeDefinitionReferencedObjectTypeSequenceStep                 FieldTypeDefinitionReferencedObjectType = "SEQUENCE_STEP"
-	FieldTypeDefinitionReferencedObjectTypeForecast                     FieldTypeDefinitionReferencedObjectType = "FORECAST"
-	FieldTypeDefinitionReferencedObjectTypeSnippet                      FieldTypeDefinitionReferencedObjectType = "SNIPPET"
-	FieldTypeDefinitionReferencedObjectTypeTemplate                     FieldTypeDefinitionReferencedObjectType = "TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeDealCreateAttribution        FieldTypeDefinitionReferencedObjectType = "DEAL_CREATE_ATTRIBUTION"
-	FieldTypeDefinitionReferencedObjectTypeQuoteTemplate                FieldTypeDefinitionReferencedObjectType = "QUOTE_TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeQuoteModule                  FieldTypeDefinitionReferencedObjectType = "QUOTE_MODULE"
-	FieldTypeDefinitionReferencedObjectTypeQuoteModuleField             FieldTypeDefinitionReferencedObjectType = "QUOTE_MODULE_FIELD"
-	FieldTypeDefinitionReferencedObjectTypeQuoteField                   FieldTypeDefinitionReferencedObjectType = "QUOTE_FIELD"
-	FieldTypeDefinitionReferencedObjectTypeSequenceEnrollment           FieldTypeDefinitionReferencedObjectType = "SEQUENCE_ENROLLMENT"
-	FieldTypeDefinitionReferencedObjectTypeSubscription                 FieldTypeDefinitionReferencedObjectType = "SUBSCRIPTION"
-	FieldTypeDefinitionReferencedObjectTypeAcceptanceTest               FieldTypeDefinitionReferencedObjectType = "ACCEPTANCE_TEST"
-	FieldTypeDefinitionReferencedObjectTypeSocialBroadcast              FieldTypeDefinitionReferencedObjectType = "SOCIAL_BROADCAST"
-	FieldTypeDefinitionReferencedObjectTypeDealSplit                    FieldTypeDefinitionReferencedObjectType = "DEAL_SPLIT"
-	FieldTypeDefinitionReferencedObjectTypeDealRegistration             FieldTypeDefinitionReferencedObjectType = "DEAL_REGISTRATION"
-	FieldTypeDefinitionReferencedObjectTypeGoalTarget                   FieldTypeDefinitionReferencedObjectType = "GOAL_TARGET"
-	FieldTypeDefinitionReferencedObjectTypeGoalTargetGroup              FieldTypeDefinitionReferencedObjectType = "GOAL_TARGET_GROUP"
-	FieldTypeDefinitionReferencedObjectTypePortalObjectSyncMessage      FieldTypeDefinitionReferencedObjectType = "PORTAL_OBJECT_SYNC_MESSAGE"
-	FieldTypeDefinitionReferencedObjectTypeFileManagerFile              FieldTypeDefinitionReferencedObjectType = "FILE_MANAGER_FILE"
-	FieldTypeDefinitionReferencedObjectTypeFileManagerFolder            FieldTypeDefinitionReferencedObjectType = "FILE_MANAGER_FOLDER"
-	FieldTypeDefinitionReferencedObjectTypeSequenceStepEnrollment       FieldTypeDefinitionReferencedObjectType = "SEQUENCE_STEP_ENROLLMENT"
+	FieldTypeDefinitionReferencedObjectTypeAIForecast                   FieldTypeDefinitionReferencedObjectType = "AI_FORECAST"
+	FieldTypeDefinitionReferencedObjectTypeAllPages                     FieldTypeDefinitionReferencedObjectType = "ALL_PAGES"
 	FieldTypeDefinitionReferencedObjectTypeApproval                     FieldTypeDefinitionReferencedObjectType = "APPROVAL"
 	FieldTypeDefinitionReferencedObjectTypeApprovalStep                 FieldTypeDefinitionReferencedObjectType = "APPROVAL_STEP"
+	FieldTypeDefinitionReferencedObjectTypeAttribution                  FieldTypeDefinitionReferencedObjectType = "ATTRIBUTION"
+	FieldTypeDefinitionReferencedObjectTypeAudience                     FieldTypeDefinitionReferencedObjectType = "AUDIENCE"
+	FieldTypeDefinitionReferencedObjectTypeAutomationJourney            FieldTypeDefinitionReferencedObjectType = "AUTOMATION_JOURNEY"
+	FieldTypeDefinitionReferencedObjectTypeAutomationPlatformFlow       FieldTypeDefinitionReferencedObjectType = "AUTOMATION_PLATFORM_FLOW"
+	FieldTypeDefinitionReferencedObjectTypeAutomationPlatformFlowAction FieldTypeDefinitionReferencedObjectType = "AUTOMATION_PLATFORM_FLOW_ACTION"
+	FieldTypeDefinitionReferencedObjectTypeBetAlert                     FieldTypeDefinitionReferencedObjectType = "BET_ALERT"
+	FieldTypeDefinitionReferencedObjectTypeBetDeliverableService        FieldTypeDefinitionReferencedObjectType = "BET_DELIVERABLE_SERVICE"
+	FieldTypeDefinitionReferencedObjectTypeBlogListingPage              FieldTypeDefinitionReferencedObjectType = "BLOG_LISTING_PAGE"
+	FieldTypeDefinitionReferencedObjectTypeBlogPost                     FieldTypeDefinitionReferencedObjectType = "BLOG_POST"
+	FieldTypeDefinitionReferencedObjectTypeCall                         FieldTypeDefinitionReferencedObjectType = "CALL"
+	FieldTypeDefinitionReferencedObjectTypeCampaign                     FieldTypeDefinitionReferencedObjectType = "CAMPAIGN"
+	FieldTypeDefinitionReferencedObjectTypeCampaignBudgetItem           FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_BUDGET_ITEM"
+	FieldTypeDefinitionReferencedObjectTypeCampaignSpendItem            FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_SPEND_ITEM"
+	FieldTypeDefinitionReferencedObjectTypeCampaignStep                 FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_STEP"
+	FieldTypeDefinitionReferencedObjectTypeCampaignTemplate             FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeCampaignTemplateStep         FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_TEMPLATE_STEP"
+	FieldTypeDefinitionReferencedObjectTypeCart                         FieldTypeDefinitionReferencedObjectType = "CART"
+	FieldTypeDefinitionReferencedObjectTypeChatflow                     FieldTypeDefinitionReferencedObjectType = "CHATFLOW"
+	FieldTypeDefinitionReferencedObjectTypeClip                         FieldTypeDefinitionReferencedObjectType = "CLIP"
+	FieldTypeDefinitionReferencedObjectTypeCmsURL                       FieldTypeDefinitionReferencedObjectType = "CMS_URL"
+	FieldTypeDefinitionReferencedObjectTypeCommercePayment              FieldTypeDefinitionReferencedObjectType = "COMMERCE_PAYMENT"
+	FieldTypeDefinitionReferencedObjectTypeCommunication                FieldTypeDefinitionReferencedObjectType = "COMMUNICATION"
+	FieldTypeDefinitionReferencedObjectTypeCompany                      FieldTypeDefinitionReferencedObjectType = "COMPANY"
+	FieldTypeDefinitionReferencedObjectTypeContact                      FieldTypeDefinitionReferencedObjectType = "CONTACT"
+	FieldTypeDefinitionReferencedObjectTypeContactCreateAttribution     FieldTypeDefinitionReferencedObjectType = "CONTACT_CREATE_ATTRIBUTION"
+	FieldTypeDefinitionReferencedObjectTypeContent                      FieldTypeDefinitionReferencedObjectType = "CONTENT"
+	FieldTypeDefinitionReferencedObjectTypeContentAudit                 FieldTypeDefinitionReferencedObjectType = "CONTENT_AUDIT"
+	FieldTypeDefinitionReferencedObjectTypeContentAuditPage             FieldTypeDefinitionReferencedObjectType = "CONTENT_AUDIT_PAGE"
+	FieldTypeDefinitionReferencedObjectTypeConversation                 FieldTypeDefinitionReferencedObjectType = "CONVERSATION"
+	FieldTypeDefinitionReferencedObjectTypeConversationInbox            FieldTypeDefinitionReferencedObjectType = "CONVERSATION_INBOX"
+	FieldTypeDefinitionReferencedObjectTypeConversationSession          FieldTypeDefinitionReferencedObjectType = "CONVERSATION_SESSION"
+	FieldTypeDefinitionReferencedObjectTypeCrmPipelinesDummyType        FieldTypeDefinitionReferencedObjectType = "CRM_PIPELINES_DUMMY_TYPE"
+	FieldTypeDefinitionReferencedObjectTypeCta                          FieldTypeDefinitionReferencedObjectType = "CTA"
 	FieldTypeDefinitionReferencedObjectTypeCtaVariant                   FieldTypeDefinitionReferencedObjectType = "CTA_VARIANT"
-	FieldTypeDefinitionReferencedObjectTypeSalesDocument                FieldTypeDefinitionReferencedObjectType = "SALES_DOCUMENT"
-	FieldTypeDefinitionReferencedObjectTypeDiscount                     FieldTypeDefinitionReferencedObjectType = "DISCOUNT"
-	FieldTypeDefinitionReferencedObjectTypeFee                          FieldTypeDefinitionReferencedObjectType = "FEE"
-	FieldTypeDefinitionReferencedObjectTypeTax                          FieldTypeDefinitionReferencedObjectType = "TAX"
-	FieldTypeDefinitionReferencedObjectTypeMarketingCalendar            FieldTypeDefinitionReferencedObjectType = "MARKETING_CALENDAR"
-	FieldTypeDefinitionReferencedObjectTypePermissionsTesting           FieldTypeDefinitionReferencedObjectType = "PERMISSIONS_TESTING"
-	FieldTypeDefinitionReferencedObjectTypePrivacyScannerCookie         FieldTypeDefinitionReferencedObjectType = "PRIVACY_SCANNER_COOKIE"
+	FieldTypeDefinitionReferencedObjectTypeDataPrivacyConsent           FieldTypeDefinitionReferencedObjectType = "DATA_PRIVACY_CONSENT"
 	FieldTypeDefinitionReferencedObjectTypeDataSyncState                FieldTypeDefinitionReferencedObjectType = "DATA_SYNC_STATE"
-	FieldTypeDefinitionReferencedObjectTypeWebInteractive               FieldTypeDefinitionReferencedObjectType = "WEB_INTERACTIVE"
-	FieldTypeDefinitionReferencedObjectTypePlaybook                     FieldTypeDefinitionReferencedObjectType = "PLAYBOOK"
+	FieldTypeDefinitionReferencedObjectTypeDeal                         FieldTypeDefinitionReferencedObjectType = "DEAL"
+	FieldTypeDefinitionReferencedObjectTypeDealCreateAttribution        FieldTypeDefinitionReferencedObjectType = "DEAL_CREATE_ATTRIBUTION"
+	FieldTypeDefinitionReferencedObjectTypeDealRegistration             FieldTypeDefinitionReferencedObjectType = "DEAL_REGISTRATION"
+	FieldTypeDefinitionReferencedObjectTypeDealSplit                    FieldTypeDefinitionReferencedObjectType = "DEAL_SPLIT"
+	FieldTypeDefinitionReferencedObjectTypeDiscount                     FieldTypeDefinitionReferencedObjectType = "DISCOUNT"
+	FieldTypeDefinitionReferencedObjectTypeDiscountCode                 FieldTypeDefinitionReferencedObjectType = "DISCOUNT_CODE"
+	FieldTypeDefinitionReferencedObjectTypeDiscountTemplate             FieldTypeDefinitionReferencedObjectType = "DISCOUNT_TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeEmail                        FieldTypeDefinitionReferencedObjectType = "EMAIL"
+	FieldTypeDefinitionReferencedObjectTypeEngagement                   FieldTypeDefinitionReferencedObjectType = "ENGAGEMENT"
+	FieldTypeDefinitionReferencedObjectTypeExport                       FieldTypeDefinitionReferencedObjectType = "EXPORT"
+	FieldTypeDefinitionReferencedObjectTypeExternalWebURL               FieldTypeDefinitionReferencedObjectType = "EXTERNAL_WEB_URL"
+	FieldTypeDefinitionReferencedObjectTypeFee                          FieldTypeDefinitionReferencedObjectType = "FEE"
+	FieldTypeDefinitionReferencedObjectTypeFeedbackSubmission           FieldTypeDefinitionReferencedObjectType = "FEEDBACK_SUBMISSION"
+	FieldTypeDefinitionReferencedObjectTypeFeedbackSurvey               FieldTypeDefinitionReferencedObjectType = "FEEDBACK_SURVEY"
+	FieldTypeDefinitionReferencedObjectTypeFileManagerFile              FieldTypeDefinitionReferencedObjectType = "FILE_MANAGER_FILE"
+	FieldTypeDefinitionReferencedObjectTypeFileManagerFolder            FieldTypeDefinitionReferencedObjectType = "FILE_MANAGER_FOLDER"
 	FieldTypeDefinitionReferencedObjectTypeFolder                       FieldTypeDefinitionReferencedObjectType = "FOLDER"
+	FieldTypeDefinitionReferencedObjectTypeForecast                     FieldTypeDefinitionReferencedObjectType = "FORECAST"
+	FieldTypeDefinitionReferencedObjectTypeForm                         FieldTypeDefinitionReferencedObjectType = "FORM"
+	FieldTypeDefinitionReferencedObjectTypeFormSubmissionInbounddb      FieldTypeDefinitionReferencedObjectType = "FORM_SUBMISSION_INBOUNDDB"
+	FieldTypeDefinitionReferencedObjectTypeGoalTarget                   FieldTypeDefinitionReferencedObjectType = "GOAL_TARGET"
+	FieldTypeDefinitionReferencedObjectTypeGoalTargetGroup              FieldTypeDefinitionReferencedObjectType = "GOAL_TARGET_GROUP"
+	FieldTypeDefinitionReferencedObjectTypeGoalTemplate                 FieldTypeDefinitionReferencedObjectType = "GOAL_TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeGscProperty                  FieldTypeDefinitionReferencedObjectType = "GSC_PROPERTY"
+	FieldTypeDefinitionReferencedObjectTypeHub                          FieldTypeDefinitionReferencedObjectType = "HUB"
+	FieldTypeDefinitionReferencedObjectTypeImport                       FieldTypeDefinitionReferencedObjectType = "IMPORT"
+	FieldTypeDefinitionReferencedObjectTypeInvoice                      FieldTypeDefinitionReferencedObjectType = "INVOICE"
+	FieldTypeDefinitionReferencedObjectTypeKeyword                      FieldTypeDefinitionReferencedObjectType = "KEYWORD"
+	FieldTypeDefinitionReferencedObjectTypeKnowledgeArticle             FieldTypeDefinitionReferencedObjectType = "KNOWLEDGE_ARTICLE"
+	FieldTypeDefinitionReferencedObjectTypeLandingPage                  FieldTypeDefinitionReferencedObjectType = "LANDING_PAGE"
+	FieldTypeDefinitionReferencedObjectTypeLead                         FieldTypeDefinitionReferencedObjectType = "LEAD"
+	FieldTypeDefinitionReferencedObjectTypeLineItem                     FieldTypeDefinitionReferencedObjectType = "LINE_ITEM"
+	FieldTypeDefinitionReferencedObjectTypeMarketingCalendar            FieldTypeDefinitionReferencedObjectType = "MARKETING_CALENDAR"
+	FieldTypeDefinitionReferencedObjectTypeMarketingCampaignUtm         FieldTypeDefinitionReferencedObjectType = "MARKETING_CAMPAIGN_UTM"
+	FieldTypeDefinitionReferencedObjectTypeMarketingEmail               FieldTypeDefinitionReferencedObjectType = "MARKETING_EMAIL"
+	FieldTypeDefinitionReferencedObjectTypeMarketingEvent               FieldTypeDefinitionReferencedObjectType = "MARKETING_EVENT"
+	FieldTypeDefinitionReferencedObjectTypeMarketingEventAttendance     FieldTypeDefinitionReferencedObjectType = "MARKETING_EVENT_ATTENDANCE"
+	FieldTypeDefinitionReferencedObjectTypeMarketingSMS                 FieldTypeDefinitionReferencedObjectType = "MARKETING_SMS"
+	FieldTypeDefinitionReferencedObjectTypeMediaBridge                  FieldTypeDefinitionReferencedObjectType = "MEDIA_BRIDGE"
+	FieldTypeDefinitionReferencedObjectTypeMeetingEvent                 FieldTypeDefinitionReferencedObjectType = "MEETING_EVENT"
+	FieldTypeDefinitionReferencedObjectTypeMic                          FieldTypeDefinitionReferencedObjectType = "MIC"
+	FieldTypeDefinitionReferencedObjectTypeNote                         FieldTypeDefinitionReferencedObjectType = "NOTE"
+	FieldTypeDefinitionReferencedObjectTypeObjectList                   FieldTypeDefinitionReferencedObjectType = "OBJECT_LIST"
+	FieldTypeDefinitionReferencedObjectTypeOrder                        FieldTypeDefinitionReferencedObjectType = "ORDER"
+	FieldTypeDefinitionReferencedObjectTypeOwner                        FieldTypeDefinitionReferencedObjectType = "OWNER"
+	FieldTypeDefinitionReferencedObjectTypePartnerAccount               FieldTypeDefinitionReferencedObjectType = "PARTNER_ACCOUNT"
+	FieldTypeDefinitionReferencedObjectTypePartnerClient                FieldTypeDefinitionReferencedObjectType = "PARTNER_CLIENT"
+	FieldTypeDefinitionReferencedObjectTypePartnerClientRevenue         FieldTypeDefinitionReferencedObjectType = "PARTNER_CLIENT_REVENUE"
+	FieldTypeDefinitionReferencedObjectTypePaymentLink                  FieldTypeDefinitionReferencedObjectType = "PAYMENT_LINK"
+	FieldTypeDefinitionReferencedObjectTypePaymentSchedule              FieldTypeDefinitionReferencedObjectType = "PAYMENT_SCHEDULE"
+	FieldTypeDefinitionReferencedObjectTypePaymentScheduleInstallment   FieldTypeDefinitionReferencedObjectType = "PAYMENT_SCHEDULE_INSTALLMENT"
+	FieldTypeDefinitionReferencedObjectTypePermissionsTesting           FieldTypeDefinitionReferencedObjectType = "PERMISSIONS_TESTING"
+	FieldTypeDefinitionReferencedObjectTypePlaybook                     FieldTypeDefinitionReferencedObjectType = "PLAYBOOK"
 	FieldTypeDefinitionReferencedObjectTypePlaybookQuestion             FieldTypeDefinitionReferencedObjectType = "PLAYBOOK_QUESTION"
 	FieldTypeDefinitionReferencedObjectTypePlaybookSubmission           FieldTypeDefinitionReferencedObjectType = "PLAYBOOK_SUBMISSION"
 	FieldTypeDefinitionReferencedObjectTypePlaybookSubmissionAnswer     FieldTypeDefinitionReferencedObjectType = "PLAYBOOK_SUBMISSION_ANSWER"
-	FieldTypeDefinitionReferencedObjectTypeCommercePayment              FieldTypeDefinitionReferencedObjectType = "COMMERCE_PAYMENT"
-	FieldTypeDefinitionReferencedObjectTypeGscProperty                  FieldTypeDefinitionReferencedObjectType = "GSC_PROPERTY"
-	FieldTypeDefinitionReferencedObjectTypeSoxProtectedDummyType        FieldTypeDefinitionReferencedObjectType = "SOX_PROTECTED_DUMMY_TYPE"
-	FieldTypeDefinitionReferencedObjectTypeBlogListingPage              FieldTypeDefinitionReferencedObjectType = "BLOG_LISTING_PAGE"
+	FieldTypeDefinitionReferencedObjectTypePlaylist                     FieldTypeDefinitionReferencedObjectType = "PLAYLIST"
+	FieldTypeDefinitionReferencedObjectTypePlaylistFolder               FieldTypeDefinitionReferencedObjectType = "PLAYLIST_FOLDER"
+	FieldTypeDefinitionReferencedObjectTypePortal                       FieldTypeDefinitionReferencedObjectType = "PORTAL"
+	FieldTypeDefinitionReferencedObjectTypePortalObjectSyncMessage      FieldTypeDefinitionReferencedObjectType = "PORTAL_OBJECT_SYNC_MESSAGE"
+	FieldTypeDefinitionReferencedObjectTypePostalMail                   FieldTypeDefinitionReferencedObjectType = "POSTAL_MAIL"
+	FieldTypeDefinitionReferencedObjectTypePrivacyScannerCookie         FieldTypeDefinitionReferencedObjectType = "PRIVACY_SCANNER_COOKIE"
+	FieldTypeDefinitionReferencedObjectTypeProduct                      FieldTypeDefinitionReferencedObjectType = "PRODUCT"
+	FieldTypeDefinitionReferencedObjectTypeProductOrFolder              FieldTypeDefinitionReferencedObjectType = "PRODUCT_OR_FOLDER"
+	FieldTypeDefinitionReferencedObjectTypePropertyInfo                 FieldTypeDefinitionReferencedObjectType = "PROPERTY_INFO"
+	FieldTypeDefinitionReferencedObjectTypePublishingTask               FieldTypeDefinitionReferencedObjectType = "PUBLISHING_TASK"
 	FieldTypeDefinitionReferencedObjectTypeQuarantinedSubmission        FieldTypeDefinitionReferencedObjectType = "QUARANTINED_SUBMISSION"
-	FieldTypeDefinitionReferencedObjectTypePaymentSchedule              FieldTypeDefinitionReferencedObjectType = "PAYMENT_SCHEDULE"
-	FieldTypeDefinitionReferencedObjectTypePaymentScheduleInstallment   FieldTypeDefinitionReferencedObjectType = "PAYMENT_SCHEDULE_INSTALLMENT"
-	FieldTypeDefinitionReferencedObjectTypeMarketingCampaignUtm         FieldTypeDefinitionReferencedObjectType = "MARKETING_CAMPAIGN_UTM"
-	FieldTypeDefinitionReferencedObjectTypeDiscountTemplate             FieldTypeDefinitionReferencedObjectType = "DISCOUNT_TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeDiscountCode                 FieldTypeDefinitionReferencedObjectType = "DISCOUNT_CODE"
-	FieldTypeDefinitionReferencedObjectTypeFeedbackSurvey               FieldTypeDefinitionReferencedObjectType = "FEEDBACK_SURVEY"
-	FieldTypeDefinitionReferencedObjectTypeCmsURL                       FieldTypeDefinitionReferencedObjectType = "CMS_URL"
+	FieldTypeDefinitionReferencedObjectTypeQuota                        FieldTypeDefinitionReferencedObjectType = "QUOTA"
+	FieldTypeDefinitionReferencedObjectTypeQuote                        FieldTypeDefinitionReferencedObjectType = "QUOTE"
+	FieldTypeDefinitionReferencedObjectTypeQuoteField                   FieldTypeDefinitionReferencedObjectType = "QUOTE_FIELD"
+	FieldTypeDefinitionReferencedObjectTypeQuoteModule                  FieldTypeDefinitionReferencedObjectType = "QUOTE_MODULE"
+	FieldTypeDefinitionReferencedObjectTypeQuoteModuleField             FieldTypeDefinitionReferencedObjectType = "QUOTE_MODULE_FIELD"
+	FieldTypeDefinitionReferencedObjectTypeQuoteTemplate                FieldTypeDefinitionReferencedObjectType = "QUOTE_TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeRestorableCrmObject          FieldTypeDefinitionReferencedObjectType = "RESTORABLE_CRM_OBJECT"
+	FieldTypeDefinitionReferencedObjectTypeRoster                       FieldTypeDefinitionReferencedObjectType = "ROSTER"
+	FieldTypeDefinitionReferencedObjectTypeRosterMember                 FieldTypeDefinitionReferencedObjectType = "ROSTER_MEMBER"
+	FieldTypeDefinitionReferencedObjectTypeSalesDocument                FieldTypeDefinitionReferencedObjectType = "SALES_DOCUMENT"
 	FieldTypeDefinitionReferencedObjectTypeSalesTask                    FieldTypeDefinitionReferencedObjectType = "SALES_TASK"
 	FieldTypeDefinitionReferencedObjectTypeSalesWorkload                FieldTypeDefinitionReferencedObjectType = "SALES_WORKLOAD"
-	FieldTypeDefinitionReferencedObjectTypeUser                         FieldTypeDefinitionReferencedObjectType = "USER"
-	FieldTypeDefinitionReferencedObjectTypePostalMail                   FieldTypeDefinitionReferencedObjectType = "POSTAL_MAIL"
-	FieldTypeDefinitionReferencedObjectTypeSchemasBackendTest           FieldTypeDefinitionReferencedObjectType = "SCHEMAS_BACKEND_TEST"
-	FieldTypeDefinitionReferencedObjectTypePaymentLink                  FieldTypeDefinitionReferencedObjectType = "PAYMENT_LINK"
-	FieldTypeDefinitionReferencedObjectTypeSubmissionTag                FieldTypeDefinitionReferencedObjectType = "SUBMISSION_TAG"
-	FieldTypeDefinitionReferencedObjectTypeCampaignStep                 FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_STEP"
+	FieldTypeDefinitionReferencedObjectTypeSalesforceSyncError          FieldTypeDefinitionReferencedObjectType = "SALESFORCE_SYNC_ERROR"
 	FieldTypeDefinitionReferencedObjectTypeSchedulingPage               FieldTypeDefinitionReferencedObjectType = "SCHEDULING_PAGE"
+	FieldTypeDefinitionReferencedObjectTypeSchemasBackendTest           FieldTypeDefinitionReferencedObjectType = "SCHEMAS_BACKEND_TEST"
+	FieldTypeDefinitionReferencedObjectTypeScoreConfiguration           FieldTypeDefinitionReferencedObjectType = "SCORE_CONFIGURATION"
+	FieldTypeDefinitionReferencedObjectTypeSequence                     FieldTypeDefinitionReferencedObjectType = "SEQUENCE"
+	FieldTypeDefinitionReferencedObjectTypeSequenceEnrollment           FieldTypeDefinitionReferencedObjectType = "SEQUENCE_ENROLLMENT"
+	FieldTypeDefinitionReferencedObjectTypeSequenceStep                 FieldTypeDefinitionReferencedObjectType = "SEQUENCE_STEP"
+	FieldTypeDefinitionReferencedObjectTypeSequenceStepEnrollment       FieldTypeDefinitionReferencedObjectType = "SEQUENCE_STEP_ENROLLMENT"
+	FieldTypeDefinitionReferencedObjectTypeSitePage                     FieldTypeDefinitionReferencedObjectType = "SITE_PAGE"
+	FieldTypeDefinitionReferencedObjectTypeSnippet                      FieldTypeDefinitionReferencedObjectType = "SNIPPET"
+	FieldTypeDefinitionReferencedObjectTypeSocialBroadcast              FieldTypeDefinitionReferencedObjectType = "SOCIAL_BROADCAST"
+	FieldTypeDefinitionReferencedObjectTypeSocialChannel                FieldTypeDefinitionReferencedObjectType = "SOCIAL_CHANNEL"
+	FieldTypeDefinitionReferencedObjectTypeSocialPost                   FieldTypeDefinitionReferencedObjectType = "SOCIAL_POST"
+	FieldTypeDefinitionReferencedObjectTypeSocialProfile                FieldTypeDefinitionReferencedObjectType = "SOCIAL_PROFILE"
+	FieldTypeDefinitionReferencedObjectTypeSoxProtectedDummyType        FieldTypeDefinitionReferencedObjectType = "SOX_PROTECTED_DUMMY_TYPE"
 	FieldTypeDefinitionReferencedObjectTypeSoxProtectedTestType         FieldTypeDefinitionReferencedObjectType = "SOX_PROTECTED_TEST_TYPE"
-	FieldTypeDefinitionReferencedObjectTypeOrder                        FieldTypeDefinitionReferencedObjectType = "ORDER"
-	FieldTypeDefinitionReferencedObjectTypeMarketingSMS                 FieldTypeDefinitionReferencedObjectType = "MARKETING_SMS"
-	FieldTypeDefinitionReferencedObjectTypePartnerAccount               FieldTypeDefinitionReferencedObjectType = "PARTNER_ACCOUNT"
-	FieldTypeDefinitionReferencedObjectTypeCampaignTemplate             FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeCampaignTemplateStep         FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_TEMPLATE_STEP"
-	FieldTypeDefinitionReferencedObjectTypePlaylist                     FieldTypeDefinitionReferencedObjectType = "PLAYLIST"
-	FieldTypeDefinitionReferencedObjectTypeClip                         FieldTypeDefinitionReferencedObjectType = "CLIP"
-	FieldTypeDefinitionReferencedObjectTypeCampaignBudgetItem           FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_BUDGET_ITEM"
-	FieldTypeDefinitionReferencedObjectTypeCampaignSpendItem            FieldTypeDefinitionReferencedObjectType = "CAMPAIGN_SPEND_ITEM"
-	FieldTypeDefinitionReferencedObjectTypeMic                          FieldTypeDefinitionReferencedObjectType = "MIC"
-	FieldTypeDefinitionReferencedObjectTypeContentAudit                 FieldTypeDefinitionReferencedObjectType = "CONTENT_AUDIT"
-	FieldTypeDefinitionReferencedObjectTypeContentAuditPage             FieldTypeDefinitionReferencedObjectType = "CONTENT_AUDIT_PAGE"
-	FieldTypeDefinitionReferencedObjectTypePlaylistFolder               FieldTypeDefinitionReferencedObjectType = "PLAYLIST_FOLDER"
-	FieldTypeDefinitionReferencedObjectTypeLead                         FieldTypeDefinitionReferencedObjectType = "LEAD"
-	FieldTypeDefinitionReferencedObjectTypeAbandonedCart                FieldTypeDefinitionReferencedObjectType = "ABANDONED_CART"
-	FieldTypeDefinitionReferencedObjectTypeExternalWebURL               FieldTypeDefinitionReferencedObjectType = "EXTERNAL_WEB_URL"
+	FieldTypeDefinitionReferencedObjectTypeSubmissionTag                FieldTypeDefinitionReferencedObjectType = "SUBMISSION_TAG"
+	FieldTypeDefinitionReferencedObjectTypeSubscription                 FieldTypeDefinitionReferencedObjectType = "SUBSCRIPTION"
+	FieldTypeDefinitionReferencedObjectTypeTask                         FieldTypeDefinitionReferencedObjectType = "TASK"
+	FieldTypeDefinitionReferencedObjectTypeTaskTemplate                 FieldTypeDefinitionReferencedObjectType = "TASK_TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeTax                          FieldTypeDefinitionReferencedObjectType = "TAX"
+	FieldTypeDefinitionReferencedObjectTypeTemplate                     FieldTypeDefinitionReferencedObjectType = "TEMPLATE"
+	FieldTypeDefinitionReferencedObjectTypeTicket                       FieldTypeDefinitionReferencedObjectType = "TICKET"
+	FieldTypeDefinitionReferencedObjectTypeUnknown                      FieldTypeDefinitionReferencedObjectType = "UNKNOWN"
+	FieldTypeDefinitionReferencedObjectTypeUnsubscribe                  FieldTypeDefinitionReferencedObjectType = "UNSUBSCRIBE"
+	FieldTypeDefinitionReferencedObjectTypeUser                         FieldTypeDefinitionReferencedObjectType = "USER"
 	FieldTypeDefinitionReferencedObjectTypeView                         FieldTypeDefinitionReferencedObjectType = "VIEW"
 	FieldTypeDefinitionReferencedObjectTypeViewBlock                    FieldTypeDefinitionReferencedObjectType = "VIEW_BLOCK"
-	FieldTypeDefinitionReferencedObjectTypeRoster                       FieldTypeDefinitionReferencedObjectType = "ROSTER"
-	FieldTypeDefinitionReferencedObjectTypeCart                         FieldTypeDefinitionReferencedObjectType = "CART"
-	FieldTypeDefinitionReferencedObjectTypeAutomationPlatformFlowAction FieldTypeDefinitionReferencedObjectType = "AUTOMATION_PLATFORM_FLOW_ACTION"
-	FieldTypeDefinitionReferencedObjectTypeSocialProfile                FieldTypeDefinitionReferencedObjectType = "SOCIAL_PROFILE"
-	FieldTypeDefinitionReferencedObjectTypePartnerClient                FieldTypeDefinitionReferencedObjectType = "PARTNER_CLIENT"
-	FieldTypeDefinitionReferencedObjectTypeRosterMember                 FieldTypeDefinitionReferencedObjectType = "ROSTER_MEMBER"
-	FieldTypeDefinitionReferencedObjectTypeMarketingEventAttendance     FieldTypeDefinitionReferencedObjectType = "MARKETING_EVENT_ATTENDANCE"
-	FieldTypeDefinitionReferencedObjectTypeAllPages                     FieldTypeDefinitionReferencedObjectType = "ALL_PAGES"
-	FieldTypeDefinitionReferencedObjectTypeAIForecast                   FieldTypeDefinitionReferencedObjectType = "AI_FORECAST"
-	FieldTypeDefinitionReferencedObjectTypeCRMPipelinesDummyType        FieldTypeDefinitionReferencedObjectType = "CRM_PIPELINES_DUMMY_TYPE"
-	FieldTypeDefinitionReferencedObjectTypeKnowledgeArticle             FieldTypeDefinitionReferencedObjectType = "KNOWLEDGE_ARTICLE"
-	FieldTypeDefinitionReferencedObjectTypePropertyInfo                 FieldTypeDefinitionReferencedObjectType = "PROPERTY_INFO"
-	FieldTypeDefinitionReferencedObjectTypeDataPrivacyConsent           FieldTypeDefinitionReferencedObjectType = "DATA_PRIVACY_CONSENT"
-	FieldTypeDefinitionReferencedObjectTypeGoalTemplate                 FieldTypeDefinitionReferencedObjectType = "GOAL_TEMPLATE"
-	FieldTypeDefinitionReferencedObjectTypeScoreConfiguration           FieldTypeDefinitionReferencedObjectType = "SCORE_CONFIGURATION"
-	FieldTypeDefinitionReferencedObjectTypeAudience                     FieldTypeDefinitionReferencedObjectType = "AUDIENCE"
-	FieldTypeDefinitionReferencedObjectTypePartnerClientRevenue         FieldTypeDefinitionReferencedObjectType = "PARTNER_CLIENT_REVENUE"
-	FieldTypeDefinitionReferencedObjectTypeAutomationJourney            FieldTypeDefinitionReferencedObjectType = "AUTOMATION_JOURNEY"
-	FieldTypeDefinitionReferencedObjectTypeUnknown                      FieldTypeDefinitionReferencedObjectType = "UNKNOWN"
+	FieldTypeDefinitionReferencedObjectTypeWebInteractive               FieldTypeDefinitionReferencedObjectType = "WEB_INTERACTIVE"
 )
 
 // The properties ExternalOptions, Name, Options, Type are required.
@@ -424,57 +422,55 @@ type FieldTypeDefinitionParam struct {
 	ExternalOptions bool                 `json:"externalOptions,required"`
 	Name            string               `json:"name,required"`
 	Options         []shared.OptionParam `json:"options,omitzero,required"`
-	// Any of "string", "number", "bool", "datetime", "enumeration", "date",
-	// "phone_number", "currency_number", "json", "object_coordinates".
+	// Any of "bool", "currency_number", "date", "datetime", "enumeration", "json",
+	// "number", "object_coordinates", "phone_number", "string".
 	Type                         FieldTypeDefinitionType `json:"type,omitzero,required"`
 	Description                  param.Opt[string]       `json:"description,omitzero"`
 	ExternalOptionsReferenceType param.Opt[string]       `json:"externalOptionsReferenceType,omitzero"`
 	HelpText                     param.Opt[string]       `json:"helpText,omitzero"`
 	Label                        param.Opt[string]       `json:"label,omitzero"`
 	OptionsURL                   param.Opt[string]       `json:"optionsUrl,omitzero"`
-	// Any of "booleancheckbox", "checkbox", "date", "file", "number", "phonenumber",
-	// "radio", "select", "text", "textarea", "calculation_equation",
-	// "calculation_rollup", "calculation_score", "calculation_read_time", "unknown",
-	// "html".
+	// Any of "booleancheckbox", "calculation_equation", "calculation_read_time",
+	// "calculation_rollup", "calculation_score", "checkbox", "date", "file", "html",
+	// "number", "phonenumber", "radio", "select", "text", "textarea", "unknown".
 	FieldType FieldTypeDefinitionFieldType `json:"fieldType,omitzero"`
-	// Any of "CONTACT", "COMPANY", "DEAL", "ENGAGEMENT", "TICKET", "OWNER", "PRODUCT",
-	// "LINE_ITEM", "BET_DELIVERABLE_SERVICE", "CONTENT", "CONVERSATION", "BET_ALERT",
-	// "PORTAL", "QUOTE", "FORM_SUBMISSION_INBOUNDDB", "QUOTA", "UNSUBSCRIBE",
-	// "COMMUNICATION", "FEEDBACK_SUBMISSION", "ATTRIBUTION", "SALESFORCE_SYNC_ERROR",
-	// "RESTORABLE_CRM_OBJECT", "HUB", "LANDING_PAGE", "PRODUCT_OR_FOLDER", "TASK",
-	// "FORM", "MARKETING_EMAIL", "AD_ACCOUNT", "AD_CAMPAIGN", "AD_GROUP", "AD",
-	// "KEYWORD", "CAMPAIGN", "SOCIAL_CHANNEL", "SOCIAL_POST", "SITE_PAGE",
-	// "BLOG_POST", "IMPORT", "EXPORT", "CTA", "TASK_TEMPLATE",
-	// "AUTOMATION_PLATFORM_FLOW", "OBJECT_LIST", "NOTE", "MEETING_EVENT", "CALL",
-	// "EMAIL", "PUBLISHING_TASK", "CONVERSATION_SESSION",
-	// "CONTACT_CREATE_ATTRIBUTION", "INVOICE", "MARKETING_EVENT",
-	// "CONVERSATION_INBOX", "CHATFLOW", "MEDIA_BRIDGE", "SEQUENCE", "SEQUENCE_STEP",
-	// "FORECAST", "SNIPPET", "TEMPLATE", "DEAL_CREATE_ATTRIBUTION", "QUOTE_TEMPLATE",
-	// "QUOTE_MODULE", "QUOTE_MODULE_FIELD", "QUOTE_FIELD", "SEQUENCE_ENROLLMENT",
-	// "SUBSCRIPTION", "ACCEPTANCE_TEST", "SOCIAL_BROADCAST", "DEAL_SPLIT",
-	// "DEAL_REGISTRATION", "GOAL_TARGET", "GOAL_TARGET_GROUP",
-	// "PORTAL_OBJECT_SYNC_MESSAGE", "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER",
-	// "SEQUENCE_STEP_ENROLLMENT", "APPROVAL", "APPROVAL_STEP", "CTA_VARIANT",
-	// "SALES_DOCUMENT", "DISCOUNT", "FEE", "TAX", "MARKETING_CALENDAR",
-	// "PERMISSIONS_TESTING", "PRIVACY_SCANNER_COOKIE", "DATA_SYNC_STATE",
-	// "WEB_INTERACTIVE", "PLAYBOOK", "FOLDER", "PLAYBOOK_QUESTION",
-	// "PLAYBOOK_SUBMISSION", "PLAYBOOK_SUBMISSION_ANSWER", "COMMERCE_PAYMENT",
-	// "GSC_PROPERTY", "SOX_PROTECTED_DUMMY_TYPE", "BLOG_LISTING_PAGE",
-	// "QUARANTINED_SUBMISSION", "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT",
-	// "MARKETING_CAMPAIGN_UTM", "DISCOUNT_TEMPLATE", "DISCOUNT_CODE",
-	// "FEEDBACK_SURVEY", "CMS_URL", "SALES_TASK", "SALES_WORKLOAD", "USER",
-	// "POSTAL_MAIL", "SCHEMAS_BACKEND_TEST", "PAYMENT_LINK", "SUBMISSION_TAG",
-	// "CAMPAIGN_STEP", "SCHEDULING_PAGE", "SOX_PROTECTED_TEST_TYPE", "ORDER",
-	// "MARKETING_SMS", "PARTNER_ACCOUNT", "CAMPAIGN_TEMPLATE",
-	// "CAMPAIGN_TEMPLATE_STEP", "PLAYLIST", "CLIP", "CAMPAIGN_BUDGET_ITEM",
-	// "CAMPAIGN_SPEND_ITEM", "MIC", "CONTENT_AUDIT", "CONTENT_AUDIT_PAGE",
-	// "PLAYLIST_FOLDER", "LEAD", "ABANDONED_CART", "EXTERNAL_WEB_URL", "VIEW",
-	// "VIEW_BLOCK", "ROSTER", "CART", "AUTOMATION_PLATFORM_FLOW_ACTION",
-	// "SOCIAL_PROFILE", "PARTNER_CLIENT", "ROSTER_MEMBER",
-	// "MARKETING_EVENT_ATTENDANCE", "ALL_PAGES", "AI_FORECAST",
-	// "CRM_PIPELINES_DUMMY_TYPE", "KNOWLEDGE_ARTICLE", "PROPERTY_INFO",
-	// "DATA_PRIVACY_CONSENT", "GOAL_TEMPLATE", "SCORE_CONFIGURATION", "AUDIENCE",
-	// "PARTNER_CLIENT_REVENUE", "AUTOMATION_JOURNEY", "UNKNOWN".
+	// Any of "ABANDONED_CART", "ACCEPTANCE_TEST", "AD", "AD_ACCOUNT", "AD_CAMPAIGN",
+	// "AD_GROUP", "AI_FORECAST", "ALL_PAGES", "APPROVAL", "APPROVAL_STEP",
+	// "ATTRIBUTION", "AUDIENCE", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM_FLOW",
+	// "AUTOMATION_PLATFORM_FLOW_ACTION", "BET_ALERT", "BET_DELIVERABLE_SERVICE",
+	// "BLOG_LISTING_PAGE", "BLOG_POST", "CALL", "CAMPAIGN", "CAMPAIGN_BUDGET_ITEM",
+	// "CAMPAIGN_SPEND_ITEM", "CAMPAIGN_STEP", "CAMPAIGN_TEMPLATE",
+	// "CAMPAIGN_TEMPLATE_STEP", "CART", "CHATFLOW", "CLIP", "CMS_URL",
+	// "COMMERCE_PAYMENT", "COMMUNICATION", "COMPANY", "CONTACT",
+	// "CONTACT_CREATE_ATTRIBUTION", "CONTENT", "CONTENT_AUDIT", "CONTENT_AUDIT_PAGE",
+	// "CONVERSATION", "CONVERSATION_INBOX", "CONVERSATION_SESSION",
+	// "CRM_PIPELINES_DUMMY_TYPE", "CTA", "CTA_VARIANT", "DATA_PRIVACY_CONSENT",
+	// "DATA_SYNC_STATE", "DEAL", "DEAL_CREATE_ATTRIBUTION", "DEAL_REGISTRATION",
+	// "DEAL_SPLIT", "DISCOUNT", "DISCOUNT_CODE", "DISCOUNT_TEMPLATE", "EMAIL",
+	// "ENGAGEMENT", "EXPORT", "EXTERNAL_WEB_URL", "FEE", "FEEDBACK_SUBMISSION",
+	// "FEEDBACK_SURVEY", "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER", "FOLDER",
+	// "FORECAST", "FORM", "FORM_SUBMISSION_INBOUNDDB", "GOAL_TARGET",
+	// "GOAL_TARGET_GROUP", "GOAL_TEMPLATE", "GSC_PROPERTY", "HUB", "IMPORT",
+	// "INVOICE", "KEYWORD", "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LEAD", "LINE_ITEM",
+	// "MARKETING_CALENDAR", "MARKETING_CAMPAIGN_UTM", "MARKETING_EMAIL",
+	// "MARKETING_EVENT", "MARKETING_EVENT_ATTENDANCE", "MARKETING_SMS",
+	// "MEDIA_BRIDGE", "MEETING_EVENT", "MIC", "NOTE", "OBJECT_LIST", "ORDER", "OWNER",
+	// "PARTNER_ACCOUNT", "PARTNER_CLIENT", "PARTNER_CLIENT_REVENUE", "PAYMENT_LINK",
+	// "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT", "PERMISSIONS_TESTING",
+	// "PLAYBOOK", "PLAYBOOK_QUESTION", "PLAYBOOK_SUBMISSION",
+	// "PLAYBOOK_SUBMISSION_ANSWER", "PLAYLIST", "PLAYLIST_FOLDER", "PORTAL",
+	// "PORTAL_OBJECT_SYNC_MESSAGE", "POSTAL_MAIL", "PRIVACY_SCANNER_COOKIE",
+	// "PRODUCT", "PRODUCT_OR_FOLDER", "PROPERTY_INFO", "PUBLISHING_TASK",
+	// "QUARANTINED_SUBMISSION", "QUOTA", "QUOTE", "QUOTE_FIELD", "QUOTE_MODULE",
+	// "QUOTE_MODULE_FIELD", "QUOTE_TEMPLATE", "RESTORABLE_CRM_OBJECT", "ROSTER",
+	// "ROSTER_MEMBER", "SALES_DOCUMENT", "SALES_TASK", "SALES_WORKLOAD",
+	// "SALESFORCE_SYNC_ERROR", "SCHEDULING_PAGE", "SCHEMAS_BACKEND_TEST",
+	// "SCORE_CONFIGURATION", "SEQUENCE", "SEQUENCE_ENROLLMENT", "SEQUENCE_STEP",
+	// "SEQUENCE_STEP_ENROLLMENT", "SITE_PAGE", "SNIPPET", "SOCIAL_BROADCAST",
+	// "SOCIAL_CHANNEL", "SOCIAL_POST", "SOCIAL_PROFILE", "SOX_PROTECTED_DUMMY_TYPE",
+	// "SOX_PROTECTED_TEST_TYPE", "SUBMISSION_TAG", "SUBSCRIPTION", "TASK",
+	// "TASK_TEMPLATE", "TAX", "TEMPLATE", "TICKET", "UNKNOWN", "UNSUBSCRIBE", "USER",
+	// "VIEW", "VIEW_BLOCK", "WEB_INTERACTIVE".
 	ReferencedObjectType FieldTypeDefinitionReferencedObjectType `json:"referencedObjectType,omitzero"`
 	paramObj
 }
@@ -831,8 +827,8 @@ func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) GetDependentF
 
 type PublicActionFunction struct {
 	FunctionSource string `json:"functionSource,required"`
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionFunctionType `json:"functionType,required"`
 	ID           string                           `json:"id"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -863,17 +859,17 @@ func (r PublicActionFunction) ToParam() PublicActionFunctionParam {
 type PublicActionFunctionFunctionType string
 
 const (
+	PublicActionFunctionFunctionTypePostActionExecution PublicActionFunctionFunctionType = "POST_ACTION_EXECUTION"
+	PublicActionFunctionFunctionTypePostFetchOptions    PublicActionFunctionFunctionType = "POST_FETCH_OPTIONS"
 	PublicActionFunctionFunctionTypePreActionExecution  PublicActionFunctionFunctionType = "PRE_ACTION_EXECUTION"
 	PublicActionFunctionFunctionTypePreFetchOptions     PublicActionFunctionFunctionType = "PRE_FETCH_OPTIONS"
-	PublicActionFunctionFunctionTypePostFetchOptions    PublicActionFunctionFunctionType = "POST_FETCH_OPTIONS"
-	PublicActionFunctionFunctionTypePostActionExecution PublicActionFunctionFunctionType = "POST_ACTION_EXECUTION"
 )
 
 // The properties FunctionSource, FunctionType are required.
 type PublicActionFunctionParam struct {
 	FunctionSource string `json:"functionSource,required"`
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionFunctionType `json:"functionType,omitzero,required"`
 	ID           param.Opt[string]                `json:"id,omitzero"`
 	paramObj
@@ -888,8 +884,8 @@ func (r *PublicActionFunctionParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicActionFunctionIdentifier struct {
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionIdentifierFunctionType `json:"functionType,required"`
 	ID           string                                     `json:"id"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -910,10 +906,10 @@ func (r *PublicActionFunctionIdentifier) UnmarshalJSON(data []byte) error {
 type PublicActionFunctionIdentifierFunctionType string
 
 const (
+	PublicActionFunctionIdentifierFunctionTypePostActionExecution PublicActionFunctionIdentifierFunctionType = "POST_ACTION_EXECUTION"
+	PublicActionFunctionIdentifierFunctionTypePostFetchOptions    PublicActionFunctionIdentifierFunctionType = "POST_FETCH_OPTIONS"
 	PublicActionFunctionIdentifierFunctionTypePreActionExecution  PublicActionFunctionIdentifierFunctionType = "PRE_ACTION_EXECUTION"
 	PublicActionFunctionIdentifierFunctionTypePreFetchOptions     PublicActionFunctionIdentifierFunctionType = "PRE_FETCH_OPTIONS"
-	PublicActionFunctionIdentifierFunctionTypePostFetchOptions    PublicActionFunctionIdentifierFunctionType = "POST_FETCH_OPTIONS"
-	PublicActionFunctionIdentifierFunctionTypePostActionExecution PublicActionFunctionIdentifierFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type PublicActionLabels struct {

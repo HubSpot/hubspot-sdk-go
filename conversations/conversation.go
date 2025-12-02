@@ -14,7 +14,7 @@ import (
 )
 
 // ConversationService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -83,7 +83,7 @@ type BatchResponsePublicActor struct {
 	CompletedAt time.Time          `json:"completedAt,required" format:"date-time"`
 	Results     []PublicActorUnion `json:"results,required"`
 	StartedAt   time.Time          `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponsePublicActorStatus `json:"status,required"`
 	Links       map[string]string              `json:"links"`
 	RequestedAt time.Time                      `json:"requestedAt" format:"date-time"`
@@ -109,10 +109,10 @@ func (r *BatchResponsePublicActor) UnmarshalJSON(data []byte) error {
 type BatchResponsePublicActorStatus string
 
 const (
-	BatchResponsePublicActorStatusPending    BatchResponsePublicActorStatus = "PENDING"
-	BatchResponsePublicActorStatusProcessing BatchResponsePublicActorStatus = "PROCESSING"
 	BatchResponsePublicActorStatusCanceled   BatchResponsePublicActorStatus = "CANCELED"
 	BatchResponsePublicActorStatusComplete   BatchResponsePublicActorStatus = "COMPLETE"
+	BatchResponsePublicActorStatusPending    BatchResponsePublicActorStatus = "PENDING"
+	BatchResponsePublicActorStatusProcessing BatchResponsePublicActorStatus = "PROCESSING"
 )
 
 type BotActor struct {
@@ -145,8 +145,8 @@ const (
 )
 
 type CollectionResponsePublicMessageForwardPaging struct {
-	Results []CollectionResponsePublicMessageForwardPagingResultUnion `json:"results,required"`
-	Paging  shared.ForwardPaging                                      `json:"paging"`
+	Results []PublicMessageUnion `json:"results,required"`
+	Paging  shared.ForwardPaging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -159,147 +159,6 @@ type CollectionResponsePublicMessageForwardPaging struct {
 // Returns the unmodified JSON received from the API
 func (r CollectionResponsePublicMessageForwardPaging) RawJSON() string { return r.JSON.raw }
 func (r *CollectionResponsePublicMessageForwardPaging) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// CollectionResponsePublicMessageForwardPagingResultUnion contains all possible
-// properties and values from [PublicConversationsMessage], [PublicComment],
-// [PublicWelcomeMessage], [PublicAssignmentMessage], [PublicThreadStatusChange],
-// [PublicThreadInboxChange].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type CollectionResponsePublicMessageForwardPagingResultUnion struct {
-	ID       string `json:"id"`
-	Archived bool   `json:"archived"`
-	// This field is a union of [[]PublicConversationsMessageAttachmentUnion],
-	// [[]PublicCommentAttachmentUnion]
-	Attachments      CollectionResponsePublicMessageForwardPagingResultUnionAttachments `json:"attachments"`
-	ChannelAccountID string                                                             `json:"channelAccountId"`
-	ChannelID        string                                                             `json:"channelId"`
-	// This field is from variant [PublicConversationsMessage].
-	Client                PublicClient `json:"client"`
-	ConversationsThreadID string       `json:"conversationsThreadId"`
-	CreatedAt             time.Time    `json:"createdAt"`
-	CreatedBy             string       `json:"createdBy"`
-	// This field is from variant [PublicConversationsMessage].
-	Direction  PublicConversationsMessageDirection `json:"direction"`
-	Recipients []PublicRecipient                   `json:"recipients"`
-	Senders    []PublicSender                      `json:"senders"`
-	Text       string                              `json:"text"`
-	// This field is from variant [PublicConversationsMessage].
-	TruncationStatus PublicConversationsMessageTruncationStatus `json:"truncationStatus"`
-	Type             string                                     `json:"type"`
-	// This field is from variant [PublicConversationsMessage].
-	InReplyToID string `json:"inReplyToId"`
-	RichText    string `json:"richText"`
-	// This field is from variant [PublicConversationsMessage].
-	Status PublicMessageStatus `json:"status"`
-	// This field is from variant [PublicConversationsMessage].
-	Subject   string    `json:"subject"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	// This field is from variant [PublicAssignmentMessage].
-	AssignedFrom string `json:"assignedFrom"`
-	// This field is from variant [PublicAssignmentMessage].
-	AssignedTo string `json:"assignedTo"`
-	// This field is from variant [PublicThreadStatusChange].
-	NewStatus PublicThreadStatusChangeNewStatus `json:"newStatus"`
-	// This field is from variant [PublicThreadInboxChange].
-	FromInboxID string `json:"fromInboxId"`
-	// This field is from variant [PublicThreadInboxChange].
-	ToInboxID string `json:"toInboxId"`
-	JSON      struct {
-		ID                    respjson.Field
-		Archived              respjson.Field
-		Attachments           respjson.Field
-		ChannelAccountID      respjson.Field
-		ChannelID             respjson.Field
-		Client                respjson.Field
-		ConversationsThreadID respjson.Field
-		CreatedAt             respjson.Field
-		CreatedBy             respjson.Field
-		Direction             respjson.Field
-		Recipients            respjson.Field
-		Senders               respjson.Field
-		Text                  respjson.Field
-		TruncationStatus      respjson.Field
-		Type                  respjson.Field
-		InReplyToID           respjson.Field
-		RichText              respjson.Field
-		Status                respjson.Field
-		Subject               respjson.Field
-		UpdatedAt             respjson.Field
-		AssignedFrom          respjson.Field
-		AssignedTo            respjson.Field
-		NewStatus             respjson.Field
-		FromInboxID           respjson.Field
-		ToInboxID             respjson.Field
-		raw                   string
-	} `json:"-"`
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicConversationsMessage() (v PublicConversationsMessage) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicComment() (v PublicComment) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicWelcomeMessage() (v PublicWelcomeMessage) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicAssignmentMessage() (v PublicAssignmentMessage) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicThreadStatusChange() (v PublicThreadStatusChange) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) AsPublicThreadInboxChange() (v PublicThreadInboxChange) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u CollectionResponsePublicMessageForwardPagingResultUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *CollectionResponsePublicMessageForwardPagingResultUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// CollectionResponsePublicMessageForwardPagingResultUnionAttachments is an
-// implicit subunion of [CollectionResponsePublicMessageForwardPagingResultUnion].
-// CollectionResponsePublicMessageForwardPagingResultUnionAttachments provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [CollectionResponsePublicMessageForwardPagingResultUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfPublicConversationsMessageAttachments
-// OfPublicCommentAttachments]
-type CollectionResponsePublicMessageForwardPagingResultUnionAttachments struct {
-	// This field will be present if the value is a
-	// [[]PublicConversationsMessageAttachmentUnion] instead of an object.
-	OfPublicConversationsMessageAttachments []PublicConversationsMessageAttachmentUnion `json:",inline"`
-	// This field will be present if the value is a [[]PublicCommentAttachmentUnion]
-	// instead of an object.
-	OfPublicCommentAttachments []PublicCommentAttachmentUnion `json:",inline"`
-	JSON                       struct {
-		OfPublicConversationsMessageAttachments respjson.Field
-		OfPublicCommentAttachments              respjson.Field
-		raw                                     string
-	} `json:"-"`
-}
-
-func (r *CollectionResponsePublicMessageForwardPagingResultUnionAttachments) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -595,7 +454,7 @@ func (r *ContactOrgParam) UnmarshalJSON(data []byte) error {
 
 type ContactPhone struct {
 	Phone string `json:"phone,required"`
-	// Any of "CELL", "MAIN", "HOME", "WORK".
+	// Any of "CELL", "HOME", "MAIN", "WORK".
 	Type ContactPhoneType `json:"type"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -625,15 +484,15 @@ type ContactPhoneType string
 
 const (
 	ContactPhoneTypeCell ContactPhoneType = "CELL"
-	ContactPhoneTypeMain ContactPhoneType = "MAIN"
 	ContactPhoneTypeHome ContactPhoneType = "HOME"
+	ContactPhoneTypeMain ContactPhoneType = "MAIN"
 	ContactPhoneTypeWork ContactPhoneType = "WORK"
 )
 
 // The property Phone is required.
 type ContactPhoneParam struct {
 	Phone string `json:"phone,required"`
-	// Any of "CELL", "MAIN", "HOME", "WORK".
+	// Any of "CELL", "HOME", "MAIN", "WORK".
 	Type ContactPhoneType `json:"type,omitzero"`
 	paramObj
 }
@@ -750,6 +609,217 @@ func (r ContactURLParam) MarshalJSON() (data []byte, err error) {
 func (r *ContactURLParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type ConversationsPublicConversationsMessage struct {
+	ID                    string                                                   `json:"id,required"`
+	Archived              bool                                                     `json:"archived,required"`
+	Attachments           []ConversationsPublicConversationsMessageAttachmentUnion `json:"attachments,required"`
+	ChannelAccountID      string                                                   `json:"channelAccountId,required"`
+	ChannelID             string                                                   `json:"channelId,required"`
+	Client                PublicClient                                             `json:"client,required"`
+	ConversationsThreadID string                                                   `json:"conversationsThreadId,required"`
+	CreatedAt             time.Time                                                `json:"createdAt,required" format:"date-time"`
+	CreatedBy             string                                                   `json:"createdBy,required"`
+	// Any of "INCOMING", "OUTGOING".
+	Direction  ConversationsPublicConversationsMessageDirection `json:"direction,required"`
+	Recipients []PublicRecipient                                `json:"recipients,required"`
+	Senders    []PublicSender                                   `json:"senders,required"`
+	Text       string                                           `json:"text,required"`
+	// Any of "NOT_TRUNCATED", "TRUNCATED_TO_MOST_RECENT_REPLY", "TRUNCATED".
+	TruncationStatus ConversationsPublicConversationsMessageTruncationStatus `json:"truncationStatus,required"`
+	// Any of "MESSAGE".
+	Type        ConversationsPublicConversationsMessageType `json:"type,required"`
+	InReplyToID string                                      `json:"inReplyToId"`
+	RichText    string                                      `json:"richText"`
+	Status      PublicMessageStatus                         `json:"status"`
+	Subject     string                                      `json:"subject"`
+	UpdatedAt   time.Time                                   `json:"updatedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                    respjson.Field
+		Archived              respjson.Field
+		Attachments           respjson.Field
+		ChannelAccountID      respjson.Field
+		ChannelID             respjson.Field
+		Client                respjson.Field
+		ConversationsThreadID respjson.Field
+		CreatedAt             respjson.Field
+		CreatedBy             respjson.Field
+		Direction             respjson.Field
+		Recipients            respjson.Field
+		Senders               respjson.Field
+		Text                  respjson.Field
+		TruncationStatus      respjson.Field
+		Type                  respjson.Field
+		InReplyToID           respjson.Field
+		RichText              respjson.Field
+		Status                respjson.Field
+		Subject               respjson.Field
+		UpdatedAt             respjson.Field
+		ExtraFields           map[string]respjson.Field
+		raw                   string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ConversationsPublicConversationsMessage) RawJSON() string { return r.JSON.raw }
+func (r *ConversationsPublicConversationsMessage) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ConversationsPublicConversationsMessageAttachmentUnion contains all possible
+// properties and values from [PublicFile], [PublicLocation], [PublicContact],
+// [PublicUnsupportedContent], [PublicMessageHeader], [PublicQuickReplies],
+// [PublicWhatsAppTemplateMetadata], [PublicSocialMetadataAttachment].
+//
+// Use the methods beginning with 'As' to cast the union to one of its variants.
+type ConversationsPublicConversationsMessageAttachmentUnion struct {
+	// This field is a union of [string], [int64]
+	FileID ConversationsPublicConversationsMessageAttachmentUnionFileID `json:"fileId"`
+	// This field is from variant [PublicFile].
+	FileUsageType string `json:"fileUsageType"`
+	Type          string `json:"type"`
+	Name          string `json:"name"`
+	URL           string `json:"url"`
+	// This field is from variant [PublicLocation].
+	Latitude float64 `json:"latitude"`
+	// This field is from variant [PublicLocation].
+	Longitude float64 `json:"longitude"`
+	// This field is from variant [PublicLocation].
+	Address string `json:"address"`
+	// This field is from variant [PublicContact].
+	ContactProfile ContactProfile `json:"contactProfile"`
+	// This field is from variant [PublicMessageHeader].
+	Text string `json:"text"`
+	// This field is from variant [PublicQuickReplies].
+	AllowMultiSelect bool `json:"allowMultiSelect"`
+	// This field is from variant [PublicQuickReplies].
+	AllowUserInput bool `json:"allowUserInput"`
+	// This field is from variant [PublicQuickReplies].
+	QuickReplies []QuickReply `json:"quickReplies"`
+	// This field is from variant [PublicWhatsAppTemplateMetadata].
+	CrmObjectIDs map[string]int64 `json:"crmObjectIds"`
+	// This field is from variant [PublicWhatsAppTemplateMetadata].
+	MappedTemplateID string `json:"mappedTemplateId"`
+	// This field is from variant [PublicWhatsAppTemplateMetadata].
+	Parameters map[string]string `json:"parameters"`
+	// This field is from variant [PublicSocialMetadataAttachment].
+	SocialMetadata SocialMetadata `json:"socialMetadata"`
+	JSON           struct {
+		FileID           respjson.Field
+		FileUsageType    respjson.Field
+		Type             respjson.Field
+		Name             respjson.Field
+		URL              respjson.Field
+		Latitude         respjson.Field
+		Longitude        respjson.Field
+		Address          respjson.Field
+		ContactProfile   respjson.Field
+		Text             respjson.Field
+		AllowMultiSelect respjson.Field
+		AllowUserInput   respjson.Field
+		QuickReplies     respjson.Field
+		CrmObjectIDs     respjson.Field
+		MappedTemplateID respjson.Field
+		Parameters       respjson.Field
+		SocialMetadata   respjson.Field
+		raw              string
+	} `json:"-"`
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsFile() (v PublicFile) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsLocation() (v PublicLocation) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsContact() (v PublicContact) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsUnsupportedContent() (v PublicUnsupportedContent) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsMessageHeader() (v PublicMessageHeader) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsQuickReplies() (v PublicQuickReplies) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsWhatsappTemplateMetadata() (v PublicWhatsAppTemplateMetadata) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u ConversationsPublicConversationsMessageAttachmentUnion) AsSocialMediaMetadata() (v PublicSocialMetadataAttachment) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+// Returns the unmodified JSON received from the API
+func (u ConversationsPublicConversationsMessageAttachmentUnion) RawJSON() string { return u.JSON.raw }
+
+func (r *ConversationsPublicConversationsMessageAttachmentUnion) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ConversationsPublicConversationsMessageAttachmentUnionFileID is an implicit
+// subunion of [ConversationsPublicConversationsMessageAttachmentUnion].
+// ConversationsPublicConversationsMessageAttachmentUnionFileID provides convenient
+// access to the sub-properties of the union.
+//
+// For type safety it is recommended to directly use a variant of the
+// [ConversationsPublicConversationsMessageAttachmentUnion].
+//
+// If the underlying value is not a json object, one of the following properties
+// will be valid: OfString OfInt]
+type ConversationsPublicConversationsMessageAttachmentUnionFileID struct {
+	// This field will be present if the value is a [string] instead of an object.
+	OfString string `json:",inline"`
+	// This field will be present if the value is a [int64] instead of an object.
+	OfInt int64 `json:",inline"`
+	JSON  struct {
+		OfString respjson.Field
+		OfInt    respjson.Field
+		raw      string
+	} `json:"-"`
+}
+
+func (r *ConversationsPublicConversationsMessageAttachmentUnionFileID) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ConversationsPublicConversationsMessageDirection string
+
+const (
+	ConversationsPublicConversationsMessageDirectionIncoming ConversationsPublicConversationsMessageDirection = "INCOMING"
+	ConversationsPublicConversationsMessageDirectionOutgoing ConversationsPublicConversationsMessageDirection = "OUTGOING"
+)
+
+type ConversationsPublicConversationsMessageTruncationStatus string
+
+const (
+	ConversationsPublicConversationsMessageTruncationStatusNotTruncated               ConversationsPublicConversationsMessageTruncationStatus = "NOT_TRUNCATED"
+	ConversationsPublicConversationsMessageTruncationStatusTruncatedToMostRecentReply ConversationsPublicConversationsMessageTruncationStatus = "TRUNCATED_TO_MOST_RECENT_REPLY"
+	ConversationsPublicConversationsMessageTruncationStatusTruncated                  ConversationsPublicConversationsMessageTruncationStatus = "TRUNCATED"
+)
+
+type ConversationsPublicConversationsMessageType string
+
+const (
+	ConversationsPublicConversationsMessageTypeMessage ConversationsPublicConversationsMessageType = "MESSAGE"
+)
 
 type EmailActor struct {
 	ID    string `json:"id,required"`
@@ -945,10 +1015,8 @@ const (
 )
 
 type PublicChannel struct {
-	// The ID of the channel.
-	ID string `json:"id"`
-	// The name of the channel.
-	Name string `json:"name"`
+	ID   string `json:"id,required"`
+	Name string `json:"name,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -965,33 +1033,28 @@ func (r *PublicChannel) UnmarshalJSON(data []byte) error {
 }
 
 type PublicChannelAccount struct {
-	Archived bool `json:"archived,required"`
-	// The ID of the channel account.
-	ID string `json:"id"`
-	// Whether the channel account is turned on.
-	Active     bool      `json:"active"`
-	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
-	Authorized bool      `json:"authorized"`
-	// The ID of the channel that the channel account is an instance of.
-	ChannelID          string                   `json:"channelId"`
-	CreatedAt          time.Time                `json:"createdAt" format:"date-time"`
+	ID                 string                   `json:"id,required"`
+	Active             bool                     `json:"active,required"`
+	Archived           bool                     `json:"archived,required"`
+	Authorized         bool                     `json:"authorized,required"`
+	ChannelID          string                   `json:"channelId,required"`
+	CreatedAt          time.Time                `json:"createdAt,required" format:"date-time"`
+	InboxID            string                   `json:"inboxId,required"`
+	Name               string                   `json:"name,required"`
+	ArchivedAt         time.Time                `json:"archivedAt" format:"date-time"`
 	DeliveryIdentifier PublicDeliveryIdentifier `json:"deliveryIdentifier"`
-	// The ID of the conversations inbox that contains the channel account.
-	InboxID string `json:"inboxId"`
-	// The name of the channel account.
-	Name string `json:"name"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Archived           respjson.Field
 		ID                 respjson.Field
 		Active             respjson.Field
-		ArchivedAt         respjson.Field
+		Archived           respjson.Field
 		Authorized         respjson.Field
 		ChannelID          respjson.Field
 		CreatedAt          respjson.Field
-		DeliveryIdentifier respjson.Field
 		InboxID            respjson.Field
 		Name               respjson.Field
+		ArchivedAt         respjson.Field
+		DeliveryIdentifier respjson.Field
 		ExtraFields        map[string]respjson.Field
 		raw                string
 	} `json:"-"`
@@ -1004,12 +1067,9 @@ func (r *PublicChannelAccount) UnmarshalJSON(data []byte) error {
 }
 
 type PublicClient struct {
-	// The type of the client.
-	//
-	// Any of "HUBSPOT", "SYSTEM", "INTEGRATION", "UNKNOWN".
-	ClientType PublicClientClientType `json:"clientType"`
-	// The ID of the client if the client is an integration.
-	IntegrationAppID int64 `json:"integrationAppId"`
+	// Any of "HUBSPOT", "INTEGRATION", "SYSTEM", "UNKNOWN".
+	ClientType       PublicClientClientType `json:"clientType,required"`
+	IntegrationAppID int64                  `json:"integrationAppId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ClientType       respjson.Field
@@ -1025,13 +1085,12 @@ func (r *PublicClient) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The type of the client.
 type PublicClientClientType string
 
 const (
 	PublicClientClientTypeHubspot     PublicClientClientType = "HUBSPOT"
-	PublicClientClientTypeSystem      PublicClientClientType = "SYSTEM"
 	PublicClientClientTypeIntegration PublicClientClientType = "INTEGRATION"
+	PublicClientClientTypeSystem      PublicClientClientType = "SYSTEM"
 	PublicClientClientTypeUnknown     PublicClientClientType = "UNKNOWN"
 )
 
@@ -1088,8 +1147,8 @@ type PublicCommentAttachmentUnion struct {
 	// This field is from variant [PublicFile].
 	FileUsageType string `json:"fileUsageType"`
 	Type          string `json:"type"`
-	URL           string `json:"url"`
 	Name          string `json:"name"`
+	URL           string `json:"url"`
 	// This field is from variant [PublicLocation].
 	Latitude float64 `json:"latitude"`
 	// This field is from variant [PublicLocation].
@@ -1107,7 +1166,7 @@ type PublicCommentAttachmentUnion struct {
 	// This field is from variant [PublicQuickReplies].
 	QuickReplies []QuickReply `json:"quickReplies"`
 	// This field is from variant [PublicWhatsAppTemplateMetadata].
-	CRMObjectIDs map[string]int64 `json:"crmObjectIds"`
+	CrmObjectIDs map[string]int64 `json:"crmObjectIds"`
 	// This field is from variant [PublicWhatsAppTemplateMetadata].
 	MappedTemplateID string `json:"mappedTemplateId"`
 	// This field is from variant [PublicWhatsAppTemplateMetadata].
@@ -1118,8 +1177,8 @@ type PublicCommentAttachmentUnion struct {
 		FileID           respjson.Field
 		FileUsageType    respjson.Field
 		Type             respjson.Field
-		URL              respjson.Field
 		Name             respjson.Field
+		URL              respjson.Field
 		Latitude         respjson.Field
 		Longitude        respjson.Field
 		Address          respjson.Field
@@ -1128,7 +1187,7 @@ type PublicCommentAttachmentUnion struct {
 		AllowMultiSelect respjson.Field
 		AllowUserInput   respjson.Field
 		QuickReplies     respjson.Field
-		CRMObjectIDs     respjson.Field
+		CrmObjectIDs     respjson.Field
 		MappedTemplateID respjson.Field
 		Parameters       respjson.Field
 		SocialMetadata   respjson.Field
@@ -1327,217 +1386,6 @@ const (
 	PublicContactTypeContact PublicContactType = "CONTACT"
 )
 
-type PublicConversationsMessage struct {
-	ID                    string                                      `json:"id,required"`
-	Archived              bool                                        `json:"archived,required"`
-	Attachments           []PublicConversationsMessageAttachmentUnion `json:"attachments,required"`
-	ChannelAccountID      string                                      `json:"channelAccountId,required"`
-	ChannelID             string                                      `json:"channelId,required"`
-	Client                PublicClient                                `json:"client,required"`
-	ConversationsThreadID string                                      `json:"conversationsThreadId,required"`
-	CreatedAt             time.Time                                   `json:"createdAt,required" format:"date-time"`
-	CreatedBy             string                                      `json:"createdBy,required"`
-	// Any of "INCOMING", "OUTGOING".
-	Direction  PublicConversationsMessageDirection `json:"direction,required"`
-	Recipients []PublicRecipient                   `json:"recipients,required"`
-	Senders    []PublicSender                      `json:"senders,required"`
-	Text       string                              `json:"text,required"`
-	// Any of "NOT_TRUNCATED", "TRUNCATED_TO_MOST_RECENT_REPLY", "TRUNCATED".
-	TruncationStatus PublicConversationsMessageTruncationStatus `json:"truncationStatus,required"`
-	// Any of "MESSAGE".
-	Type        PublicConversationsMessageType `json:"type,required"`
-	InReplyToID string                         `json:"inReplyToId"`
-	RichText    string                         `json:"richText"`
-	Status      PublicMessageStatus            `json:"status"`
-	Subject     string                         `json:"subject"`
-	UpdatedAt   time.Time                      `json:"updatedAt" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                    respjson.Field
-		Archived              respjson.Field
-		Attachments           respjson.Field
-		ChannelAccountID      respjson.Field
-		ChannelID             respjson.Field
-		Client                respjson.Field
-		ConversationsThreadID respjson.Field
-		CreatedAt             respjson.Field
-		CreatedBy             respjson.Field
-		Direction             respjson.Field
-		Recipients            respjson.Field
-		Senders               respjson.Field
-		Text                  respjson.Field
-		TruncationStatus      respjson.Field
-		Type                  respjson.Field
-		InReplyToID           respjson.Field
-		RichText              respjson.Field
-		Status                respjson.Field
-		Subject               respjson.Field
-		UpdatedAt             respjson.Field
-		ExtraFields           map[string]respjson.Field
-		raw                   string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicConversationsMessage) RawJSON() string { return r.JSON.raw }
-func (r *PublicConversationsMessage) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicConversationsMessageAttachmentUnion contains all possible properties and
-// values from [PublicFile], [PublicLocation], [PublicContact],
-// [PublicUnsupportedContent], [PublicMessageHeader], [PublicQuickReplies],
-// [PublicWhatsAppTemplateMetadata], [PublicSocialMetadataAttachment].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PublicConversationsMessageAttachmentUnion struct {
-	// This field is a union of [string], [int64]
-	FileID PublicConversationsMessageAttachmentUnionFileID `json:"fileId"`
-	// This field is from variant [PublicFile].
-	FileUsageType string `json:"fileUsageType"`
-	Type          string `json:"type"`
-	URL           string `json:"url"`
-	Name          string `json:"name"`
-	// This field is from variant [PublicLocation].
-	Latitude float64 `json:"latitude"`
-	// This field is from variant [PublicLocation].
-	Longitude float64 `json:"longitude"`
-	// This field is from variant [PublicLocation].
-	Address string `json:"address"`
-	// This field is from variant [PublicContact].
-	ContactProfile ContactProfile `json:"contactProfile"`
-	// This field is from variant [PublicMessageHeader].
-	Text string `json:"text"`
-	// This field is from variant [PublicQuickReplies].
-	AllowMultiSelect bool `json:"allowMultiSelect"`
-	// This field is from variant [PublicQuickReplies].
-	AllowUserInput bool `json:"allowUserInput"`
-	// This field is from variant [PublicQuickReplies].
-	QuickReplies []QuickReply `json:"quickReplies"`
-	// This field is from variant [PublicWhatsAppTemplateMetadata].
-	CRMObjectIDs map[string]int64 `json:"crmObjectIds"`
-	// This field is from variant [PublicWhatsAppTemplateMetadata].
-	MappedTemplateID string `json:"mappedTemplateId"`
-	// This field is from variant [PublicWhatsAppTemplateMetadata].
-	Parameters map[string]string `json:"parameters"`
-	// This field is from variant [PublicSocialMetadataAttachment].
-	SocialMetadata SocialMetadata `json:"socialMetadata"`
-	JSON           struct {
-		FileID           respjson.Field
-		FileUsageType    respjson.Field
-		Type             respjson.Field
-		URL              respjson.Field
-		Name             respjson.Field
-		Latitude         respjson.Field
-		Longitude        respjson.Field
-		Address          respjson.Field
-		ContactProfile   respjson.Field
-		Text             respjson.Field
-		AllowMultiSelect respjson.Field
-		AllowUserInput   respjson.Field
-		QuickReplies     respjson.Field
-		CRMObjectIDs     respjson.Field
-		MappedTemplateID respjson.Field
-		Parameters       respjson.Field
-		SocialMetadata   respjson.Field
-		raw              string
-	} `json:"-"`
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsFile() (v PublicFile) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsLocation() (v PublicLocation) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsContact() (v PublicContact) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsUnsupportedContent() (v PublicUnsupportedContent) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsMessageHeader() (v PublicMessageHeader) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsQuickReplies() (v PublicQuickReplies) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsWhatsappTemplateMetadata() (v PublicWhatsAppTemplateMetadata) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicConversationsMessageAttachmentUnion) AsSocialMediaMetadata() (v PublicSocialMetadataAttachment) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PublicConversationsMessageAttachmentUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *PublicConversationsMessageAttachmentUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicConversationsMessageAttachmentUnionFileID is an implicit subunion of
-// [PublicConversationsMessageAttachmentUnion].
-// PublicConversationsMessageAttachmentUnionFileID provides convenient access to
-// the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicConversationsMessageAttachmentUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfString OfInt]
-type PublicConversationsMessageAttachmentUnionFileID struct {
-	// This field will be present if the value is a [string] instead of an object.
-	OfString string `json:",inline"`
-	// This field will be present if the value is a [int64] instead of an object.
-	OfInt int64 `json:",inline"`
-	JSON  struct {
-		OfString respjson.Field
-		OfInt    respjson.Field
-		raw      string
-	} `json:"-"`
-}
-
-func (r *PublicConversationsMessageAttachmentUnionFileID) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicConversationsMessageDirection string
-
-const (
-	PublicConversationsMessageDirectionIncoming PublicConversationsMessageDirection = "INCOMING"
-	PublicConversationsMessageDirectionOutgoing PublicConversationsMessageDirection = "OUTGOING"
-)
-
-type PublicConversationsMessageTruncationStatus string
-
-const (
-	PublicConversationsMessageTruncationStatusNotTruncated               PublicConversationsMessageTruncationStatus = "NOT_TRUNCATED"
-	PublicConversationsMessageTruncationStatusTruncatedToMostRecentReply PublicConversationsMessageTruncationStatus = "TRUNCATED_TO_MOST_RECENT_REPLY"
-	PublicConversationsMessageTruncationStatusTruncated                  PublicConversationsMessageTruncationStatus = "TRUNCATED"
-)
-
-type PublicConversationsMessageType string
-
-const (
-	PublicConversationsMessageTypeMessage PublicConversationsMessageType = "MESSAGE"
-)
-
 // The properties Attachments, ChannelAccountID, ChannelID, Recipients,
 // SenderActorID, Text, Type are required.
 type PublicConversationsMessageEggParam struct {
@@ -1680,15 +1528,15 @@ type PublicFile struct {
 	FileUsageType string `json:"fileUsageType,required"`
 	// Any of "FILE".
 	Type PublicFileType `json:"type,required"`
-	URL  string         `json:"url,required"`
 	Name string         `json:"name"`
+	URL  string         `json:"url"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		FileID        respjson.Field
 		FileUsageType respjson.Field
 		Type          respjson.Field
-		URL           respjson.Field
 		Name          respjson.Field
+		URL           respjson.Field
 		ExtraFields   map[string]respjson.Field
 		raw           string
 	} `json:"-"`
@@ -1729,27 +1577,22 @@ const (
 )
 
 type PublicInbox struct {
-	Archived bool `json:"archived,required"`
-	// Specifies whether this refers to a Conversations Inbox or to the Help Desk.
-	// Valid values are INBOX or HELP_DESK
-	Type string `json:"type,required"`
-	// The ID of the inbox.
-	ID         string    `json:"id"`
+	ID         string    `json:"id,required"`
+	Archived   bool      `json:"archived,required"`
+	CreatedAt  time.Time `json:"createdAt,required" format:"date-time"`
+	Name       string    `json:"name,required"`
+	Type       string    `json:"type,required"`
+	UpdatedAt  time.Time `json:"updatedAt,required" format:"date-time"`
 	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
-	// When the inbox was created.
-	CreatedAt time.Time `json:"createdAt" format:"date-time"`
-	// The name of the inbox.
-	Name      string    `json:"name"`
-	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Archived    respjson.Field
-		Type        respjson.Field
 		ID          respjson.Field
-		ArchivedAt  respjson.Field
+		Archived    respjson.Field
 		CreatedAt   respjson.Field
 		Name        respjson.Field
+		Type        respjson.Field
 		UpdatedAt   respjson.Field
+		ArchivedAt  respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -1795,38 +1638,39 @@ const (
 )
 
 // PublicMessageUnion contains all possible properties and values from
-// [PublicConversationsMessage], [PublicComment], [PublicWelcomeMessage],
-// [PublicAssignmentMessage], [PublicThreadStatusChange],
+// [ConversationsPublicConversationsMessage], [PublicComment],
+// [PublicWelcomeMessage], [PublicAssignmentMessage], [PublicThreadStatusChange],
 // [PublicThreadInboxChange].
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicMessageUnion struct {
 	ID       string `json:"id"`
 	Archived bool   `json:"archived"`
-	// This field is a union of [[]PublicConversationsMessageAttachmentUnion],
+	// This field is a union of
+	// [[]ConversationsPublicConversationsMessageAttachmentUnion],
 	// [[]PublicCommentAttachmentUnion]
 	Attachments      PublicMessageUnionAttachments `json:"attachments"`
 	ChannelAccountID string                        `json:"channelAccountId"`
 	ChannelID        string                        `json:"channelId"`
-	// This field is from variant [PublicConversationsMessage].
+	// This field is from variant [ConversationsPublicConversationsMessage].
 	Client                PublicClient `json:"client"`
 	ConversationsThreadID string       `json:"conversationsThreadId"`
 	CreatedAt             time.Time    `json:"createdAt"`
 	CreatedBy             string       `json:"createdBy"`
-	// This field is from variant [PublicConversationsMessage].
-	Direction  PublicConversationsMessageDirection `json:"direction"`
-	Recipients []PublicRecipient                   `json:"recipients"`
-	Senders    []PublicSender                      `json:"senders"`
-	Text       string                              `json:"text"`
-	// This field is from variant [PublicConversationsMessage].
-	TruncationStatus PublicConversationsMessageTruncationStatus `json:"truncationStatus"`
-	Type             string                                     `json:"type"`
-	// This field is from variant [PublicConversationsMessage].
+	// This field is from variant [ConversationsPublicConversationsMessage].
+	Direction  ConversationsPublicConversationsMessageDirection `json:"direction"`
+	Recipients []PublicRecipient                                `json:"recipients"`
+	Senders    []PublicSender                                   `json:"senders"`
+	Text       string                                           `json:"text"`
+	// This field is from variant [ConversationsPublicConversationsMessage].
+	TruncationStatus ConversationsPublicConversationsMessageTruncationStatus `json:"truncationStatus"`
+	Type             string                                                  `json:"type"`
+	// This field is from variant [ConversationsPublicConversationsMessage].
 	InReplyToID string `json:"inReplyToId"`
 	RichText    string `json:"richText"`
-	// This field is from variant [PublicConversationsMessage].
+	// This field is from variant [ConversationsPublicConversationsMessage].
 	Status PublicMessageStatus `json:"status"`
-	// This field is from variant [PublicConversationsMessage].
+	// This field is from variant [ConversationsPublicConversationsMessage].
 	Subject   string    `json:"subject"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	// This field is from variant [PublicAssignmentMessage].
@@ -1869,7 +1713,7 @@ type PublicMessageUnion struct {
 	} `json:"-"`
 }
 
-func (u PublicMessageUnion) AsPublicConversationsMessage() (v PublicConversationsMessage) {
+func (u PublicMessageUnion) AsConversationsPublicConversationsMessage() (v ConversationsPublicConversationsMessage) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -1914,19 +1758,19 @@ func (r *PublicMessageUnion) UnmarshalJSON(data []byte) error {
 // [PublicMessageUnion].
 //
 // If the underlying value is not a json object, one of the following properties
-// will be valid: OfPublicConversationsMessageAttachments
+// will be valid: OfConversationsPublicConversationsMessageAttachments
 // OfPublicCommentAttachments]
 type PublicMessageUnionAttachments struct {
 	// This field will be present if the value is a
-	// [[]PublicConversationsMessageAttachmentUnion] instead of an object.
-	OfPublicConversationsMessageAttachments []PublicConversationsMessageAttachmentUnion `json:",inline"`
+	// [[]ConversationsPublicConversationsMessageAttachmentUnion] instead of an object.
+	OfConversationsPublicConversationsMessageAttachments []ConversationsPublicConversationsMessageAttachmentUnion `json:",inline"`
 	// This field will be present if the value is a [[]PublicCommentAttachmentUnion]
 	// instead of an object.
 	OfPublicCommentAttachments []PublicCommentAttachmentUnion `json:",inline"`
 	JSON                       struct {
-		OfPublicConversationsMessageAttachments respjson.Field
-		OfPublicCommentAttachments              respjson.Field
-		raw                                     string
+		OfConversationsPublicConversationsMessageAttachments respjson.Field
+		OfPublicCommentAttachments                           respjson.Field
+		raw                                                  string
 	} `json:"-"`
 }
 
@@ -2128,7 +1972,7 @@ const (
 )
 
 type PublicMessageStatus struct {
-	// Any of "SENT", "FAILED", "RECEIVED", "READ".
+	// Any of "FAILED", "READ", "RECEIVED", "SENT".
 	StatusType     PublicMessageStatusStatusType `json:"statusType,required"`
 	FailureDetails PublicMessageFailureDetails   `json:"failureDetails"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2149,10 +1993,10 @@ func (r *PublicMessageStatus) UnmarshalJSON(data []byte) error {
 type PublicMessageStatusStatusType string
 
 const (
-	PublicMessageStatusStatusTypeSent     PublicMessageStatusStatusType = "SENT"
 	PublicMessageStatusStatusTypeFailed   PublicMessageStatusStatusType = "FAILED"
-	PublicMessageStatusStatusTypeReceived PublicMessageStatusStatusType = "RECEIVED"
 	PublicMessageStatusStatusTypeRead     PublicMessageStatusStatusType = "READ"
+	PublicMessageStatusStatusTypeReceived PublicMessageStatusStatusType = "RECEIVED"
+	PublicMessageStatusStatusTypeSent     PublicMessageStatusStatusType = "SENT"
 )
 
 type PublicQuickReplies struct {
@@ -2316,39 +2160,26 @@ const (
 )
 
 type PublicThread struct {
-	// The unique ID of the thread.
-	ID string `json:"id,required"`
-	// The ID of the associated Contact in the CRM. If the Contact for the thread has
-	// not yet been added or created, the `associatedContactId` returned will be a
-	// visitorID and cannot be used to search for the Contact in the CRM.
-	AssociatedContactID string `json:"associatedContactId,required"`
-	// When the thread was created.
-	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
-	// The ID of the conversations inbox containing the thread.
-	InboxID                  string `json:"inboxId,required"`
-	OriginalChannelAccountID string `json:"originalChannelAccountId,required"`
-	OriginalChannelID        string `json:"originalChannelId,required"`
-	// Whether the thread is marked as spam.
-	Spam bool `json:"spam,required"`
-	// The thread's status: `OPEN` or `CLOSED`.
-	//
-	// Any of "OPEN", "CLOSED".
-	Status PublicThreadStatus `json:"status,required"`
-	// Whether this thread is archived.
-	Archived   bool   `json:"archived"`
-	AssignedTo string `json:"assignedTo"`
-	// When the thread was closed. Only set if the thread is closed.
-	ClosedAt time.Time `json:"closedAt" format:"date-time"`
-	// The time that the latest message was sent on the thread.
-	LatestMessageReceivedTimestamp time.Time `json:"latestMessageReceivedTimestamp" format:"date-time"`
-	// The time that the latest message was sent on the thread.
-	LatestMessageSentTimestamp time.Time `json:"latestMessageSentTimestamp" format:"date-time"`
-	// The time that the latest message was sent or received on the thread.
-	LatestMessageTimestamp time.Time                `json:"latestMessageTimestamp" format:"date-time"`
-	ThreadAssociations     PublicThreadAssociations `json:"threadAssociations"`
+	ID                       string    `json:"id,required"`
+	Archived                 bool      `json:"archived,required"`
+	AssociatedContactID      string    `json:"associatedContactId,required"`
+	CreatedAt                time.Time `json:"createdAt,required" format:"date-time"`
+	InboxID                  string    `json:"inboxId,required"`
+	OriginalChannelAccountID string    `json:"originalChannelAccountId,required"`
+	OriginalChannelID        string    `json:"originalChannelId,required"`
+	Spam                     bool      `json:"spam,required"`
+	// Any of "CLOSED", "OPEN".
+	Status                         PublicThreadStatus       `json:"status,required"`
+	AssignedTo                     string                   `json:"assignedTo"`
+	ClosedAt                       time.Time                `json:"closedAt" format:"date-time"`
+	LatestMessageReceivedTimestamp time.Time                `json:"latestMessageReceivedTimestamp" format:"date-time"`
+	LatestMessageSentTimestamp     time.Time                `json:"latestMessageSentTimestamp" format:"date-time"`
+	LatestMessageTimestamp         time.Time                `json:"latestMessageTimestamp" format:"date-time"`
+	ThreadAssociations             PublicThreadAssociations `json:"threadAssociations"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                             respjson.Field
+		Archived                       respjson.Field
 		AssociatedContactID            respjson.Field
 		CreatedAt                      respjson.Field
 		InboxID                        respjson.Field
@@ -2356,7 +2187,6 @@ type PublicThread struct {
 		OriginalChannelID              respjson.Field
 		Spam                           respjson.Field
 		Status                         respjson.Field
-		Archived                       respjson.Field
 		AssignedTo                     respjson.Field
 		ClosedAt                       respjson.Field
 		LatestMessageReceivedTimestamp respjson.Field
@@ -2374,12 +2204,11 @@ func (r *PublicThread) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The thread's status: `OPEN` or `CLOSED`.
 type PublicThreadStatus string
 
 const (
-	PublicThreadStatusOpen   PublicThreadStatus = "OPEN"
 	PublicThreadStatusClosed PublicThreadStatus = "CLOSED"
+	PublicThreadStatusOpen   PublicThreadStatus = "OPEN"
 )
 
 type PublicThreadAssociations struct {
@@ -2495,11 +2324,8 @@ const (
 )
 
 type PublicThreadUpdateRequestParam struct {
-	// Whether this thread is archived. Set to false to restore the thread.
 	Archived param.Opt[bool] `json:"archived,omitzero"`
-	// The thread's status: `OPEN` or `CLOSED`.
-	//
-	// Any of "OPEN", "CLOSED".
+	// Any of "CLOSED", "OPEN".
 	Status PublicThreadUpdateRequestStatus `json:"status,omitzero"`
 	paramObj
 }
@@ -2512,12 +2338,11 @@ func (r *PublicThreadUpdateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The thread's status: `OPEN` or `CLOSED`.
 type PublicThreadUpdateRequestStatus string
 
 const (
-	PublicThreadUpdateRequestStatusOpen   PublicThreadUpdateRequestStatus = "OPEN"
 	PublicThreadUpdateRequestStatusClosed PublicThreadUpdateRequestStatus = "CLOSED"
+	PublicThreadUpdateRequestStatusOpen   PublicThreadUpdateRequestStatus = "OPEN"
 )
 
 type PublicUnsupportedContent struct {
@@ -2593,14 +2418,14 @@ const (
 )
 
 type PublicWhatsAppTemplateMetadata struct {
-	CRMObjectIDs     map[string]int64  `json:"crmObjectIds,required"`
+	CrmObjectIDs     map[string]int64  `json:"crmObjectIds,required"`
 	MappedTemplateID string            `json:"mappedTemplateId,required"`
 	Parameters       map[string]string `json:"parameters,required"`
 	// Any of "WHATSAPP_TEMPLATE_METADATA".
 	Type PublicWhatsAppTemplateMetadataType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		CRMObjectIDs     respjson.Field
+		CrmObjectIDs     respjson.Field
 		MappedTemplateID respjson.Field
 		Parameters       respjson.Field
 		Type             respjson.Field

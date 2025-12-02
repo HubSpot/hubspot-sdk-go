@@ -25,7 +25,7 @@ import (
 )
 
 // HubdbTableService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -198,11 +198,27 @@ func (r *HubdbTableService) ImportDraft(ctx context.Context, tableIDOrName strin
 
 // Returns the details for each draft table defined in the specified account,
 // including column definitions.
-func (r *HubdbTableService) ListDraft(ctx context.Context, query HubdbTableListDraftParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalHubDBTableV3ForwardPaging, err error) {
+func (r *HubdbTableService) ListDraft(ctx context.Context, query HubdbTableListDraftParams, opts ...option.RequestOption) (res *pagination.Page[HubDBTableV3], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "cms/v3/hubdb/tables/draft"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Returns the details for each draft table defined in the specified account,
+// including column definitions.
+func (r *HubdbTableService) ListDraftAutoPaging(ctx context.Context, query HubdbTableListDraftParams, opts ...option.RequestOption) *pagination.PageAutoPager[HubDBTableV3] {
+	return pagination.NewPageAutoPager(r.ListDraft(ctx, query, opts...))
 }
 
 // Publishes the table by copying the data and table schema changes from draft
@@ -282,15 +298,17 @@ type HubdbTableListParams struct {
 	// `paging.next.after` JSON property of a paged response containing more results.
 	After param.Opt[string] `query:"after,omitzero" json:"-"`
 	// Specifies whether to return archived tables. Defaults to `false`.
-	Archived    param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// Specifies the content type for the response.
 	ContentType param.Opt[string] `query:"contentType,omitzero" json:"-"`
 	// Only return tables created after the specified time.
 	CreatedAfter param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
 	// Only return tables created at exactly the specified time.
 	CreatedAt param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
 	// Only return tables created before the specified time.
-	CreatedBefore        param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
-	IsGetLocalizedSchema param.Opt[bool]      `query:"isGetLocalizedSchema,omitzero" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// Indicates whether to retrieve the localized schema for the tables.
+	IsGetLocalizedSchema param.Opt[bool] `query:"isGetLocalizedSchema,omitzero" json:"-"`
 	// The maximum number of results to return. Default is 1000.
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Only return tables last updated after the specified time.
@@ -364,7 +382,8 @@ type HubdbTableGetParams struct {
 	// Set this to `true` to return details for an archived table. Defaults to `false`.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// Set this to `true` to populate foreign ID values in the result.
-	IncludeForeignIDs    param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	IncludeForeignIDs param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	// Indicates whether to retrieve the localized schema for the tables.
 	IsGetLocalizedSchema param.Opt[bool] `query:"isGetLocalizedSchema,omitzero" json:"-"`
 	paramObj
 }
@@ -381,7 +400,8 @@ type HubdbTableGetDraftParams struct {
 	// Set this to `true` to return an archived table. Defaults to `false`.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// Set this to `true` to populate foreign ID values in the result.
-	IncludeForeignIDs    param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	IncludeForeignIDs param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	// Indicates whether to retrieve the localized schema for the table.
 	IsGetLocalizedSchema param.Opt[bool] `query:"isGetLocalizedSchema,omitzero" json:"-"`
 	paramObj
 }
@@ -424,15 +444,17 @@ type HubdbTableListDraftParams struct {
 	// `paging.next.after` JSON property of a paged response containing more results.
 	After param.Opt[string] `query:"after,omitzero" json:"-"`
 	// Specifies whether to return archived tables. Defaults to `false`.
-	Archived    param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// Specifies the content type for the response.
 	ContentType param.Opt[string] `query:"contentType,omitzero" json:"-"`
 	// Only return tables created after the specified time.
 	CreatedAfter param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
 	// Only return tables created at exactly the specified time.
 	CreatedAt param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
 	// Only return tables created before the specified time.
-	CreatedBefore        param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
-	IsGetLocalizedSchema param.Opt[bool]      `query:"isGetLocalizedSchema,omitzero" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// Indicates whether to retrieve the localized schema.
+	IsGetLocalizedSchema param.Opt[bool] `query:"isGetLocalizedSchema,omitzero" json:"-"`
 	// The maximum number of results to return. Default is 1000.
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Only return tables last updated after the specified time.
@@ -507,7 +529,8 @@ type HubdbTableUpdateDraftParams struct {
 	// Specifies whether to return archived tables. Defaults to `false`.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// Set this to `true` to populate foreign ID values in the result.
-	IncludeForeignIDs    param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	IncludeForeignIDs param.Opt[bool] `query:"includeForeignIds,omitzero" json:"-"`
+	// Indicates whether to retrieve the localized schema for the table.
 	IsGetLocalizedSchema param.Opt[bool] `query:"isGetLocalizedSchema,omitzero" json:"-"`
 	paramObj
 }

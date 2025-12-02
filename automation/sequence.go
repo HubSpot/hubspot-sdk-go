@@ -7,19 +7,22 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // SequenceService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -40,22 +43,37 @@ func NewSequenceService(opts ...option.RequestOption) (r SequenceService) {
 }
 
 // Retrieve a list of sequences that belong to a specific user.
-func (r *SequenceService) List(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseWithTotalPublicSequenceLiteResponseForwardPaging, err error) {
+func (r *SequenceService) List(ctx context.Context, query SequenceListParams, opts ...option.RequestOption) (res *pagination.Page[PublicSequenceLiteResponse], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "automation/v4/sequences/"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve a list of sequences that belong to a specific user.
+func (r *SequenceService) ListAutoPaging(ctx context.Context, query SequenceListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicSequenceLiteResponse] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Retrieve details of a specific sequence by its ID.
-func (r *SequenceService) Get(ctx context.Context, sequenceID string, opts ...option.RequestOption) (res *PublicSequenceResponse, err error) {
+func (r *SequenceService) Get(ctx context.Context, sequenceID string, query SequenceGetParams, opts ...option.RequestOption) (res *PublicSequenceResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if sequenceID == "" {
 		err = errors.New("missing required sequenceId parameter")
 		return
 	}
 	path := fmt.Sprintf("automation/v4/sequences/%s", sequenceID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -84,7 +102,7 @@ func (r *CollectionResponseWithTotalPublicSequenceLiteResponseForwardPaging) Unm
 type EmailSettingsResponse struct {
 	// Any of "ALL", "NONE".
 	Criteria EmailSettingsResponseCriteria `json:"criteria,required"`
-	// Any of "LEAD_BASED", "ACCOUNT_BASED".
+	// Any of "ACCOUNT_BASED", "LEAD_BASED".
 	SellingStrategy EmailSettingsResponseSellingStrategy `json:"sellingStrategy,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -111,14 +129,14 @@ const (
 type EmailSettingsResponseSellingStrategy string
 
 const (
-	EmailSettingsResponseSellingStrategyLeadBased    EmailSettingsResponseSellingStrategy = "LEAD_BASED"
 	EmailSettingsResponseSellingStrategyAccountBased EmailSettingsResponseSellingStrategy = "ACCOUNT_BASED"
+	EmailSettingsResponseSellingStrategyLeadBased    EmailSettingsResponseSellingStrategy = "LEAD_BASED"
 )
 
 type MeetingSettingsResponse struct {
 	// Any of "ALL", "NONE".
 	Criteria MeetingSettingsResponseCriteria `json:"criteria,required"`
-	// Any of "LEAD_BASED", "ACCOUNT_BASED".
+	// Any of "ACCOUNT_BASED", "LEAD_BASED".
 	SellingStrategy MeetingSettingsResponseSellingStrategy `json:"sellingStrategy,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -145,8 +163,8 @@ const (
 type MeetingSettingsResponseSellingStrategy string
 
 const (
-	MeetingSettingsResponseSellingStrategyLeadBased    MeetingSettingsResponseSellingStrategy = "LEAD_BASED"
 	MeetingSettingsResponseSellingStrategyAccountBased MeetingSettingsResponseSellingStrategy = "ACCOUNT_BASED"
+	MeetingSettingsResponseSellingStrategyLeadBased    MeetingSettingsResponseSellingStrategy = "LEAD_BASED"
 )
 
 type PublicEmailPatternResponse struct {
@@ -444,4 +462,33 @@ type UnenrollmentSettingsResponse struct {
 func (r UnenrollmentSettingsResponse) RawJSON() string { return r.JSON.raw }
 func (r *UnenrollmentSettingsResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+type SequenceListParams struct {
+	UserID string            `query:"userId,required" json:"-"`
+	After  param.Opt[string] `query:"after,omitzero" json:"-"`
+	Limit  param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	Name   param.Opt[string] `query:"name,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [SequenceListParams]'s query parameters as `url.Values`.
+func (r SequenceListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type SequenceGetParams struct {
+	UserID string `query:"userId,required" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [SequenceGetParams]'s query parameters as `url.Values`.
+func (r SequenceGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

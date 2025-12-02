@@ -16,7 +16,7 @@ import (
 )
 
 // ActionFunctionService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -46,7 +46,7 @@ func (r *ActionFunctionService) List(ctx context.Context, definitionID string, q
 	return
 }
 
-// Archive a function for a definition
+// Archive a function for a specific definition.
 func (r *ActionFunctionService) Delete(ctx context.Context, functionID string, body ActionFunctionDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -120,7 +120,7 @@ func (r *ActionFunctionService) Get(ctx context.Context, functionID string, quer
 	return
 }
 
-// Retrieve functions by a type for a given definition
+// Retrieve functions of a specific type for a given definition.
 func (r *ActionFunctionService) GetByFunctionType(ctx context.Context, functionType ActionFunctionGetByFunctionTypeParamsFunctionType, query ActionFunctionGetByFunctionTypeParams, opts ...option.RequestOption) (res *PublicActionFunction, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if query.DefinitionID == "" {
@@ -140,8 +140,8 @@ type ActionFunctionListParams struct {
 type ActionFunctionDeleteParams struct {
 	AppID        int64  `path:"appId,required" json:"-"`
 	DefinitionID string `path:"definitionId,required" json:"-"`
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType ActionFunctionDeleteParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
 	paramObj
 }
@@ -149,17 +149,17 @@ type ActionFunctionDeleteParams struct {
 type ActionFunctionDeleteParamsFunctionType string
 
 const (
+	ActionFunctionDeleteParamsFunctionTypePostActionExecution ActionFunctionDeleteParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionDeleteParamsFunctionTypePostFetchOptions    ActionFunctionDeleteParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionDeleteParamsFunctionTypePreActionExecution  ActionFunctionDeleteParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionDeleteParamsFunctionTypePreFetchOptions     ActionFunctionDeleteParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionDeleteParamsFunctionTypePostFetchOptions    ActionFunctionDeleteParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionDeleteParamsFunctionTypePostActionExecution ActionFunctionDeleteParamsFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type ActionFunctionNewOrReplaceParams struct {
 	AppID        int64  `path:"appId,required" json:"-"`
 	DefinitionID string `path:"definitionId,required" json:"-"`
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType ActionFunctionNewOrReplaceParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
 	Body         string
 	paramObj
@@ -175,10 +175,10 @@ func (r *ActionFunctionNewOrReplaceParams) UnmarshalJSON(data []byte) error {
 type ActionFunctionNewOrReplaceParamsFunctionType string
 
 const (
+	ActionFunctionNewOrReplaceParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionNewOrReplaceParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionNewOrReplaceParamsFunctionTypePreActionExecution  ActionFunctionNewOrReplaceParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionNewOrReplaceParamsFunctionTypePreFetchOptions     ActionFunctionNewOrReplaceParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionNewOrReplaceParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionNewOrReplaceParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceParamsFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type ActionFunctionNewOrReplaceByFunctionTypeParams struct {
@@ -198,10 +198,10 @@ func (r *ActionFunctionNewOrReplaceByFunctionTypeParams) UnmarshalJSON(data []by
 type ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType string
 
 const (
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type ActionFunctionDeleteByFunctionTypeParams struct {
@@ -213,17 +213,17 @@ type ActionFunctionDeleteByFunctionTypeParams struct {
 type ActionFunctionDeleteByFunctionTypeParamsFunctionType string
 
 const (
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionDeleteByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionDeleteByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionDeleteByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionDeleteByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type ActionFunctionGetParams struct {
 	AppID        int64  `path:"appId,required" json:"-"`
 	DefinitionID string `path:"definitionId,required" json:"-"`
-	// Any of "PRE_ACTION_EXECUTION", "PRE_FETCH_OPTIONS", "POST_FETCH_OPTIONS",
-	// "POST_ACTION_EXECUTION".
+	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
+	// "PRE_FETCH_OPTIONS".
 	FunctionType ActionFunctionGetParamsFunctionType `path:"functionType,omitzero,required" json:"-"`
 	paramObj
 }
@@ -231,10 +231,10 @@ type ActionFunctionGetParams struct {
 type ActionFunctionGetParamsFunctionType string
 
 const (
+	ActionFunctionGetParamsFunctionTypePostActionExecution ActionFunctionGetParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionGetParamsFunctionTypePostFetchOptions    ActionFunctionGetParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionGetParamsFunctionTypePreActionExecution  ActionFunctionGetParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionGetParamsFunctionTypePreFetchOptions     ActionFunctionGetParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionGetParamsFunctionTypePostFetchOptions    ActionFunctionGetParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionGetParamsFunctionTypePostActionExecution ActionFunctionGetParamsFunctionType = "POST_ACTION_EXECUTION"
 )
 
 type ActionFunctionGetByFunctionTypeParams struct {
@@ -246,8 +246,8 @@ type ActionFunctionGetByFunctionTypeParams struct {
 type ActionFunctionGetByFunctionTypeParamsFunctionType string
 
 const (
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
+	ActionFunctionGetByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
 	ActionFunctionGetByFunctionTypeParamsFunctionTypePreActionExecution  ActionFunctionGetByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
 	ActionFunctionGetByFunctionTypeParamsFunctionTypePreFetchOptions     ActionFunctionGetByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-	ActionFunctionGetByFunctionTypeParamsFunctionTypePostFetchOptions    ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionFunctionGetByFunctionTypeParamsFunctionTypePostActionExecution ActionFunctionGetByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
 )

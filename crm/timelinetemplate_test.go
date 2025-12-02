@@ -28,7 +28,7 @@ func TestTimelineTemplateNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Templates.New(
+	_, err := client.Crm.Timeline.Templates.New(
 		context.TODO(),
 		0,
 		crm.TimelineTemplateNewParams{
@@ -111,7 +111,7 @@ func TestTimelineTemplateUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Templates.Update(
+	_, err := client.Crm.Timeline.Templates.Update(
 		context.TODO(),
 		"eventTemplateId",
 		crm.TimelineTemplateUpdateParams{
@@ -198,7 +198,7 @@ func TestTimelineTemplateList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Templates.List(context.TODO(), 0)
+	_, err := client.Crm.Timeline.Templates.List(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -221,7 +221,7 @@ func TestTimelineTemplateDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Timeline.Templates.Delete(
+	err := client.Crm.Timeline.Templates.Delete(
 		context.TODO(),
 		"eventTemplateId",
 		crm.TimelineTemplateDeleteParams{
@@ -250,7 +250,7 @@ func TestTimelineTemplateGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Templates.Get(
+	_, err := client.Crm.Timeline.Templates.Get(
 		context.TODO(),
 		"eventTemplateId",
 		crm.TimelineTemplateGetParams{

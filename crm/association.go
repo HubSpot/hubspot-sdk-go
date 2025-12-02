@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -15,7 +14,7 @@ import (
 )
 
 // AssociationService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -54,15 +53,23 @@ func (r *BatchInputPublicAssociationParam) UnmarshalJSON(data []byte) error {
 }
 
 type BatchResponsePublicAssociation struct {
+	// The date and time when the batch operation was completed.
 	CompletedAt time.Time           `json:"completedAt,required" format:"date-time"`
 	Results     []PublicAssociation `json:"results,required"`
-	StartedAt   time.Time           `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      BatchResponsePublicAssociationStatus `json:"status,required"`
-	Errors      []shared.StandardError               `json:"errors"`
-	Links       map[string]string                    `json:"links"`
-	NumErrors   int64                                `json:"numErrors"`
-	RequestedAt time.Time                            `json:"requestedAt" format:"date-time"`
+	// The date and time when the batch operation started.
+	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
+	// The current status of the batch operation, with possible values: PENDING,
+	// PROCESSING, CANCELED, COMPLETE.
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponsePublicAssociationStatus `json:"status,required"`
+	Errors []shared.StandardError               `json:"errors"`
+	// A collection of URLs related to the batch operation.
+	Links map[string]string `json:"links"`
+	// The number of errors encountered during the batch operation.
+	NumErrors int64 `json:"numErrors"`
+	// The date and time when the batch operation was requested.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
@@ -84,25 +91,35 @@ func (r *BatchResponsePublicAssociation) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the batch operation, with possible values: PENDING,
+// PROCESSING, CANCELED, COMPLETE.
 type BatchResponsePublicAssociationStatus string
 
 const (
-	BatchResponsePublicAssociationStatusPending    BatchResponsePublicAssociationStatus = "PENDING"
-	BatchResponsePublicAssociationStatusProcessing BatchResponsePublicAssociationStatus = "PROCESSING"
 	BatchResponsePublicAssociationStatusCanceled   BatchResponsePublicAssociationStatus = "CANCELED"
 	BatchResponsePublicAssociationStatusComplete   BatchResponsePublicAssociationStatus = "COMPLETE"
+	BatchResponsePublicAssociationStatusPending    BatchResponsePublicAssociationStatus = "PENDING"
+	BatchResponsePublicAssociationStatusProcessing BatchResponsePublicAssociationStatus = "PROCESSING"
 )
 
 type BatchResponsePublicAssociationMulti struct {
+	// The date and time when the batch operation was completed.
 	CompletedAt time.Time                `json:"completedAt,required" format:"date-time"`
 	Results     []PublicAssociationMulti `json:"results,required"`
-	StartedAt   time.Time                `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      BatchResponsePublicAssociationMultiStatus `json:"status,required"`
-	Errors      []shared.StandardError                    `json:"errors"`
-	Links       map[string]string                         `json:"links"`
-	NumErrors   int64                                     `json:"numErrors"`
-	RequestedAt time.Time                                 `json:"requestedAt" format:"date-time"`
+	// The date and time when the batch operation started.
+	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
+	// The current status of the batch operation, with possible values: PENDING,
+	// PROCESSING, CANCELED, COMPLETE.
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponsePublicAssociationMultiStatus `json:"status,required"`
+	Errors []shared.StandardError                    `json:"errors"`
+	// URLs linking to resources or documentation associated with the batch operation.
+	Links map[string]string `json:"links"`
+	// The number of errors encountered during the batch operation.
+	NumErrors int64 `json:"numErrors"`
+	// The date and time when the batch request was made.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
@@ -124,19 +141,62 @@ func (r *BatchResponsePublicAssociationMulti) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the batch operation, with possible values: PENDING,
+// PROCESSING, CANCELED, COMPLETE.
 type BatchResponsePublicAssociationMultiStatus string
 
 const (
-	BatchResponsePublicAssociationMultiStatusPending    BatchResponsePublicAssociationMultiStatus = "PENDING"
-	BatchResponsePublicAssociationMultiStatusProcessing BatchResponsePublicAssociationMultiStatus = "PROCESSING"
 	BatchResponsePublicAssociationMultiStatusCanceled   BatchResponsePublicAssociationMultiStatus = "CANCELED"
 	BatchResponsePublicAssociationMultiStatusComplete   BatchResponsePublicAssociationMultiStatus = "COMPLETE"
+	BatchResponsePublicAssociationMultiStatusPending    BatchResponsePublicAssociationMultiStatus = "PENDING"
+	BatchResponsePublicAssociationMultiStatusProcessing BatchResponsePublicAssociationMultiStatus = "PROCESSING"
+)
+
+type BatchResponseVoid struct {
+	CompletedAt time.Time `json:"completedAt,required" format:"date-time"`
+	Results     []any     `json:"results,required"`
+	StartedAt   time.Time `json:"startedAt,required" format:"date-time"`
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status      BatchResponseVoidStatus `json:"status,required"`
+	Errors      []shared.StandardError  `json:"errors"`
+	Links       map[string]string       `json:"links"`
+	NumErrors   int64                   `json:"numErrors"`
+	RequestedAt time.Time               `json:"requestedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		CompletedAt respjson.Field
+		Results     respjson.Field
+		StartedAt   respjson.Field
+		Status      respjson.Field
+		Errors      respjson.Field
+		Links       respjson.Field
+		NumErrors   respjson.Field
+		RequestedAt respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r BatchResponseVoid) RawJSON() string { return r.JSON.raw }
+func (r *BatchResponseVoid) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type BatchResponseVoidStatus string
+
+const (
+	BatchResponseVoidStatusCanceled   BatchResponseVoidStatus = "CANCELED"
+	BatchResponseVoidStatusComplete   BatchResponseVoidStatus = "COMPLETE"
+	BatchResponseVoidStatusPending    BatchResponseVoidStatus = "PENDING"
+	BatchResponseVoidStatusProcessing BatchResponseVoidStatus = "PROCESSING"
 )
 
 type PublicAssociation struct {
 	From shared.PublicObjectID `json:"from,required"`
 	To   shared.PublicObjectID `json:"to,required"`
-	Type string                `json:"type,required"`
+	// The type of association between the 'from' and 'to' objects.
+	Type string `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		From        respjson.Field
@@ -166,7 +226,8 @@ func (r PublicAssociation) ToParam() PublicAssociationParam {
 type PublicAssociationParam struct {
 	From shared.PublicObjectIDParam `json:"from,omitzero,required"`
 	To   shared.PublicObjectIDParam `json:"to,omitzero,required"`
-	Type string                     `json:"type,required"`
+	// The type of association between the 'from' and 'to' objects.
+	Type string `json:"type,required"`
 	paramObj
 }
 
@@ -182,9 +243,8 @@ type PublicAssociationMulti struct {
 	From shared.PublicObjectID `json:"from,required"`
 	// The IDs of objects that are associated with the object identified by the ID in
 	// 'from'.
-	To []AssociatedID `json:"to,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	To     []AssociatedID `json:"to,required"`
+	Paging shared.Paging  `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		From        respjson.Field

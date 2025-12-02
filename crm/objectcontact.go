@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectContactService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -59,14 +59,14 @@ func (r *ObjectContactService) New(ctx context.Context, body ObjectContactNewPar
 // (`/crm/v3/objects/contacts/jon@website.com?idProperty=email`). Provided property
 // values will be overwritten. Read-only and non-existent properties will result in
 // an error. Properties values can be cleared by passing an empty string.
-func (r *ObjectContactService) Update(ctx context.Context, contactID string, body ObjectContactUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+func (r *ObjectContactService) Update(ctx context.Context, contactID string, params ObjectContactUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if contactID == "" {
 		err = errors.New("missing required contactId parameter")
 		return
 	}
 	path := fmt.Sprintf("crm/v3/objects/contacts/%s", contactID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
 	return
 }
 
@@ -177,6 +177,8 @@ type ObjectContactUpdateParams struct {
 	// Represents the input required to create or update a CRM object, containing an
 	// object with property names and their corresponding values.
 	SimplePublicObjectInput SimplePublicObjectInputParam
+	// The name of a property whose values are unique for this object.
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
 
@@ -185,6 +187,15 @@ func (r ObjectContactUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 func (r *ObjectContactUpdateParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.SimplePublicObjectInput)
+}
+
+// URLQuery serializes [ObjectContactUpdateParams]'s query parameters as
+// `url.Values`.
+func (r ObjectContactUpdateParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ObjectContactListParams struct {
@@ -235,6 +246,8 @@ func (r *ObjectContactGdprDeleteParams) UnmarshalJSON(data []byte) error {
 type ObjectContactGetParams struct {
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// The name of a property whose values are unique for this object
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	// A comma separated list of object types to retrieve associated IDs for. If any of
 	// the specified associations do not exist, they will be ignored.
 	Associations []string `query:"associations,omitzero" json:"-"`

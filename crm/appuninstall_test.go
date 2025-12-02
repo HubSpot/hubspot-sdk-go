@@ -26,7 +26,7 @@ func TestAppUninstallUninstall(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.AppUninstalls.Uninstall(context.TODO())
+	err := client.Crm.AppUninstalls.Uninstall(context.TODO())
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectPartnerClientBatchService contains methods and other services that help
-// with interacting with the Hubspot API.
+// with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,6 @@ func NewObjectPartnerClientBatchService(opts ...option.RequestOption) (r ObjectP
 	return
 }
 
-// Read a batch of objects by internal ID, or unique property values
 func (r *ObjectPartnerClientBatchService) BatchGet(ctx context.Context, params ObjectPartnerClientBatchBatchGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/partner_clients/batch/read"
@@ -43,7 +42,6 @@ func (r *ObjectPartnerClientBatchService) BatchGet(ctx context.Context, params O
 	return
 }
 
-// Update a batch of objects
 func (r *ObjectPartnerClientBatchService) BatchUpdate(ctx context.Context, body ObjectPartnerClientBatchBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/partner_clients/batch/update"
@@ -56,8 +54,7 @@ type ObjectPartnerClientBatchBatchGetParams struct {
 	// object IDs, requested property names (with optional history), and an optional
 	// unique identifying property.
 	BatchReadInputSimplePublicObjectID BatchReadInputSimplePublicObjectIDParam
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	Archived                           param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 

@@ -19,7 +19,7 @@ import (
 )
 
 // SiteSearchService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -40,7 +40,7 @@ func NewSiteSearchService(opts ...option.RequestOption) (r SiteSearchService) {
 // For a given account and document ID (page ID, blog post ID, HubDB row ID, etc.),
 // return all indexed data for that document. This is useful when debugging why a
 // particular document is not returned from a custom search.
-func (r *SiteSearchService) GetIndexedData(ctx context.Context, contentID string, query SiteSearchGetIndexedDataParams, opts ...option.RequestOption) (res *SiteSearchGetIndexedDataResponse, err error) {
+func (r *SiteSearchService) GetIndexedData(ctx context.Context, contentID string, query SiteSearchGetIndexedDataParams, opts ...option.RequestOption) (res *IndexedData, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if contentID == "" {
 		err = errors.New("missing required contentId parameter")
@@ -53,103 +53,15 @@ func (r *SiteSearchService) GetIndexedData(ctx context.Context, contentID string
 
 // Returns any website content matching the given search criteria for a given
 // HubSpot account. Searches can be filtered by content type, domain, or URL path.
-func (r *SiteSearchService) Search(ctx context.Context, query SiteSearchSearchParams, opts ...option.RequestOption) (res *SiteSearchSearchResponse, err error) {
+func (r *SiteSearchService) Search(ctx context.Context, query SiteSearchSearchParams, opts ...option.RequestOption) (res *PublicSearchResults, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "cms/v3/site-search/search"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
-// The indexed data in HubSpot
-type SiteSearchGetIndexedDataResponse struct {
-	// The ID of the document in HubSpot.
-	ID string `json:"id,required"`
-	// The indexed fields in HubSpot.
-	Fields map[string]SiteSearchGetIndexedDataResponseField `json:"fields,required"`
-	// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
-	// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
-	//
-	// Any of "LANDING_PAGE", "BLOG_POST", "SITE_PAGE", "KNOWLEDGE_ARTICLE",
-	// "LISTING_PAGE".
-	Type SiteSearchGetIndexedDataResponseType `json:"type,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		Fields      respjson.Field
-		Type        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SiteSearchGetIndexedDataResponse) RawJSON() string { return r.JSON.raw }
-func (r *SiteSearchGetIndexedDataResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type SiteSearchGetIndexedDataResponseField struct {
-	MetadataField bool   `json:"metadataField,required"`
-	Name          string `json:"name,required"`
-	Value         any    `json:"value,required"`
-	Values        []any  `json:"values,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		MetadataField respjson.Field
-		Name          respjson.Field
-		Value         respjson.Field
-		Values        respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SiteSearchGetIndexedDataResponseField) RawJSON() string { return r.JSON.raw }
-func (r *SiteSearchGetIndexedDataResponseField) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
-// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
-type SiteSearchGetIndexedDataResponseType string
-
-const (
-	SiteSearchGetIndexedDataResponseTypeLandingPage      SiteSearchGetIndexedDataResponseType = "LANDING_PAGE"
-	SiteSearchGetIndexedDataResponseTypeBlogPost         SiteSearchGetIndexedDataResponseType = "BLOG_POST"
-	SiteSearchGetIndexedDataResponseTypeSitePage         SiteSearchGetIndexedDataResponseType = "SITE_PAGE"
-	SiteSearchGetIndexedDataResponseTypeKnowledgeArticle SiteSearchGetIndexedDataResponseType = "KNOWLEDGE_ARTICLE"
-	SiteSearchGetIndexedDataResponseTypeListingPage      SiteSearchGetIndexedDataResponseType = "LISTING_PAGE"
-)
-
-type SiteSearchSearchResponse struct {
-	Limit      int64                            `json:"limit,required"`
-	Offset     int64                            `json:"offset,required"`
-	Page       int64                            `json:"page,required"`
-	Results    []SiteSearchSearchResponseResult `json:"results,required"`
-	Total      int64                            `json:"total,required"`
-	SearchTerm string                           `json:"searchTerm"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Limit       respjson.Field
-		Offset      respjson.Field
-		Page        respjson.Field
-		Results     respjson.Field
-		Total       respjson.Field
-		SearchTerm  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SiteSearchSearchResponse) RawJSON() string { return r.JSON.raw }
-func (r *SiteSearchSearchResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // An individual search result.
-type SiteSearchSearchResponseResult struct {
+type ContentSearchResult struct {
 	// The ID of the content.
 	ID int64 `json:"id,required"`
 	// The domain the document is hosted on.
@@ -159,9 +71,9 @@ type SiteSearchSearchResponseResult struct {
 	// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
 	// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
 	//
-	// Any of "LANDING_PAGE", "BLOG_POST", "SITE_PAGE", "KNOWLEDGE_ARTICLE",
-	// "LISTING_PAGE".
-	Type string `json:"type,required"`
+	// Any of "BLOG_POST", "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LISTING_PAGE",
+	// "SITE_PAGE".
+	Type ContentSearchResultType `json:"type,required"`
 	// The url of the document.
 	URL string `json:"url,required"`
 	// Name of the author.
@@ -217,48 +129,48 @@ type SiteSearchSearchResponseResult struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
-	Language string `json:"language"`
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	Language ContentSearchResultLanguage `json:"language"`
 	// The date the content was published.
 	PublishedDate int64 `json:"publishedDate"`
 	// If a dynamic page, the row ID in the HubDB table.
@@ -296,8 +208,868 @@ type SiteSearchSearchResponseResult struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r SiteSearchSearchResponseResult) RawJSON() string { return r.JSON.raw }
-func (r *SiteSearchSearchResponseResult) UnmarshalJSON(data []byte) error {
+func (r ContentSearchResult) RawJSON() string { return r.JSON.raw }
+func (r *ContentSearchResult) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
+// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
+type ContentSearchResultType string
+
+const (
+	ContentSearchResultTypeBlogPost         ContentSearchResultType = "BLOG_POST"
+	ContentSearchResultTypeKnowledgeArticle ContentSearchResultType = "KNOWLEDGE_ARTICLE"
+	ContentSearchResultTypeLandingPage      ContentSearchResultType = "LANDING_PAGE"
+	ContentSearchResultTypeListingPage      ContentSearchResultType = "LISTING_PAGE"
+	ContentSearchResultTypeSitePage         ContentSearchResultType = "SITE_PAGE"
+)
+
+// The document's language.
+type ContentSearchResultLanguage string
+
+const (
+	ContentSearchResultLanguageAf     ContentSearchResultLanguage = "af"
+	ContentSearchResultLanguageAfNa   ContentSearchResultLanguage = "af-na"
+	ContentSearchResultLanguageAfZa   ContentSearchResultLanguage = "af-za"
+	ContentSearchResultLanguageAgq    ContentSearchResultLanguage = "agq"
+	ContentSearchResultLanguageAgqCm  ContentSearchResultLanguage = "agq-cm"
+	ContentSearchResultLanguageAk     ContentSearchResultLanguage = "ak"
+	ContentSearchResultLanguageAkGh   ContentSearchResultLanguage = "ak-gh"
+	ContentSearchResultLanguageAm     ContentSearchResultLanguage = "am"
+	ContentSearchResultLanguageAmEt   ContentSearchResultLanguage = "am-et"
+	ContentSearchResultLanguageAr     ContentSearchResultLanguage = "ar"
+	ContentSearchResultLanguageAr001  ContentSearchResultLanguage = "ar-001"
+	ContentSearchResultLanguageArAe   ContentSearchResultLanguage = "ar-ae"
+	ContentSearchResultLanguageArBh   ContentSearchResultLanguage = "ar-bh"
+	ContentSearchResultLanguageArDj   ContentSearchResultLanguage = "ar-dj"
+	ContentSearchResultLanguageArDz   ContentSearchResultLanguage = "ar-dz"
+	ContentSearchResultLanguageArEg   ContentSearchResultLanguage = "ar-eg"
+	ContentSearchResultLanguageArEh   ContentSearchResultLanguage = "ar-eh"
+	ContentSearchResultLanguageArEr   ContentSearchResultLanguage = "ar-er"
+	ContentSearchResultLanguageArIl   ContentSearchResultLanguage = "ar-il"
+	ContentSearchResultLanguageArIq   ContentSearchResultLanguage = "ar-iq"
+	ContentSearchResultLanguageArJo   ContentSearchResultLanguage = "ar-jo"
+	ContentSearchResultLanguageArKm   ContentSearchResultLanguage = "ar-km"
+	ContentSearchResultLanguageArKw   ContentSearchResultLanguage = "ar-kw"
+	ContentSearchResultLanguageArLb   ContentSearchResultLanguage = "ar-lb"
+	ContentSearchResultLanguageArLy   ContentSearchResultLanguage = "ar-ly"
+	ContentSearchResultLanguageArMa   ContentSearchResultLanguage = "ar-ma"
+	ContentSearchResultLanguageArMr   ContentSearchResultLanguage = "ar-mr"
+	ContentSearchResultLanguageArOm   ContentSearchResultLanguage = "ar-om"
+	ContentSearchResultLanguageArPs   ContentSearchResultLanguage = "ar-ps"
+	ContentSearchResultLanguageArQa   ContentSearchResultLanguage = "ar-qa"
+	ContentSearchResultLanguageArSa   ContentSearchResultLanguage = "ar-sa"
+	ContentSearchResultLanguageArSd   ContentSearchResultLanguage = "ar-sd"
+	ContentSearchResultLanguageArSo   ContentSearchResultLanguage = "ar-so"
+	ContentSearchResultLanguageArSS   ContentSearchResultLanguage = "ar-ss"
+	ContentSearchResultLanguageArSy   ContentSearchResultLanguage = "ar-sy"
+	ContentSearchResultLanguageArTd   ContentSearchResultLanguage = "ar-td"
+	ContentSearchResultLanguageArTn   ContentSearchResultLanguage = "ar-tn"
+	ContentSearchResultLanguageArYe   ContentSearchResultLanguage = "ar-ye"
+	ContentSearchResultLanguageAs     ContentSearchResultLanguage = "as"
+	ContentSearchResultLanguageAsIn   ContentSearchResultLanguage = "as-in"
+	ContentSearchResultLanguageAsa    ContentSearchResultLanguage = "asa"
+	ContentSearchResultLanguageAsaTz  ContentSearchResultLanguage = "asa-tz"
+	ContentSearchResultLanguageAst    ContentSearchResultLanguage = "ast"
+	ContentSearchResultLanguageAstEs  ContentSearchResultLanguage = "ast-es"
+	ContentSearchResultLanguageAz     ContentSearchResultLanguage = "az"
+	ContentSearchResultLanguageAzAz   ContentSearchResultLanguage = "az-az"
+	ContentSearchResultLanguageBas    ContentSearchResultLanguage = "bas"
+	ContentSearchResultLanguageBasCm  ContentSearchResultLanguage = "bas-cm"
+	ContentSearchResultLanguageBe     ContentSearchResultLanguage = "be"
+	ContentSearchResultLanguageBeBy   ContentSearchResultLanguage = "be-by"
+	ContentSearchResultLanguageBem    ContentSearchResultLanguage = "bem"
+	ContentSearchResultLanguageBemZm  ContentSearchResultLanguage = "bem-zm"
+	ContentSearchResultLanguageBez    ContentSearchResultLanguage = "bez"
+	ContentSearchResultLanguageBezTz  ContentSearchResultLanguage = "bez-tz"
+	ContentSearchResultLanguageBg     ContentSearchResultLanguage = "bg"
+	ContentSearchResultLanguageBgBg   ContentSearchResultLanguage = "bg-bg"
+	ContentSearchResultLanguageBm     ContentSearchResultLanguage = "bm"
+	ContentSearchResultLanguageBmMl   ContentSearchResultLanguage = "bm-ml"
+	ContentSearchResultLanguageBn     ContentSearchResultLanguage = "bn"
+	ContentSearchResultLanguageBnBd   ContentSearchResultLanguage = "bn-bd"
+	ContentSearchResultLanguageBnIn   ContentSearchResultLanguage = "bn-in"
+	ContentSearchResultLanguageBo     ContentSearchResultLanguage = "bo"
+	ContentSearchResultLanguageBoCn   ContentSearchResultLanguage = "bo-cn"
+	ContentSearchResultLanguageBoIn   ContentSearchResultLanguage = "bo-in"
+	ContentSearchResultLanguageBr     ContentSearchResultLanguage = "br"
+	ContentSearchResultLanguageBrFr   ContentSearchResultLanguage = "br-fr"
+	ContentSearchResultLanguageBrx    ContentSearchResultLanguage = "brx"
+	ContentSearchResultLanguageBrxIn  ContentSearchResultLanguage = "brx-in"
+	ContentSearchResultLanguageBs     ContentSearchResultLanguage = "bs"
+	ContentSearchResultLanguageBsBa   ContentSearchResultLanguage = "bs-ba"
+	ContentSearchResultLanguageCa     ContentSearchResultLanguage = "ca"
+	ContentSearchResultLanguageCaAd   ContentSearchResultLanguage = "ca-ad"
+	ContentSearchResultLanguageCaEs   ContentSearchResultLanguage = "ca-es"
+	ContentSearchResultLanguageCaFr   ContentSearchResultLanguage = "ca-fr"
+	ContentSearchResultLanguageCaIt   ContentSearchResultLanguage = "ca-it"
+	ContentSearchResultLanguageCcp    ContentSearchResultLanguage = "ccp"
+	ContentSearchResultLanguageCcpBd  ContentSearchResultLanguage = "ccp-bd"
+	ContentSearchResultLanguageCcpIn  ContentSearchResultLanguage = "ccp-in"
+	ContentSearchResultLanguageCe     ContentSearchResultLanguage = "ce"
+	ContentSearchResultLanguageCeRu   ContentSearchResultLanguage = "ce-ru"
+	ContentSearchResultLanguageCeb    ContentSearchResultLanguage = "ceb"
+	ContentSearchResultLanguageCebPh  ContentSearchResultLanguage = "ceb-ph"
+	ContentSearchResultLanguageCgg    ContentSearchResultLanguage = "cgg"
+	ContentSearchResultLanguageCggUg  ContentSearchResultLanguage = "cgg-ug"
+	ContentSearchResultLanguageChr    ContentSearchResultLanguage = "chr"
+	ContentSearchResultLanguageChrUs  ContentSearchResultLanguage = "chr-us"
+	ContentSearchResultLanguageCkb    ContentSearchResultLanguage = "ckb"
+	ContentSearchResultLanguageCkbIq  ContentSearchResultLanguage = "ckb-iq"
+	ContentSearchResultLanguageCkbIr  ContentSearchResultLanguage = "ckb-ir"
+	ContentSearchResultLanguageCs     ContentSearchResultLanguage = "cs"
+	ContentSearchResultLanguageCsCz   ContentSearchResultLanguage = "cs-cz"
+	ContentSearchResultLanguageCu     ContentSearchResultLanguage = "cu"
+	ContentSearchResultLanguageCuRu   ContentSearchResultLanguage = "cu-ru"
+	ContentSearchResultLanguageCy     ContentSearchResultLanguage = "cy"
+	ContentSearchResultLanguageCyGB   ContentSearchResultLanguage = "cy-gb"
+	ContentSearchResultLanguageDa     ContentSearchResultLanguage = "da"
+	ContentSearchResultLanguageDaDk   ContentSearchResultLanguage = "da-dk"
+	ContentSearchResultLanguageDaGl   ContentSearchResultLanguage = "da-gl"
+	ContentSearchResultLanguageDav    ContentSearchResultLanguage = "dav"
+	ContentSearchResultLanguageDavKe  ContentSearchResultLanguage = "dav-ke"
+	ContentSearchResultLanguageDe     ContentSearchResultLanguage = "de"
+	ContentSearchResultLanguageDeAt   ContentSearchResultLanguage = "de-at"
+	ContentSearchResultLanguageDeBe   ContentSearchResultLanguage = "de-be"
+	ContentSearchResultLanguageDeCh   ContentSearchResultLanguage = "de-ch"
+	ContentSearchResultLanguageDeDe   ContentSearchResultLanguage = "de-de"
+	ContentSearchResultLanguageDeGr   ContentSearchResultLanguage = "de-gr"
+	ContentSearchResultLanguageDeIt   ContentSearchResultLanguage = "de-it"
+	ContentSearchResultLanguageDeLi   ContentSearchResultLanguage = "de-li"
+	ContentSearchResultLanguageDeLu   ContentSearchResultLanguage = "de-lu"
+	ContentSearchResultLanguageDje    ContentSearchResultLanguage = "dje"
+	ContentSearchResultLanguageDjeNe  ContentSearchResultLanguage = "dje-ne"
+	ContentSearchResultLanguageDoi    ContentSearchResultLanguage = "doi"
+	ContentSearchResultLanguageDoiIn  ContentSearchResultLanguage = "doi-in"
+	ContentSearchResultLanguageDsb    ContentSearchResultLanguage = "dsb"
+	ContentSearchResultLanguageDsbDe  ContentSearchResultLanguage = "dsb-de"
+	ContentSearchResultLanguageDua    ContentSearchResultLanguage = "dua"
+	ContentSearchResultLanguageDuaCm  ContentSearchResultLanguage = "dua-cm"
+	ContentSearchResultLanguageDyo    ContentSearchResultLanguage = "dyo"
+	ContentSearchResultLanguageDyoSn  ContentSearchResultLanguage = "dyo-sn"
+	ContentSearchResultLanguageDz     ContentSearchResultLanguage = "dz"
+	ContentSearchResultLanguageDzBt   ContentSearchResultLanguage = "dz-bt"
+	ContentSearchResultLanguageEbu    ContentSearchResultLanguage = "ebu"
+	ContentSearchResultLanguageEbuKe  ContentSearchResultLanguage = "ebu-ke"
+	ContentSearchResultLanguageEe     ContentSearchResultLanguage = "ee"
+	ContentSearchResultLanguageEeGh   ContentSearchResultLanguage = "ee-gh"
+	ContentSearchResultLanguageEeTg   ContentSearchResultLanguage = "ee-tg"
+	ContentSearchResultLanguageEl     ContentSearchResultLanguage = "el"
+	ContentSearchResultLanguageElCy   ContentSearchResultLanguage = "el-cy"
+	ContentSearchResultLanguageElGr   ContentSearchResultLanguage = "el-gr"
+	ContentSearchResultLanguageEn     ContentSearchResultLanguage = "en"
+	ContentSearchResultLanguageEn001  ContentSearchResultLanguage = "en-001"
+	ContentSearchResultLanguageEn150  ContentSearchResultLanguage = "en-150"
+	ContentSearchResultLanguageEnAe   ContentSearchResultLanguage = "en-ae"
+	ContentSearchResultLanguageEnAg   ContentSearchResultLanguage = "en-ag"
+	ContentSearchResultLanguageEnAI   ContentSearchResultLanguage = "en-ai"
+	ContentSearchResultLanguageEnAs   ContentSearchResultLanguage = "en-as"
+	ContentSearchResultLanguageEnAt   ContentSearchResultLanguage = "en-at"
+	ContentSearchResultLanguageEnAu   ContentSearchResultLanguage = "en-au"
+	ContentSearchResultLanguageEnBb   ContentSearchResultLanguage = "en-bb"
+	ContentSearchResultLanguageEnBe   ContentSearchResultLanguage = "en-be"
+	ContentSearchResultLanguageEnBi   ContentSearchResultLanguage = "en-bi"
+	ContentSearchResultLanguageEnBm   ContentSearchResultLanguage = "en-bm"
+	ContentSearchResultLanguageEnBs   ContentSearchResultLanguage = "en-bs"
+	ContentSearchResultLanguageEnBw   ContentSearchResultLanguage = "en-bw"
+	ContentSearchResultLanguageEnBz   ContentSearchResultLanguage = "en-bz"
+	ContentSearchResultLanguageEnCa   ContentSearchResultLanguage = "en-ca"
+	ContentSearchResultLanguageEnCc   ContentSearchResultLanguage = "en-cc"
+	ContentSearchResultLanguageEnCh   ContentSearchResultLanguage = "en-ch"
+	ContentSearchResultLanguageEnCk   ContentSearchResultLanguage = "en-ck"
+	ContentSearchResultLanguageEnCm   ContentSearchResultLanguage = "en-cm"
+	ContentSearchResultLanguageEnCn   ContentSearchResultLanguage = "en-cn"
+	ContentSearchResultLanguageEnCx   ContentSearchResultLanguage = "en-cx"
+	ContentSearchResultLanguageEnCy   ContentSearchResultLanguage = "en-cy"
+	ContentSearchResultLanguageEnDe   ContentSearchResultLanguage = "en-de"
+	ContentSearchResultLanguageEnDg   ContentSearchResultLanguage = "en-dg"
+	ContentSearchResultLanguageEnDk   ContentSearchResultLanguage = "en-dk"
+	ContentSearchResultLanguageEnDm   ContentSearchResultLanguage = "en-dm"
+	ContentSearchResultLanguageEnEr   ContentSearchResultLanguage = "en-er"
+	ContentSearchResultLanguageEnFi   ContentSearchResultLanguage = "en-fi"
+	ContentSearchResultLanguageEnFj   ContentSearchResultLanguage = "en-fj"
+	ContentSearchResultLanguageEnFk   ContentSearchResultLanguage = "en-fk"
+	ContentSearchResultLanguageEnFm   ContentSearchResultLanguage = "en-fm"
+	ContentSearchResultLanguageEnGB   ContentSearchResultLanguage = "en-gb"
+	ContentSearchResultLanguageEnGd   ContentSearchResultLanguage = "en-gd"
+	ContentSearchResultLanguageEnGg   ContentSearchResultLanguage = "en-gg"
+	ContentSearchResultLanguageEnGh   ContentSearchResultLanguage = "en-gh"
+	ContentSearchResultLanguageEnGi   ContentSearchResultLanguage = "en-gi"
+	ContentSearchResultLanguageEnGm   ContentSearchResultLanguage = "en-gm"
+	ContentSearchResultLanguageEnGu   ContentSearchResultLanguage = "en-gu"
+	ContentSearchResultLanguageEnGy   ContentSearchResultLanguage = "en-gy"
+	ContentSearchResultLanguageEnHk   ContentSearchResultLanguage = "en-hk"
+	ContentSearchResultLanguageEnIe   ContentSearchResultLanguage = "en-ie"
+	ContentSearchResultLanguageEnIl   ContentSearchResultLanguage = "en-il"
+	ContentSearchResultLanguageEnIm   ContentSearchResultLanguage = "en-im"
+	ContentSearchResultLanguageEnIn   ContentSearchResultLanguage = "en-in"
+	ContentSearchResultLanguageEnIo   ContentSearchResultLanguage = "en-io"
+	ContentSearchResultLanguageEnJe   ContentSearchResultLanguage = "en-je"
+	ContentSearchResultLanguageEnJm   ContentSearchResultLanguage = "en-jm"
+	ContentSearchResultLanguageEnKe   ContentSearchResultLanguage = "en-ke"
+	ContentSearchResultLanguageEnKi   ContentSearchResultLanguage = "en-ki"
+	ContentSearchResultLanguageEnKn   ContentSearchResultLanguage = "en-kn"
+	ContentSearchResultLanguageEnKy   ContentSearchResultLanguage = "en-ky"
+	ContentSearchResultLanguageEnLc   ContentSearchResultLanguage = "en-lc"
+	ContentSearchResultLanguageEnLr   ContentSearchResultLanguage = "en-lr"
+	ContentSearchResultLanguageEnLs   ContentSearchResultLanguage = "en-ls"
+	ContentSearchResultLanguageEnLu   ContentSearchResultLanguage = "en-lu"
+	ContentSearchResultLanguageEnMg   ContentSearchResultLanguage = "en-mg"
+	ContentSearchResultLanguageEnMh   ContentSearchResultLanguage = "en-mh"
+	ContentSearchResultLanguageEnMo   ContentSearchResultLanguage = "en-mo"
+	ContentSearchResultLanguageEnMp   ContentSearchResultLanguage = "en-mp"
+	ContentSearchResultLanguageEnMs   ContentSearchResultLanguage = "en-ms"
+	ContentSearchResultLanguageEnMt   ContentSearchResultLanguage = "en-mt"
+	ContentSearchResultLanguageEnMu   ContentSearchResultLanguage = "en-mu"
+	ContentSearchResultLanguageEnMw   ContentSearchResultLanguage = "en-mw"
+	ContentSearchResultLanguageEnMx   ContentSearchResultLanguage = "en-mx"
+	ContentSearchResultLanguageEnMy   ContentSearchResultLanguage = "en-my"
+	ContentSearchResultLanguageEnNa   ContentSearchResultLanguage = "en-na"
+	ContentSearchResultLanguageEnNf   ContentSearchResultLanguage = "en-nf"
+	ContentSearchResultLanguageEnNg   ContentSearchResultLanguage = "en-ng"
+	ContentSearchResultLanguageEnNl   ContentSearchResultLanguage = "en-nl"
+	ContentSearchResultLanguageEnNr   ContentSearchResultLanguage = "en-nr"
+	ContentSearchResultLanguageEnNu   ContentSearchResultLanguage = "en-nu"
+	ContentSearchResultLanguageEnNz   ContentSearchResultLanguage = "en-nz"
+	ContentSearchResultLanguageEnPg   ContentSearchResultLanguage = "en-pg"
+	ContentSearchResultLanguageEnPh   ContentSearchResultLanguage = "en-ph"
+	ContentSearchResultLanguageEnPk   ContentSearchResultLanguage = "en-pk"
+	ContentSearchResultLanguageEnPn   ContentSearchResultLanguage = "en-pn"
+	ContentSearchResultLanguageEnPr   ContentSearchResultLanguage = "en-pr"
+	ContentSearchResultLanguageEnPw   ContentSearchResultLanguage = "en-pw"
+	ContentSearchResultLanguageEnRw   ContentSearchResultLanguage = "en-rw"
+	ContentSearchResultLanguageEnSb   ContentSearchResultLanguage = "en-sb"
+	ContentSearchResultLanguageEnSc   ContentSearchResultLanguage = "en-sc"
+	ContentSearchResultLanguageEnSd   ContentSearchResultLanguage = "en-sd"
+	ContentSearchResultLanguageEnSe   ContentSearchResultLanguage = "en-se"
+	ContentSearchResultLanguageEnSg   ContentSearchResultLanguage = "en-sg"
+	ContentSearchResultLanguageEnSh   ContentSearchResultLanguage = "en-sh"
+	ContentSearchResultLanguageEnSi   ContentSearchResultLanguage = "en-si"
+	ContentSearchResultLanguageEnSl   ContentSearchResultLanguage = "en-sl"
+	ContentSearchResultLanguageEnSS   ContentSearchResultLanguage = "en-ss"
+	ContentSearchResultLanguageEnSx   ContentSearchResultLanguage = "en-sx"
+	ContentSearchResultLanguageEnSz   ContentSearchResultLanguage = "en-sz"
+	ContentSearchResultLanguageEnTc   ContentSearchResultLanguage = "en-tc"
+	ContentSearchResultLanguageEnTk   ContentSearchResultLanguage = "en-tk"
+	ContentSearchResultLanguageEnTo   ContentSearchResultLanguage = "en-to"
+	ContentSearchResultLanguageEnTt   ContentSearchResultLanguage = "en-tt"
+	ContentSearchResultLanguageEnTv   ContentSearchResultLanguage = "en-tv"
+	ContentSearchResultLanguageEnTz   ContentSearchResultLanguage = "en-tz"
+	ContentSearchResultLanguageEnUg   ContentSearchResultLanguage = "en-ug"
+	ContentSearchResultLanguageEnUm   ContentSearchResultLanguage = "en-um"
+	ContentSearchResultLanguageEnUs   ContentSearchResultLanguage = "en-us"
+	ContentSearchResultLanguageEnVc   ContentSearchResultLanguage = "en-vc"
+	ContentSearchResultLanguageEnVg   ContentSearchResultLanguage = "en-vg"
+	ContentSearchResultLanguageEnVi   ContentSearchResultLanguage = "en-vi"
+	ContentSearchResultLanguageEnVu   ContentSearchResultLanguage = "en-vu"
+	ContentSearchResultLanguageEnWs   ContentSearchResultLanguage = "en-ws"
+	ContentSearchResultLanguageEnZa   ContentSearchResultLanguage = "en-za"
+	ContentSearchResultLanguageEnZm   ContentSearchResultLanguage = "en-zm"
+	ContentSearchResultLanguageEnZw   ContentSearchResultLanguage = "en-zw"
+	ContentSearchResultLanguageEo     ContentSearchResultLanguage = "eo"
+	ContentSearchResultLanguageEo001  ContentSearchResultLanguage = "eo-001"
+	ContentSearchResultLanguageEs     ContentSearchResultLanguage = "es"
+	ContentSearchResultLanguageEs419  ContentSearchResultLanguage = "es-419"
+	ContentSearchResultLanguageEsAr   ContentSearchResultLanguage = "es-ar"
+	ContentSearchResultLanguageEsBo   ContentSearchResultLanguage = "es-bo"
+	ContentSearchResultLanguageEsBr   ContentSearchResultLanguage = "es-br"
+	ContentSearchResultLanguageEsBz   ContentSearchResultLanguage = "es-bz"
+	ContentSearchResultLanguageEsCl   ContentSearchResultLanguage = "es-cl"
+	ContentSearchResultLanguageEsCo   ContentSearchResultLanguage = "es-co"
+	ContentSearchResultLanguageEsCr   ContentSearchResultLanguage = "es-cr"
+	ContentSearchResultLanguageEsCu   ContentSearchResultLanguage = "es-cu"
+	ContentSearchResultLanguageEsDo   ContentSearchResultLanguage = "es-do"
+	ContentSearchResultLanguageEsEa   ContentSearchResultLanguage = "es-ea"
+	ContentSearchResultLanguageEsEc   ContentSearchResultLanguage = "es-ec"
+	ContentSearchResultLanguageEsEs   ContentSearchResultLanguage = "es-es"
+	ContentSearchResultLanguageEsGq   ContentSearchResultLanguage = "es-gq"
+	ContentSearchResultLanguageEsGt   ContentSearchResultLanguage = "es-gt"
+	ContentSearchResultLanguageEsHn   ContentSearchResultLanguage = "es-hn"
+	ContentSearchResultLanguageEsIc   ContentSearchResultLanguage = "es-ic"
+	ContentSearchResultLanguageEsMx   ContentSearchResultLanguage = "es-mx"
+	ContentSearchResultLanguageEsNi   ContentSearchResultLanguage = "es-ni"
+	ContentSearchResultLanguageEsPa   ContentSearchResultLanguage = "es-pa"
+	ContentSearchResultLanguageEsPe   ContentSearchResultLanguage = "es-pe"
+	ContentSearchResultLanguageEsPh   ContentSearchResultLanguage = "es-ph"
+	ContentSearchResultLanguageEsPr   ContentSearchResultLanguage = "es-pr"
+	ContentSearchResultLanguageEsPy   ContentSearchResultLanguage = "es-py"
+	ContentSearchResultLanguageEsSv   ContentSearchResultLanguage = "es-sv"
+	ContentSearchResultLanguageEsUs   ContentSearchResultLanguage = "es-us"
+	ContentSearchResultLanguageEsUy   ContentSearchResultLanguage = "es-uy"
+	ContentSearchResultLanguageEsVe   ContentSearchResultLanguage = "es-ve"
+	ContentSearchResultLanguageEt     ContentSearchResultLanguage = "et"
+	ContentSearchResultLanguageEtEe   ContentSearchResultLanguage = "et-ee"
+	ContentSearchResultLanguageEu     ContentSearchResultLanguage = "eu"
+	ContentSearchResultLanguageEuEs   ContentSearchResultLanguage = "eu-es"
+	ContentSearchResultLanguageEwo    ContentSearchResultLanguage = "ewo"
+	ContentSearchResultLanguageEwoCm  ContentSearchResultLanguage = "ewo-cm"
+	ContentSearchResultLanguageFa     ContentSearchResultLanguage = "fa"
+	ContentSearchResultLanguageFaAf   ContentSearchResultLanguage = "fa-af"
+	ContentSearchResultLanguageFaIr   ContentSearchResultLanguage = "fa-ir"
+	ContentSearchResultLanguageFf     ContentSearchResultLanguage = "ff"
+	ContentSearchResultLanguageFfBf   ContentSearchResultLanguage = "ff-bf"
+	ContentSearchResultLanguageFfCm   ContentSearchResultLanguage = "ff-cm"
+	ContentSearchResultLanguageFfGh   ContentSearchResultLanguage = "ff-gh"
+	ContentSearchResultLanguageFfGm   ContentSearchResultLanguage = "ff-gm"
+	ContentSearchResultLanguageFfGn   ContentSearchResultLanguage = "ff-gn"
+	ContentSearchResultLanguageFfGw   ContentSearchResultLanguage = "ff-gw"
+	ContentSearchResultLanguageFfLr   ContentSearchResultLanguage = "ff-lr"
+	ContentSearchResultLanguageFfMr   ContentSearchResultLanguage = "ff-mr"
+	ContentSearchResultLanguageFfNe   ContentSearchResultLanguage = "ff-ne"
+	ContentSearchResultLanguageFfNg   ContentSearchResultLanguage = "ff-ng"
+	ContentSearchResultLanguageFfSl   ContentSearchResultLanguage = "ff-sl"
+	ContentSearchResultLanguageFfSn   ContentSearchResultLanguage = "ff-sn"
+	ContentSearchResultLanguageFi     ContentSearchResultLanguage = "fi"
+	ContentSearchResultLanguageFiFi   ContentSearchResultLanguage = "fi-fi"
+	ContentSearchResultLanguageFil    ContentSearchResultLanguage = "fil"
+	ContentSearchResultLanguageFilPh  ContentSearchResultLanguage = "fil-ph"
+	ContentSearchResultLanguageFo     ContentSearchResultLanguage = "fo"
+	ContentSearchResultLanguageFoDk   ContentSearchResultLanguage = "fo-dk"
+	ContentSearchResultLanguageFoFo   ContentSearchResultLanguage = "fo-fo"
+	ContentSearchResultLanguageFr     ContentSearchResultLanguage = "fr"
+	ContentSearchResultLanguageFrBe   ContentSearchResultLanguage = "fr-be"
+	ContentSearchResultLanguageFrBf   ContentSearchResultLanguage = "fr-bf"
+	ContentSearchResultLanguageFrBi   ContentSearchResultLanguage = "fr-bi"
+	ContentSearchResultLanguageFrBj   ContentSearchResultLanguage = "fr-bj"
+	ContentSearchResultLanguageFrBl   ContentSearchResultLanguage = "fr-bl"
+	ContentSearchResultLanguageFrCa   ContentSearchResultLanguage = "fr-ca"
+	ContentSearchResultLanguageFrCd   ContentSearchResultLanguage = "fr-cd"
+	ContentSearchResultLanguageFrCf   ContentSearchResultLanguage = "fr-cf"
+	ContentSearchResultLanguageFrCg   ContentSearchResultLanguage = "fr-cg"
+	ContentSearchResultLanguageFrCh   ContentSearchResultLanguage = "fr-ch"
+	ContentSearchResultLanguageFrCi   ContentSearchResultLanguage = "fr-ci"
+	ContentSearchResultLanguageFrCm   ContentSearchResultLanguage = "fr-cm"
+	ContentSearchResultLanguageFrDj   ContentSearchResultLanguage = "fr-dj"
+	ContentSearchResultLanguageFrDz   ContentSearchResultLanguage = "fr-dz"
+	ContentSearchResultLanguageFrFr   ContentSearchResultLanguage = "fr-fr"
+	ContentSearchResultLanguageFrGa   ContentSearchResultLanguage = "fr-ga"
+	ContentSearchResultLanguageFrGf   ContentSearchResultLanguage = "fr-gf"
+	ContentSearchResultLanguageFrGn   ContentSearchResultLanguage = "fr-gn"
+	ContentSearchResultLanguageFrGp   ContentSearchResultLanguage = "fr-gp"
+	ContentSearchResultLanguageFrGq   ContentSearchResultLanguage = "fr-gq"
+	ContentSearchResultLanguageFrHt   ContentSearchResultLanguage = "fr-ht"
+	ContentSearchResultLanguageFrKm   ContentSearchResultLanguage = "fr-km"
+	ContentSearchResultLanguageFrLu   ContentSearchResultLanguage = "fr-lu"
+	ContentSearchResultLanguageFrMa   ContentSearchResultLanguage = "fr-ma"
+	ContentSearchResultLanguageFrMc   ContentSearchResultLanguage = "fr-mc"
+	ContentSearchResultLanguageFrMf   ContentSearchResultLanguage = "fr-mf"
+	ContentSearchResultLanguageFrMg   ContentSearchResultLanguage = "fr-mg"
+	ContentSearchResultLanguageFrMl   ContentSearchResultLanguage = "fr-ml"
+	ContentSearchResultLanguageFrMq   ContentSearchResultLanguage = "fr-mq"
+	ContentSearchResultLanguageFrMr   ContentSearchResultLanguage = "fr-mr"
+	ContentSearchResultLanguageFrMu   ContentSearchResultLanguage = "fr-mu"
+	ContentSearchResultLanguageFrNc   ContentSearchResultLanguage = "fr-nc"
+	ContentSearchResultLanguageFrNe   ContentSearchResultLanguage = "fr-ne"
+	ContentSearchResultLanguageFrPf   ContentSearchResultLanguage = "fr-pf"
+	ContentSearchResultLanguageFrPm   ContentSearchResultLanguage = "fr-pm"
+	ContentSearchResultLanguageFrRe   ContentSearchResultLanguage = "fr-re"
+	ContentSearchResultLanguageFrRw   ContentSearchResultLanguage = "fr-rw"
+	ContentSearchResultLanguageFrSc   ContentSearchResultLanguage = "fr-sc"
+	ContentSearchResultLanguageFrSn   ContentSearchResultLanguage = "fr-sn"
+	ContentSearchResultLanguageFrSy   ContentSearchResultLanguage = "fr-sy"
+	ContentSearchResultLanguageFrTd   ContentSearchResultLanguage = "fr-td"
+	ContentSearchResultLanguageFrTg   ContentSearchResultLanguage = "fr-tg"
+	ContentSearchResultLanguageFrTn   ContentSearchResultLanguage = "fr-tn"
+	ContentSearchResultLanguageFrVu   ContentSearchResultLanguage = "fr-vu"
+	ContentSearchResultLanguageFrWf   ContentSearchResultLanguage = "fr-wf"
+	ContentSearchResultLanguageFrYt   ContentSearchResultLanguage = "fr-yt"
+	ContentSearchResultLanguageFur    ContentSearchResultLanguage = "fur"
+	ContentSearchResultLanguageFurIt  ContentSearchResultLanguage = "fur-it"
+	ContentSearchResultLanguageFy     ContentSearchResultLanguage = "fy"
+	ContentSearchResultLanguageFyNl   ContentSearchResultLanguage = "fy-nl"
+	ContentSearchResultLanguageGa     ContentSearchResultLanguage = "ga"
+	ContentSearchResultLanguageGaGB   ContentSearchResultLanguage = "ga-gb"
+	ContentSearchResultLanguageGaIe   ContentSearchResultLanguage = "ga-ie"
+	ContentSearchResultLanguageGd     ContentSearchResultLanguage = "gd"
+	ContentSearchResultLanguageGdGB   ContentSearchResultLanguage = "gd-gb"
+	ContentSearchResultLanguageGl     ContentSearchResultLanguage = "gl"
+	ContentSearchResultLanguageGlEs   ContentSearchResultLanguage = "gl-es"
+	ContentSearchResultLanguageGsw    ContentSearchResultLanguage = "gsw"
+	ContentSearchResultLanguageGswCh  ContentSearchResultLanguage = "gsw-ch"
+	ContentSearchResultLanguageGswFr  ContentSearchResultLanguage = "gsw-fr"
+	ContentSearchResultLanguageGswLi  ContentSearchResultLanguage = "gsw-li"
+	ContentSearchResultLanguageGu     ContentSearchResultLanguage = "gu"
+	ContentSearchResultLanguageGuIn   ContentSearchResultLanguage = "gu-in"
+	ContentSearchResultLanguageGuz    ContentSearchResultLanguage = "guz"
+	ContentSearchResultLanguageGuzKe  ContentSearchResultLanguage = "guz-ke"
+	ContentSearchResultLanguageGv     ContentSearchResultLanguage = "gv"
+	ContentSearchResultLanguageGvIm   ContentSearchResultLanguage = "gv-im"
+	ContentSearchResultLanguageHa     ContentSearchResultLanguage = "ha"
+	ContentSearchResultLanguageHaGh   ContentSearchResultLanguage = "ha-gh"
+	ContentSearchResultLanguageHaNe   ContentSearchResultLanguage = "ha-ne"
+	ContentSearchResultLanguageHaNg   ContentSearchResultLanguage = "ha-ng"
+	ContentSearchResultLanguageHaw    ContentSearchResultLanguage = "haw"
+	ContentSearchResultLanguageHawUs  ContentSearchResultLanguage = "haw-us"
+	ContentSearchResultLanguageHe     ContentSearchResultLanguage = "he"
+	ContentSearchResultLanguageHeIl   ContentSearchResultLanguage = "he-il"
+	ContentSearchResultLanguageHi     ContentSearchResultLanguage = "hi"
+	ContentSearchResultLanguageHiIn   ContentSearchResultLanguage = "hi-in"
+	ContentSearchResultLanguageHr     ContentSearchResultLanguage = "hr"
+	ContentSearchResultLanguageHrBa   ContentSearchResultLanguage = "hr-ba"
+	ContentSearchResultLanguageHrHr   ContentSearchResultLanguage = "hr-hr"
+	ContentSearchResultLanguageHsb    ContentSearchResultLanguage = "hsb"
+	ContentSearchResultLanguageHsbDe  ContentSearchResultLanguage = "hsb-de"
+	ContentSearchResultLanguageHu     ContentSearchResultLanguage = "hu"
+	ContentSearchResultLanguageHuHu   ContentSearchResultLanguage = "hu-hu"
+	ContentSearchResultLanguageHy     ContentSearchResultLanguage = "hy"
+	ContentSearchResultLanguageHyAm   ContentSearchResultLanguage = "hy-am"
+	ContentSearchResultLanguageIa     ContentSearchResultLanguage = "ia"
+	ContentSearchResultLanguageIa001  ContentSearchResultLanguage = "ia-001"
+	ContentSearchResultLanguageID     ContentSearchResultLanguage = "id"
+	ContentSearchResultLanguageIDID   ContentSearchResultLanguage = "id-id"
+	ContentSearchResultLanguageIg     ContentSearchResultLanguage = "ig"
+	ContentSearchResultLanguageIgNg   ContentSearchResultLanguage = "ig-ng"
+	ContentSearchResultLanguageIi     ContentSearchResultLanguage = "ii"
+	ContentSearchResultLanguageIiCn   ContentSearchResultLanguage = "ii-cn"
+	ContentSearchResultLanguageIs     ContentSearchResultLanguage = "is"
+	ContentSearchResultLanguageIsIs   ContentSearchResultLanguage = "is-is"
+	ContentSearchResultLanguageIt     ContentSearchResultLanguage = "it"
+	ContentSearchResultLanguageItCh   ContentSearchResultLanguage = "it-ch"
+	ContentSearchResultLanguageItIt   ContentSearchResultLanguage = "it-it"
+	ContentSearchResultLanguageItSm   ContentSearchResultLanguage = "it-sm"
+	ContentSearchResultLanguageItVa   ContentSearchResultLanguage = "it-va"
+	ContentSearchResultLanguageJa     ContentSearchResultLanguage = "ja"
+	ContentSearchResultLanguageJaJp   ContentSearchResultLanguage = "ja-jp"
+	ContentSearchResultLanguageJgo    ContentSearchResultLanguage = "jgo"
+	ContentSearchResultLanguageJgoCm  ContentSearchResultLanguage = "jgo-cm"
+	ContentSearchResultLanguageJmc    ContentSearchResultLanguage = "jmc"
+	ContentSearchResultLanguageJmcTz  ContentSearchResultLanguage = "jmc-tz"
+	ContentSearchResultLanguageJv     ContentSearchResultLanguage = "jv"
+	ContentSearchResultLanguageJvID   ContentSearchResultLanguage = "jv-id"
+	ContentSearchResultLanguageKa     ContentSearchResultLanguage = "ka"
+	ContentSearchResultLanguageKaGe   ContentSearchResultLanguage = "ka-ge"
+	ContentSearchResultLanguageKab    ContentSearchResultLanguage = "kab"
+	ContentSearchResultLanguageKabDz  ContentSearchResultLanguage = "kab-dz"
+	ContentSearchResultLanguageKam    ContentSearchResultLanguage = "kam"
+	ContentSearchResultLanguageKamKe  ContentSearchResultLanguage = "kam-ke"
+	ContentSearchResultLanguageKde    ContentSearchResultLanguage = "kde"
+	ContentSearchResultLanguageKdeTz  ContentSearchResultLanguage = "kde-tz"
+	ContentSearchResultLanguageKea    ContentSearchResultLanguage = "kea"
+	ContentSearchResultLanguageKeaCv  ContentSearchResultLanguage = "kea-cv"
+	ContentSearchResultLanguageKhq    ContentSearchResultLanguage = "khq"
+	ContentSearchResultLanguageKhqMl  ContentSearchResultLanguage = "khq-ml"
+	ContentSearchResultLanguageKi     ContentSearchResultLanguage = "ki"
+	ContentSearchResultLanguageKiKe   ContentSearchResultLanguage = "ki-ke"
+	ContentSearchResultLanguageKk     ContentSearchResultLanguage = "kk"
+	ContentSearchResultLanguageKkKz   ContentSearchResultLanguage = "kk-kz"
+	ContentSearchResultLanguageKkj    ContentSearchResultLanguage = "kkj"
+	ContentSearchResultLanguageKkjCm  ContentSearchResultLanguage = "kkj-cm"
+	ContentSearchResultLanguageKl     ContentSearchResultLanguage = "kl"
+	ContentSearchResultLanguageKlGl   ContentSearchResultLanguage = "kl-gl"
+	ContentSearchResultLanguageKln    ContentSearchResultLanguage = "kln"
+	ContentSearchResultLanguageKlnKe  ContentSearchResultLanguage = "kln-ke"
+	ContentSearchResultLanguageKm     ContentSearchResultLanguage = "km"
+	ContentSearchResultLanguageKmKh   ContentSearchResultLanguage = "km-kh"
+	ContentSearchResultLanguageKn     ContentSearchResultLanguage = "kn"
+	ContentSearchResultLanguageKnIn   ContentSearchResultLanguage = "kn-in"
+	ContentSearchResultLanguageKo     ContentSearchResultLanguage = "ko"
+	ContentSearchResultLanguageKoKp   ContentSearchResultLanguage = "ko-kp"
+	ContentSearchResultLanguageKoKr   ContentSearchResultLanguage = "ko-kr"
+	ContentSearchResultLanguageKok    ContentSearchResultLanguage = "kok"
+	ContentSearchResultLanguageKokIn  ContentSearchResultLanguage = "kok-in"
+	ContentSearchResultLanguageKs     ContentSearchResultLanguage = "ks"
+	ContentSearchResultLanguageKsIn   ContentSearchResultLanguage = "ks-in"
+	ContentSearchResultLanguageKsb    ContentSearchResultLanguage = "ksb"
+	ContentSearchResultLanguageKsbTz  ContentSearchResultLanguage = "ksb-tz"
+	ContentSearchResultLanguageKsf    ContentSearchResultLanguage = "ksf"
+	ContentSearchResultLanguageKsfCm  ContentSearchResultLanguage = "ksf-cm"
+	ContentSearchResultLanguageKsh    ContentSearchResultLanguage = "ksh"
+	ContentSearchResultLanguageKshDe  ContentSearchResultLanguage = "ksh-de"
+	ContentSearchResultLanguageKu     ContentSearchResultLanguage = "ku"
+	ContentSearchResultLanguageKuTr   ContentSearchResultLanguage = "ku-tr"
+	ContentSearchResultLanguageKw     ContentSearchResultLanguage = "kw"
+	ContentSearchResultLanguageKwGB   ContentSearchResultLanguage = "kw-gb"
+	ContentSearchResultLanguageKy     ContentSearchResultLanguage = "ky"
+	ContentSearchResultLanguageKyKg   ContentSearchResultLanguage = "ky-kg"
+	ContentSearchResultLanguageLag    ContentSearchResultLanguage = "lag"
+	ContentSearchResultLanguageLagTz  ContentSearchResultLanguage = "lag-tz"
+	ContentSearchResultLanguageLb     ContentSearchResultLanguage = "lb"
+	ContentSearchResultLanguageLbLu   ContentSearchResultLanguage = "lb-lu"
+	ContentSearchResultLanguageLg     ContentSearchResultLanguage = "lg"
+	ContentSearchResultLanguageLgUg   ContentSearchResultLanguage = "lg-ug"
+	ContentSearchResultLanguageLkt    ContentSearchResultLanguage = "lkt"
+	ContentSearchResultLanguageLktUs  ContentSearchResultLanguage = "lkt-us"
+	ContentSearchResultLanguageLn     ContentSearchResultLanguage = "ln"
+	ContentSearchResultLanguageLnAo   ContentSearchResultLanguage = "ln-ao"
+	ContentSearchResultLanguageLnCd   ContentSearchResultLanguage = "ln-cd"
+	ContentSearchResultLanguageLnCf   ContentSearchResultLanguage = "ln-cf"
+	ContentSearchResultLanguageLnCg   ContentSearchResultLanguage = "ln-cg"
+	ContentSearchResultLanguageLo     ContentSearchResultLanguage = "lo"
+	ContentSearchResultLanguageLoLa   ContentSearchResultLanguage = "lo-la"
+	ContentSearchResultLanguageLrc    ContentSearchResultLanguage = "lrc"
+	ContentSearchResultLanguageLrcIq  ContentSearchResultLanguage = "lrc-iq"
+	ContentSearchResultLanguageLrcIr  ContentSearchResultLanguage = "lrc-ir"
+	ContentSearchResultLanguageLt     ContentSearchResultLanguage = "lt"
+	ContentSearchResultLanguageLtLt   ContentSearchResultLanguage = "lt-lt"
+	ContentSearchResultLanguageLu     ContentSearchResultLanguage = "lu"
+	ContentSearchResultLanguageLuCd   ContentSearchResultLanguage = "lu-cd"
+	ContentSearchResultLanguageLuo    ContentSearchResultLanguage = "luo"
+	ContentSearchResultLanguageLuoKe  ContentSearchResultLanguage = "luo-ke"
+	ContentSearchResultLanguageLuy    ContentSearchResultLanguage = "luy"
+	ContentSearchResultLanguageLuyKe  ContentSearchResultLanguage = "luy-ke"
+	ContentSearchResultLanguageLv     ContentSearchResultLanguage = "lv"
+	ContentSearchResultLanguageLvLv   ContentSearchResultLanguage = "lv-lv"
+	ContentSearchResultLanguageMai    ContentSearchResultLanguage = "mai"
+	ContentSearchResultLanguageMaiIn  ContentSearchResultLanguage = "mai-in"
+	ContentSearchResultLanguageMas    ContentSearchResultLanguage = "mas"
+	ContentSearchResultLanguageMasKe  ContentSearchResultLanguage = "mas-ke"
+	ContentSearchResultLanguageMasTz  ContentSearchResultLanguage = "mas-tz"
+	ContentSearchResultLanguageMer    ContentSearchResultLanguage = "mer"
+	ContentSearchResultLanguageMerKe  ContentSearchResultLanguage = "mer-ke"
+	ContentSearchResultLanguageMfe    ContentSearchResultLanguage = "mfe"
+	ContentSearchResultLanguageMfeMu  ContentSearchResultLanguage = "mfe-mu"
+	ContentSearchResultLanguageMg     ContentSearchResultLanguage = "mg"
+	ContentSearchResultLanguageMgMg   ContentSearchResultLanguage = "mg-mg"
+	ContentSearchResultLanguageMgh    ContentSearchResultLanguage = "mgh"
+	ContentSearchResultLanguageMghMz  ContentSearchResultLanguage = "mgh-mz"
+	ContentSearchResultLanguageMgo    ContentSearchResultLanguage = "mgo"
+	ContentSearchResultLanguageMgoCm  ContentSearchResultLanguage = "mgo-cm"
+	ContentSearchResultLanguageMi     ContentSearchResultLanguage = "mi"
+	ContentSearchResultLanguageMiNz   ContentSearchResultLanguage = "mi-nz"
+	ContentSearchResultLanguageMk     ContentSearchResultLanguage = "mk"
+	ContentSearchResultLanguageMkMk   ContentSearchResultLanguage = "mk-mk"
+	ContentSearchResultLanguageMl     ContentSearchResultLanguage = "ml"
+	ContentSearchResultLanguageMlIn   ContentSearchResultLanguage = "ml-in"
+	ContentSearchResultLanguageMn     ContentSearchResultLanguage = "mn"
+	ContentSearchResultLanguageMnMn   ContentSearchResultLanguage = "mn-mn"
+	ContentSearchResultLanguageMni    ContentSearchResultLanguage = "mni"
+	ContentSearchResultLanguageMniIn  ContentSearchResultLanguage = "mni-in"
+	ContentSearchResultLanguageMr     ContentSearchResultLanguage = "mr"
+	ContentSearchResultLanguageMrIn   ContentSearchResultLanguage = "mr-in"
+	ContentSearchResultLanguageMs     ContentSearchResultLanguage = "ms"
+	ContentSearchResultLanguageMsBn   ContentSearchResultLanguage = "ms-bn"
+	ContentSearchResultLanguageMsID   ContentSearchResultLanguage = "ms-id"
+	ContentSearchResultLanguageMsMy   ContentSearchResultLanguage = "ms-my"
+	ContentSearchResultLanguageMsSg   ContentSearchResultLanguage = "ms-sg"
+	ContentSearchResultLanguageMt     ContentSearchResultLanguage = "mt"
+	ContentSearchResultLanguageMtMt   ContentSearchResultLanguage = "mt-mt"
+	ContentSearchResultLanguageMua    ContentSearchResultLanguage = "mua"
+	ContentSearchResultLanguageMuaCm  ContentSearchResultLanguage = "mua-cm"
+	ContentSearchResultLanguageMy     ContentSearchResultLanguage = "my"
+	ContentSearchResultLanguageMyMm   ContentSearchResultLanguage = "my-mm"
+	ContentSearchResultLanguageMzn    ContentSearchResultLanguage = "mzn"
+	ContentSearchResultLanguageMznIr  ContentSearchResultLanguage = "mzn-ir"
+	ContentSearchResultLanguageNaq    ContentSearchResultLanguage = "naq"
+	ContentSearchResultLanguageNaqNa  ContentSearchResultLanguage = "naq-na"
+	ContentSearchResultLanguageNb     ContentSearchResultLanguage = "nb"
+	ContentSearchResultLanguageNbNo   ContentSearchResultLanguage = "nb-no"
+	ContentSearchResultLanguageNbSj   ContentSearchResultLanguage = "nb-sj"
+	ContentSearchResultLanguageNd     ContentSearchResultLanguage = "nd"
+	ContentSearchResultLanguageNdZw   ContentSearchResultLanguage = "nd-zw"
+	ContentSearchResultLanguageNds    ContentSearchResultLanguage = "nds"
+	ContentSearchResultLanguageNdsDe  ContentSearchResultLanguage = "nds-de"
+	ContentSearchResultLanguageNdsNl  ContentSearchResultLanguage = "nds-nl"
+	ContentSearchResultLanguageNe     ContentSearchResultLanguage = "ne"
+	ContentSearchResultLanguageNeIn   ContentSearchResultLanguage = "ne-in"
+	ContentSearchResultLanguageNeNp   ContentSearchResultLanguage = "ne-np"
+	ContentSearchResultLanguageNl     ContentSearchResultLanguage = "nl"
+	ContentSearchResultLanguageNlAw   ContentSearchResultLanguage = "nl-aw"
+	ContentSearchResultLanguageNlBe   ContentSearchResultLanguage = "nl-be"
+	ContentSearchResultLanguageNlBq   ContentSearchResultLanguage = "nl-bq"
+	ContentSearchResultLanguageNlCh   ContentSearchResultLanguage = "nl-ch"
+	ContentSearchResultLanguageNlCw   ContentSearchResultLanguage = "nl-cw"
+	ContentSearchResultLanguageNlLu   ContentSearchResultLanguage = "nl-lu"
+	ContentSearchResultLanguageNlNl   ContentSearchResultLanguage = "nl-nl"
+	ContentSearchResultLanguageNlSr   ContentSearchResultLanguage = "nl-sr"
+	ContentSearchResultLanguageNlSx   ContentSearchResultLanguage = "nl-sx"
+	ContentSearchResultLanguageNmg    ContentSearchResultLanguage = "nmg"
+	ContentSearchResultLanguageNmgCm  ContentSearchResultLanguage = "nmg-cm"
+	ContentSearchResultLanguageNn     ContentSearchResultLanguage = "nn"
+	ContentSearchResultLanguageNnNo   ContentSearchResultLanguage = "nn-no"
+	ContentSearchResultLanguageNnh    ContentSearchResultLanguage = "nnh"
+	ContentSearchResultLanguageNnhCm  ContentSearchResultLanguage = "nnh-cm"
+	ContentSearchResultLanguageNo     ContentSearchResultLanguage = "no"
+	ContentSearchResultLanguageNoNo   ContentSearchResultLanguage = "no-no"
+	ContentSearchResultLanguageNus    ContentSearchResultLanguage = "nus"
+	ContentSearchResultLanguageNusSS  ContentSearchResultLanguage = "nus-ss"
+	ContentSearchResultLanguageNyn    ContentSearchResultLanguage = "nyn"
+	ContentSearchResultLanguageNynUg  ContentSearchResultLanguage = "nyn-ug"
+	ContentSearchResultLanguageOm     ContentSearchResultLanguage = "om"
+	ContentSearchResultLanguageOmEt   ContentSearchResultLanguage = "om-et"
+	ContentSearchResultLanguageOmKe   ContentSearchResultLanguage = "om-ke"
+	ContentSearchResultLanguageOr     ContentSearchResultLanguage = "or"
+	ContentSearchResultLanguageOrIn   ContentSearchResultLanguage = "or-in"
+	ContentSearchResultLanguageOs     ContentSearchResultLanguage = "os"
+	ContentSearchResultLanguageOsGe   ContentSearchResultLanguage = "os-ge"
+	ContentSearchResultLanguageOsRu   ContentSearchResultLanguage = "os-ru"
+	ContentSearchResultLanguagePa     ContentSearchResultLanguage = "pa"
+	ContentSearchResultLanguagePaIn   ContentSearchResultLanguage = "pa-in"
+	ContentSearchResultLanguagePaPk   ContentSearchResultLanguage = "pa-pk"
+	ContentSearchResultLanguagePcm    ContentSearchResultLanguage = "pcm"
+	ContentSearchResultLanguagePcmNg  ContentSearchResultLanguage = "pcm-ng"
+	ContentSearchResultLanguagePl     ContentSearchResultLanguage = "pl"
+	ContentSearchResultLanguagePlPl   ContentSearchResultLanguage = "pl-pl"
+	ContentSearchResultLanguagePrg    ContentSearchResultLanguage = "prg"
+	ContentSearchResultLanguagePrg001 ContentSearchResultLanguage = "prg-001"
+	ContentSearchResultLanguagePs     ContentSearchResultLanguage = "ps"
+	ContentSearchResultLanguagePsAf   ContentSearchResultLanguage = "ps-af"
+	ContentSearchResultLanguagePsPk   ContentSearchResultLanguage = "ps-pk"
+	ContentSearchResultLanguagePt     ContentSearchResultLanguage = "pt"
+	ContentSearchResultLanguagePtAo   ContentSearchResultLanguage = "pt-ao"
+	ContentSearchResultLanguagePtBr   ContentSearchResultLanguage = "pt-br"
+	ContentSearchResultLanguagePtCh   ContentSearchResultLanguage = "pt-ch"
+	ContentSearchResultLanguagePtCv   ContentSearchResultLanguage = "pt-cv"
+	ContentSearchResultLanguagePtGq   ContentSearchResultLanguage = "pt-gq"
+	ContentSearchResultLanguagePtGw   ContentSearchResultLanguage = "pt-gw"
+	ContentSearchResultLanguagePtLu   ContentSearchResultLanguage = "pt-lu"
+	ContentSearchResultLanguagePtMo   ContentSearchResultLanguage = "pt-mo"
+	ContentSearchResultLanguagePtMz   ContentSearchResultLanguage = "pt-mz"
+	ContentSearchResultLanguagePtPt   ContentSearchResultLanguage = "pt-pt"
+	ContentSearchResultLanguagePtSt   ContentSearchResultLanguage = "pt-st"
+	ContentSearchResultLanguagePtTl   ContentSearchResultLanguage = "pt-tl"
+	ContentSearchResultLanguageQu     ContentSearchResultLanguage = "qu"
+	ContentSearchResultLanguageQuBo   ContentSearchResultLanguage = "qu-bo"
+	ContentSearchResultLanguageQuEc   ContentSearchResultLanguage = "qu-ec"
+	ContentSearchResultLanguageQuPe   ContentSearchResultLanguage = "qu-pe"
+	ContentSearchResultLanguageRm     ContentSearchResultLanguage = "rm"
+	ContentSearchResultLanguageRmCh   ContentSearchResultLanguage = "rm-ch"
+	ContentSearchResultLanguageRn     ContentSearchResultLanguage = "rn"
+	ContentSearchResultLanguageRnBi   ContentSearchResultLanguage = "rn-bi"
+	ContentSearchResultLanguageRo     ContentSearchResultLanguage = "ro"
+	ContentSearchResultLanguageRoMd   ContentSearchResultLanguage = "ro-md"
+	ContentSearchResultLanguageRoRo   ContentSearchResultLanguage = "ro-ro"
+	ContentSearchResultLanguageRof    ContentSearchResultLanguage = "rof"
+	ContentSearchResultLanguageRofTz  ContentSearchResultLanguage = "rof-tz"
+	ContentSearchResultLanguageRu     ContentSearchResultLanguage = "ru"
+	ContentSearchResultLanguageRuBy   ContentSearchResultLanguage = "ru-by"
+	ContentSearchResultLanguageRuKg   ContentSearchResultLanguage = "ru-kg"
+	ContentSearchResultLanguageRuKz   ContentSearchResultLanguage = "ru-kz"
+	ContentSearchResultLanguageRuMd   ContentSearchResultLanguage = "ru-md"
+	ContentSearchResultLanguageRuRu   ContentSearchResultLanguage = "ru-ru"
+	ContentSearchResultLanguageRuUa   ContentSearchResultLanguage = "ru-ua"
+	ContentSearchResultLanguageRw     ContentSearchResultLanguage = "rw"
+	ContentSearchResultLanguageRwRw   ContentSearchResultLanguage = "rw-rw"
+	ContentSearchResultLanguageRwk    ContentSearchResultLanguage = "rwk"
+	ContentSearchResultLanguageRwkTz  ContentSearchResultLanguage = "rwk-tz"
+	ContentSearchResultLanguageSa     ContentSearchResultLanguage = "sa"
+	ContentSearchResultLanguageSaIn   ContentSearchResultLanguage = "sa-in"
+	ContentSearchResultLanguageSah    ContentSearchResultLanguage = "sah"
+	ContentSearchResultLanguageSahRu  ContentSearchResultLanguage = "sah-ru"
+	ContentSearchResultLanguageSaq    ContentSearchResultLanguage = "saq"
+	ContentSearchResultLanguageSaqKe  ContentSearchResultLanguage = "saq-ke"
+	ContentSearchResultLanguageSat    ContentSearchResultLanguage = "sat"
+	ContentSearchResultLanguageSatIn  ContentSearchResultLanguage = "sat-in"
+	ContentSearchResultLanguageSbp    ContentSearchResultLanguage = "sbp"
+	ContentSearchResultLanguageSbpTz  ContentSearchResultLanguage = "sbp-tz"
+	ContentSearchResultLanguageSd     ContentSearchResultLanguage = "sd"
+	ContentSearchResultLanguageSdIn   ContentSearchResultLanguage = "sd-in"
+	ContentSearchResultLanguageSdPk   ContentSearchResultLanguage = "sd-pk"
+	ContentSearchResultLanguageSe     ContentSearchResultLanguage = "se"
+	ContentSearchResultLanguageSeFi   ContentSearchResultLanguage = "se-fi"
+	ContentSearchResultLanguageSeNo   ContentSearchResultLanguage = "se-no"
+	ContentSearchResultLanguageSeSe   ContentSearchResultLanguage = "se-se"
+	ContentSearchResultLanguageSeh    ContentSearchResultLanguage = "seh"
+	ContentSearchResultLanguageSehMz  ContentSearchResultLanguage = "seh-mz"
+	ContentSearchResultLanguageSes    ContentSearchResultLanguage = "ses"
+	ContentSearchResultLanguageSesMl  ContentSearchResultLanguage = "ses-ml"
+	ContentSearchResultLanguageSg     ContentSearchResultLanguage = "sg"
+	ContentSearchResultLanguageSgCf   ContentSearchResultLanguage = "sg-cf"
+	ContentSearchResultLanguageShi    ContentSearchResultLanguage = "shi"
+	ContentSearchResultLanguageShiMa  ContentSearchResultLanguage = "shi-ma"
+	ContentSearchResultLanguageSi     ContentSearchResultLanguage = "si"
+	ContentSearchResultLanguageSiLk   ContentSearchResultLanguage = "si-lk"
+	ContentSearchResultLanguageSk     ContentSearchResultLanguage = "sk"
+	ContentSearchResultLanguageSkSk   ContentSearchResultLanguage = "sk-sk"
+	ContentSearchResultLanguageSl     ContentSearchResultLanguage = "sl"
+	ContentSearchResultLanguageSlSi   ContentSearchResultLanguage = "sl-si"
+	ContentSearchResultLanguageSmn    ContentSearchResultLanguage = "smn"
+	ContentSearchResultLanguageSmnFi  ContentSearchResultLanguage = "smn-fi"
+	ContentSearchResultLanguageSn     ContentSearchResultLanguage = "sn"
+	ContentSearchResultLanguageSnZw   ContentSearchResultLanguage = "sn-zw"
+	ContentSearchResultLanguageSo     ContentSearchResultLanguage = "so"
+	ContentSearchResultLanguageSoDj   ContentSearchResultLanguage = "so-dj"
+	ContentSearchResultLanguageSoEt   ContentSearchResultLanguage = "so-et"
+	ContentSearchResultLanguageSoKe   ContentSearchResultLanguage = "so-ke"
+	ContentSearchResultLanguageSoSo   ContentSearchResultLanguage = "so-so"
+	ContentSearchResultLanguageSq     ContentSearchResultLanguage = "sq"
+	ContentSearchResultLanguageSqAl   ContentSearchResultLanguage = "sq-al"
+	ContentSearchResultLanguageSqMk   ContentSearchResultLanguage = "sq-mk"
+	ContentSearchResultLanguageSqXk   ContentSearchResultLanguage = "sq-xk"
+	ContentSearchResultLanguageSr     ContentSearchResultLanguage = "sr"
+	ContentSearchResultLanguageSrBa   ContentSearchResultLanguage = "sr-ba"
+	ContentSearchResultLanguageSrCs   ContentSearchResultLanguage = "sr-cs"
+	ContentSearchResultLanguageSrMe   ContentSearchResultLanguage = "sr-me"
+	ContentSearchResultLanguageSrRs   ContentSearchResultLanguage = "sr-rs"
+	ContentSearchResultLanguageSrXk   ContentSearchResultLanguage = "sr-xk"
+	ContentSearchResultLanguageSu     ContentSearchResultLanguage = "su"
+	ContentSearchResultLanguageSuID   ContentSearchResultLanguage = "su-id"
+	ContentSearchResultLanguageSv     ContentSearchResultLanguage = "sv"
+	ContentSearchResultLanguageSvAx   ContentSearchResultLanguage = "sv-ax"
+	ContentSearchResultLanguageSvFi   ContentSearchResultLanguage = "sv-fi"
+	ContentSearchResultLanguageSvSe   ContentSearchResultLanguage = "sv-se"
+	ContentSearchResultLanguageSw     ContentSearchResultLanguage = "sw"
+	ContentSearchResultLanguageSwCd   ContentSearchResultLanguage = "sw-cd"
+	ContentSearchResultLanguageSwKe   ContentSearchResultLanguage = "sw-ke"
+	ContentSearchResultLanguageSwTz   ContentSearchResultLanguage = "sw-tz"
+	ContentSearchResultLanguageSwUg   ContentSearchResultLanguage = "sw-ug"
+	ContentSearchResultLanguageSy     ContentSearchResultLanguage = "sy"
+	ContentSearchResultLanguageTa     ContentSearchResultLanguage = "ta"
+	ContentSearchResultLanguageTaIn   ContentSearchResultLanguage = "ta-in"
+	ContentSearchResultLanguageTaLk   ContentSearchResultLanguage = "ta-lk"
+	ContentSearchResultLanguageTaMy   ContentSearchResultLanguage = "ta-my"
+	ContentSearchResultLanguageTaSg   ContentSearchResultLanguage = "ta-sg"
+	ContentSearchResultLanguageTe     ContentSearchResultLanguage = "te"
+	ContentSearchResultLanguageTeIn   ContentSearchResultLanguage = "te-in"
+	ContentSearchResultLanguageTeo    ContentSearchResultLanguage = "teo"
+	ContentSearchResultLanguageTeoKe  ContentSearchResultLanguage = "teo-ke"
+	ContentSearchResultLanguageTeoUg  ContentSearchResultLanguage = "teo-ug"
+	ContentSearchResultLanguageTg     ContentSearchResultLanguage = "tg"
+	ContentSearchResultLanguageTgTj   ContentSearchResultLanguage = "tg-tj"
+	ContentSearchResultLanguageTh     ContentSearchResultLanguage = "th"
+	ContentSearchResultLanguageThTh   ContentSearchResultLanguage = "th-th"
+	ContentSearchResultLanguageTi     ContentSearchResultLanguage = "ti"
+	ContentSearchResultLanguageTiEr   ContentSearchResultLanguage = "ti-er"
+	ContentSearchResultLanguageTiEt   ContentSearchResultLanguage = "ti-et"
+	ContentSearchResultLanguageTk     ContentSearchResultLanguage = "tk"
+	ContentSearchResultLanguageTkTm   ContentSearchResultLanguage = "tk-tm"
+	ContentSearchResultLanguageTl     ContentSearchResultLanguage = "tl"
+	ContentSearchResultLanguageTo     ContentSearchResultLanguage = "to"
+	ContentSearchResultLanguageToTo   ContentSearchResultLanguage = "to-to"
+	ContentSearchResultLanguageTr     ContentSearchResultLanguage = "tr"
+	ContentSearchResultLanguageTrCy   ContentSearchResultLanguage = "tr-cy"
+	ContentSearchResultLanguageTrTr   ContentSearchResultLanguage = "tr-tr"
+	ContentSearchResultLanguageTt     ContentSearchResultLanguage = "tt"
+	ContentSearchResultLanguageTtRu   ContentSearchResultLanguage = "tt-ru"
+	ContentSearchResultLanguageTwq    ContentSearchResultLanguage = "twq"
+	ContentSearchResultLanguageTwqNe  ContentSearchResultLanguage = "twq-ne"
+	ContentSearchResultLanguageTzm    ContentSearchResultLanguage = "tzm"
+	ContentSearchResultLanguageTzmMa  ContentSearchResultLanguage = "tzm-ma"
+	ContentSearchResultLanguageUg     ContentSearchResultLanguage = "ug"
+	ContentSearchResultLanguageUgCn   ContentSearchResultLanguage = "ug-cn"
+	ContentSearchResultLanguageUk     ContentSearchResultLanguage = "uk"
+	ContentSearchResultLanguageUkUa   ContentSearchResultLanguage = "uk-ua"
+	ContentSearchResultLanguageUr     ContentSearchResultLanguage = "ur"
+	ContentSearchResultLanguageUrIn   ContentSearchResultLanguage = "ur-in"
+	ContentSearchResultLanguageUrPk   ContentSearchResultLanguage = "ur-pk"
+	ContentSearchResultLanguageUz     ContentSearchResultLanguage = "uz"
+	ContentSearchResultLanguageUzAf   ContentSearchResultLanguage = "uz-af"
+	ContentSearchResultLanguageUzUz   ContentSearchResultLanguage = "uz-uz"
+	ContentSearchResultLanguageVai    ContentSearchResultLanguage = "vai"
+	ContentSearchResultLanguageVaiLr  ContentSearchResultLanguage = "vai-lr"
+	ContentSearchResultLanguageVi     ContentSearchResultLanguage = "vi"
+	ContentSearchResultLanguageViVn   ContentSearchResultLanguage = "vi-vn"
+	ContentSearchResultLanguageVo     ContentSearchResultLanguage = "vo"
+	ContentSearchResultLanguageVo001  ContentSearchResultLanguage = "vo-001"
+	ContentSearchResultLanguageVun    ContentSearchResultLanguage = "vun"
+	ContentSearchResultLanguageVunTz  ContentSearchResultLanguage = "vun-tz"
+	ContentSearchResultLanguageWae    ContentSearchResultLanguage = "wae"
+	ContentSearchResultLanguageWaeCh  ContentSearchResultLanguage = "wae-ch"
+	ContentSearchResultLanguageWo     ContentSearchResultLanguage = "wo"
+	ContentSearchResultLanguageWoSn   ContentSearchResultLanguage = "wo-sn"
+	ContentSearchResultLanguageXh     ContentSearchResultLanguage = "xh"
+	ContentSearchResultLanguageXhZa   ContentSearchResultLanguage = "xh-za"
+	ContentSearchResultLanguageXog    ContentSearchResultLanguage = "xog"
+	ContentSearchResultLanguageXogUg  ContentSearchResultLanguage = "xog-ug"
+	ContentSearchResultLanguageYav    ContentSearchResultLanguage = "yav"
+	ContentSearchResultLanguageYavCm  ContentSearchResultLanguage = "yav-cm"
+	ContentSearchResultLanguageYi     ContentSearchResultLanguage = "yi"
+	ContentSearchResultLanguageYi001  ContentSearchResultLanguage = "yi-001"
+	ContentSearchResultLanguageYo     ContentSearchResultLanguage = "yo"
+	ContentSearchResultLanguageYoBj   ContentSearchResultLanguage = "yo-bj"
+	ContentSearchResultLanguageYoNg   ContentSearchResultLanguage = "yo-ng"
+	ContentSearchResultLanguageYue    ContentSearchResultLanguage = "yue"
+	ContentSearchResultLanguageYueCn  ContentSearchResultLanguage = "yue-cn"
+	ContentSearchResultLanguageYueHk  ContentSearchResultLanguage = "yue-hk"
+	ContentSearchResultLanguageZgh    ContentSearchResultLanguage = "zgh"
+	ContentSearchResultLanguageZghMa  ContentSearchResultLanguage = "zgh-ma"
+	ContentSearchResultLanguageZh     ContentSearchResultLanguage = "zh"
+	ContentSearchResultLanguageZhCn   ContentSearchResultLanguage = "zh-cn"
+	ContentSearchResultLanguageZhHans ContentSearchResultLanguage = "zh-hans"
+	ContentSearchResultLanguageZhHant ContentSearchResultLanguage = "zh-hant"
+	ContentSearchResultLanguageZhHk   ContentSearchResultLanguage = "zh-hk"
+	ContentSearchResultLanguageZhMo   ContentSearchResultLanguage = "zh-mo"
+	ContentSearchResultLanguageZhSg   ContentSearchResultLanguage = "zh-sg"
+	ContentSearchResultLanguageZhTw   ContentSearchResultLanguage = "zh-tw"
+	ContentSearchResultLanguageZu     ContentSearchResultLanguage = "zu"
+	ContentSearchResultLanguageZuZa   ContentSearchResultLanguage = "zu-za"
+)
+
+// The indexed data in HubSpot
+type IndexedData struct {
+	// The ID of the document in HubSpot.
+	ID string `json:"id,required"`
+	// The indexed fields in HubSpot.
+	Fields map[string]IndexedField `json:"fields,required"`
+	// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
+	// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
+	//
+	// Any of "BLOG_POST", "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LISTING_PAGE",
+	// "SITE_PAGE".
+	Type IndexedDataType `json:"type,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		Fields      respjson.Field
+		Type        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r IndexedData) RawJSON() string { return r.JSON.raw }
+func (r *IndexedData) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The type of document. Can be `SITE_PAGE`, `LANDING_PAGE`, `BLOG_POST`,
+// `LISTING_PAGE`, or `KNOWLEDGE_ARTICLE`.
+type IndexedDataType string
+
+const (
+	IndexedDataTypeBlogPost         IndexedDataType = "BLOG_POST"
+	IndexedDataTypeKnowledgeArticle IndexedDataType = "KNOWLEDGE_ARTICLE"
+	IndexedDataTypeLandingPage      IndexedDataType = "LANDING_PAGE"
+	IndexedDataTypeListingPage      IndexedDataType = "LISTING_PAGE"
+	IndexedDataTypeSitePage         IndexedDataType = "SITE_PAGE"
+)
+
+type IndexedField struct {
+	MetadataField bool   `json:"metadataField,required"`
+	Name          string `json:"name,required"`
+	Value         any    `json:"value,required"`
+	Values        []any  `json:"values,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		MetadataField respjson.Field
+		Name          respjson.Field
+		Value         respjson.Field
+		Values        respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r IndexedField) RawJSON() string { return r.JSON.raw }
+func (r *IndexedField) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PublicSearchResults struct {
+	Limit      int64                 `json:"limit,required"`
+	Offset     int64                 `json:"offset,required"`
+	Page       int64                 `json:"page,required"`
+	Results    []ContentSearchResult `json:"results,required"`
+	Total      int64                 `json:"total,required"`
+	SearchTerm string                `json:"searchTerm"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Limit       respjson.Field
+		Offset      respjson.Field
+		Page        respjson.Field
+		Results     respjson.Field
+		Total       respjson.Field
+		SearchTerm  respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicSearchResults) RawJSON() string { return r.JSON.raw }
+func (r *PublicSearchResults) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -305,8 +1077,8 @@ type SiteSearchGetIndexedDataParams struct {
 	// The type of document. Can be one of `SITE_PAGE`, `BLOG_POST`, or
 	// `KNOWLEDGE_ARTICLE`.
 	//
-	// Any of "LANDING_PAGE", "BLOG_POST", "SITE_PAGE", "KNOWLEDGE_ARTICLE",
-	// "LISTING_PAGE".
+	// Any of "BLOG_POST", "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LISTING_PAGE",
+	// "SITE_PAGE".
 	Type SiteSearchGetIndexedDataParamsType `query:"type,omitzero" json:"-"`
 	paramObj
 }
@@ -325,11 +1097,11 @@ func (r SiteSearchGetIndexedDataParams) URLQuery() (v url.Values, err error) {
 type SiteSearchGetIndexedDataParamsType string
 
 const (
-	SiteSearchGetIndexedDataParamsTypeLandingPage      SiteSearchGetIndexedDataParamsType = "LANDING_PAGE"
 	SiteSearchGetIndexedDataParamsTypeBlogPost         SiteSearchGetIndexedDataParamsType = "BLOG_POST"
-	SiteSearchGetIndexedDataParamsTypeSitePage         SiteSearchGetIndexedDataParamsType = "SITE_PAGE"
 	SiteSearchGetIndexedDataParamsTypeKnowledgeArticle SiteSearchGetIndexedDataParamsType = "KNOWLEDGE_ARTICLE"
+	SiteSearchGetIndexedDataParamsTypeLandingPage      SiteSearchGetIndexedDataParamsType = "LANDING_PAGE"
 	SiteSearchGetIndexedDataParamsTypeListingPage      SiteSearchGetIndexedDataParamsType = "LISTING_PAGE"
+	SiteSearchGetIndexedDataParamsTypeSitePage         SiteSearchGetIndexedDataParamsType = "SITE_PAGE"
 )
 
 type SiteSearchSearchParams struct {
@@ -416,54 +1188,54 @@ type SiteSearchSearchParams struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language SiteSearchSearchParamsLanguage `query:"language,omitzero" json:"-"`
 	// Specifies the length of the search results. Can be set to `LONG` or `SHORT`.
 	// `SHORT` will return the first 128 characters of the content's meta description.
 	// `LONG` will build a more detailed content snippet based on the html/content of
 	// the page.
 	//
-	// Any of "SHORT", "LONG".
+	// Any of "LONG", "SHORT".
 	Length SiteSearchSearchParamsLength `query:"length,omitzero" json:"-"`
 	// Specifies a path prefix to filter search results. Will only return results with
 	// URL paths that start with the specified parameter. Can be used multiple times.
@@ -868,6 +1640,7 @@ const (
 	SiteSearchSearchParamsLanguageHaw    SiteSearchSearchParamsLanguage = "haw"
 	SiteSearchSearchParamsLanguageHawUs  SiteSearchSearchParamsLanguage = "haw-us"
 	SiteSearchSearchParamsLanguageHe     SiteSearchSearchParamsLanguage = "he"
+	SiteSearchSearchParamsLanguageHeIl   SiteSearchSearchParamsLanguage = "he-il"
 	SiteSearchSearchParamsLanguageHi     SiteSearchSearchParamsLanguage = "hi"
 	SiteSearchSearchParamsLanguageHiIn   SiteSearchSearchParamsLanguage = "hi-in"
 	SiteSearchSearchParamsLanguageHr     SiteSearchSearchParamsLanguage = "hr"
@@ -882,11 +1655,11 @@ const (
 	SiteSearchSearchParamsLanguageIa     SiteSearchSearchParamsLanguage = "ia"
 	SiteSearchSearchParamsLanguageIa001  SiteSearchSearchParamsLanguage = "ia-001"
 	SiteSearchSearchParamsLanguageID     SiteSearchSearchParamsLanguage = "id"
+	SiteSearchSearchParamsLanguageIDID   SiteSearchSearchParamsLanguage = "id-id"
 	SiteSearchSearchParamsLanguageIg     SiteSearchSearchParamsLanguage = "ig"
 	SiteSearchSearchParamsLanguageIgNg   SiteSearchSearchParamsLanguage = "ig-ng"
 	SiteSearchSearchParamsLanguageIi     SiteSearchSearchParamsLanguage = "ii"
 	SiteSearchSearchParamsLanguageIiCn   SiteSearchSearchParamsLanguage = "ii-cn"
-	SiteSearchSearchParamsLanguageIDID   SiteSearchSearchParamsLanguage = "id-id"
 	SiteSearchSearchParamsLanguageIs     SiteSearchSearchParamsLanguage = "is"
 	SiteSearchSearchParamsLanguageIsIs   SiteSearchSearchParamsLanguage = "is-is"
 	SiteSearchSearchParamsLanguageIt     SiteSearchSearchParamsLanguage = "it"
@@ -894,13 +1667,10 @@ const (
 	SiteSearchSearchParamsLanguageItIt   SiteSearchSearchParamsLanguage = "it-it"
 	SiteSearchSearchParamsLanguageItSm   SiteSearchSearchParamsLanguage = "it-sm"
 	SiteSearchSearchParamsLanguageItVa   SiteSearchSearchParamsLanguage = "it-va"
-	SiteSearchSearchParamsLanguageHeIl   SiteSearchSearchParamsLanguage = "he-il"
 	SiteSearchSearchParamsLanguageJa     SiteSearchSearchParamsLanguage = "ja"
 	SiteSearchSearchParamsLanguageJaJp   SiteSearchSearchParamsLanguage = "ja-jp"
 	SiteSearchSearchParamsLanguageJgo    SiteSearchSearchParamsLanguage = "jgo"
 	SiteSearchSearchParamsLanguageJgoCm  SiteSearchSearchParamsLanguage = "jgo-cm"
-	SiteSearchSearchParamsLanguageYi     SiteSearchSearchParamsLanguage = "yi"
-	SiteSearchSearchParamsLanguageYi001  SiteSearchSearchParamsLanguage = "yi-001"
 	SiteSearchSearchParamsLanguageJmc    SiteSearchSearchParamsLanguage = "jmc"
 	SiteSearchSearchParamsLanguageJmcTz  SiteSearchSearchParamsLanguage = "jmc-tz"
 	SiteSearchSearchParamsLanguageJv     SiteSearchSearchParamsLanguage = "jv"
@@ -944,10 +1714,10 @@ const (
 	SiteSearchSearchParamsLanguageKsfCm  SiteSearchSearchParamsLanguage = "ksf-cm"
 	SiteSearchSearchParamsLanguageKsh    SiteSearchSearchParamsLanguage = "ksh"
 	SiteSearchSearchParamsLanguageKshDe  SiteSearchSearchParamsLanguage = "ksh-de"
-	SiteSearchSearchParamsLanguageKw     SiteSearchSearchParamsLanguage = "kw"
-	SiteSearchSearchParamsLanguageKwGB   SiteSearchSearchParamsLanguage = "kw-gb"
 	SiteSearchSearchParamsLanguageKu     SiteSearchSearchParamsLanguage = "ku"
 	SiteSearchSearchParamsLanguageKuTr   SiteSearchSearchParamsLanguage = "ku-tr"
+	SiteSearchSearchParamsLanguageKw     SiteSearchSearchParamsLanguage = "kw"
+	SiteSearchSearchParamsLanguageKwGB   SiteSearchSearchParamsLanguage = "kw-gb"
 	SiteSearchSearchParamsLanguageKy     SiteSearchSearchParamsLanguage = "ky"
 	SiteSearchSearchParamsLanguageKyKg   SiteSearchSearchParamsLanguage = "ky-kg"
 	SiteSearchSearchParamsLanguageLag    SiteSearchSearchParamsLanguage = "lag"
@@ -1034,8 +1804,8 @@ const (
 	SiteSearchSearchParamsLanguageNl     SiteSearchSearchParamsLanguage = "nl"
 	SiteSearchSearchParamsLanguageNlAw   SiteSearchSearchParamsLanguage = "nl-aw"
 	SiteSearchSearchParamsLanguageNlBe   SiteSearchSearchParamsLanguage = "nl-be"
-	SiteSearchSearchParamsLanguageNlCh   SiteSearchSearchParamsLanguage = "nl-ch"
 	SiteSearchSearchParamsLanguageNlBq   SiteSearchSearchParamsLanguage = "nl-bq"
+	SiteSearchSearchParamsLanguageNlCh   SiteSearchSearchParamsLanguage = "nl-ch"
 	SiteSearchSearchParamsLanguageNlCw   SiteSearchSearchParamsLanguage = "nl-cw"
 	SiteSearchSearchParamsLanguageNlLu   SiteSearchSearchParamsLanguage = "nl-lu"
 	SiteSearchSearchParamsLanguageNlNl   SiteSearchSearchParamsLanguage = "nl-nl"
@@ -1231,6 +2001,8 @@ const (
 	SiteSearchSearchParamsLanguageXogUg  SiteSearchSearchParamsLanguage = "xog-ug"
 	SiteSearchSearchParamsLanguageYav    SiteSearchSearchParamsLanguage = "yav"
 	SiteSearchSearchParamsLanguageYavCm  SiteSearchSearchParamsLanguage = "yav-cm"
+	SiteSearchSearchParamsLanguageYi     SiteSearchSearchParamsLanguage = "yi"
+	SiteSearchSearchParamsLanguageYi001  SiteSearchSearchParamsLanguage = "yi-001"
 	SiteSearchSearchParamsLanguageYo     SiteSearchSearchParamsLanguage = "yo"
 	SiteSearchSearchParamsLanguageYoBj   SiteSearchSearchParamsLanguage = "yo-bj"
 	SiteSearchSearchParamsLanguageYoNg   SiteSearchSearchParamsLanguage = "yo-ng"
@@ -1241,12 +2013,12 @@ const (
 	SiteSearchSearchParamsLanguageZghMa  SiteSearchSearchParamsLanguage = "zgh-ma"
 	SiteSearchSearchParamsLanguageZh     SiteSearchSearchParamsLanguage = "zh"
 	SiteSearchSearchParamsLanguageZhCn   SiteSearchSearchParamsLanguage = "zh-cn"
+	SiteSearchSearchParamsLanguageZhHans SiteSearchSearchParamsLanguage = "zh-hans"
+	SiteSearchSearchParamsLanguageZhHant SiteSearchSearchParamsLanguage = "zh-hant"
 	SiteSearchSearchParamsLanguageZhHk   SiteSearchSearchParamsLanguage = "zh-hk"
 	SiteSearchSearchParamsLanguageZhMo   SiteSearchSearchParamsLanguage = "zh-mo"
 	SiteSearchSearchParamsLanguageZhSg   SiteSearchSearchParamsLanguage = "zh-sg"
 	SiteSearchSearchParamsLanguageZhTw   SiteSearchSearchParamsLanguage = "zh-tw"
-	SiteSearchSearchParamsLanguageZhHans SiteSearchSearchParamsLanguage = "zh-hans"
-	SiteSearchSearchParamsLanguageZhHant SiteSearchSearchParamsLanguage = "zh-hant"
 	SiteSearchSearchParamsLanguageZu     SiteSearchSearchParamsLanguage = "zu"
 	SiteSearchSearchParamsLanguageZuZa   SiteSearchSearchParamsLanguage = "zu-za"
 )
@@ -1258,6 +2030,6 @@ const (
 type SiteSearchSearchParamsLength string
 
 const (
-	SiteSearchSearchParamsLengthShort SiteSearchSearchParamsLength = "SHORT"
 	SiteSearchSearchParamsLengthLong  SiteSearchSearchParamsLength = "LONG"
+	SiteSearchSearchParamsLengthShort SiteSearchSearchParamsLength = "SHORT"
 )

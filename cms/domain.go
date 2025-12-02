@@ -22,7 +22,7 @@ import (
 )
 
 // DomainService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -180,7 +180,8 @@ type DomainListParams struct {
 	UpdatedAt param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
 	// Only return domains updated before this date.
 	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
-	Sort          []string             `query:"sort,omitzero" json:"-"`
+	// Specifies the order in which the domains are returned.
+	Sort []string `query:"sort,omitzero" json:"-"`
 	paramObj
 }
 

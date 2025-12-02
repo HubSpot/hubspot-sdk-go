@@ -27,7 +27,7 @@ func TestOwnerListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Owners.List(context.TODO(), crm.OwnerListParams{
+	_, err := client.Crm.Owners.List(context.TODO(), crm.OwnerListParams{
 		After:    hubspotsdk.String("after"),
 		Archived: hubspotsdk.Bool(true),
 		Email:    hubspotsdk.String("email"),
@@ -55,7 +55,7 @@ func TestOwnerGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Owners.Get(
+	_, err := client.Crm.Owners.Get(
 		context.TODO(),
 		0,
 		crm.OwnerGetParams{

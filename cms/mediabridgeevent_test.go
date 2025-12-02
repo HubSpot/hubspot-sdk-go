@@ -28,27 +28,29 @@ func TestMediaBridgeEventNewAttentionSpanEventWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewAttentionSpanEvent(context.TODO(), cms.MediaBridgeEventNewAttentionSpanEventParams{
-		MediaType:         cms.MediaBridgeEventNewAttentionSpanEventParamsMediaTypeVideo,
-		OccurredTimestamp: 0,
-		RawDataMap: map[string]int64{
-			"foo": 0,
+		AttentionSpanEventRequest: cms.AttentionSpanEventRequestParam{
+			MediaType:         cms.AttentionSpanEventRequestMediaTypeAudio,
+			OccurredTimestamp: 0,
+			RawDataMap: map[string]int64{
+				"foo": 0,
+			},
+			SessionID:  "sessionId",
+			Hsenc:      hubspotsdk.String("_hsenc"),
+			ContactID:  hubspotsdk.Int(0),
+			ContactUtk: hubspotsdk.String("contactUtk"),
+			DerivedValues: cms.AttentionSpanCalculatedValuesParam{
+				TotalPercentPlayed: 0,
+				TotalSecondsPlayed: 0,
+			},
+			ExternalID:    hubspotsdk.String("externalId"),
+			MediaBridgeID: hubspotsdk.Int(0),
+			MediaName:     hubspotsdk.String("mediaName"),
+			MediaURL:      hubspotsdk.String("mediaUrl"),
+			PageID:        hubspotsdk.Int(0),
+			PageName:      hubspotsdk.String("pageName"),
+			PageURL:       hubspotsdk.String("pageUrl"),
+			RawDataString: hubspotsdk.String("rawDataString"),
 		},
-		SessionID:  "sessionId",
-		Hsenc:      hubspotsdk.String("_hsenc"),
-		ContactID:  hubspotsdk.Int(0),
-		ContactUtk: hubspotsdk.String("contactUtk"),
-		DerivedValues: cms.MediaBridgeEventNewAttentionSpanEventParamsDerivedValues{
-			TotalPercentPlayed: 0,
-			TotalSecondsPlayed: 0,
-		},
-		ExternalID:    hubspotsdk.String("externalId"),
-		MediaBridgeID: hubspotsdk.Int(0),
-		MediaName:     hubspotsdk.String("mediaName"),
-		MediaURL:      hubspotsdk.String("mediaUrl"),
-		PageID:        hubspotsdk.Int(0),
-		PageName:      hubspotsdk.String("pageName"),
-		PageURL:       hubspotsdk.String("pageUrl"),
-		RawDataString: hubspotsdk.String("rawDataString"),
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -73,21 +75,23 @@ func TestMediaBridgeEventNewMediaPlayedEventWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewMediaPlayedEvent(context.TODO(), cms.MediaBridgeEventNewMediaPlayedEventParams{
-		MediaType:         cms.MediaBridgeEventNewMediaPlayedEventParamsMediaTypeVideo,
-		OccurredTimestamp: 0,
-		SessionID:         "sessionId",
-		State:             cms.MediaBridgeEventNewMediaPlayedEventParamsStateStarted,
-		Hsenc:             hubspotsdk.String("_hsenc"),
-		ContactID:         hubspotsdk.Int(0),
-		ContactUtk:        hubspotsdk.String("contactUtk"),
-		ExternalID:        hubspotsdk.String("externalId"),
-		IframeURL:         hubspotsdk.String("iframeUrl"),
-		MediaBridgeID:     hubspotsdk.Int(0),
-		MediaName:         hubspotsdk.String("mediaName"),
-		MediaURL:          hubspotsdk.String("mediaUrl"),
-		PageID:            hubspotsdk.Int(0),
-		PageName:          hubspotsdk.String("pageName"),
-		PageURL:           hubspotsdk.String("pageUrl"),
+		MediaPlayedEventRequest: cms.MediaPlayedEventRequestParam{
+			MediaType:         cms.MediaPlayedEventRequestMediaTypeAudio,
+			OccurredTimestamp: 0,
+			SessionID:         "sessionId",
+			State:             cms.MediaPlayedEventRequestStateStarted,
+			Hsenc:             hubspotsdk.String("_hsenc"),
+			ContactID:         hubspotsdk.Int(0),
+			ContactUtk:        hubspotsdk.String("contactUtk"),
+			ExternalID:        hubspotsdk.String("externalId"),
+			IframeURL:         hubspotsdk.String("iframeUrl"),
+			MediaBridgeID:     hubspotsdk.Int(0),
+			MediaName:         hubspotsdk.String("mediaName"),
+			MediaURL:          hubspotsdk.String("mediaUrl"),
+			PageID:            hubspotsdk.Int(0),
+			PageName:          hubspotsdk.String("pageName"),
+			PageURL:           hubspotsdk.String("pageUrl"),
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -112,20 +116,22 @@ func TestMediaBridgeEventNewMediaPlayedPercentEventWithOptionalParams(t *testing
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.MediaBridge.Events.NewMediaPlayedPercentEvent(context.TODO(), cms.MediaBridgeEventNewMediaPlayedPercentEventParams{
-		MediaType:         cms.MediaBridgeEventNewMediaPlayedPercentEventParamsMediaTypeVideo,
-		OccurredTimestamp: 0,
-		PlayedPercent:     0,
-		SessionID:         "sessionId",
-		Hsenc:             hubspotsdk.String("_hsenc"),
-		ContactID:         hubspotsdk.Int(0),
-		ContactUtk:        hubspotsdk.String("contactUtk"),
-		ExternalID:        hubspotsdk.String("externalId"),
-		MediaBridgeID:     hubspotsdk.Int(0),
-		MediaName:         hubspotsdk.String("mediaName"),
-		MediaURL:          hubspotsdk.String("mediaUrl"),
-		PageID:            hubspotsdk.Int(0),
-		PageName:          hubspotsdk.String("pageName"),
-		PageURL:           hubspotsdk.String("pageUrl"),
+		MediaPlayedPercentageEventRequest: cms.MediaPlayedPercentageEventRequestParam{
+			MediaType:         cms.MediaPlayedPercentageEventRequestMediaTypeAudio,
+			OccurredTimestamp: 0,
+			PlayedPercent:     0,
+			SessionID:         "sessionId",
+			Hsenc:             hubspotsdk.String("_hsenc"),
+			ContactID:         hubspotsdk.Int(0),
+			ContactUtk:        hubspotsdk.String("contactUtk"),
+			ExternalID:        hubspotsdk.String("externalId"),
+			MediaBridgeID:     hubspotsdk.Int(0),
+			MediaName:         hubspotsdk.String("mediaName"),
+			MediaURL:          hubspotsdk.String("mediaUrl"),
+			PageID:            hubspotsdk.Int(0),
+			PageName:          hubspotsdk.String("pageName"),
+			PageURL:           hubspotsdk.String("pageUrl"),
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

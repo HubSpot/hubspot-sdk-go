@@ -14,7 +14,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestExtensionCallingSettingNewWithOptionalParams(t *testing.T) {
+func TestExtensionCallingSettingNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -27,20 +27,20 @@ func TestExtensionCallingSettingNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.Settings.New(
+	_, err := client.Crm.Extensions.Calling.Settings.New(
 		context.TODO(),
 		0,
 		crm.ExtensionCallingSettingNewParams{
 			SettingsRequest: crm.SettingsRequestParam{
-				Name:                   "HubPhone",
-				URL:                    "https://www.example.com/hubspot/iframe",
-				Height:                 hubspotsdk.Int(350),
-				IsReady:                hubspotsdk.Bool(true),
-				SupportsCustomObjects:  hubspotsdk.Bool(true),
-				SupportsInboundCalling: hubspotsdk.Bool(true),
-				UsesCallingWindow:      hubspotsdk.Bool(true),
-				UsesRemote:             hubspotsdk.Bool(true),
-				Width:                  hubspotsdk.Int(200),
+				Height:                 0,
+				IsReady:                true,
+				Name:                   "name",
+				SupportsCustomObjects:  true,
+				SupportsInboundCalling: true,
+				URL:                    "url",
+				UsesCallingWindow:      true,
+				UsesRemote:             true,
+				Width:                  0,
 			},
 		},
 	)
@@ -66,7 +66,7 @@ func TestExtensionCallingSettingUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.Settings.Update(
+	_, err := client.Crm.Extensions.Calling.Settings.Update(
 		context.TODO(),
 		0,
 		crm.ExtensionCallingSettingUpdateParams{
@@ -105,7 +105,7 @@ func TestExtensionCallingSettingDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Extensions.Calling.Settings.Delete(context.TODO(), 0)
+	err := client.Crm.Extensions.Calling.Settings.Delete(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -128,7 +128,7 @@ func TestExtensionCallingSettingGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.Settings.Get(context.TODO(), 0)
+	_, err := client.Crm.Extensions.Calling.Settings.Get(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

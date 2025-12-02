@@ -22,7 +22,7 @@ import (
 )
 
 // PageSitePageService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -222,15 +222,30 @@ func (r *PageSitePageService) GetRevision(ctx context.Context, revisionID string
 }
 
 // Retrieves all the previous versions of a Site Page.
-func (r *PageSitePageService) ListRevisions(ctx context.Context, objectID string, query PageSitePageListRevisionsParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalVersionPage, err error) {
+func (r *PageSitePageService) ListRevisions(ctx context.Context, objectID string, query PageSitePageListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[VersionPage], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return
 	}
 	path := fmt.Sprintf("cms/v3/pages/site-pages/%s/revisions", objectID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieves all the previous versions of a Site Page.
+func (r *PageSitePageService) ListRevisionsAutoPaging(ctx context.Context, objectID string, query PageSitePageListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[VersionPage] {
+	return pagination.NewPageAutoPager(r.ListRevisions(ctx, objectID, query, opts...))
 }
 
 // Take any changes from the draft version of the Site Page and apply them to the

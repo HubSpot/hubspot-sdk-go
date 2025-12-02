@@ -24,7 +24,7 @@ import (
 )
 
 // EventService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -462,7 +462,7 @@ type BatchResponseMarketingEventPublicDefaultResponse struct {
 	CompletedAt time.Time                             `json:"completedAt,required" format:"date-time"`
 	Results     []MarketingEventPublicDefaultResponse `json:"results,required"`
 	StartedAt   time.Time                             `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseMarketingEventPublicDefaultResponseStatus `json:"status,required"`
 	Errors      []shared.StandardError                                 `json:"errors"`
 	Links       map[string]string                                      `json:"links"`
@@ -492,17 +492,17 @@ func (r *BatchResponseMarketingEventPublicDefaultResponse) UnmarshalJSON(data []
 type BatchResponseMarketingEventPublicDefaultResponseStatus string
 
 const (
-	BatchResponseMarketingEventPublicDefaultResponseStatusPending    BatchResponseMarketingEventPublicDefaultResponseStatus = "PENDING"
-	BatchResponseMarketingEventPublicDefaultResponseStatusProcessing BatchResponseMarketingEventPublicDefaultResponseStatus = "PROCESSING"
 	BatchResponseMarketingEventPublicDefaultResponseStatusCanceled   BatchResponseMarketingEventPublicDefaultResponseStatus = "CANCELED"
 	BatchResponseMarketingEventPublicDefaultResponseStatusComplete   BatchResponseMarketingEventPublicDefaultResponseStatus = "COMPLETE"
+	BatchResponseMarketingEventPublicDefaultResponseStatusPending    BatchResponseMarketingEventPublicDefaultResponseStatus = "PENDING"
+	BatchResponseMarketingEventPublicDefaultResponseStatusProcessing BatchResponseMarketingEventPublicDefaultResponseStatus = "PROCESSING"
 )
 
 type BatchResponseMarketingEventPublicDefaultResponseV2 struct {
 	CompletedAt time.Time                               `json:"completedAt,required" format:"date-time"`
 	Results     []MarketingEventPublicDefaultResponseV2 `json:"results,required"`
 	StartedAt   time.Time                               `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseMarketingEventPublicDefaultResponseV2Status `json:"status,required"`
 	Links       map[string]string                                        `json:"links"`
 	RequestedAt time.Time                                                `json:"requestedAt" format:"date-time"`
@@ -528,17 +528,17 @@ func (r *BatchResponseMarketingEventPublicDefaultResponseV2) UnmarshalJSON(data 
 type BatchResponseMarketingEventPublicDefaultResponseV2Status string
 
 const (
-	BatchResponseMarketingEventPublicDefaultResponseV2StatusPending    BatchResponseMarketingEventPublicDefaultResponseV2Status = "PENDING"
-	BatchResponseMarketingEventPublicDefaultResponseV2StatusProcessing BatchResponseMarketingEventPublicDefaultResponseV2Status = "PROCESSING"
 	BatchResponseMarketingEventPublicDefaultResponseV2StatusCanceled   BatchResponseMarketingEventPublicDefaultResponseV2Status = "CANCELED"
 	BatchResponseMarketingEventPublicDefaultResponseV2StatusComplete   BatchResponseMarketingEventPublicDefaultResponseV2Status = "COMPLETE"
+	BatchResponseMarketingEventPublicDefaultResponseV2StatusPending    BatchResponseMarketingEventPublicDefaultResponseV2Status = "PENDING"
+	BatchResponseMarketingEventPublicDefaultResponseV2StatusProcessing BatchResponseMarketingEventPublicDefaultResponseV2Status = "PROCESSING"
 )
 
 type BatchResponseSubscriberEmailResponse struct {
 	CompletedAt time.Time                 `json:"completedAt,required" format:"date-time"`
 	Results     []SubscriberEmailResponse `json:"results,required"`
 	StartedAt   time.Time                 `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseSubscriberEmailResponseStatus `json:"status,required"`
 	Errors      []shared.StandardError                     `json:"errors"`
 	Links       map[string]string                          `json:"links"`
@@ -568,17 +568,17 @@ func (r *BatchResponseSubscriberEmailResponse) UnmarshalJSON(data []byte) error 
 type BatchResponseSubscriberEmailResponseStatus string
 
 const (
-	BatchResponseSubscriberEmailResponseStatusPending    BatchResponseSubscriberEmailResponseStatus = "PENDING"
-	BatchResponseSubscriberEmailResponseStatusProcessing BatchResponseSubscriberEmailResponseStatus = "PROCESSING"
 	BatchResponseSubscriberEmailResponseStatusCanceled   BatchResponseSubscriberEmailResponseStatus = "CANCELED"
 	BatchResponseSubscriberEmailResponseStatusComplete   BatchResponseSubscriberEmailResponseStatus = "COMPLETE"
+	BatchResponseSubscriberEmailResponseStatusPending    BatchResponseSubscriberEmailResponseStatus = "PENDING"
+	BatchResponseSubscriberEmailResponseStatusProcessing BatchResponseSubscriberEmailResponseStatus = "PROCESSING"
 )
 
 type BatchResponseSubscriberVidResponse struct {
 	CompletedAt time.Time               `json:"completedAt,required" format:"date-time"`
 	Results     []SubscriberVidResponse `json:"results,required"`
 	StartedAt   time.Time               `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseSubscriberVidResponseStatus `json:"status,required"`
 	Errors      []shared.StandardError                   `json:"errors"`
 	Links       map[string]string                        `json:"links"`
@@ -608,10 +608,10 @@ func (r *BatchResponseSubscriberVidResponse) UnmarshalJSON(data []byte) error {
 type BatchResponseSubscriberVidResponseStatus string
 
 const (
-	BatchResponseSubscriberVidResponseStatusPending    BatchResponseSubscriberVidResponseStatus = "PENDING"
-	BatchResponseSubscriberVidResponseStatusProcessing BatchResponseSubscriberVidResponseStatus = "PROCESSING"
 	BatchResponseSubscriberVidResponseStatusCanceled   BatchResponseSubscriberVidResponseStatus = "CANCELED"
 	BatchResponseSubscriberVidResponseStatusComplete   BatchResponseSubscriberVidResponseStatus = "COMPLETE"
+	BatchResponseSubscriberVidResponseStatusPending    BatchResponseSubscriberVidResponseStatus = "PENDING"
+	BatchResponseSubscriberVidResponseStatusProcessing BatchResponseSubscriberVidResponseStatus = "PROCESSING"
 )
 
 type CollectionResponseMarketingEventPublicReadResponseV2ForwardPaging struct {
@@ -732,7 +732,7 @@ func (r *ContactAssociation) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type CRMPropertyWrapper struct {
+type CrmPropertyWrapper struct {
 	Name  string `json:"name,required"`
 	Value string `json:"value,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -745,8 +745,8 @@ type CRMPropertyWrapper struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r CRMPropertyWrapper) RawJSON() string { return r.JSON.raw }
-func (r *CRMPropertyWrapper) UnmarshalJSON(data []byte) error {
+func (r CrmPropertyWrapper) RawJSON() string { return r.JSON.raw }
+func (r *CrmPropertyWrapper) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -824,9 +824,18 @@ func (r *MarketingEventCompleteRequestParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties EventName, EventOrganizer, ExternalAccountID, ExternalEventID are
-// required.
+// The properties CustomProperties, EventName, EventOrganizer, ExternalAccountID,
+// ExternalEventID are required.
 type MarketingEventCreateRequestParams struct {
+	// A list of PropertyValues. These can be whatever kind of property names and
+	// values you want. However, they must already exist on the HubSpot account's
+	// definition of the MarketingEvent Object. If they don't they will be filtered out
+	// and not set. In order to do this you'll need to create a new PropertyGroup on
+	// the HubSpot account's MarketingEvent object for your specific app and create the
+	// Custom Property you want to track on that HubSpot account. Do not create any new
+	// default properties on the MarketingEvent object as that will apply to all
+	// HubSpot accounts.
+	CustomProperties []PropertyValueParam `json:"customProperties,omitzero,required"`
 	// The name of the marketing event.
 	EventName string `json:"eventName,required"`
 	// The name of the organizer of the marketing event.
@@ -851,15 +860,6 @@ type MarketingEventCreateRequestParams struct {
 	EventURL param.Opt[string] `json:"eventUrl,omitzero"`
 	// The start date and time of the marketing event.
 	StartDateTime param.Opt[time.Time] `json:"startDateTime,omitzero" format:"date-time"`
-	// A list of PropertyValues. These can be whatever kind of property names and
-	// values you want. However, they must already exist on the HubSpot account's
-	// definition of the MarketingEvent Object. If they don't they will be filtered out
-	// and not set. In order to do this you'll need to create a new PropertyGroup on
-	// the HubSpot account's MarketingEvent object for your specific app and create the
-	// Custom Property you want to track on that HubSpot account. Do not create any new
-	// default properties on the MarketingEvent object as that will apply to all
-	// HubSpot accounts.
-	CustomProperties []PropertyValueParam `json:"customProperties,omitzero"`
 	paramObj
 }
 
@@ -872,10 +872,6 @@ func (r *MarketingEventCreateRequestParams) UnmarshalJSON(data []byte) error {
 }
 
 type MarketingEventDefaultResponse struct {
-	// The name of the marketing event.
-	EventName string `json:"eventName,required"`
-	// The name of the organizer of the marketing event.
-	EventOrganizer string `json:"eventOrganizer,required"`
 	// A list of PropertyValues. These can be whatever kind of property names and
 	// values you want. However, they must already exist on the HubSpot account's
 	// definition of the MarketingEvent Object. If they don't they will be filtered out
@@ -884,7 +880,11 @@ type MarketingEventDefaultResponse struct {
 	// Custom Property you want to track on that HubSpot account. Do not create any new
 	// default properties on the MarketingEvent object as that will apply to all
 	// HubSpot accounts.
-	CustomProperties []PropertyValue `json:"customProperties"`
+	CustomProperties []PropertyValue `json:"customProperties,required"`
+	// The name of the marketing event.
+	EventName string `json:"eventName,required"`
+	// The name of the organizer of the marketing event.
+	EventOrganizer string `json:"eventOrganizer,required"`
 	// The end date and time of the marketing event.
 	EndDateTime time.Time `json:"endDateTime" format:"date-time"`
 	// Indicates if the marketing event has been cancelled.
@@ -902,9 +902,9 @@ type MarketingEventDefaultResponse struct {
 	StartDateTime time.Time `json:"startDateTime" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		CustomProperties respjson.Field
 		EventName        respjson.Field
 		EventOrganizer   respjson.Field
-		CustomProperties respjson.Field
 		EndDateTime      respjson.Field
 		EventCancelled   respjson.Field
 		EventCompleted   respjson.Field
@@ -924,14 +924,15 @@ func (r *MarketingEventDefaultResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties Email, InteractionDateTime are required.
+// The properties ContactProperties, Email, InteractionDateTime, Properties are
+// required.
 type MarketingEventEmailSubscriberParam struct {
+	ContactProperties map[string]string `json:"contactProperties,omitzero,required"`
 	// The email address of the contact in HubSpot to associate with the event.
 	Email string `json:"email,required"`
 	// Timestamp in milliseconds at which the contact subscribed to the event.
 	InteractionDateTime int64             `json:"interactionDateTime,required"`
-	ContactProperties   map[string]string `json:"contactProperties,omitzero"`
-	Properties          map[string]string `json:"properties,omitzero"`
+	Properties          map[string]string `json:"properties,omitzero,required"`
 	paramObj
 }
 
@@ -990,11 +991,6 @@ func (r *MarketingEventIdentifiersResponse) UnmarshalJSON(data []byte) error {
 type MarketingEventPublicDefaultResponse struct {
 	ID        string    `json:"id,required"`
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
-	// The name of the marketing event.
-	EventName string `json:"eventName,required"`
-	// The name of the organizer of the marketing event.
-	EventOrganizer string    `json:"eventOrganizer,required"`
-	UpdatedAt      time.Time `json:"updatedAt,required" format:"date-time"`
 	// A list of PropertyValues. These can be whatever kind of property names and
 	// values you want. However, they must already exist on the HubSpot account's
 	// definition of the MarketingEvent Object. If they don't they will be filtered out
@@ -1003,7 +999,12 @@ type MarketingEventPublicDefaultResponse struct {
 	// Custom Property you want to track on that HubSpot account. Do not create any new
 	// default properties on the MarketingEvent object as that will apply to all
 	// HubSpot accounts.
-	CustomProperties []PropertyValue `json:"customProperties"`
+	CustomProperties []PropertyValue `json:"customProperties,required"`
+	// The name of the marketing event.
+	EventName string `json:"eventName,required"`
+	// The name of the organizer of the marketing event.
+	EventOrganizer string    `json:"eventOrganizer,required"`
+	UpdatedAt      time.Time `json:"updatedAt,required" format:"date-time"`
 	// The end date and time of the marketing event.
 	EndDateTime time.Time `json:"endDateTime" format:"date-time"`
 	// Indicates if the marketing event has been cancelled.
@@ -1023,10 +1024,10 @@ type MarketingEventPublicDefaultResponse struct {
 	JSON struct {
 		ID               respjson.Field
 		CreatedAt        respjson.Field
+		CustomProperties respjson.Field
 		EventName        respjson.Field
 		EventOrganizer   respjson.Field
 		UpdatedAt        respjson.Field
-		CustomProperties respjson.Field
 		EndDateTime      respjson.Field
 		EventCancelled   respjson.Field
 		EventCompleted   respjson.Field
@@ -1048,7 +1049,7 @@ func (r *MarketingEventPublicDefaultResponse) UnmarshalJSON(data []byte) error {
 
 type MarketingEventPublicDefaultResponseV2 struct {
 	CreatedAt        time.Time            `json:"createdAt,required" format:"date-time"`
-	CustomProperties []CRMPropertyWrapper `json:"customProperties,required"`
+	CustomProperties []CrmPropertyWrapper `json:"customProperties,required"`
 	EventName        string               `json:"eventName,required"`
 	ObjectID         string               `json:"objectId,required"`
 	UpdatedAt        time.Time            `json:"updatedAt,required" format:"date-time"`
@@ -1110,6 +1111,15 @@ type MarketingEventPublicReadResponse struct {
 	// later cancelled their registration.
 	Cancellations int64     `json:"cancellations,required"`
 	CreatedAt     time.Time `json:"createdAt,required" format:"date-time"`
+	// A list of PropertyValues. These can be whatever kind of property names and
+	// values you want. However, they must already exist on the HubSpot account's
+	// definition of the MarketingEvent Object. If they don't they will be filtered out
+	// and not set. In order to do this you'll need to create a new PropertyGroup on
+	// the HubSpot account's MarketingEvent object for your specific app and create the
+	// Custom Property you want to track on that HubSpot account. Do not create any new
+	// default properties on the MarketingEvent object as that will apply to all
+	// HubSpot accounts.
+	CustomProperties []PropertyValue `json:"customProperties,required"`
 	// The name of the marketing event.
 	EventName string `json:"eventName,required"`
 	// The name of the organizer of the marketing event.
@@ -1122,15 +1132,6 @@ type MarketingEventPublicReadResponse struct {
 	// The number of HubSpot contacts that registered for this marketing event.
 	Registrants int64     `json:"registrants,required"`
 	UpdatedAt   time.Time `json:"updatedAt,required" format:"date-time"`
-	// A list of PropertyValues. These can be whatever kind of property names and
-	// values you want. However, they must already exist on the HubSpot account's
-	// definition of the MarketingEvent Object. If they don't they will be filtered out
-	// and not set. In order to do this you'll need to create a new PropertyGroup on
-	// the HubSpot account's MarketingEvent object for your specific app and create the
-	// Custom Property you want to track on that HubSpot account. Do not create any new
-	// default properties on the MarketingEvent object as that will apply to all
-	// HubSpot accounts.
-	CustomProperties []PropertyValue `json:"customProperties"`
 	// The end date and time of the marketing event.
 	EndDateTime time.Time `json:"endDateTime" format:"date-time"`
 	// Indicates if the marketing event has been cancelled.
@@ -1152,13 +1153,13 @@ type MarketingEventPublicReadResponse struct {
 		Attendees        respjson.Field
 		Cancellations    respjson.Field
 		CreatedAt        respjson.Field
+		CustomProperties respjson.Field
 		EventName        respjson.Field
 		EventOrganizer   respjson.Field
 		ExternalEventID  respjson.Field
 		NoShows          respjson.Field
 		Registrants      respjson.Field
 		UpdatedAt        respjson.Field
-		CustomProperties respjson.Field
 		EndDateTime      respjson.Field
 		EventCancelled   respjson.Field
 		EventCompleted   respjson.Field
@@ -1180,7 +1181,7 @@ func (r *MarketingEventPublicReadResponse) UnmarshalJSON(data []byte) error {
 
 type MarketingEventPublicReadResponseV2 struct {
 	CreatedAt        time.Time            `json:"createdAt,required" format:"date-time"`
-	CustomProperties []CRMPropertyWrapper `json:"customProperties,required"`
+	CustomProperties []CrmPropertyWrapper `json:"customProperties,required"`
 	EventName        string               `json:"eventName,required"`
 	ObjectID         string               `json:"objectId,required"`
 	UpdatedAt        time.Time            `json:"updatedAt,required" format:"date-time"`
@@ -1277,12 +1278,12 @@ func (r *MarketingEventPublicUpdateRequestV2Param) UnmarshalJSON(data []byte) er
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property InteractionDateTime is required.
+// The properties InteractionDateTime, Properties, Vid are required.
 type MarketingEventSubscriberParam struct {
 	// Timestamp in milliseconds at which the contact subscribed to the event.
 	InteractionDateTime int64             `json:"interactionDateTime,required"`
-	Vid                 param.Opt[int64]  `json:"vid,omitzero"`
-	Properties          map[string]string `json:"properties,omitzero"`
+	Properties          map[string]string `json:"properties,omitzero,required"`
+	Vid                 int64             `json:"vid,required"`
 	paramObj
 }
 
@@ -1294,7 +1295,17 @@ func (r *MarketingEventSubscriberParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The property CustomProperties is required.
 type MarketingEventUpdateRequestParams struct {
+	// A list of PropertyValues. These can be whatever kind of property names and
+	// values you want. However, they must already exist on the HubSpot account's
+	// definition of the MarketingEvent Object. If they don't they will be filtered out
+	// and not set. In order to do this you'll need to create a new PropertyGroup on
+	// the HubSpot account's MarketingEvent object for your specific app and create the
+	// Custom Property you want to track on that HubSpot account. Do not create any new
+	// default properties on the MarketingEvent object as that will apply to all
+	// HubSpot accounts.
+	CustomProperties []PropertyValueParam `json:"customProperties,omitzero,required"`
 	// The end date and time of the marketing event.
 	EndDateTime param.Opt[time.Time] `json:"endDateTime,omitzero" format:"date-time"`
 	// Indicates if the marketing event has been cancelled. Defaults to `false`
@@ -1314,15 +1325,6 @@ type MarketingEventUpdateRequestParams struct {
 	EventURL param.Opt[string] `json:"eventUrl,omitzero"`
 	// The start date and time of the marketing event.
 	StartDateTime param.Opt[time.Time] `json:"startDateTime,omitzero" format:"date-time"`
-	// A list of PropertyValues. These can be whatever kind of property names and
-	// values you want. However, they must already exist on the HubSpot account's
-	// definition of the MarketingEvent Object. If they don't they will be filtered out
-	// and not set. In order to do this you'll need to create a new PropertyGroup on
-	// the HubSpot account's MarketingEvent object for your specific app and create the
-	// Custom Property you want to track on that HubSpot account. Do not create any new
-	// default properties on the MarketingEvent object as that will apply to all
-	// HubSpot accounts.
-	CustomProperties []PropertyValueParam `json:"customProperties,omitzero"`
 	paramObj
 }
 
@@ -1375,7 +1377,7 @@ func (r *ParticipationBreakdown) UnmarshalJSON(data []byte) error {
 }
 
 type ParticipationProperties struct {
-	// Any of "REGISTERED", "ATTENDED", "CANCELLED", "EMPTY", "NO_SHOW".
+	// Any of "ATTENDED", "CANCELLED", "EMPTY", "NO_SHOW", "REGISTERED".
 	AttendanceState           ParticipationPropertiesAttendanceState `json:"attendanceState,required"`
 	OccurredAt                int64                                  `json:"occurredAt,required"`
 	AttendanceDurationSeconds int64                                  `json:"attendanceDurationSeconds"`
@@ -1400,85 +1402,83 @@ func (r *ParticipationProperties) UnmarshalJSON(data []byte) error {
 type ParticipationPropertiesAttendanceState string
 
 const (
-	ParticipationPropertiesAttendanceStateRegistered ParticipationPropertiesAttendanceState = "REGISTERED"
 	ParticipationPropertiesAttendanceStateAttended   ParticipationPropertiesAttendanceState = "ATTENDED"
 	ParticipationPropertiesAttendanceStateCancelled  ParticipationPropertiesAttendanceState = "CANCELLED"
 	ParticipationPropertiesAttendanceStateEmpty      ParticipationPropertiesAttendanceState = "EMPTY"
 	ParticipationPropertiesAttendanceStateNoShow     ParticipationPropertiesAttendanceState = "NO_SHOW"
+	ParticipationPropertiesAttendanceStateRegistered ParticipationPropertiesAttendanceState = "REGISTERED"
 )
 
 // Represents a single custom property of a marketing event, storing its name,
 // value, metadata (like source, timestamp, and sensitivity), and related audit
 // information for tracking changes.
 type PropertyValue struct {
-	// Name of custom property
-	Name                     string `json:"name,required"`
-	SourceUpstreamDeployable string `json:"sourceUpstreamDeployable,required"`
-	// Custom property value
-	Value string `json:"value,required"`
 	// The sensitivity level of the property, such as "non_sensitive", "sensitive", and
 	// "highly_sensitive".
 	//
-	// Any of "none", "standard", "high".
-	DataSensitivity PropertyValueDataSensitivity `json:"dataSensitivity"`
+	// Any of "high", "none", "standard".
+	DataSensitivity PropertyValueDataSensitivity `json:"dataSensitivity,required"`
 	// Whether the property value is encrypted.
-	IsEncrypted          bool  `json:"isEncrypted"`
-	IsLargeValue         bool  `json:"isLargeValue"`
-	PersistenceTimestamp int64 `json:"persistenceTimestamp"`
+	IsEncrypted  bool `json:"isEncrypted,required"`
+	IsLargeValue bool `json:"isLargeValue,required"`
+	// Name of custom property
+	Name                 string `json:"name,required"`
+	PersistenceTimestamp int64  `json:"persistenceTimestamp,required"`
 	// A unique ID associated with this request.
-	RequestID string `json:"requestId"`
+	RequestID string `json:"requestId,required"`
 	// Whether the value was selected by a user.
-	SelectedByUser bool `json:"selectedByUser"`
+	SelectedByUser bool `json:"selectedByUser,required"`
 	// The timestamp when the value was selected by a user, if applicable.
-	SelectedByUserTimestamp int64 `json:"selectedByUserTimestamp"`
+	SelectedByUserTimestamp int64 `json:"selectedByUserTimestamp,required"`
 	// The origin of the property value, such as "IMPORT" or "API".
 	//
-	// Any of "UNKNOWN", "IMPORT", "API", "FORM", "ANALYTICS", "MIGRATION",
-	// "SALESFORCE", "INTEGRATION", "CONTACTS_WEB", "WAL_INCREMENTAL", "TASK", "EMAIL",
-	// "WORKFLOWS", "CALCULATED", "SOCIAL", "BATCH_UPDATE", "SIGNALS", "BIDEN",
-	// "DEFAULT", "COMPANIES", "DEALS", "ASSISTS", "PRESENTATIONS", "TALLY",
-	// "SIDEKICK", "CRM_UI", "MERGE_CONTACTS", "PORTAL_USER_ASSOCIATOR",
-	// "INTEGRATIONS_PLATFORM", "BCC_TO_CRM", "FORWARD_TO_CRM", "ENGAGEMENTS", "SALES",
-	// "HEISENBERG", "LEADIN", "GMAIL_INTEGRATION", "ACADEMY", "SALES_MESSAGES",
-	// "AVATARS_SERVICE", "MERGE_COMPANIES", "SEQUENCES", "COMPANY_FAMILIES",
-	// "MOBILE_IOS", "MOBILE_ANDROID", "CONTACTS", "ASSOCIATIONS", "EXTENSION",
-	// "SUCCESS", "BOT", "INTEGRATIONS_SYNC", "AUTOMATION_PLATFORM", "CONVERSATIONS",
-	// "EMAIL_INTEGRATION", "CONTENT_MEMBERSHIP", "QUOTES", "BET_ASSIGNMENT", "QUOTAS",
-	// "BET_CRM_CONNECTOR", "MEETINGS", "MERGE_OBJECTS", "RECYCLING_BIN", "ADS",
-	// "AI_GROUP", "COMMUNICATOR", "SETTINGS", "PROPERTY_SETTINGS",
-	// "PIPELINE_SETTINGS", "COMPANY_INSIGHTS", "BEHAVIORAL_EVENTS", "PAYMENTS",
-	// "GOALS", "PORTAL_OBJECT_SYNC", "APPROVALS", "FILE_MANAGER", "MARKETPLACE",
-	// "INTERNAL_PROCESSING", "FORECASTING", "SLACK_INTEGRATION", "CRM_UI_BULK_ACTION",
-	// "WORKFLOW_CONTACT_DELETE_ACTION", "ACCEPTANCE_TEST", "PLAYBOOKS", "CHATSPOT",
-	// "FLYWHEEL_PRODUCT_DATA_SYNC", "HELP_DESK", "BILLING", "DATA_ENRICHMENT",
-	// "AUTOMATION_JOURNEY", "MICROAPPS", "INTENT", "PROSPECTING_AGENT",
-	// "CENTRAL_EXCHANGE_RATES", "HELP_DESK_AI", "CONVERSATIONAL_ENRICHMENT",
-	// "CRM_PROCESSES_PLATFORM", "CLONE_OBJECTS", "MARKET_SOURCING", "DATASET",
-	// "PROPERTY_RESTORE".
-	Source PropertyValueSource `json:"source"`
+	// Any of "ACADEMY", "ACCEPTANCE_TEST", "ADS", "AI_GROUP", "ANALYTICS", "API",
+	// "APPROVALS", "ASSISTS", "ASSOCIATIONS", "AUTOMATION_JOURNEY",
+	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
+	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
+	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
+	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS", "CONTACTS",
+	// "CONTACTS_WEB", "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT",
+	// "CONVERSATIONS", "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION",
+	// "DATA_ENRICHMENT", "DATASET", "DEALS", "DEFAULT", "EMAIL", "EMAIL_INTEGRATION",
+	// "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC",
+	// "FORECASTING", "FORM", "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS",
+	// "HEISENBERG", "HELP_DESK", "HELP_DESK_AI", "IMPORT", "INTEGRATION",
+	// "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING",
+	// "LEADIN", "MARKET_SOURCING", "MARKETPLACE", "MEETINGS", "MERGE_COMPANIES",
+	// "MERGE_CONTACTS", "MERGE_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
+	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
+	// "PROPERTY_RESTORE", "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS",
+	// "QUOTES", "RECYCLING_BIN", "SALES", "SALES_MESSAGES", "SALESFORCE", "SEQUENCES",
+	// "SETTINGS", "SIDEKICK", "SIGNALS", "SLACK_INTEGRATION", "SOCIAL", "SUCCESS",
+	// "TALLY", "TASK", "UNKNOWN", "WAL_INCREMENTAL", "WORKFLOW_CONTACT_DELETE_ACTION",
+	// "WORKFLOWS".
+	Source PropertyValueSource `json:"source,required"`
 	// The ID of the property source indicating where it was created.
-	SourceID string `json:"sourceId"`
+	SourceID string `json:"sourceId,required"`
 	// A human-readable label.
-	SourceLabel string `json:"sourceLabel"`
+	SourceLabel string `json:"sourceLabel,required"`
 	// Source metadata encoded as a base64 string. For example: `ZXhhbXBsZSBzdHJpbmc=`
-	SourceMetadata string `json:"sourceMetadata"`
+	SourceMetadata           string `json:"sourceMetadata,required"`
+	SourceUpstreamDeployable string `json:"sourceUpstreamDeployable,required"`
 	// The unique identifier associated with the source.
-	SourceVid []int64 `json:"sourceVid"`
+	SourceVid []int64 `json:"sourceVid,required"`
 	// When the value was set, as a 64-bit integer.
-	Timestamp int64 `json:"timestamp"`
+	Timestamp int64 `json:"timestamp,required"`
 	// The unit of measurement or context for the value.
-	Unit string `json:"unit"`
+	Unit string `json:"unit,required"`
 	// The ID of the user who updated the property.
-	UpdatedByUserID                    int64 `json:"updatedByUserId"`
-	UseTimestampAsPersistenceTimestamp bool  `json:"useTimestampAsPersistenceTimestamp"`
+	UpdatedByUserID                    int64 `json:"updatedByUserId,required"`
+	UseTimestampAsPersistenceTimestamp bool  `json:"useTimestampAsPersistenceTimestamp,required"`
+	// Custom property value
+	Value string `json:"value,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Name                               respjson.Field
-		SourceUpstreamDeployable           respjson.Field
-		Value                              respjson.Field
 		DataSensitivity                    respjson.Field
 		IsEncrypted                        respjson.Field
 		IsLargeValue                       respjson.Field
+		Name                               respjson.Field
 		PersistenceTimestamp               respjson.Field
 		RequestID                          respjson.Field
 		SelectedByUser                     respjson.Field
@@ -1487,11 +1487,13 @@ type PropertyValue struct {
 		SourceID                           respjson.Field
 		SourceLabel                        respjson.Field
 		SourceMetadata                     respjson.Field
+		SourceUpstreamDeployable           respjson.Field
 		SourceVid                          respjson.Field
 		Timestamp                          respjson.Field
 		Unit                               respjson.Field
 		UpdatedByUserID                    respjson.Field
 		UseTimestampAsPersistenceTimestamp respjson.Field
+		Value                              respjson.Field
 		ExtraFields                        map[string]respjson.Field
 		raw                                string
 	} `json:"-"`
@@ -1517,182 +1519,186 @@ func (r PropertyValue) ToParam() PropertyValueParam {
 type PropertyValueDataSensitivity string
 
 const (
+	PropertyValueDataSensitivityHigh     PropertyValueDataSensitivity = "high"
 	PropertyValueDataSensitivityNone     PropertyValueDataSensitivity = "none"
 	PropertyValueDataSensitivityStandard PropertyValueDataSensitivity = "standard"
-	PropertyValueDataSensitivityHigh     PropertyValueDataSensitivity = "high"
 )
 
 // The origin of the property value, such as "IMPORT" or "API".
 type PropertyValueSource string
 
 const (
-	PropertyValueSourceUnknown                     PropertyValueSource = "UNKNOWN"
-	PropertyValueSourceImport                      PropertyValueSource = "IMPORT"
-	PropertyValueSourceAPI                         PropertyValueSource = "API"
-	PropertyValueSourceForm                        PropertyValueSource = "FORM"
-	PropertyValueSourceAnalytics                   PropertyValueSource = "ANALYTICS"
-	PropertyValueSourceMigration                   PropertyValueSource = "MIGRATION"
-	PropertyValueSourceSalesforce                  PropertyValueSource = "SALESFORCE"
-	PropertyValueSourceIntegration                 PropertyValueSource = "INTEGRATION"
-	PropertyValueSourceContactsWeb                 PropertyValueSource = "CONTACTS_WEB"
-	PropertyValueSourceWalIncremental              PropertyValueSource = "WAL_INCREMENTAL"
-	PropertyValueSourceTask                        PropertyValueSource = "TASK"
-	PropertyValueSourceEmail                       PropertyValueSource = "EMAIL"
-	PropertyValueSourceWorkflows                   PropertyValueSource = "WORKFLOWS"
-	PropertyValueSourceCalculated                  PropertyValueSource = "CALCULATED"
-	PropertyValueSourceSocial                      PropertyValueSource = "SOCIAL"
-	PropertyValueSourceBatchUpdate                 PropertyValueSource = "BATCH_UPDATE"
-	PropertyValueSourceSignals                     PropertyValueSource = "SIGNALS"
-	PropertyValueSourceBiden                       PropertyValueSource = "BIDEN"
-	PropertyValueSourceDefault                     PropertyValueSource = "DEFAULT"
-	PropertyValueSourceCompanies                   PropertyValueSource = "COMPANIES"
-	PropertyValueSourceDeals                       PropertyValueSource = "DEALS"
-	PropertyValueSourceAssists                     PropertyValueSource = "ASSISTS"
-	PropertyValueSourcePresentations               PropertyValueSource = "PRESENTATIONS"
-	PropertyValueSourceTally                       PropertyValueSource = "TALLY"
-	PropertyValueSourceSidekick                    PropertyValueSource = "SIDEKICK"
-	PropertyValueSourceCRMUi                       PropertyValueSource = "CRM_UI"
-	PropertyValueSourceMergeContacts               PropertyValueSource = "MERGE_CONTACTS"
-	PropertyValueSourcePortalUserAssociator        PropertyValueSource = "PORTAL_USER_ASSOCIATOR"
-	PropertyValueSourceIntegrationsPlatform        PropertyValueSource = "INTEGRATIONS_PLATFORM"
-	PropertyValueSourceBccToCRM                    PropertyValueSource = "BCC_TO_CRM"
-	PropertyValueSourceForwardToCRM                PropertyValueSource = "FORWARD_TO_CRM"
-	PropertyValueSourceEngagements                 PropertyValueSource = "ENGAGEMENTS"
-	PropertyValueSourceSales                       PropertyValueSource = "SALES"
-	PropertyValueSourceHeisenberg                  PropertyValueSource = "HEISENBERG"
-	PropertyValueSourceLeadin                      PropertyValueSource = "LEADIN"
-	PropertyValueSourceGmailIntegration            PropertyValueSource = "GMAIL_INTEGRATION"
 	PropertyValueSourceAcademy                     PropertyValueSource = "ACADEMY"
-	PropertyValueSourceSalesMessages               PropertyValueSource = "SALES_MESSAGES"
-	PropertyValueSourceAvatarsService              PropertyValueSource = "AVATARS_SERVICE"
-	PropertyValueSourceMergeCompanies              PropertyValueSource = "MERGE_COMPANIES"
-	PropertyValueSourceSequences                   PropertyValueSource = "SEQUENCES"
-	PropertyValueSourceCompanyFamilies             PropertyValueSource = "COMPANY_FAMILIES"
-	PropertyValueSourceMobileIos                   PropertyValueSource = "MOBILE_IOS"
-	PropertyValueSourceMobileAndroid               PropertyValueSource = "MOBILE_ANDROID"
-	PropertyValueSourceContacts                    PropertyValueSource = "CONTACTS"
-	PropertyValueSourceAssociations                PropertyValueSource = "ASSOCIATIONS"
-	PropertyValueSourceExtension                   PropertyValueSource = "EXTENSION"
-	PropertyValueSourceSuccess                     PropertyValueSource = "SUCCESS"
-	PropertyValueSourceBot                         PropertyValueSource = "BOT"
-	PropertyValueSourceIntegrationsSync            PropertyValueSource = "INTEGRATIONS_SYNC"
-	PropertyValueSourceAutomationPlatform          PropertyValueSource = "AUTOMATION_PLATFORM"
-	PropertyValueSourceConversations               PropertyValueSource = "CONVERSATIONS"
-	PropertyValueSourceEmailIntegration            PropertyValueSource = "EMAIL_INTEGRATION"
-	PropertyValueSourceContentMembership           PropertyValueSource = "CONTENT_MEMBERSHIP"
-	PropertyValueSourceQuotes                      PropertyValueSource = "QUOTES"
-	PropertyValueSourceBetAssignment               PropertyValueSource = "BET_ASSIGNMENT"
-	PropertyValueSourceQuotas                      PropertyValueSource = "QUOTAS"
-	PropertyValueSourceBetCRMConnector             PropertyValueSource = "BET_CRM_CONNECTOR"
-	PropertyValueSourceMeetings                    PropertyValueSource = "MEETINGS"
-	PropertyValueSourceMergeObjects                PropertyValueSource = "MERGE_OBJECTS"
-	PropertyValueSourceRecyclingBin                PropertyValueSource = "RECYCLING_BIN"
+	PropertyValueSourceAcceptanceTest              PropertyValueSource = "ACCEPTANCE_TEST"
 	PropertyValueSourceAds                         PropertyValueSource = "ADS"
 	PropertyValueSourceAIGroup                     PropertyValueSource = "AI_GROUP"
-	PropertyValueSourceCommunicator                PropertyValueSource = "COMMUNICATOR"
-	PropertyValueSourceSettings                    PropertyValueSource = "SETTINGS"
-	PropertyValueSourcePropertySettings            PropertyValueSource = "PROPERTY_SETTINGS"
-	PropertyValueSourcePipelineSettings            PropertyValueSource = "PIPELINE_SETTINGS"
-	PropertyValueSourceCompanyInsights             PropertyValueSource = "COMPANY_INSIGHTS"
-	PropertyValueSourceBehavioralEvents            PropertyValueSource = "BEHAVIORAL_EVENTS"
-	PropertyValueSourcePayments                    PropertyValueSource = "PAYMENTS"
-	PropertyValueSourceGoals                       PropertyValueSource = "GOALS"
-	PropertyValueSourcePortalObjectSync            PropertyValueSource = "PORTAL_OBJECT_SYNC"
+	PropertyValueSourceAnalytics                   PropertyValueSource = "ANALYTICS"
+	PropertyValueSourceAPI                         PropertyValueSource = "API"
 	PropertyValueSourceApprovals                   PropertyValueSource = "APPROVALS"
-	PropertyValueSourceFileManager                 PropertyValueSource = "FILE_MANAGER"
-	PropertyValueSourceMarketplace                 PropertyValueSource = "MARKETPLACE"
-	PropertyValueSourceInternalProcessing          PropertyValueSource = "INTERNAL_PROCESSING"
-	PropertyValueSourceForecasting                 PropertyValueSource = "FORECASTING"
-	PropertyValueSourceSlackIntegration            PropertyValueSource = "SLACK_INTEGRATION"
-	PropertyValueSourceCRMUiBulkAction             PropertyValueSource = "CRM_UI_BULK_ACTION"
-	PropertyValueSourceWorkflowContactDeleteAction PropertyValueSource = "WORKFLOW_CONTACT_DELETE_ACTION"
-	PropertyValueSourceAcceptanceTest              PropertyValueSource = "ACCEPTANCE_TEST"
-	PropertyValueSourcePlaybooks                   PropertyValueSource = "PLAYBOOKS"
-	PropertyValueSourceChatspot                    PropertyValueSource = "CHATSPOT"
-	PropertyValueSourceFlywheelProductDataSync     PropertyValueSource = "FLYWHEEL_PRODUCT_DATA_SYNC"
-	PropertyValueSourceHelpDesk                    PropertyValueSource = "HELP_DESK"
-	PropertyValueSourceBilling                     PropertyValueSource = "BILLING"
-	PropertyValueSourceDataEnrichment              PropertyValueSource = "DATA_ENRICHMENT"
+	PropertyValueSourceAssists                     PropertyValueSource = "ASSISTS"
+	PropertyValueSourceAssociations                PropertyValueSource = "ASSOCIATIONS"
 	PropertyValueSourceAutomationJourney           PropertyValueSource = "AUTOMATION_JOURNEY"
-	PropertyValueSourceMicroapps                   PropertyValueSource = "MICROAPPS"
-	PropertyValueSourceIntent                      PropertyValueSource = "INTENT"
-	PropertyValueSourceProspectingAgent            PropertyValueSource = "PROSPECTING_AGENT"
+	PropertyValueSourceAutomationPlatform          PropertyValueSource = "AUTOMATION_PLATFORM"
+	PropertyValueSourceAvatarsService              PropertyValueSource = "AVATARS_SERVICE"
+	PropertyValueSourceBatchUpdate                 PropertyValueSource = "BATCH_UPDATE"
+	PropertyValueSourceBccToCrm                    PropertyValueSource = "BCC_TO_CRM"
+	PropertyValueSourceBehavioralEvents            PropertyValueSource = "BEHAVIORAL_EVENTS"
+	PropertyValueSourceBetAssignment               PropertyValueSource = "BET_ASSIGNMENT"
+	PropertyValueSourceBetCrmConnector             PropertyValueSource = "BET_CRM_CONNECTOR"
+	PropertyValueSourceBiden                       PropertyValueSource = "BIDEN"
+	PropertyValueSourceBilling                     PropertyValueSource = "BILLING"
+	PropertyValueSourceBot                         PropertyValueSource = "BOT"
+	PropertyValueSourceCalculated                  PropertyValueSource = "CALCULATED"
 	PropertyValueSourceCentralExchangeRates        PropertyValueSource = "CENTRAL_EXCHANGE_RATES"
-	PropertyValueSourceHelpDeskAI                  PropertyValueSource = "HELP_DESK_AI"
-	PropertyValueSourceConversationalEnrichment    PropertyValueSource = "CONVERSATIONAL_ENRICHMENT"
-	PropertyValueSourceCRMProcessesPlatform        PropertyValueSource = "CRM_PROCESSES_PLATFORM"
+	PropertyValueSourceChatspot                    PropertyValueSource = "CHATSPOT"
 	PropertyValueSourceCloneObjects                PropertyValueSource = "CLONE_OBJECTS"
-	PropertyValueSourceMarketSourcing              PropertyValueSource = "MARKET_SOURCING"
+	PropertyValueSourceCommunicator                PropertyValueSource = "COMMUNICATOR"
+	PropertyValueSourceCompanies                   PropertyValueSource = "COMPANIES"
+	PropertyValueSourceCompanyFamilies             PropertyValueSource = "COMPANY_FAMILIES"
+	PropertyValueSourceCompanyInsights             PropertyValueSource = "COMPANY_INSIGHTS"
+	PropertyValueSourceContacts                    PropertyValueSource = "CONTACTS"
+	PropertyValueSourceContactsWeb                 PropertyValueSource = "CONTACTS_WEB"
+	PropertyValueSourceContentMembership           PropertyValueSource = "CONTENT_MEMBERSHIP"
+	PropertyValueSourceConversationalEnrichment    PropertyValueSource = "CONVERSATIONAL_ENRICHMENT"
+	PropertyValueSourceConversations               PropertyValueSource = "CONVERSATIONS"
+	PropertyValueSourceCrmProcessesPlatform        PropertyValueSource = "CRM_PROCESSES_PLATFORM"
+	PropertyValueSourceCrmUi                       PropertyValueSource = "CRM_UI"
+	PropertyValueSourceCrmUiBulkAction             PropertyValueSource = "CRM_UI_BULK_ACTION"
+	PropertyValueSourceDataEnrichment              PropertyValueSource = "DATA_ENRICHMENT"
 	PropertyValueSourceDataset                     PropertyValueSource = "DATASET"
+	PropertyValueSourceDeals                       PropertyValueSource = "DEALS"
+	PropertyValueSourceDefault                     PropertyValueSource = "DEFAULT"
+	PropertyValueSourceEmail                       PropertyValueSource = "EMAIL"
+	PropertyValueSourceEmailIntegration            PropertyValueSource = "EMAIL_INTEGRATION"
+	PropertyValueSourceEngagements                 PropertyValueSource = "ENGAGEMENTS"
+	PropertyValueSourceExtension                   PropertyValueSource = "EXTENSION"
+	PropertyValueSourceFileManager                 PropertyValueSource = "FILE_MANAGER"
+	PropertyValueSourceFlywheelProductDataSync     PropertyValueSource = "FLYWHEEL_PRODUCT_DATA_SYNC"
+	PropertyValueSourceForecasting                 PropertyValueSource = "FORECASTING"
+	PropertyValueSourceForm                        PropertyValueSource = "FORM"
+	PropertyValueSourceForwardToCrm                PropertyValueSource = "FORWARD_TO_CRM"
+	PropertyValueSourceGmailIntegration            PropertyValueSource = "GMAIL_INTEGRATION"
+	PropertyValueSourceGoals                       PropertyValueSource = "GOALS"
+	PropertyValueSourceHeisenberg                  PropertyValueSource = "HEISENBERG"
+	PropertyValueSourceHelpDesk                    PropertyValueSource = "HELP_DESK"
+	PropertyValueSourceHelpDeskAI                  PropertyValueSource = "HELP_DESK_AI"
+	PropertyValueSourceImport                      PropertyValueSource = "IMPORT"
+	PropertyValueSourceIntegration                 PropertyValueSource = "INTEGRATION"
+	PropertyValueSourceIntegrationsPlatform        PropertyValueSource = "INTEGRATIONS_PLATFORM"
+	PropertyValueSourceIntegrationsSync            PropertyValueSource = "INTEGRATIONS_SYNC"
+	PropertyValueSourceIntent                      PropertyValueSource = "INTENT"
+	PropertyValueSourceInternalProcessing          PropertyValueSource = "INTERNAL_PROCESSING"
+	PropertyValueSourceLeadin                      PropertyValueSource = "LEADIN"
+	PropertyValueSourceMarketSourcing              PropertyValueSource = "MARKET_SOURCING"
+	PropertyValueSourceMarketplace                 PropertyValueSource = "MARKETPLACE"
+	PropertyValueSourceMeetings                    PropertyValueSource = "MEETINGS"
+	PropertyValueSourceMergeCompanies              PropertyValueSource = "MERGE_COMPANIES"
+	PropertyValueSourceMergeContacts               PropertyValueSource = "MERGE_CONTACTS"
+	PropertyValueSourceMergeObjects                PropertyValueSource = "MERGE_OBJECTS"
+	PropertyValueSourceMicroapps                   PropertyValueSource = "MICROAPPS"
+	PropertyValueSourceMigration                   PropertyValueSource = "MIGRATION"
+	PropertyValueSourceMobileAndroid               PropertyValueSource = "MOBILE_ANDROID"
+	PropertyValueSourceMobileIos                   PropertyValueSource = "MOBILE_IOS"
+	PropertyValueSourcePayments                    PropertyValueSource = "PAYMENTS"
+	PropertyValueSourcePipelineSettings            PropertyValueSource = "PIPELINE_SETTINGS"
+	PropertyValueSourcePlaybooks                   PropertyValueSource = "PLAYBOOKS"
+	PropertyValueSourcePortalObjectSync            PropertyValueSource = "PORTAL_OBJECT_SYNC"
+	PropertyValueSourcePortalUserAssociator        PropertyValueSource = "PORTAL_USER_ASSOCIATOR"
+	PropertyValueSourcePresentations               PropertyValueSource = "PRESENTATIONS"
 	PropertyValueSourcePropertyRestore             PropertyValueSource = "PROPERTY_RESTORE"
+	PropertyValueSourcePropertySettings            PropertyValueSource = "PROPERTY_SETTINGS"
+	PropertyValueSourceProspectingAgent            PropertyValueSource = "PROSPECTING_AGENT"
+	PropertyValueSourceQuotas                      PropertyValueSource = "QUOTAS"
+	PropertyValueSourceQuotes                      PropertyValueSource = "QUOTES"
+	PropertyValueSourceRecyclingBin                PropertyValueSource = "RECYCLING_BIN"
+	PropertyValueSourceSales                       PropertyValueSource = "SALES"
+	PropertyValueSourceSalesMessages               PropertyValueSource = "SALES_MESSAGES"
+	PropertyValueSourceSalesforce                  PropertyValueSource = "SALESFORCE"
+	PropertyValueSourceSequences                   PropertyValueSource = "SEQUENCES"
+	PropertyValueSourceSettings                    PropertyValueSource = "SETTINGS"
+	PropertyValueSourceSidekick                    PropertyValueSource = "SIDEKICK"
+	PropertyValueSourceSignals                     PropertyValueSource = "SIGNALS"
+	PropertyValueSourceSlackIntegration            PropertyValueSource = "SLACK_INTEGRATION"
+	PropertyValueSourceSocial                      PropertyValueSource = "SOCIAL"
+	PropertyValueSourceSuccess                     PropertyValueSource = "SUCCESS"
+	PropertyValueSourceTally                       PropertyValueSource = "TALLY"
+	PropertyValueSourceTask                        PropertyValueSource = "TASK"
+	PropertyValueSourceUnknown                     PropertyValueSource = "UNKNOWN"
+	PropertyValueSourceWalIncremental              PropertyValueSource = "WAL_INCREMENTAL"
+	PropertyValueSourceWorkflowContactDeleteAction PropertyValueSource = "WORKFLOW_CONTACT_DELETE_ACTION"
+	PropertyValueSourceWorkflows                   PropertyValueSource = "WORKFLOWS"
 )
 
 // Represents a single custom property of a marketing event, storing its name,
 // value, metadata (like source, timestamp, and sensitivity), and related audit
 // information for tracking changes.
 //
-// The properties Name, SourceUpstreamDeployable, Value are required.
+// The properties DataSensitivity, IsEncrypted, IsLargeValue, Name,
+// PersistenceTimestamp, RequestID, SelectedByUser, SelectedByUserTimestamp,
+// Source, SourceID, SourceLabel, SourceMetadata, SourceUpstreamDeployable,
+// SourceVid, Timestamp, Unit, UpdatedByUserID, UseTimestampAsPersistenceTimestamp,
+// Value are required.
 type PropertyValueParam struct {
-	// Name of custom property
-	Name                     string `json:"name,required"`
-	SourceUpstreamDeployable string `json:"sourceUpstreamDeployable,required"`
-	// Custom property value
-	Value string `json:"value,required"`
-	// Whether the property value is encrypted.
-	IsEncrypted          param.Opt[bool]  `json:"isEncrypted,omitzero"`
-	IsLargeValue         param.Opt[bool]  `json:"isLargeValue,omitzero"`
-	PersistenceTimestamp param.Opt[int64] `json:"persistenceTimestamp,omitzero"`
-	// A unique ID associated with this request.
-	RequestID param.Opt[string] `json:"requestId,omitzero"`
-	// Whether the value was selected by a user.
-	SelectedByUser param.Opt[bool] `json:"selectedByUser,omitzero"`
-	// The timestamp when the value was selected by a user, if applicable.
-	SelectedByUserTimestamp param.Opt[int64] `json:"selectedByUserTimestamp,omitzero"`
-	// The ID of the property source indicating where it was created.
-	SourceID param.Opt[string] `json:"sourceId,omitzero"`
-	// A human-readable label.
-	SourceLabel param.Opt[string] `json:"sourceLabel,omitzero"`
-	// Source metadata encoded as a base64 string. For example: `ZXhhbXBsZSBzdHJpbmc=`
-	SourceMetadata param.Opt[string] `json:"sourceMetadata,omitzero"`
-	// When the value was set, as a 64-bit integer.
-	Timestamp param.Opt[int64] `json:"timestamp,omitzero"`
-	// The unit of measurement or context for the value.
-	Unit param.Opt[string] `json:"unit,omitzero"`
-	// The ID of the user who updated the property.
-	UpdatedByUserID                    param.Opt[int64] `json:"updatedByUserId,omitzero"`
-	UseTimestampAsPersistenceTimestamp param.Opt[bool]  `json:"useTimestampAsPersistenceTimestamp,omitzero"`
 	// The sensitivity level of the property, such as "non_sensitive", "sensitive", and
 	// "highly_sensitive".
 	//
-	// Any of "none", "standard", "high".
-	DataSensitivity PropertyValueDataSensitivity `json:"dataSensitivity,omitzero"`
+	// Any of "high", "none", "standard".
+	DataSensitivity PropertyValueDataSensitivity `json:"dataSensitivity,omitzero,required"`
+	// Whether the property value is encrypted.
+	IsEncrypted  bool `json:"isEncrypted,required"`
+	IsLargeValue bool `json:"isLargeValue,required"`
+	// Name of custom property
+	Name                 string `json:"name,required"`
+	PersistenceTimestamp int64  `json:"persistenceTimestamp,required"`
+	// A unique ID associated with this request.
+	RequestID string `json:"requestId,required"`
+	// Whether the value was selected by a user.
+	SelectedByUser bool `json:"selectedByUser,required"`
+	// The timestamp when the value was selected by a user, if applicable.
+	SelectedByUserTimestamp int64 `json:"selectedByUserTimestamp,required"`
 	// The origin of the property value, such as "IMPORT" or "API".
 	//
-	// Any of "UNKNOWN", "IMPORT", "API", "FORM", "ANALYTICS", "MIGRATION",
-	// "SALESFORCE", "INTEGRATION", "CONTACTS_WEB", "WAL_INCREMENTAL", "TASK", "EMAIL",
-	// "WORKFLOWS", "CALCULATED", "SOCIAL", "BATCH_UPDATE", "SIGNALS", "BIDEN",
-	// "DEFAULT", "COMPANIES", "DEALS", "ASSISTS", "PRESENTATIONS", "TALLY",
-	// "SIDEKICK", "CRM_UI", "MERGE_CONTACTS", "PORTAL_USER_ASSOCIATOR",
-	// "INTEGRATIONS_PLATFORM", "BCC_TO_CRM", "FORWARD_TO_CRM", "ENGAGEMENTS", "SALES",
-	// "HEISENBERG", "LEADIN", "GMAIL_INTEGRATION", "ACADEMY", "SALES_MESSAGES",
-	// "AVATARS_SERVICE", "MERGE_COMPANIES", "SEQUENCES", "COMPANY_FAMILIES",
-	// "MOBILE_IOS", "MOBILE_ANDROID", "CONTACTS", "ASSOCIATIONS", "EXTENSION",
-	// "SUCCESS", "BOT", "INTEGRATIONS_SYNC", "AUTOMATION_PLATFORM", "CONVERSATIONS",
-	// "EMAIL_INTEGRATION", "CONTENT_MEMBERSHIP", "QUOTES", "BET_ASSIGNMENT", "QUOTAS",
-	// "BET_CRM_CONNECTOR", "MEETINGS", "MERGE_OBJECTS", "RECYCLING_BIN", "ADS",
-	// "AI_GROUP", "COMMUNICATOR", "SETTINGS", "PROPERTY_SETTINGS",
-	// "PIPELINE_SETTINGS", "COMPANY_INSIGHTS", "BEHAVIORAL_EVENTS", "PAYMENTS",
-	// "GOALS", "PORTAL_OBJECT_SYNC", "APPROVALS", "FILE_MANAGER", "MARKETPLACE",
-	// "INTERNAL_PROCESSING", "FORECASTING", "SLACK_INTEGRATION", "CRM_UI_BULK_ACTION",
-	// "WORKFLOW_CONTACT_DELETE_ACTION", "ACCEPTANCE_TEST", "PLAYBOOKS", "CHATSPOT",
-	// "FLYWHEEL_PRODUCT_DATA_SYNC", "HELP_DESK", "BILLING", "DATA_ENRICHMENT",
-	// "AUTOMATION_JOURNEY", "MICROAPPS", "INTENT", "PROSPECTING_AGENT",
-	// "CENTRAL_EXCHANGE_RATES", "HELP_DESK_AI", "CONVERSATIONAL_ENRICHMENT",
-	// "CRM_PROCESSES_PLATFORM", "CLONE_OBJECTS", "MARKET_SOURCING", "DATASET",
-	// "PROPERTY_RESTORE".
-	Source PropertyValueSource `json:"source,omitzero"`
+	// Any of "ACADEMY", "ACCEPTANCE_TEST", "ADS", "AI_GROUP", "ANALYTICS", "API",
+	// "APPROVALS", "ASSISTS", "ASSOCIATIONS", "AUTOMATION_JOURNEY",
+	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
+	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
+	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
+	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS", "CONTACTS",
+	// "CONTACTS_WEB", "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT",
+	// "CONVERSATIONS", "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION",
+	// "DATA_ENRICHMENT", "DATASET", "DEALS", "DEFAULT", "EMAIL", "EMAIL_INTEGRATION",
+	// "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC",
+	// "FORECASTING", "FORM", "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS",
+	// "HEISENBERG", "HELP_DESK", "HELP_DESK_AI", "IMPORT", "INTEGRATION",
+	// "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING",
+	// "LEADIN", "MARKET_SOURCING", "MARKETPLACE", "MEETINGS", "MERGE_COMPANIES",
+	// "MERGE_CONTACTS", "MERGE_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
+	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
+	// "PROPERTY_RESTORE", "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS",
+	// "QUOTES", "RECYCLING_BIN", "SALES", "SALES_MESSAGES", "SALESFORCE", "SEQUENCES",
+	// "SETTINGS", "SIDEKICK", "SIGNALS", "SLACK_INTEGRATION", "SOCIAL", "SUCCESS",
+	// "TALLY", "TASK", "UNKNOWN", "WAL_INCREMENTAL", "WORKFLOW_CONTACT_DELETE_ACTION",
+	// "WORKFLOWS".
+	Source PropertyValueSource `json:"source,omitzero,required"`
+	// The ID of the property source indicating where it was created.
+	SourceID string `json:"sourceId,required"`
+	// A human-readable label.
+	SourceLabel string `json:"sourceLabel,required"`
+	// Source metadata encoded as a base64 string. For example: `ZXhhbXBsZSBzdHJpbmc=`
+	SourceMetadata           string `json:"sourceMetadata,required"`
+	SourceUpstreamDeployable string `json:"sourceUpstreamDeployable,required"`
 	// The unique identifier associated with the source.
-	SourceVid []int64 `json:"sourceVid,omitzero"`
+	SourceVid []int64 `json:"sourceVid,omitzero,required"`
+	// When the value was set, as a 64-bit integer.
+	Timestamp int64 `json:"timestamp,required"`
+	// The unit of measurement or context for the value.
+	Unit string `json:"unit,required"`
+	// The ID of the user who updated the property.
+	UpdatedByUserID                    int64 `json:"updatedByUserId,required"`
+	UseTimestampAsPersistenceTimestamp bool  `json:"useTimestampAsPersistenceTimestamp,required"`
+	// Custom property value
+	Value string `json:"value,required"`
 	paramObj
 }
 

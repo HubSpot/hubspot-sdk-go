@@ -28,7 +28,7 @@ func TestObjectDealSplitBatchRead(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.DealSplits.BatchRead(context.TODO(), crm.ObjectDealSplitBatchReadParams{
+	_, err := client.Crm.Objects.DealSplits.BatchRead(context.TODO(), crm.ObjectDealSplitBatchReadParams{
 		BatchInputPublicObjectID: shared.BatchInputPublicObjectIDParam{
 			Inputs: []shared.PublicObjectIDParam{{
 				ID: "37295",
@@ -57,14 +57,16 @@ func TestObjectDealSplitBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.DealSplits.BatchUpsert(context.TODO(), crm.ObjectDealSplitBatchUpsertParams{
-		Inputs: []crm.ObjectDealSplitBatchUpsertParamsInput{{
-			ID: 0,
-			Splits: []crm.ObjectDealSplitBatchUpsertParamsInputSplit{{
-				OwnerID:    0,
-				Percentage: 0,
+	_, err := client.Crm.Objects.DealSplits.BatchUpsert(context.TODO(), crm.ObjectDealSplitBatchUpsertParams{
+		PublicDealSplitsBatchCreateRequest: crm.PublicDealSplitsBatchCreateRequestParam{
+			Inputs: []crm.PublicDealSplitsCreateRequestParam{{
+				ID: 0,
+				Splits: []crm.PublicDealSplitInputParam{{
+					OwnerID:    0,
+					Percentage: 0,
+				}},
 			}},
-		}},
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

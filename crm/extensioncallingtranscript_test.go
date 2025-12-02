@@ -27,7 +27,7 @@ func TestExtensionCallingTranscriptNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.Transcripts.New(context.TODO(), crm.ExtensionCallingTranscriptNewParams{
+	_, err := client.Crm.Extensions.Calling.Transcripts.New(context.TODO(), crm.ExtensionCallingTranscriptNewParams{
 		TranscriptCreateRequest: crm.TranscriptCreateRequestParam{
 			EngagementID: 0,
 			TranscriptCreateUtterances: []crm.TranscriptCreateUtteranceParam{{
@@ -65,7 +65,7 @@ func TestExtensionCallingTranscriptDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Extensions.Calling.Transcripts.Delete(context.TODO(), "transcriptId")
+	err := client.Crm.Extensions.Calling.Transcripts.Delete(context.TODO(), "transcriptId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -88,7 +88,7 @@ func TestExtensionCallingTranscriptGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.Calling.Transcripts.Get(context.TODO(), "transcriptId")
+	_, err := client.Crm.Extensions.Calling.Transcripts.Get(context.TODO(), "transcriptId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

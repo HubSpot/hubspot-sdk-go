@@ -14,7 +14,7 @@ import (
 )
 
 // MeetingService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -93,7 +93,7 @@ type ExternalBookingInfo struct {
 	CustomParams      ExternalMeetingsLinkSettings `json:"customParams,required"`
 	IsOffline         bool                         `json:"isOffline,required"`
 	LinkID            string                       `json:"linkId,required"`
-	// Any of "PERSONAL_LINK", "GROUP_CALENDAR", "ROUND_ROBIN_CALENDAR".
+	// Any of "GROUP_CALENDAR", "PERSONAL_LINK", "ROUND_ROBIN_CALENDAR".
 	LinkType         ExternalBookingInfoLinkType `json:"linkType,required"`
 	BrandingMetadata ExternalBrandingMetadata    `json:"brandingMetadata"`
 	LinkAvailability ExternalLinkAvailability    `json:"linkAvailability"`
@@ -120,8 +120,8 @@ func (r *ExternalBookingInfo) UnmarshalJSON(data []byte) error {
 type ExternalBookingInfoLinkType string
 
 const (
-	ExternalBookingInfoLinkTypePersonalLink       ExternalBookingInfoLinkType = "PERSONAL_LINK"
 	ExternalBookingInfoLinkTypeGroupCalendar      ExternalBookingInfoLinkType = "GROUP_CALENDAR"
+	ExternalBookingInfoLinkTypePersonalLink       ExternalBookingInfoLinkType = "PERSONAL_LINK"
 	ExternalBookingInfoLinkTypeRoundRobinCalendar ExternalBookingInfoLinkType = "ROUND_ROBIN_CALENDAR"
 )
 
@@ -178,19 +178,19 @@ func (r *ExternalBrandingMetadata) UnmarshalJSON(data []byte) error {
 }
 
 // The properties HsMeetingEndTime, HsMeetingOutcome, HsMeetingStartTime,
-// HsMeetingTitle, HsTimestamp are required.
+// HsMeetingTitle, HsTimestamp, HubspotOwnerID are required.
 type ExternalCalendarMeetingEventCreatePropertiesParam struct {
 	HsMeetingEndTime       time.Time         `json:"hs_meeting_end_time,required" format:"date-time"`
 	HsMeetingOutcome       string            `json:"hs_meeting_outcome,required"`
 	HsMeetingStartTime     time.Time         `json:"hs_meeting_start_time,required" format:"date-time"`
 	HsMeetingTitle         string            `json:"hs_meeting_title,required"`
 	HsTimestamp            time.Time         `json:"hs_timestamp,required" format:"date-time"`
+	HubspotOwnerID         string            `json:"hubspot_owner_id,required"`
 	HsActivityType         param.Opt[string] `json:"hs_activity_type,omitzero"`
 	HsInternalMeetingNotes param.Opt[string] `json:"hs_internal_meeting_notes,omitzero"`
 	HsMeetingBody          param.Opt[string] `json:"hs_meeting_body,omitzero"`
 	HsMeetingLocation      param.Opt[string] `json:"hs_meeting_location,omitzero"`
 	HsMeetingLocationType  param.Opt[string] `json:"hs_meeting_location_type,omitzero"`
-	HubspotOwnerID         param.Opt[string] `json:"hubspot_owner_id,omitzero"`
 	HsAttachmentIDs        []string          `json:"hs_attachment_ids,omitzero"`
 	HsAttendeeOwnerIDs     []string          `json:"hs_attendee_owner_ids,omitzero"`
 	paramObj
@@ -223,31 +223,30 @@ func (r *ExternalCalendarMeetingEventCreateRequestParam) UnmarshalJSON(data []by
 }
 
 type ExternalCalendarMeetingEventResponseProperties struct {
-	// Any of "UNKNOWN", "IMPORT", "API", "FORM", "ANALYTICS", "MIGRATION",
-	// "SALESFORCE", "INTEGRATION", "CONTACTS_WEB", "WAL_INCREMENTAL", "TASK", "EMAIL",
-	// "WORKFLOWS", "CALCULATED", "SOCIAL", "BATCH_UPDATE", "SIGNALS", "BIDEN",
-	// "DEFAULT", "COMPANIES", "DEALS", "ASSISTS", "PRESENTATIONS", "TALLY",
-	// "SIDEKICK", "CRM_UI", "MERGE_CONTACTS", "PORTAL_USER_ASSOCIATOR",
-	// "INTEGRATIONS_PLATFORM", "BCC_TO_CRM", "FORWARD_TO_CRM", "ENGAGEMENTS", "SALES",
-	// "HEISENBERG", "LEADIN", "GMAIL_INTEGRATION", "ACADEMY", "SALES_MESSAGES",
-	// "AVATARS_SERVICE", "MERGE_COMPANIES", "SEQUENCES", "COMPANY_FAMILIES",
-	// "MOBILE_IOS", "MOBILE_ANDROID", "CONTACTS", "ASSOCIATIONS", "EXTENSION",
-	// "SUCCESS", "BOT", "INTEGRATIONS_SYNC", "AUTOMATION_PLATFORM", "CONVERSATIONS",
-	// "EMAIL_INTEGRATION", "CONTENT_MEMBERSHIP", "QUOTES", "BET_ASSIGNMENT", "QUOTAS",
-	// "BET_CRM_CONNECTOR", "MEETINGS", "MERGE_OBJECTS", "RECYCLING_BIN", "ADS",
-	// "AI_GROUP", "COMMUNICATOR", "SETTINGS", "PROPERTY_SETTINGS",
-	// "PIPELINE_SETTINGS", "COMPANY_INSIGHTS", "BEHAVIORAL_EVENTS", "PAYMENTS",
-	// "GOALS", "PORTAL_OBJECT_SYNC", "APPROVALS", "FILE_MANAGER", "MARKETPLACE",
-	// "INTERNAL_PROCESSING", "FORECASTING", "SLACK_INTEGRATION", "CRM_UI_BULK_ACTION",
-	// "WORKFLOW_CONTACT_DELETE_ACTION", "ACCEPTANCE_TEST", "PLAYBOOKS", "CHATSPOT",
-	// "FLYWHEEL_PRODUCT_DATA_SYNC", "HELP_DESK", "BILLING", "DATA_ENRICHMENT",
-	// "AUTOMATION_JOURNEY", "MICROAPPS", "INTENT", "PROSPECTING_AGENT",
-	// "CENTRAL_EXCHANGE_RATES", "HELP_DESK_AI", "CONVERSATIONAL_ENRICHMENT",
-	// "CRM_PROCESSES_PLATFORM", "CLONE_OBJECTS", "MARKET_SOURCING", "DATASET",
-	// "PROPERTY_RESTORE", "EMAIL_INBOX_IMPORT", "CUSTOMER_AGENT",
-	// "LEGAL_BASIS_REMEDIATION", "AUTO_ASSOCIATE_BY_DOMAIN",
-	// "ACTIVITY_AUTO_ASSOCIATE", "PRIMARY_AUTOMATION", "DELETE_OBJECTS",
-	// "RESTORE_OBJECTS".
+	// Any of "ACADEMY", "ACCEPTANCE_TEST", "ACTIVITY_AUTO_ASSOCIATE", "ADS",
+	// "AI_GROUP", "ANALYTICS", "API", "APPROVALS", "ASSISTS", "ASSOCIATIONS",
+	// "AUTO_ASSOCIATE_BY_DOMAIN", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM",
+	// "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM", "BEHAVIORAL_EVENTS",
+	// "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING", "BOT", "CALCULATED",
+	// "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS", "COMMUNICATOR",
+	// "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS", "CONTACTS", "CONTACTS_WEB",
+	// "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS",
+	// "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT",
+	// "DATA_ENRICHMENT", "DATASET", "DEALS", "DEFAULT", "DELETE_OBJECTS", "EMAIL",
+	// "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION",
+	// "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM",
+	// "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK",
+	// "HELP_DESK_AI", "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM",
+	// "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING", "LEADIN",
+	// "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE", "MEETINGS",
+	// "MERGE_COMPANIES", "MERGE_CONTACTS", "MERGE_OBJECTS", "MICROAPPS", "MIGRATION",
+	// "MOBILE_ANDROID", "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
+	// "PRIMARY_AUTOMATION", "PROPERTY_RESTORE", "PROPERTY_SETTINGS",
+	// "PROSPECTING_AGENT", "QUOTAS", "QUOTES", "RECYCLING_BIN", "RESTORE_OBJECTS",
+	// "SALES", "SALES_MESSAGES", "SALESFORCE", "SEQUENCES", "SETTINGS", "SIDEKICK",
+	// "SIGNALS", "SLACK_INTEGRATION", "SOCIAL", "SUCCESS", "TALLY", "TASK", "UNKNOWN",
+	// "WAL_INCREMENTAL", "WORKFLOW_CONTACT_DELETE_ACTION", "WORKFLOWS".
 	HsEngagementSource             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource `json:"hs_engagement_source,required"`
 	HsEngagementSourceID           string                                                           `json:"hs_engagement_source_id,required"`
 	HsMeetingEndTime               time.Time                                                        `json:"hs_meeting_end_time,required" format:"date-time"`
@@ -263,7 +262,7 @@ type ExternalCalendarMeetingEventResponseProperties struct {
 	HsMeetingBody                  string                                                           `json:"hs_meeting_body"`
 	HsMeetingExternalURL           string                                                           `json:"hs_meeting_external_url"`
 	HsMeetingLocation              string                                                           `json:"hs_meeting_location"`
-	// Any of "PHONE", "ADDRESS", "CUSTOM".
+	// Any of "ADDRESS", "CUSTOM", "PHONE".
 	HsMeetingLocationType ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType `json:"hs_meeting_location_type"`
 	HsUniqueID            string                                                              `json:"hs_unique_id"`
 	HubspotOwnerID        string                                                              `json:"hubspot_owner_id"`
@@ -301,121 +300,121 @@ func (r *ExternalCalendarMeetingEventResponseProperties) UnmarshalJSON(data []by
 type ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource string
 
 const (
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceUnknown                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "UNKNOWN"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceImport                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "IMPORT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAPI                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "API"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForm                        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAnalytics                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ANALYTICS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMigration                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MIGRATION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesforce                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALESFORCE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegration                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContactsWeb                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS_WEB"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWalIncremental              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WAL_INCREMENTAL"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceTask                        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "TASK"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmail                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWorkflows                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WORKFLOWS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCalculated                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CALCULATED"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSocial                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SOCIAL"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBatchUpdate                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BATCH_UPDATE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSignals                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SIGNALS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBiden                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BIDEN"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDefault                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEFAULT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanies                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANIES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDeals                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEALS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAssists                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ASSISTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePresentations               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PRESENTATIONS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceTally                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "TALLY"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSidekick                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SIDEKICK"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCRMUi                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_UI"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeContacts               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_CONTACTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePortalUserAssociator        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PORTAL_USER_ASSOCIATOR"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegrationsPlatform        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATIONS_PLATFORM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBccToCRM                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BCC_TO_CRM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForwardToCRM                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORWARD_TO_CRM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEngagements                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ENGAGEMENTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSales                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHeisenberg                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HEISENBERG"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceLeadin                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "LEADIN"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceGmailIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "GMAIL_INTEGRATION"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAcademy                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ACADEMY"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesMessages               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES_MESSAGES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAvatarsService              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AVATARS_SERVICE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeCompanies              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_COMPANIES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSequences                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SEQUENCES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyFamilies             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_FAMILIES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMobileIos                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MOBILE_IOS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMobileAndroid               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MOBILE_ANDROID"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContacts                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAssociations                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ASSOCIATIONS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceExtension                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EXTENSION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSuccess                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SUCCESS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBot                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BOT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegrationsSync            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATIONS_SYNC"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAutomationPlatform          ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AUTOMATION_PLATFORM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceConversations               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONVERSATIONS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INTEGRATION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContentMembership           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTENT_MEMBERSHIP"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceQuotes                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "QUOTES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBetAssignment               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BET_ASSIGNMENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceQuotas                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "QUOTAS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBetCRMConnector             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BET_CRM_CONNECTOR"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMeetings                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MEETINGS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeObjects                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_OBJECTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRecyclingBin                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "RECYCLING_BIN"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAcceptanceTest              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ACCEPTANCE_TEST"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceActivityAutoAssociate       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ACTIVITY_AUTO_ASSOCIATE"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAds                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ADS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAIGroup                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AI_GROUP"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCommunicator                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMMUNICATOR"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSettings                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SETTINGS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePropertySettings            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROPERTY_SETTINGS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePipelineSettings            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PIPELINE_SETTINGS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyInsights             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_INSIGHTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBehavioralEvents            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BEHAVIORAL_EVENTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePayments                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PAYMENTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceGoals                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "GOALS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePortalObjectSync            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PORTAL_OBJECT_SYNC"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAnalytics                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ANALYTICS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAPI                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "API"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceApprovals                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "APPROVALS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceFileManager                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FILE_MANAGER"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketplace                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKETPLACE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceInternalProcessing          ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTERNAL_PROCESSING"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForecasting                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORECASTING"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSlackIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SLACK_INTEGRATION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCRMUiBulkAction             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_UI_BULK_ACTION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWorkflowContactDeleteAction ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WORKFLOW_CONTACT_DELETE_ACTION"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAcceptanceTest              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ACCEPTANCE_TEST"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePlaybooks                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PLAYBOOKS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceChatspot                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CHATSPOT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceFlywheelProductDataSync     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FLYWHEEL_PRODUCT_DATA_SYNC"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHelpDesk                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HELP_DESK"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBilling                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BILLING"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDataEnrichment              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DATA_ENRICHMENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAutomationJourney           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AUTOMATION_JOURNEY"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMicroapps                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MICROAPPS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntent                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceProspectingAgent            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROSPECTING_AGENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCentralExchangeRates        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CENTRAL_EXCHANGE_RATES"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHelpDeskAI                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HELP_DESK_AI"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceConversationalEnrichment    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONVERSATIONAL_ENRICHMENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCRMProcessesPlatform        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_PROCESSES_PLATFORM"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCloneObjects                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CLONE_OBJECTS"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketSourcing              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKET_SOURCING"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDataset                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DATASET"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePropertyRestore             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROPERTY_RESTORE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailInboxImport            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INBOX_IMPORT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCustomerAgent               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CUSTOMER_AGENT"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceLegalBasisRemediation       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "LEGAL_BASIS_REMEDIATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAssists                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ASSISTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAssociations                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ASSOCIATIONS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAutoAssociateByDomain       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AUTO_ASSOCIATE_BY_DOMAIN"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceActivityAutoAssociate       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ACTIVITY_AUTO_ASSOCIATE"
-	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePrimaryAutomation           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PRIMARY_AUTOMATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAutomationJourney           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AUTOMATION_JOURNEY"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAutomationPlatform          ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AUTOMATION_PLATFORM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceAvatarsService              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "AVATARS_SERVICE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBatchUpdate                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BATCH_UPDATE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBccToCrm                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BCC_TO_CRM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBehavioralEvents            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BEHAVIORAL_EVENTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBetAssignment               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BET_ASSIGNMENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBetCrmConnector             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BET_CRM_CONNECTOR"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBiden                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BIDEN"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBilling                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BILLING"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBot                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BOT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCalculated                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CALCULATED"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCentralExchangeRates        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CENTRAL_EXCHANGE_RATES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceChatspot                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CHATSPOT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCloneObjects                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CLONE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCommunicator                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMMUNICATOR"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanies                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANIES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyFamilies             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_FAMILIES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyInsights             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_INSIGHTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContacts                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContactsWeb                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS_WEB"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContentMembership           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTENT_MEMBERSHIP"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceConversationalEnrichment    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONVERSATIONAL_ENRICHMENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceConversations               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONVERSATIONS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCrmProcessesPlatform        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_PROCESSES_PLATFORM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCrmUi                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_UI"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCrmUiBulkAction             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CRM_UI_BULK_ACTION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCustomerAgent               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CUSTOMER_AGENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDataEnrichment              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DATA_ENRICHMENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDataset                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DATASET"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDeals                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEALS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDefault                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEFAULT"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDeleteObjects               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DELETE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmail                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailInboxImport            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INBOX_IMPORT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INTEGRATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEngagements                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "ENGAGEMENTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceExtension                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EXTENSION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceFileManager                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FILE_MANAGER"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceFlywheelProductDataSync     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FLYWHEEL_PRODUCT_DATA_SYNC"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForecasting                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORECASTING"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForm                        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceForwardToCrm                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "FORWARD_TO_CRM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceGmailIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "GMAIL_INTEGRATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceGoals                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "GOALS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHeisenberg                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HEISENBERG"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHelpDesk                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HELP_DESK"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceHelpDeskAI                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "HELP_DESK_AI"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceImport                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "IMPORT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegration                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegrationsPlatform        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATIONS_PLATFORM"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntegrationsSync            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTEGRATIONS_SYNC"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceIntent                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceInternalProcessing          ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "INTERNAL_PROCESSING"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceLeadin                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "LEADIN"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceLegalBasisRemediation       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "LEGAL_BASIS_REMEDIATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketSourcing              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKET_SOURCING"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketplace                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKETPLACE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMeetings                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MEETINGS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeCompanies              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_COMPANIES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeContacts               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_CONTACTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeObjects                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMicroapps                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MICROAPPS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMigration                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MIGRATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMobileAndroid               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MOBILE_ANDROID"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMobileIos                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MOBILE_IOS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePayments                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PAYMENTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePipelineSettings            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PIPELINE_SETTINGS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePlaybooks                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PLAYBOOKS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePortalObjectSync            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PORTAL_OBJECT_SYNC"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePortalUserAssociator        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PORTAL_USER_ASSOCIATOR"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePresentations               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PRESENTATIONS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePrimaryAutomation           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PRIMARY_AUTOMATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePropertyRestore             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROPERTY_RESTORE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourcePropertySettings            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROPERTY_SETTINGS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceProspectingAgent            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "PROSPECTING_AGENT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceQuotas                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "QUOTAS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceQuotes                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "QUOTES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRecyclingBin                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "RECYCLING_BIN"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRestoreObjects              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "RESTORE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSales                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesMessages               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES_MESSAGES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesforce                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALESFORCE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSequences                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SEQUENCES"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSettings                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SETTINGS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSidekick                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SIDEKICK"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSignals                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SIGNALS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSlackIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SLACK_INTEGRATION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSocial                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SOCIAL"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSuccess                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SUCCESS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceTally                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "TALLY"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceTask                        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "TASK"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceUnknown                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "UNKNOWN"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWalIncremental              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WAL_INCREMENTAL"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWorkflowContactDeleteAction ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WORKFLOW_CONTACT_DELETE_ACTION"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceWorkflows                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "WORKFLOWS"
 )
 
 type ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType string
 
 const (
-	ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationTypePhone   ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType = "PHONE"
 	ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationTypeAddress ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType = "ADDRESS"
 	ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationTypeCustom  ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType = "CUSTOM"
+	ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationTypePhone   ExternalCalendarMeetingEventResponsePropertiesHsMeetingLocationType = "PHONE"
 )
 
 type ExternalCalenderMeetingEventResponse struct {
@@ -521,9 +520,9 @@ type ExternalLegalConsentOptions struct {
 	ProcessingConsentFooterText         string                                 `json:"processingConsentFooterText,required"`
 	ProcessingConsentText               string                                 `json:"processingConsentText,required"`
 	ProcessingConsentType               string                                 `json:"processingConsentType,required"`
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegitimateInterestLegalBasis ExternalLegalConsentOptionsLegitimateInterestLegalBasis `json:"legitimateInterestLegalBasis"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -551,13 +550,13 @@ func (r *ExternalLegalConsentOptions) UnmarshalJSON(data []byte) error {
 type ExternalLegalConsentOptionsLegitimateInterestLegalBasis string
 
 const (
-	ExternalLegalConsentOptionsLegitimateInterestLegalBasisLegitimateInterestPql    ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	ExternalLegalConsentOptionsLegitimateInterestLegalBasisLegitimateInterestClient ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	ExternalLegalConsentOptionsLegitimateInterestLegalBasisPerformanceOfContract    ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	ExternalLegalConsentOptionsLegitimateInterestLegalBasisConsentWithNotice        ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "CONSENT_WITH_NOTICE"
-	ExternalLegalConsentOptionsLegitimateInterestLegalBasisNonGdpr                  ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "NON_GDPR"
-	ExternalLegalConsentOptionsLegitimateInterestLegalBasisProcessAndStore          ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "PROCESS_AND_STORE"
+	ExternalLegalConsentOptionsLegitimateInterestLegalBasisLegitimateInterestClient ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	ExternalLegalConsentOptionsLegitimateInterestLegalBasisLegitimateInterestOther  ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	ExternalLegalConsentOptionsLegitimateInterestLegalBasisLegitimateInterestPql    ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	ExternalLegalConsentOptionsLegitimateInterestLegalBasisNonGdpr                  ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "NON_GDPR"
+	ExternalLegalConsentOptionsLegitimateInterestLegalBasisPerformanceOfContract    ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	ExternalLegalConsentOptionsLegitimateInterestLegalBasisProcessAndStore          ExternalLegalConsentOptionsLegitimateInterestLegalBasis = "PROCESS_AND_STORE"
 )
 
 type ExternalLegalConsentResponse struct {

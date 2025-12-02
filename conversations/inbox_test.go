@@ -9,11 +9,12 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
+	"github.com/stainless-sdks/hubspot-sdk-go/conversations"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestInboxList(t *testing.T) {
+func TestInboxListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,7 +27,13 @@ func TestInboxList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Inboxes.List(context.TODO())
+	_, err := client.Conversations.Inboxes.List(context.TODO(), conversations.InboxListParams{
+		After:             hubspotsdk.String("after"),
+		Archived:          hubspotsdk.Bool(true),
+		DefaultPageLength: hubspotsdk.Int(0),
+		Limit:             hubspotsdk.Int(0),
+		Sort:              []string{"string"},
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -36,7 +43,7 @@ func TestInboxList(t *testing.T) {
 	}
 }
 
-func TestInboxGet(t *testing.T) {
+func TestInboxGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -49,7 +56,13 @@ func TestInboxGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Inboxes.Get(context.TODO(), "inboxId")
+	_, err := client.Conversations.Inboxes.Get(
+		context.TODO(),
+		0,
+		conversations.InboxGetParams{
+			Archived: hubspotsdk.Bool(true),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
