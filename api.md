@@ -502,6 +502,8 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#DetachFromLangGroupRequestVNextParam">DetachFromLangGroupRequestVNextParam</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#GradientParam">GradientParam</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#LayoutSectionParam">LayoutSectionParam</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Margin">Margin</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Padding">Padding</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#PublicAccessRule">PublicAccessRule</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#RgbaColorParam">RgbaColorParam</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#RowMetaDataParam">RowMetaDataParam</a>
@@ -518,6 +520,8 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#ColorStop">ColorStop</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Gradient">Gradient</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#LayoutSection">LayoutSection</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Margin">Margin</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Padding">Padding</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#PublicAccessRule">PublicAccessRule</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#RgbaColor">RgbaColor</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#RowMetaData">RowMetaData</a>
@@ -575,8 +579,6 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#BatchInputBlogPostParam">BatchInputBlogPostParam</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#BlogPostParam">BlogPostParam</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#BlogPostLanguageCloneRequestVNextParam">BlogPostLanguageCloneRequestVNextParam</a>
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Margin">Margin</a>
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Padding">Padding</a>
 
 Response Types:
 
@@ -584,8 +586,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#BlogPost">BlogPost</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#CollectionResponseWithTotalBlogPostForwardPaging">CollectionResponseWithTotalBlogPostForwardPaging</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#CollectionResponseWithTotalVersionBlogPost">CollectionResponseWithTotalVersionBlogPost</a>
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Margin">Margin</a>
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#Padding">Padding</a>
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms">cms</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/cms#VersionBlogPost">VersionBlogPost</a>
 
 Methods:
