@@ -16,7 +16,6 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -24,7 +23,7 @@ import (
 )
 
 // ListService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -199,9 +198,8 @@ func (r *ListService) UpdateName(ctx context.Context, listID string, body ListUp
 
 type APICollectionResponseJoinTimeAndRecordID struct {
 	Results []JoinTimeAndRecordID `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
-	Total  int64            `json:"total"`
+	Paging  shared.Paging         `json:"paging"`
+	Total   int64                 `json:"total"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -918,37 +916,10 @@ func (r *ListMoveRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The response object containing the lists found for a multi-list fetch.
-type ListsByIDResponse struct {
-	// The object list definitions.
-	Lists []PublicObjectList `json:"lists,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Lists       respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r ListsByIDResponse) RawJSON() string { return r.JSON.raw }
-func (r *ListsByIDResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // The request object used for searching through lists.
+//
+// The properties AdditionalProperties, Offset are required.
 type ListSearchRequestParam struct {
-	// The number of lists to include in the response. Defaults to `20` if no value is
-	// provided. The max `count` is `500`.
-	Count param.Opt[int64] `json:"count,omitzero"`
-	// Value used to paginate through lists. The `offset` provided in the response can
-	// be used in the next request to fetch the next page of results. Defaults to `0`
-	// if no offset is provided.
-	Offset param.Opt[int64] `json:"offset,omitzero"`
-	// The `query` that will be used to search for lists by list name. If no `query` is
-	// provided, then the results will include all lists.
-	Query param.Opt[string] `json:"query,omitzero"`
-	Sort  param.Opt[string] `json:"sort,omitzero"`
 	// The property names of any additional list properties to include in the response.
 	// Properties that do not exist or that are empty for a particular list are not
 	// included in the response.
@@ -956,7 +927,18 @@ type ListSearchRequestParam struct {
 	// By default, all requests will fetch the following properties for each list:
 	// `hs_list_size`, `hs_last_record_added_at`, `hs_last_record_removed_at`,
 	// `hs_folder_name`, and `hs_list_reference_count`.
-	AdditionalProperties []string `json:"additionalProperties,omitzero"`
+	AdditionalProperties []string `json:"additionalProperties,omitzero,required"`
+	// Value used to paginate through lists. The `offset` provided in the response can
+	// be used in the next request to fetch the next page of results. Defaults to `0`
+	// if no offset is provided.
+	Offset int64 `json:"offset,required"`
+	// The number of lists to include in the response. Defaults to `20` if no value is
+	// provided. The max `count` is `500`.
+	Count param.Opt[int64] `json:"count,omitzero"`
+	// The `query` that will be used to search for lists by list name. If no `query` is
+	// provided, then the results will include all lists.
+	Query param.Opt[string] `json:"query,omitzero"`
+	Sort  param.Opt[string] `json:"sort,omitzero"`
 	// The `listIds` that will be used to filter results by `listId`. If values are
 	// provided, then the response will only include results that have a `listId` in
 	// this array.
@@ -1027,6 +1009,24 @@ type ListUpdateResponse struct {
 // Returns the unmodified JSON received from the API
 func (r ListUpdateResponse) RawJSON() string { return r.JSON.raw }
 func (r *ListUpdateResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The response object containing the lists found for a multi-list fetch.
+type ListsByIDResponse struct {
+	// The object list definitions.
+	Lists []PublicObjectList `json:"lists,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Lists       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ListsByIDResponse) RawJSON() string { return r.JSON.raw }
+func (r *ListsByIDResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -1153,7 +1153,7 @@ type PublicListConversionInactivity struct {
 	// Any of "INACTIVITY".
 	ConversionType PublicListConversionInactivityConversionType `json:"conversionType,required"`
 	Offset         int64                                        `json:"offset,required"`
-	// Any of "DAY", "WEEK", "MONTH".
+	// Any of "DAY", "MONTH", "WEEK".
 	TimeUnit PublicListConversionInactivityTimeUnit `json:"timeUnit,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1191,8 +1191,8 @@ type PublicListConversionInactivityTimeUnit string
 
 const (
 	PublicListConversionInactivityTimeUnitDay   PublicListConversionInactivityTimeUnit = "DAY"
-	PublicListConversionInactivityTimeUnitWeek  PublicListConversionInactivityTimeUnit = "WEEK"
 	PublicListConversionInactivityTimeUnitMonth PublicListConversionInactivityTimeUnit = "MONTH"
+	PublicListConversionInactivityTimeUnitWeek  PublicListConversionInactivityTimeUnit = "WEEK"
 )
 
 // The properties ConversionType, Offset, TimeUnit are required.
@@ -1200,7 +1200,7 @@ type PublicListConversionInactivityParam struct {
 	// Any of "INACTIVITY".
 	ConversionType PublicListConversionInactivityConversionType `json:"conversionType,omitzero,required"`
 	Offset         int64                                        `json:"offset,required"`
-	// Any of "DAY", "WEEK", "MONTH".
+	// Any of "DAY", "MONTH", "WEEK".
 	TimeUnit PublicListConversionInactivityTimeUnit `json:"timeUnit,omitzero,required"`
 	paramObj
 }
@@ -1841,18 +1841,18 @@ func (r *PublicObjectListSearchResult) UnmarshalJSON(data []byte) error {
 
 // Lists record is member of
 type RecordListMembership struct {
-	FirstAddedTimestamp time.Time `json:"firstAddedTimestamp,required" format:"date-time"`
-	LastAddedTimestamp  time.Time `json:"lastAddedTimestamp,required" format:"date-time"`
 	ListID              string    `json:"listId,required"`
 	ListVersion         int64     `json:"listVersion,required"`
+	FirstAddedTimestamp time.Time `json:"firstAddedTimestamp" format:"date-time"`
 	IsPublicList        bool      `json:"isPublicList"`
+	LastAddedTimestamp  time.Time `json:"lastAddedTimestamp" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		FirstAddedTimestamp respjson.Field
-		LastAddedTimestamp  respjson.Field
 		ListID              respjson.Field
 		ListVersion         respjson.Field
+		FirstAddedTimestamp respjson.Field
 		IsPublicList        respjson.Field
+		LastAddedTimestamp  respjson.Field
 		ExtraFields         map[string]respjson.Field
 		raw                 string
 	} `json:"-"`

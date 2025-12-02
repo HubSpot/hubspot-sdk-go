@@ -13,13 +13,14 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // ActivityService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -41,29 +42,79 @@ func NewActivityService(opts ...option.RequestOption) (r ActivityService) {
 // updates, CRM object updates, security activity, and more (Enterprise only).
 // Learn more about
 // [activities included in audit log exports](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history-in-a-centralized-audit-log?hubs_content=knowledge.hubspot.com/account-management/view-and-export-account-activity-history&hubs_content-cta=centralized%20audit%20log#data-included-in-the-centralized-audit-log).
-func (r *ActivityService) ListAuditLogs(ctx context.Context, query ActivityListAuditLogsParams, opts ...option.RequestOption) (res *CollectionResponsePublicAPIUserActionEventForwardPaging, err error) {
+func (r *ActivityService) ListAuditLogs(ctx context.Context, query ActivityListAuditLogsParams, opts ...option.RequestOption) (res *pagination.Page[PublicAPIUserActionEvent], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/v3/activity/audit-logs"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve activity history for user actions related to approvals, content
+// updates, CRM object updates, security activity, and more (Enterprise only).
+// Learn more about
+// [activities included in audit log exports](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history-in-a-centralized-audit-log?hubs_content=knowledge.hubspot.com/account-management/view-and-export-account-activity-history&hubs_content-cta=centralized%20audit%20log#data-included-in-the-centralized-audit-log).
+func (r *ActivityService) ListAuditLogsAutoPaging(ctx context.Context, query ActivityListAuditLogsParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicAPIUserActionEvent] {
+	return pagination.NewPageAutoPager(r.ListAuditLogs(ctx, query, opts...))
 }
 
 // Retrieve logs of user actions related to
 // [login activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#account-login-history).
-func (r *ActivityService) ListLoginActivities(ctx context.Context, query ActivityListLoginActivitiesParams, opts ...option.RequestOption) (res *CollectionResponsePublicLoginAuditForwardPaging, err error) {
+func (r *ActivityService) ListLoginActivities(ctx context.Context, query ActivityListLoginActivitiesParams, opts ...option.RequestOption) (res *pagination.Page[PublicLoginAudit], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/v3/activity/login"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve logs of user actions related to
+// [login activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#account-login-history).
+func (r *ActivityService) ListLoginActivitiesAutoPaging(ctx context.Context, query ActivityListLoginActivitiesParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicLoginAudit] {
+	return pagination.NewPageAutoPager(r.ListLoginActivities(ctx, query, opts...))
 }
 
 // Retrieve logs of user actions related to
 // [security activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#security-activity-history).
-func (r *ActivityService) ListSecurityActivities(ctx context.Context, query ActivityListSecurityActivitiesParams, opts ...option.RequestOption) (res *CollectionResponseHydratedCriticalActionForwardPaging, err error) {
+func (r *ActivityService) ListSecurityActivities(ctx context.Context, query ActivityListSecurityActivitiesParams, opts ...option.RequestOption) (res *pagination.Page[HydratedCriticalAction], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/v3/activity/security"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve logs of user actions related to
+// [security activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#security-activity-history).
+func (r *ActivityService) ListSecurityActivitiesAutoPaging(ctx context.Context, query ActivityListSecurityActivitiesParams, opts ...option.RequestOption) *pagination.PageAutoPager[HydratedCriticalAction] {
+	return pagination.NewPageAutoPager(r.ListSecurityActivities(ctx, query, opts...))
 }
 
 type ActingUser struct {

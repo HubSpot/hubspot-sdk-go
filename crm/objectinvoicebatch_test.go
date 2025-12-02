@@ -28,12 +28,9 @@ func TestObjectInvoiceBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Invoices.Batch.New(context.TODO(), crm.ObjectInvoiceBatchNewParams{
+	_, err := client.Crm.Objects.Invoices.Batch.New(context.TODO(), crm.ObjectInvoiceBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 			Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -43,6 +40,9 @@ func TestObjectInvoiceBatchNew(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 				ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 			}},
 		},
@@ -69,7 +69,7 @@ func TestObjectInvoiceBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Invoices.Batch.Update(context.TODO(), crm.ObjectInvoiceBatchUpdateParams{
+	_, err := client.Crm.Objects.Invoices.Batch.Update(context.TODO(), crm.ObjectInvoiceBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
 			Inputs: []crm.SimplePublicObjectBatchInputParam{{
 				ID: "id",
@@ -103,7 +103,7 @@ func TestObjectInvoiceBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Invoices.Batch.Delete(context.TODO(), crm.ObjectInvoiceBatchDeleteParams{
+	err := client.Crm.Objects.Invoices.Batch.Delete(context.TODO(), crm.ObjectInvoiceBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -132,7 +132,7 @@ func TestObjectInvoiceBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Invoices.Batch.Get(context.TODO(), crm.ObjectInvoiceBatchGetParams{
+	_, err := client.Crm.Objects.Invoices.Batch.Get(context.TODO(), crm.ObjectInvoiceBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -165,7 +165,7 @@ func TestObjectInvoiceBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Invoices.Batch.Upsert(context.TODO(), crm.ObjectInvoiceBatchUpsertParams{
+	_, err := client.Crm.Objects.Invoices.Batch.Upsert(context.TODO(), crm.ObjectInvoiceBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
 			Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
 				ID: "id",

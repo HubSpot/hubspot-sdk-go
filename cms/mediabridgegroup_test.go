@@ -32,7 +32,7 @@ func TestMediaBridgeGroupNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgeGroupNewParams{
-			AppID: "appId",
+			AppID: 0,
 			PropertyGroupCreate: shared.PropertyGroupCreateParam{
 				Label:        "label",
 				Name:         "name",
@@ -66,7 +66,7 @@ func TestMediaBridgeGroupList(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgeGroupListParams{
-			AppID: "appId",
+			AppID: 0,
 		},
 	)
 	if err != nil {
@@ -95,7 +95,7 @@ func TestMediaBridgeGroupDeleteByName(t *testing.T) {
 		context.TODO(),
 		"groupName",
 		cms.MediaBridgeGroupDeleteByNameParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
 		},
 	)
@@ -125,7 +125,7 @@ func TestMediaBridgeGroupGetByName(t *testing.T) {
 		context.TODO(),
 		"groupName",
 		cms.MediaBridgeGroupGetByNameParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
 		},
 	)
@@ -155,7 +155,7 @@ func TestMediaBridgeGroupUpdateByNameWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"groupName",
 		cms.MediaBridgeGroupUpdateByNameParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
 			PropertyGroupUpdate: shared.PropertyGroupUpdateParam{
 				DisplayOrder: hubspotsdk.Int(0),

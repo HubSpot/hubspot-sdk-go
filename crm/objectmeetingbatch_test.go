@@ -28,12 +28,9 @@ func TestObjectMeetingBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Meetings.Batch.New(context.TODO(), crm.ObjectMeetingBatchNewParams{
+	_, err := client.Crm.Objects.Meetings.Batch.New(context.TODO(), crm.ObjectMeetingBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 			Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -43,6 +40,9 @@ func TestObjectMeetingBatchNew(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 				ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 			}},
 		},
@@ -69,7 +69,7 @@ func TestObjectMeetingBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Meetings.Batch.Update(context.TODO(), crm.ObjectMeetingBatchUpdateParams{
+	_, err := client.Crm.Objects.Meetings.Batch.Update(context.TODO(), crm.ObjectMeetingBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
 			Inputs: []crm.SimplePublicObjectBatchInputParam{{
 				ID: "id",
@@ -103,7 +103,7 @@ func TestObjectMeetingBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Meetings.Batch.Delete(context.TODO(), crm.ObjectMeetingBatchDeleteParams{
+	err := client.Crm.Objects.Meetings.Batch.Delete(context.TODO(), crm.ObjectMeetingBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -132,7 +132,7 @@ func TestObjectMeetingBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Meetings.Batch.Get(context.TODO(), crm.ObjectMeetingBatchGetParams{
+	_, err := client.Crm.Objects.Meetings.Batch.Get(context.TODO(), crm.ObjectMeetingBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -165,7 +165,7 @@ func TestObjectMeetingBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Meetings.Batch.Upsert(context.TODO(), crm.ObjectMeetingBatchUpsertParams{
+	_, err := client.Crm.Objects.Meetings.Batch.Upsert(context.TODO(), crm.ObjectMeetingBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
 			Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
 				ID: "id",

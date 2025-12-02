@@ -27,7 +27,7 @@ func TestListMembershipListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.List(
+	_, err := client.Crm.Lists.Memberships.List(
 		context.TODO(),
 		"listId",
 		crm.ListMembershipListParams{
@@ -58,7 +58,7 @@ func TestListMembershipAdd(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.Add(
+	_, err := client.Crm.Lists.Memberships.Add(
 		context.TODO(),
 		"listId",
 		crm.ListMembershipAddParams{
@@ -87,7 +87,7 @@ func TestListMembershipAddAllFromList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Memberships.AddAllFromList(
+	err := client.Crm.Lists.Memberships.AddAllFromList(
 		context.TODO(),
 		"sourceListId",
 		crm.ListMembershipAddAllFromListParams{
@@ -116,7 +116,7 @@ func TestListMembershipAddAndRemove(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.AddAndRemove(
+	_, err := client.Crm.Lists.Memberships.AddAndRemove(
 		context.TODO(),
 		"listId",
 		crm.ListMembershipAddAndRemoveParams{
@@ -148,7 +148,7 @@ func TestListMembershipGetLists(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.GetLists(
+	_, err := client.Crm.Lists.Memberships.GetLists(
 		context.TODO(),
 		"recordId",
 		crm.ListMembershipGetListsParams{
@@ -177,7 +177,7 @@ func TestListMembershipGetPageOrderedByAddedToListDateWithOptionalParams(t *test
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.GetPageOrderedByAddedToListDate(
+	_, err := client.Crm.Lists.Memberships.GetPageOrderedByAddedToListDate(
 		context.TODO(),
 		"listId",
 		crm.ListMembershipGetPageOrderedByAddedToListDateParams{
@@ -208,7 +208,7 @@ func TestListMembershipRemove(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Memberships.Remove(
+	_, err := client.Crm.Lists.Memberships.Remove(
 		context.TODO(),
 		"listId",
 		crm.ListMembershipRemoveParams{
@@ -237,7 +237,7 @@ func TestListMembershipRemoveAll(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Memberships.RemoveAll(context.TODO(), "listId")
+	err := client.Crm.Lists.Memberships.RemoveAll(context.TODO(), "listId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

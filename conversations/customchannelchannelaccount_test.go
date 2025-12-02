@@ -29,14 +29,16 @@ func TestCustomChannelChannelAccountNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Conversations.CustomChannels.ChannelAccounts.New(
 		context.TODO(),
-		"channelId",
+		0,
 		conversations.CustomChannelChannelAccountNewParams{
-			Authorized: true,
-			InboxID:    "inboxId",
-			Name:       "name",
-			DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
-				Type:  "type",
-				Value: "value",
+			PublicChannelAccountEgg: conversations.PublicChannelAccountEggParam{
+				Authorized: true,
+				InboxID:    "inboxId",
+				Name:       "name",
+				DeliveryIdentifier: conversations.PublicDeliveryIdentifierParam{
+					Type:  "type",
+					Value: "value",
+				},
 			},
 		},
 	)
@@ -64,11 +66,13 @@ func TestCustomChannelChannelAccountUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Conversations.CustomChannels.ChannelAccounts.Update(
 		context.TODO(),
-		"channelAccountId",
+		0,
 		conversations.CustomChannelChannelAccountUpdateParams{
-			ChannelID:  "channelId",
-			Authorized: hubspotsdk.Bool(true),
-			Name:       hubspotsdk.String("name"),
+			ChannelID: 0,
+			PublicChannelAccountUpdateRequest: conversations.PublicChannelAccountUpdateRequestParam{
+				Authorized: hubspotsdk.Bool(true),
+				Name:       hubspotsdk.String("name"),
+			},
 		},
 	)
 	if err != nil {
@@ -80,7 +84,7 @@ func TestCustomChannelChannelAccountUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestCustomChannelChannelAccountList(t *testing.T) {
+func TestCustomChannelChannelAccountListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -93,7 +97,19 @@ func TestCustomChannelChannelAccountList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.CustomChannels.ChannelAccounts.List(context.TODO(), "channelId")
+	_, err := client.Conversations.CustomChannels.ChannelAccounts.List(
+		context.TODO(),
+		0,
+		conversations.CustomChannelChannelAccountListParams{
+			After:                   hubspotsdk.String("after"),
+			Archived:                hubspotsdk.Bool(true),
+			DefaultPageLength:       hubspotsdk.Int(0),
+			DeliveryIdentifierType:  []string{"string"},
+			DeliveryIdentifierValue: []string{"string"},
+			Limit:                   hubspotsdk.Int(0),
+			Sort:                    []string{"string"},
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -103,7 +119,7 @@ func TestCustomChannelChannelAccountList(t *testing.T) {
 	}
 }
 
-func TestCustomChannelChannelAccountGet(t *testing.T) {
+func TestCustomChannelChannelAccountGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -118,9 +134,10 @@ func TestCustomChannelChannelAccountGet(t *testing.T) {
 	)
 	_, err := client.Conversations.CustomChannels.ChannelAccounts.Get(
 		context.TODO(),
-		"channelAccountId",
+		0,
 		conversations.CustomChannelChannelAccountGetParams{
-			ChannelID: "channelId",
+			ChannelID: 0,
+			Archived:  hubspotsdk.Bool(true),
 		},
 	)
 	if err != nil {

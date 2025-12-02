@@ -23,7 +23,7 @@ import (
 )
 
 // UserService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -233,21 +233,27 @@ func (r *PublicTeam) UnmarshalJSON(data []byte) error {
 
 // A user
 type PublicUser struct {
-	// The user's unique ID
+	// The user's unique ID.
 	ID string `json:"id,required"`
-	// The user's email
-	Email     string `json:"email,required"`
+	// The user's email.
+	Email string `json:"email,required"`
+	// The user's first name.
 	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	// The user's last name.
+	LastName string `json:"lastName"`
 	// The user's primary team
 	PrimaryTeamID string `json:"primaryTeamId"`
-	// The user's role
-	RoleID  string   `json:"roleId"`
+	// The user's role.
+	RoleID string `json:"roleId"`
+	// A list of role IDs assigned to the user.
 	RoleIDs []string `json:"roleIds"`
-	// The user's additional teams
+	// The user's additional teams.
 	SecondaryTeamIDs []string `json:"secondaryTeamIds"`
-	SendWelcomeEmail bool     `json:"sendWelcomeEmail"`
-	SuperAdmin       bool     `json:"superAdmin"`
+	// Whether a welcome email was sent to the user. This value will only be populated
+	// in response to a provisioning request. Subsequent queries will be false.
+	SendWelcomeEmail bool `json:"sendWelcomeEmail"`
+	// Whether the user has super admin privileges.
+	SuperAdmin bool `json:"superAdmin"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID               respjson.Field
@@ -273,13 +279,15 @@ func (r *PublicUser) UnmarshalJSON(data []byte) error {
 
 // A user to update
 type PublicUserUpdateParam struct {
+	// The first name of the user.
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
-	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	// The user's primary team
+	// The last name of the user.
+	LastName param.Opt[string] `json:"lastName,omitzero"`
+	// The user's primary team.
 	PrimaryTeamID param.Opt[string] `json:"primaryTeamId,omitzero"`
-	// The user's role
+	// The user's role.
 	RoleID param.Opt[string] `json:"roleId,omitzero"`
-	// The user's additional teams
+	// The user's additional teams.
 	SecondaryTeamIDs []string `json:"secondaryTeamIds,omitzero"`
 	paramObj
 }
@@ -296,17 +304,19 @@ func (r *PublicUserUpdateParam) UnmarshalJSON(data []byte) error {
 //
 // The property Email is required.
 type UserProvisionRequestParam struct {
-	// The created user's email
-	Email     string            `json:"email,required"`
+	// The user's email.
+	Email string `json:"email,required"`
+	// The user's first name.
 	FirstName param.Opt[string] `json:"firstName,omitzero"`
-	LastName  param.Opt[string] `json:"lastName,omitzero"`
-	// The user's primary team
+	// The user's last name.
+	LastName param.Opt[string] `json:"lastName,omitzero"`
+	// The user's primary team.
 	PrimaryTeamID param.Opt[string] `json:"primaryTeamId,omitzero"`
-	// The user's role
+	// The user's role.
 	RoleID param.Opt[string] `json:"roleId,omitzero"`
-	// Whether to send a welcome email
+	// Whether to send a welcome email.
 	SendWelcomeEmail param.Opt[bool] `json:"sendWelcomeEmail,omitzero"`
-	// The user's additional teams
+	// The user's additional teams.
 	SecondaryTeamIDs []string `json:"secondaryTeamIds,omitzero"`
 	paramObj
 }
@@ -338,7 +348,7 @@ type UserUpdateParams struct {
 	// The name of a property with unique user values. Valid values are
 	// `USER_ID`(default) or `EMAIL`
 	//
-	// Any of "USER_ID", "EMAIL".
+	// Any of "EMAIL", "USER_ID".
 	IDProperty UserUpdateParamsIDProperty `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
@@ -363,8 +373,8 @@ func (r UserUpdateParams) URLQuery() (v url.Values, err error) {
 type UserUpdateParamsIDProperty string
 
 const (
-	UserUpdateParamsIDPropertyUserID UserUpdateParamsIDProperty = "USER_ID"
 	UserUpdateParamsIDPropertyEmail  UserUpdateParamsIDProperty = "EMAIL"
+	UserUpdateParamsIDPropertyUserID UserUpdateParamsIDProperty = "USER_ID"
 )
 
 type UserListParams struct {
@@ -388,7 +398,7 @@ type UserDeleteParams struct {
 	// The name of a property with unique user values. Valid values are
 	// `USER_ID`(default) or `EMAIL`
 	//
-	// Any of "USER_ID", "EMAIL".
+	// Any of "EMAIL", "USER_ID".
 	IDProperty UserDeleteParamsIDProperty `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
@@ -406,15 +416,15 @@ func (r UserDeleteParams) URLQuery() (v url.Values, err error) {
 type UserDeleteParamsIDProperty string
 
 const (
-	UserDeleteParamsIDPropertyUserID UserDeleteParamsIDProperty = "USER_ID"
 	UserDeleteParamsIDPropertyEmail  UserDeleteParamsIDProperty = "EMAIL"
+	UserDeleteParamsIDPropertyUserID UserDeleteParamsIDProperty = "USER_ID"
 )
 
 type UserGetParams struct {
 	// The name of a property with unique user values. Valid values are
 	// `USER_ID`(default) or `EMAIL`
 	//
-	// Any of "USER_ID", "EMAIL".
+	// Any of "EMAIL", "USER_ID".
 	IDProperty UserGetParamsIDProperty `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
@@ -432,6 +442,6 @@ func (r UserGetParams) URLQuery() (v url.Values, err error) {
 type UserGetParamsIDProperty string
 
 const (
-	UserGetParamsIDPropertyUserID UserGetParamsIDProperty = "USER_ID"
 	UserGetParamsIDPropertyEmail  UserGetParamsIDProperty = "EMAIL"
+	UserGetParamsIDPropertyUserID UserGetParamsIDProperty = "USER_ID"
 )

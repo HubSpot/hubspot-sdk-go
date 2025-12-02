@@ -15,7 +15,7 @@ import (
 )
 
 // ExtensionVideoConferencingSettingService contains methods and other services
-// that help with interacting with the Hubspot API.
+// that help with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -33,7 +33,6 @@ func NewExtensionVideoConferencingSettingService(opts ...option.RequestOption) (
 	return
 }
 
-// Updates the settings for a video conference application with the specified ID.
 func (r *ExtensionVideoConferencingSettingService) Update(ctx context.Context, appID int64, body ExtensionVideoConferencingSettingUpdateParams, opts ...option.RequestOption) (res *ExternalSettings, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/videoconferencing/settings/%v", appID)
@@ -41,7 +40,6 @@ func (r *ExtensionVideoConferencingSettingService) Update(ctx context.Context, a
 	return
 }
 
-// Deletes the settings for a video conference application with the specified ID.
 func (r *ExtensionVideoConferencingSettingService) Delete(ctx context.Context, appID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -50,7 +48,6 @@ func (r *ExtensionVideoConferencingSettingService) Delete(ctx context.Context, a
 	return
 }
 
-// Return the settings for a video conference application with the specified ID.
 func (r *ExtensionVideoConferencingSettingService) Get(ctx context.Context, appID int64, opts ...option.RequestOption) (res *ExternalSettings, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/videoconferencing/settings/%v", appID)

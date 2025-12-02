@@ -24,7 +24,7 @@ import (
 )
 
 // CampaignService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -194,7 +194,7 @@ type BatchResponsePublicCampaign struct {
 	CompletedAt time.Time        `json:"completedAt,required" format:"date-time"`
 	Results     []PublicCampaign `json:"results,required"`
 	StartedAt   time.Time        `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponsePublicCampaignStatus `json:"status,required"`
 	Links       map[string]string                 `json:"links"`
 	RequestedAt time.Time                         `json:"requestedAt" format:"date-time"`
@@ -220,17 +220,17 @@ func (r *BatchResponsePublicCampaign) UnmarshalJSON(data []byte) error {
 type BatchResponsePublicCampaignStatus string
 
 const (
-	BatchResponsePublicCampaignStatusPending    BatchResponsePublicCampaignStatus = "PENDING"
-	BatchResponsePublicCampaignStatusProcessing BatchResponsePublicCampaignStatus = "PROCESSING"
 	BatchResponsePublicCampaignStatusCanceled   BatchResponsePublicCampaignStatus = "CANCELED"
 	BatchResponsePublicCampaignStatusComplete   BatchResponsePublicCampaignStatus = "COMPLETE"
+	BatchResponsePublicCampaignStatusPending    BatchResponsePublicCampaignStatus = "PENDING"
+	BatchResponsePublicCampaignStatusProcessing BatchResponsePublicCampaignStatus = "PROCESSING"
 )
 
 type BatchResponsePublicCampaignWithAssets struct {
 	CompletedAt time.Time                  `json:"completedAt,required" format:"date-time"`
 	Results     []PublicCampaignWithAssets `json:"results,required"`
 	StartedAt   time.Time                  `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponsePublicCampaignWithAssetsStatus `json:"status,required"`
 	Links       map[string]string                           `json:"links"`
 	RequestedAt time.Time                                   `json:"requestedAt" format:"date-time"`
@@ -256,10 +256,10 @@ func (r *BatchResponsePublicCampaignWithAssets) UnmarshalJSON(data []byte) error
 type BatchResponsePublicCampaignWithAssetsStatus string
 
 const (
-	BatchResponsePublicCampaignWithAssetsStatusPending    BatchResponsePublicCampaignWithAssetsStatus = "PENDING"
-	BatchResponsePublicCampaignWithAssetsStatusProcessing BatchResponsePublicCampaignWithAssetsStatus = "PROCESSING"
 	BatchResponsePublicCampaignWithAssetsStatusCanceled   BatchResponsePublicCampaignWithAssetsStatus = "CANCELED"
 	BatchResponsePublicCampaignWithAssetsStatusComplete   BatchResponsePublicCampaignWithAssetsStatus = "COMPLETE"
+	BatchResponsePublicCampaignWithAssetsStatusPending    BatchResponsePublicCampaignWithAssetsStatus = "PENDING"
+	BatchResponsePublicCampaignWithAssetsStatusProcessing BatchResponsePublicCampaignWithAssetsStatus = "PROCESSING"
 )
 
 type CollectionResponseContactReferenceForwardPaging struct {
@@ -282,8 +282,7 @@ func (r *CollectionResponseContactReferenceForwardPaging) UnmarshalJSON(data []b
 
 type CollectionResponsePublicCampaignAsset struct {
 	Results []PublicCampaignAsset `json:"results,required"`
-	// Contains information pagination of results.
-	Paging Paging `json:"paging"`
+	Paging  shared.Paging         `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -686,7 +685,7 @@ func (r *PublicCampaign) UnmarshalJSON(data []byte) error {
 
 type PublicCampaignAsset struct {
 	ID      string             `json:"id,required"`
-	Metrics map[string]float64 `json:"metrics,required"`
+	Metrics map[string]float64 `json:"metrics"`
 	Name    string             `json:"name"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {

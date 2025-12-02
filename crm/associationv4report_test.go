@@ -13,7 +13,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestAssociationV4ReportGetHighUsageReport(t *testing.T) {
+func TestAssociationV4ReportRequestHighUsageReport(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,7 +26,7 @@ func TestAssociationV4ReportGetHighUsageReport(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Report.GetHighUsageReport(context.TODO(), 0)
+	_, err := client.Crm.Associations.V4.Report.RequestHighUsageReport(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

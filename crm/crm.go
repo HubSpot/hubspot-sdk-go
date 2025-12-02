@@ -6,20 +6,19 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-// CRMService contains methods and other services that help with interacting with
-// the Hubspot API.
+// CrmService contains methods and other services that help with interacting with
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewCRMService] method instead.
-type CRMService struct {
+// the [NewCrmService] method instead.
+type CrmService struct {
 	Options             []option.RequestOption
 	AppUninstalls       AppUninstallService
 	Associations        AssociationService
@@ -35,15 +34,16 @@ type CRMService struct {
 	Pipelines           PipelineService
 	Properties          PropertyService
 	PropertyValidations PropertyValidationService
+	Subscriptions       SubscriptionService
 	Timeline            TimelineService
 	Users               UserService
 }
 
-// NewCRMService generates a new service that applies the given options to each
+// NewCrmService generates a new service that applies the given options to each
 // request. These options are applied after the parent client's options (if there
 // is one), and before any request-specific options.
-func NewCRMService(opts ...option.RequestOption) (r CRMService) {
-	r = CRMService{}
+func NewCrmService(opts ...option.RequestOption) (r CrmService) {
+	r = CrmService{}
 	r.Options = opts
 	r.AppUninstalls = NewAppUninstallService(opts...)
 	r.Associations = NewAssociationService(opts...)
@@ -59,6 +59,7 @@ func NewCRMService(opts ...option.RequestOption) (r CRMService) {
 	r.Pipelines = NewPipelineService(opts...)
 	r.Properties = NewPropertyService(opts...)
 	r.PropertyValidations = NewPropertyValidationService(opts...)
+	r.Subscriptions = NewSubscriptionService(opts...)
 	r.Timeline = NewTimelineService(opts...)
 	r.Users = NewUserService(opts...)
 	return
@@ -84,6 +85,35 @@ func (r AssociatedID) RawJSON() string { return r.JSON.raw }
 func (r *AssociatedID) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type AssociationSpecWithLabel struct {
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
+	Category AssociationSpecWithLabelCategory `json:"category,required"`
+	TypeID   int64                            `json:"typeId,required"`
+	Label    string                           `json:"label"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Category    respjson.Field
+		TypeID      respjson.Field
+		Label       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AssociationSpecWithLabel) RawJSON() string { return r.JSON.raw }
+func (r *AssociationSpecWithLabel) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AssociationSpecWithLabelCategory string
+
+const (
+	AssociationSpecWithLabelCategoryHubspotDefined    AssociationSpecWithLabelCategory = "HUBSPOT_DEFINED"
+	AssociationSpecWithLabelCategoryIntegratorDefined AssociationSpecWithLabelCategory = "INTEGRATOR_DEFINED"
+	AssociationSpecWithLabelCategoryUserDefined       AssociationSpecWithLabelCategory = "USER_DEFINED"
+)
 
 // The property Inputs is required.
 type BatchInputSimplePublicObjectBatchInputParam struct {
@@ -152,8 +182,7 @@ type BatchReadInputSimplePublicObjectIDParam struct {
 	Properties []string `json:"properties,omitzero,required"`
 	// Key-value pairs for setting properties for the new object and their histories.
 	PropertiesWithHistory []string `json:"propertiesWithHistory,omitzero,required"`
-	// When using a custom unique value property to retrieve records, the name of the
-	// property. Do not include this parameter if retrieving by record ID.
+	// A unique property used to identify objects instead of the default ID.
 	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
 	paramObj
 }
@@ -167,15 +196,23 @@ func (r *BatchReadInputSimplePublicObjectIDParam) UnmarshalJSON(data []byte) err
 }
 
 type BatchResponsePublicDefaultAssociation struct {
+	// The timestamp when the batch process was completed, in ISO 8601 format.
 	CompletedAt time.Time                  `json:"completedAt,required" format:"date-time"`
 	Results     []PublicDefaultAssociation `json:"results,required"`
-	StartedAt   time.Time                  `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      BatchResponsePublicDefaultAssociationStatus `json:"status,required"`
-	Errors      []StandardError1                            `json:"errors"`
-	Links       map[string]string                           `json:"links"`
-	NumErrors   int64                                       `json:"numErrors"`
-	RequestedAt time.Time                                   `json:"requestedAt" format:"date-time"`
+	// The timestamp when the batch process began execution, in ISO 8601 format.
+	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
+	// The status of the batch processing request: "PENDING", "PROCESSING",
+	// "CANCELLED", or "COMPLETE".
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponsePublicDefaultAssociationStatus `json:"status,required"`
+	Errors []shared.StandardError                      `json:"errors"`
+	// An object containing relevant links related to the batch request.
+	Links map[string]string `json:"links"`
+	// The number of errors encountered during the batch processing.
+	NumErrors int64 `json:"numErrors"`
+	// The timestamp when the batch process was initiated, in ISO 8601 format.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
@@ -197,13 +234,15 @@ func (r *BatchResponsePublicDefaultAssociation) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The status of the batch processing request: "PENDING", "PROCESSING",
+// "CANCELLED", or "COMPLETE".
 type BatchResponsePublicDefaultAssociationStatus string
 
 const (
-	BatchResponsePublicDefaultAssociationStatusPending    BatchResponsePublicDefaultAssociationStatus = "PENDING"
-	BatchResponsePublicDefaultAssociationStatusProcessing BatchResponsePublicDefaultAssociationStatus = "PROCESSING"
 	BatchResponsePublicDefaultAssociationStatusCanceled   BatchResponsePublicDefaultAssociationStatus = "CANCELED"
 	BatchResponsePublicDefaultAssociationStatusComplete   BatchResponsePublicDefaultAssociationStatus = "COMPLETE"
+	BatchResponsePublicDefaultAssociationStatusPending    BatchResponsePublicDefaultAssociationStatus = "PENDING"
+	BatchResponsePublicDefaultAssociationStatusProcessing BatchResponsePublicDefaultAssociationStatus = "PROCESSING"
 )
 
 // A public object batch response object
@@ -216,12 +255,13 @@ type BatchResponseSimplePublicObject struct {
 	// The status of the batch processing request: "PENDING", "PROCESSING",
 	// "CANCELLED", or "COMPLETE"
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseSimplePublicObjectStatus `json:"status,required"`
 	Errors []shared.StandardError                `json:"errors"`
 	// An object containing relevant links related to the batch request.
-	Links     map[string]string `json:"links"`
-	NumErrors int64             `json:"numErrors"`
+	Links map[string]string `json:"links"`
+	// The number of errors encountered during the batch processing.
+	NumErrors int64 `json:"numErrors"`
 	// The timestamp when the batch request was initially made, in ISO 8601 format.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -250,10 +290,10 @@ func (r *BatchResponseSimplePublicObject) UnmarshalJSON(data []byte) error {
 type BatchResponseSimplePublicObjectStatus string
 
 const (
-	BatchResponseSimplePublicObjectStatusPending    BatchResponseSimplePublicObjectStatus = "PENDING"
-	BatchResponseSimplePublicObjectStatusProcessing BatchResponseSimplePublicObjectStatus = "PROCESSING"
 	BatchResponseSimplePublicObjectStatusCanceled   BatchResponseSimplePublicObjectStatus = "CANCELED"
 	BatchResponseSimplePublicObjectStatusComplete   BatchResponseSimplePublicObjectStatus = "COMPLETE"
+	BatchResponseSimplePublicObjectStatusPending    BatchResponseSimplePublicObjectStatus = "PENDING"
+	BatchResponseSimplePublicObjectStatusProcessing BatchResponseSimplePublicObjectStatus = "PROCESSING"
 )
 
 // Represents the result of a batch upsert operation, including the operation’s
@@ -267,12 +307,13 @@ type BatchResponseSimplePublicUpsertObject struct {
 	// The status of the batch processing request. Can be: "PENDING", "PROCESSING",
 	// "CANCELED", or "COMPLETE".
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseSimplePublicUpsertObjectStatus `json:"status,required"`
 	Errors []shared.StandardError                      `json:"errors"`
 	// An object containing relevant links related to the batch request.
-	Links     map[string]string `json:"links"`
-	NumErrors int64             `json:"numErrors"`
+	Links map[string]string `json:"links"`
+	// The number of errors
+	NumErrors int64 `json:"numErrors"`
 	// The timestamp when the batch process was initiated, in ISO 8601 format.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -301,16 +342,15 @@ func (r *BatchResponseSimplePublicUpsertObject) UnmarshalJSON(data []byte) error
 type BatchResponseSimplePublicUpsertObjectStatus string
 
 const (
-	BatchResponseSimplePublicUpsertObjectStatusPending    BatchResponseSimplePublicUpsertObjectStatus = "PENDING"
-	BatchResponseSimplePublicUpsertObjectStatusProcessing BatchResponseSimplePublicUpsertObjectStatus = "PROCESSING"
 	BatchResponseSimplePublicUpsertObjectStatusCanceled   BatchResponseSimplePublicUpsertObjectStatus = "CANCELED"
 	BatchResponseSimplePublicUpsertObjectStatusComplete   BatchResponseSimplePublicUpsertObjectStatus = "COMPLETE"
+	BatchResponseSimplePublicUpsertObjectStatusPending    BatchResponseSimplePublicUpsertObjectStatus = "PENDING"
+	BatchResponseSimplePublicUpsertObjectStatusProcessing BatchResponseSimplePublicUpsertObjectStatus = "PROCESSING"
 )
 
 type CollectionResponseAssociatedID struct {
 	Results []AssociatedID `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging  `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -326,29 +366,9 @@ func (r *CollectionResponseAssociatedID) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type CollectionResponseMultiAssociatedObjectWithLabel struct {
-	Results []MultiAssociatedObjectWithLabel `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Results     respjson.Field
-		Paging      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CollectionResponseMultiAssociatedObjectWithLabel) RawJSON() string { return r.JSON.raw }
-func (r *CollectionResponseMultiAssociatedObjectWithLabel) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type CollectionResponseSimplePublicObjectWithAssociations struct {
 	Results []SimplePublicObjectWithAssociations `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging                        `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -366,10 +386,9 @@ func (r *CollectionResponseSimplePublicObjectWithAssociations) UnmarshalJSON(dat
 
 type CollectionResponseWithTotalSimplePublicObject struct {
 	Results []SimplePublicObject `json:"results,required"`
-	// The number of available results
-	Total int64 `json:"total,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	// The total number of objects in the collection.
+	Total  int64         `json:"total,required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -386,31 +405,13 @@ func (r *CollectionResponseWithTotalSimplePublicObject) UnmarshalJSON(data []byt
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type CreatedResponseLabelsBetweenObjectPair struct {
-	CreatedResourceID string                  `json:"createdResourceId,required"`
-	Entity            LabelsBetweenObjectPair `json:"entity,required"`
-	Location          string                  `json:"location"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CreatedResourceID respjson.Field
-		Entity            respjson.Field
-		Location          respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CreatedResponseLabelsBetweenObjectPair) RawJSON() string { return r.JSON.raw }
-func (r *CreatedResponseLabelsBetweenObjectPair) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type CreatedResponseSimplePublicObject struct {
+	// The unique identifier of the newly created resource.
 	CreatedResourceID string `json:"createdResourceId,required"`
 	// A simple public object.
-	Entity   SimplePublicObject `json:"entity,required"`
-	Location string             `json:"location"`
+	Entity SimplePublicObject `json:"entity,required"`
+	// The URL location of the newly created resource.
+	Location string `json:"location"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CreatedResourceID respjson.Field
@@ -435,8 +436,8 @@ func (r *CreatedResponseSimplePublicObject) UnmarshalJSON(data []byte) error {
 type FilterParam struct {
 	// The comparison operator used in the filter, such as "EQ" or "GT".
 	//
-	// Any of "EQ", "NEQ", "LT", "LTE", "GT", "GTE", "BETWEEN", "IN", "NOT_IN",
-	// "HAS_PROPERTY", "NOT_HAS_PROPERTY".
+	// Any of "BETWEEN", "CONTAINS_TOKEN", "EQ", "GT", "GTE", "HAS_PROPERTY", "IN",
+	// "LT", "LTE", "NEQ", "NOT_CONTAINS_TOKEN", "NOT_HAS_PROPERTY", "NOT_IN".
 	Operator FilterOperator `json:"operator,omitzero,required"`
 	// The name of the property to apply the filter to.
 	PropertyName string `json:"propertyName,required"`
@@ -461,17 +462,19 @@ func (r *FilterParam) UnmarshalJSON(data []byte) error {
 type FilterOperator string
 
 const (
-	FilterOperatorEq             FilterOperator = "EQ"
-	FilterOperatorNeq            FilterOperator = "NEQ"
-	FilterOperatorLt             FilterOperator = "LT"
-	FilterOperatorLte            FilterOperator = "LTE"
-	FilterOperatorGt             FilterOperator = "GT"
-	FilterOperatorGte            FilterOperator = "GTE"
-	FilterOperatorBetween        FilterOperator = "BETWEEN"
-	FilterOperatorIn             FilterOperator = "IN"
-	FilterOperatorNotIn          FilterOperator = "NOT_IN"
-	FilterOperatorHasProperty    FilterOperator = "HAS_PROPERTY"
-	FilterOperatorNotHasProperty FilterOperator = "NOT_HAS_PROPERTY"
+	FilterOperatorBetween          FilterOperator = "BETWEEN"
+	FilterOperatorContainsToken    FilterOperator = "CONTAINS_TOKEN"
+	FilterOperatorEq               FilterOperator = "EQ"
+	FilterOperatorGt               FilterOperator = "GT"
+	FilterOperatorGte              FilterOperator = "GTE"
+	FilterOperatorHasProperty      FilterOperator = "HAS_PROPERTY"
+	FilterOperatorIn               FilterOperator = "IN"
+	FilterOperatorLt               FilterOperator = "LT"
+	FilterOperatorLte              FilterOperator = "LTE"
+	FilterOperatorNeq              FilterOperator = "NEQ"
+	FilterOperatorNotContainsToken FilterOperator = "NOT_CONTAINS_TOKEN"
+	FilterOperatorNotHasProperty   FilterOperator = "NOT_HAS_PROPERTY"
+	FilterOperatorNotIn            FilterOperator = "NOT_IN"
 )
 
 // The property Filters is required.
@@ -489,11 +492,16 @@ func (r *FilterGroupParam) UnmarshalJSON(data []byte) error {
 }
 
 type LabelsBetweenObjectPair struct {
-	FromObjectID     string   `json:"fromObjectId,required"`
-	FromObjectTypeID string   `json:"fromObjectTypeId,required"`
-	Labels           []string `json:"labels,required"`
-	ToObjectID       string   `json:"toObjectId,required"`
-	ToObjectTypeID   string   `json:"toObjectTypeId,required"`
+	// The ID of the source object in the association.
+	FromObjectID string `json:"fromObjectId,required"`
+	// The type ID of the source object in the association.
+	FromObjectTypeID string `json:"fromObjectTypeId,required"`
+	// An array of labels associated with the relationship between the objects.
+	Labels []string `json:"labels,required"`
+	// The ID of the target object in the association.
+	ToObjectID string `json:"toObjectId,required"`
+	// The type ID of the target object in the association.
+	ToObjectTypeID string `json:"toObjectTypeId,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		FromObjectID     respjson.Field
@@ -513,8 +521,9 @@ func (r *LabelsBetweenObjectPair) UnmarshalJSON(data []byte) error {
 }
 
 type MultiAssociatedObjectWithLabel struct {
-	AssociationTypes []AssociationSpecWithLabel1 `json:"associationTypes,required"`
-	ToObjectID       string                      `json:"toObjectId,required"`
+	AssociationTypes []AssociationSpecWithLabel `json:"associationTypes,required"`
+	// The unique identifier for the target object in the association.
+	ToObjectID string `json:"toObjectId,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AssociationTypes respjson.Field
@@ -548,9 +557,9 @@ func (r *PublicAssociationsForObjectParam) UnmarshalJSON(data []byte) error {
 type PublicDefaultAssociation struct {
 	// Defines the type, direction, and details of the relationship between two CRM
 	// objects.
-	AssociationSpec AssociationSpec1      `json:"associationSpec,required"`
-	From            shared.PublicObjectID `json:"from,required"`
-	To              shared.PublicObjectID `json:"to,required"`
+	AssociationSpec shared.AssociationSpec `json:"associationSpec,required"`
+	From            shared.PublicObjectID  `json:"from,required"`
+	To              shared.PublicObjectID  `json:"to,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AssociationSpec respjson.Field
@@ -569,8 +578,9 @@ func (r *PublicDefaultAssociation) UnmarshalJSON(data []byte) error {
 
 // The property ObjectID is required.
 type PublicGdprDeleteInputParam struct {
+	// ID of the object
 	ObjectID string `json:"objectId,required"`
-	// The name of a property whose values are unique for this object
+	// ID property
 	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
 	paramObj
 }
@@ -585,7 +595,10 @@ func (r *PublicGdprDeleteInputParam) UnmarshalJSON(data []byte) error {
 
 // The properties ObjectIDToMerge, PrimaryObjectID are required.
 type PublicMergeInputParam struct {
+	// The unique identifier of the CRM object that will be merged into the primary
+	// object.
 	ObjectIDToMerge string `json:"objectIdToMerge,required"`
+	// The unique identifier of the CRM object that will remain after the merge.
 	PrimaryObjectID string `json:"primaryObjectId,required"`
 	paramObj
 }
@@ -599,19 +612,21 @@ func (r *PublicMergeInputParam) UnmarshalJSON(data []byte) error {
 }
 
 // Describes a search request
+//
+// The properties After, FilterGroups, Limit, Properties, Sorts are required.
 type PublicObjectSearchRequestParam struct {
 	// A paging cursor token for retrieving subsequent pages.
-	After param.Opt[string] `json:"after,omitzero"`
+	After string `json:"after,required"`
+	// Up to 6 groups of filters defining additional query criteria.
+	FilterGroups []FilterGroupParam `json:"filterGroups,omitzero,required"`
 	// The maximum results to return, up to 200 objects.
-	Limit param.Opt[int64] `json:"limit,omitzero"`
+	Limit int64 `json:"limit,required"`
+	// A list of property names to include in the response.
+	Properties []string `json:"properties,omitzero,required"`
+	// Specifies sorting order based on object properties.
+	Sorts []string `json:"sorts,omitzero,required"`
 	// The search query string, up to 3000 characters.
 	Query param.Opt[string] `json:"query,omitzero"`
-	// Up to 6 groups of filters defining additional query criteria.
-	FilterGroups []FilterGroupParam `json:"filterGroups,omitzero"`
-	// A list of property names to include in the response.
-	Properties []string `json:"properties,omitzero"`
-	// Specifies sorting order based on object properties.
-	Sorts []string `json:"sorts,omitzero"`
 	paramObj
 }
 
@@ -627,30 +642,33 @@ func (r *PublicObjectSearchRequestParam) UnmarshalJSON(data []byte) error {
 type SimplePublicObject struct {
 	// The unique ID of the object.
 	ID string `json:"id,required"`
+	// Whether the object is archived.
+	Archived bool `json:"archived,required"`
 	// The timestamp when the object was created, in ISO 8601 format.
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
 	// Key-value pairs representing the properties of the object.
 	Properties map[string]string `json:"properties,required"`
 	// The timestamp when the object was last updated, in ISO 8601 format.
 	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// Whether the object is archived.
-	Archived bool `json:"archived"`
 	// The timestamp when the object was archived, in ISO 8601 format.
-	ArchivedAt         time.Time `json:"archivedAt" format:"date-time"`
-	ObjectWriteTraceID string    `json:"objectWriteTraceId"`
+	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
+	// A unique identifier for tracing the creation request.
+	ObjectWriteTraceID string `json:"objectWriteTraceId"`
 	// Key-value pairs representing the properties of the object along with their
 	// history.
 	PropertiesWithHistory map[string][]ValueWithTimestamp `json:"propertiesWithHistory"`
+	URL                   string                          `json:"url"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                    respjson.Field
+		Archived              respjson.Field
 		CreatedAt             respjson.Field
 		Properties            respjson.Field
 		UpdatedAt             respjson.Field
-		Archived              respjson.Field
 		ArchivedAt            respjson.Field
 		ObjectWriteTraceID    respjson.Field
 		PropertiesWithHistory respjson.Field
+		URL                   respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
 	} `json:"-"`
@@ -667,12 +685,12 @@ func (r *SimplePublicObject) UnmarshalJSON(data []byte) error {
 //
 // The properties ID, Properties are required.
 type SimplePublicObjectBatchInputParam struct {
-	// The id to be updated. This can be the object id, or the unique property value of
-	// the idProperty property
+	// The unique ID of the object.
 	ID string `json:"id,required"`
 	// Key-value pairs representing the properties of the object.
 	Properties map[string]string `json:"properties,omitzero,required"`
-	// The name of a property whose values are unique for this object
+	// The name of a unique identifier property, which can be used for identifying
+	// objects instead of the object ID.
 	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
 	// A unique identifier for tracing the request.
 	ObjectWriteTraceID param.Opt[string] `json:"objectWriteTraceId,omitzero"`
@@ -687,11 +705,13 @@ func (r *SimplePublicObjectBatchInputParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property Properties is required.
+// The properties Associations, Properties are required.
 type SimplePublicObjectBatchInputForCreateParam struct {
-	Properties         map[string]string                  `json:"properties,omitzero,required"`
-	ObjectWriteTraceID param.Opt[string]                  `json:"objectWriteTraceId,omitzero"`
-	Associations       []PublicAssociationsForObjectParam `json:"associations,omitzero"`
+	Associations []PublicAssociationsForObjectParam `json:"associations,omitzero,required"`
+	// Key-value pairs representing the properties of the object.
+	Properties map[string]string `json:"properties,omitzero,required"`
+	// A unique identifier for tracing the creation request.
+	ObjectWriteTraceID param.Opt[string] `json:"objectWriteTraceId,omitzero"`
 	paramObj
 }
 
@@ -713,7 +733,8 @@ type SimplePublicObjectBatchInputUpsertParam struct {
 	ID string `json:"id,required"`
 	// Key value pairs representing the properties of the object.
 	Properties map[string]string `json:"properties,omitzero,required"`
-	// The name of a property whose values are unique for this object
+	// The name of a unique identifier property, which can be used for identifying
+	// objects instead of the object ID.
 	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
 	// An identifier for tracing the creation request.
 	ObjectWriteTraceID param.Opt[string] `json:"objectWriteTraceId,omitzero"`
@@ -730,6 +751,7 @@ func (r *SimplePublicObjectBatchInputUpsertParam) UnmarshalJSON(data []byte) err
 
 // The property ID is required.
 type SimplePublicObjectIDParam struct {
+	// Object ID
 	ID string `json:"id,required"`
 	paramObj
 }
@@ -764,11 +786,11 @@ func (r *SimplePublicObjectInputParam) UnmarshalJSON(data []byte) error {
 // to be set and optional associations to link the new record with other CRM
 // objects.
 //
-// The property Properties is required.
+// The properties Associations, Properties are required.
 type SimplePublicObjectInputForCreateParam struct {
+	Associations []PublicAssociationsForObjectParam `json:"associations,omitzero,required"`
 	// Key-value pairs for setting properties for the new object.
-	Properties   map[string]string                  `json:"properties,omitzero,required"`
-	Associations []PublicAssociationsForObjectParam `json:"associations,omitzero"`
+	Properties map[string]string `json:"properties,omitzero,required"`
 	paramObj
 }
 
@@ -785,33 +807,36 @@ func (r *SimplePublicObjectInputForCreateParam) UnmarshalJSON(data []byte) error
 type SimplePublicObjectWithAssociations struct {
 	// The unique ID of the object.
 	ID string `json:"id,required"`
+	// Whether the object is archived.
+	Archived bool `json:"archived,required"`
 	// The timestamp when the object was created, in ISO 8601 format.
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
 	// Key value pairs representing the properties of the object.
 	Properties map[string]string `json:"properties,required"`
 	// The timestamp when the object was last updated, in ISO 8601 format.
 	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// Whether the object is archived.
-	Archived bool `json:"archived"`
 	// The timestamp when the object was archived, in ISO 8601 format.
 	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
 	// A list defining relationships with other objects.
-	Associations       map[string]CollectionResponseAssociatedID `json:"associations"`
-	ObjectWriteTraceID string                                    `json:"objectWriteTraceId"`
+	Associations map[string]CollectionResponseAssociatedID `json:"associations"`
+	// A unique identifier for tracing the creation request.
+	ObjectWriteTraceID string `json:"objectWriteTraceId"`
 	// Key-value pairs representing the properties of the object along with their
 	// history.
 	PropertiesWithHistory map[string][]ValueWithTimestamp `json:"propertiesWithHistory"`
+	URL                   string                          `json:"url"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                    respjson.Field
+		Archived              respjson.Field
 		CreatedAt             respjson.Field
 		Properties            respjson.Field
 		UpdatedAt             respjson.Field
-		Archived              respjson.Field
 		ArchivedAt            respjson.Field
 		Associations          respjson.Field
 		ObjectWriteTraceID    respjson.Field
 		PropertiesWithHistory respjson.Field
+		URL                   respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
 	} `json:"-"`
@@ -827,6 +852,8 @@ func (r *SimplePublicObjectWithAssociations) UnmarshalJSON(data []byte) error {
 type SimplePublicUpsertObject struct {
 	// The unique ID of the object.
 	ID string `json:"id,required"`
+	// Whether the object is archived.
+	Archived bool `json:"archived,required"`
 	// The timestamp when the object was created, in ISO 8601 format.
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
 	// Whether the property is new.
@@ -835,25 +862,26 @@ type SimplePublicUpsertObject struct {
 	Properties map[string]string `json:"properties,required"`
 	// The timestamp when the object was last updated, in ISO 8601 format.
 	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// Whether the object is archived.
-	Archived bool `json:"archived"`
 	// The timestamp when the object was archived, in ISO 8601 format.
-	ArchivedAt         time.Time `json:"archivedAt" format:"date-time"`
-	ObjectWriteTraceID string    `json:"objectWriteTraceId"`
+	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
+	// A unique identifier for tracing the creation or update request.
+	ObjectWriteTraceID string `json:"objectWriteTraceId"`
 	// Key-value pairs representing the properties of the object along with their
 	// history.
 	PropertiesWithHistory map[string][]ValueWithTimestamp `json:"propertiesWithHistory"`
+	URL                   string                          `json:"url"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                    respjson.Field
+		Archived              respjson.Field
 		CreatedAt             respjson.Field
 		New                   respjson.Field
 		Properties            respjson.Field
 		UpdatedAt             respjson.Field
-		Archived              respjson.Field
 		ArchivedAt            respjson.Field
 		ObjectWriteTraceID    respjson.Field
 		PropertiesWithHistory respjson.Field
+		URL                   respjson.Field
 		ExtraFields           map[string]respjson.Field
 		raw                   string
 	} `json:"-"`

@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectEmailService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -120,6 +120,8 @@ func (r *ObjectEmailService) Get(ctx context.Context, emailID string, query Obje
 	return
 }
 
+// Perform a search for emails based on the provided query parameters and return
+// matching results.
 func (r *ObjectEmailService) Search(ctx context.Context, body ObjectEmailSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/emails/search"

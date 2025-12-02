@@ -21,7 +21,7 @@ import (
 )
 
 // HubdbRowService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -175,15 +175,37 @@ func (r *HubdbRowService) GetDraft(ctx context.Context, rowID string, params Hub
 // to the
 // [overview section](https://developers.hubspot.com/docs/api/cms/hubdb#filtering-and-sorting-table-rows)
 // for detailed filtering and sorting options.
-func (r *HubdbRowService) ListDraft(ctx context.Context, tableIDOrName string, query HubdbRowListDraftParams, opts ...option.RequestOption) (res *UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union, err error) {
+func (r *HubdbRowService) ListDraft(ctx context.Context, tableIDOrName string, query HubdbRowListDraftParams, opts ...option.RequestOption) (res *pagination.Page[shared.HubDBTableRowV3Wrapper], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if tableIDOrName == "" {
 		err = errors.New("missing required tableIdOrName parameter")
 		return
 	}
 	path := fmt.Sprintf("cms/v3/hubdb/tables/%s/rows/draft", tableIDOrName)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Returns rows in the draft version of the specified table. Row results can be
+// filtered and sorted. Filtering and sorting options will be sent as query
+// parameters to the API request. For example, by adding the query parameters
+// `column1__gt=5&sort=-column1`, API returns the rows with values for column
+// `column1` greater than 5 and in the descending order of `column1` values. Refer
+// to the
+// [overview section](https://developers.hubspot.com/docs/api/cms/hubdb#filtering-and-sorting-table-rows)
+// for detailed filtering and sorting options.
+func (r *HubdbRowService) ListDraftAutoPaging(ctx context.Context, tableIDOrName string, query HubdbRowListDraftParams, opts ...option.RequestOption) *pagination.PageAutoPager[shared.HubDBTableRowV3Wrapper] {
+	return pagination.NewPageAutoPager(r.ListDraft(ctx, tableIDOrName, query, opts...))
 }
 
 // Replace a single row in the draft version of a table. All column values must be
@@ -239,10 +261,12 @@ func (r *HubdbRowNewParams) UnmarshalJSON(data []byte) error {
 type HubdbRowListParams struct {
 	// The cursor token value to get the next set of results. You can get this from the
 	// `paging.next.after` JSON property of a paged response containing more results.
-	After    param.Opt[string] `query:"after,omitzero" json:"-"`
-	Archived param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Specifies whether to include archived rows in the response.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// The maximum number of results to return. Default is `1000`.
-	Limit  param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// The number of rows to skip before starting to return results.
 	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
 	// Specify the column names to get results containing only the required columns
 	// instead of all column details.
@@ -262,8 +286,9 @@ func (r HubdbRowListParams) URLQuery() (v url.Values, err error) {
 }
 
 type HubdbRowCloneDraftParams struct {
-	TableIDOrName string            `path:"tableIdOrName,required" json:"-"`
-	Name          param.Opt[string] `query:"name,omitzero" json:"-"`
+	TableIDOrName string `path:"tableIdOrName,required" json:"-"`
+	// The name for the cloned row.
+	Name param.Opt[string] `query:"name,omitzero" json:"-"`
 	paramObj
 }
 
@@ -282,8 +307,9 @@ type HubdbRowDeleteDraftParams struct {
 }
 
 type HubdbRowGetParams struct {
-	TableIDOrName string          `path:"tableIdOrName,required" json:"-"`
-	Archived      param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	TableIDOrName string `path:"tableIdOrName,required" json:"-"`
+	// Specifies whether to return an archived row. Defaults to `false`.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
@@ -296,8 +322,9 @@ func (r HubdbRowGetParams) URLQuery() (v url.Values, err error) {
 }
 
 type HubdbRowGetDraftParams struct {
-	TableIDOrName string          `path:"tableIdOrName,required" json:"-"`
-	Archived      param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	TableIDOrName string `path:"tableIdOrName,required" json:"-"`
+	// Set this to `true` to return an archived row. Defaults to `false`.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
@@ -312,10 +339,12 @@ func (r HubdbRowGetDraftParams) URLQuery() (v url.Values, err error) {
 type HubdbRowListDraftParams struct {
 	// The cursor token value to get the next set of results. You can get this from the
 	// `paging.next.after` JSON property of a paged response containing more results.
-	After    param.Opt[string] `query:"after,omitzero" json:"-"`
-	Archived param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Specifies whether to return archived rows. Defaults to `false`.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// The maximum number of results to return. Default is `1000`.
-	Limit  param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// The number of rows to skip before starting to return results.
 	Offset param.Opt[int64] `query:"offset,omitzero" json:"-"`
 	// Specify the column names to get results containing only the required columns
 	// instead of all column details. If you want to include multiple columns in the

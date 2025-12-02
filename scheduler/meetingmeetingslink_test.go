@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/scheduler"
 )
 
-func TestMeetingMeetingsLinkList(t *testing.T) {
+func TestMeetingMeetingsLinkListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,7 +28,13 @@ func TestMeetingMeetingsLinkList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Scheduler.Meetings.MeetingsLinks.List(context.TODO())
+	_, err := client.Scheduler.Meetings.MeetingsLinks.List(context.TODO(), scheduler.MeetingMeetingsLinkListParams{
+		After:           hubspotsdk.String("after"),
+		Limit:           hubspotsdk.Int(0),
+		Name:            hubspotsdk.String("name"),
+		OrganizerUserID: hubspotsdk.String("organizerUserId"),
+		Type:            hubspotsdk.String("type"),
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -81,7 +87,7 @@ func TestMeetingMeetingsLinkBookWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestMeetingMeetingsLinkGetAvailabilityBySlug(t *testing.T) {
+func TestMeetingMeetingsLinkGetAvailabilityBySlugWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -94,7 +100,14 @@ func TestMeetingMeetingsLinkGetAvailabilityBySlug(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Scheduler.Meetings.MeetingsLinks.GetAvailabilityBySlug(context.TODO(), "slug")
+	_, err := client.Scheduler.Meetings.MeetingsLinks.GetAvailabilityBySlug(
+		context.TODO(),
+		"slug",
+		scheduler.MeetingMeetingsLinkGetAvailabilityBySlugParams{
+			Timezone:    "timezone",
+			MonthOffset: hubspotsdk.Int(0),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -117,7 +130,13 @@ func TestMeetingMeetingsLinkGetBookingInfoBySlug(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Scheduler.Meetings.MeetingsLinks.GetBookingInfoBySlug(context.TODO(), "slug")
+	_, err := client.Scheduler.Meetings.MeetingsLinks.GetBookingInfoBySlug(
+		context.TODO(),
+		"slug",
+		scheduler.MeetingMeetingsLinkGetBookingInfoBySlugParams{
+			Timezone: "timezone",
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

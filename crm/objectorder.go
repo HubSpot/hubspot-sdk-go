@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectOrderService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -120,6 +120,8 @@ func (r *ObjectOrderService) Get(ctx context.Context, orderID string, query Obje
 	return
 }
 
+// Execute a search for orders using specified criteria and return matching
+// results.
 func (r *ObjectOrderService) Search(ctx context.Context, body ObjectOrderSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/orders/search"

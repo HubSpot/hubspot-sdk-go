@@ -14,7 +14,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestPipelineStageNewWithOptionalParams(t *testing.T) {
+func TestPipelineStageNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -27,7 +27,7 @@ func TestPipelineStageNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.New(
+	_, err := client.Crm.Pipelines.Stages.New(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineStageNewParams{
@@ -63,19 +63,19 @@ func TestPipelineStageUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.Update(
+	_, err := client.Crm.Pipelines.Stages.Update(
 		context.TODO(),
 		"stageId",
 		crm.PipelineStageUpdateParams{
 			ObjectType: "objectType",
 			PipelineID: "pipelineId",
 			PipelineStagePatchInput: crm.PipelineStagePatchInputParam{
-				Archived:     hubspotsdk.Bool(true),
-				DisplayOrder: hubspotsdk.Int(1),
-				Label:        hubspotsdk.String("Done"),
 				Metadata: map[string]string{
 					"ticketState": "CLOSED",
 				},
+				Archived:     hubspotsdk.Bool(true),
+				DisplayOrder: hubspotsdk.Int(1),
+				Label:        hubspotsdk.String("Done"),
 			},
 		},
 	)
@@ -101,7 +101,7 @@ func TestPipelineStageList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.List(
+	_, err := client.Crm.Pipelines.Stages.List(
 		context.TODO(),
 		"pipelineId",
 		crm.PipelineStageListParams{
@@ -130,7 +130,7 @@ func TestPipelineStageDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Pipelines.Stages.Delete(
+	err := client.Crm.Pipelines.Stages.Delete(
 		context.TODO(),
 		"stageId",
 		crm.PipelineStageDeleteParams{
@@ -160,7 +160,7 @@ func TestPipelineStageGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.Get(
+	_, err := client.Crm.Pipelines.Stages.Get(
 		context.TODO(),
 		"stageId",
 		crm.PipelineStageGetParams{
@@ -190,7 +190,7 @@ func TestPipelineStageGetAudit(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.GetAudit(
+	_, err := client.Crm.Pipelines.Stages.GetAudit(
 		context.TODO(),
 		"stageId",
 		crm.PipelineStageGetAuditParams{
@@ -207,7 +207,7 @@ func TestPipelineStageGetAudit(t *testing.T) {
 	}
 }
 
-func TestPipelineStageReplaceWithOptionalParams(t *testing.T) {
+func TestPipelineStageReplace(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -220,7 +220,7 @@ func TestPipelineStageReplaceWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Pipelines.Stages.Replace(
+	_, err := client.Crm.Pipelines.Stages.Replace(
 		context.TODO(),
 		"stageId",
 		crm.PipelineStageReplaceParams{

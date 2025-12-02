@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectContactNewWithOptionalParams(t *testing.T) {
+func TestObjectContactNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,11 +28,8 @@ func TestObjectContactNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Properties: map[string]string{
-				"foo": "string",
-			},
 			Associations: []crm.PublicAssociationsForObjectParam{{
 				To: shared.PublicObjectIDParam{
 					ID: "37295",
@@ -42,6 +39,9 @@ func TestObjectContactNewWithOptionalParams(t *testing.T) {
 					AssociationTypeID:   0,
 				}},
 			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
 		},
 	})
 	if err != nil {
@@ -53,7 +53,7 @@ func TestObjectContactNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestObjectContactUpdate(t *testing.T) {
+func TestObjectContactUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -66,21 +66,16 @@ func TestObjectContactUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.Update(
+	_, err := client.Crm.Objects.Contacts.Update(
 		context.TODO(),
 		"contactId",
 		crm.ObjectContactUpdateParams{
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
+			IDProperty: hubspotsdk.String("idProperty"),
 		},
 	)
 	if err != nil {
@@ -105,7 +100,7 @@ func TestObjectContactListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
+	_, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -135,7 +130,7 @@ func TestObjectContactDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Contacts.Delete(context.TODO(), "contactId")
+	err := client.Crm.Objects.Contacts.Delete(context.TODO(), "contactId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -158,7 +153,7 @@ func TestObjectContactGdprDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Contacts.GdprDelete(context.TODO(), crm.ObjectContactGdprDeleteParams{
+	err := client.Crm.Objects.Contacts.GdprDelete(context.TODO(), crm.ObjectContactGdprDeleteParams{
 		PublicGdprDeleteInput: crm.PublicGdprDeleteInputParam{
 			ObjectID:   "objectId",
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -186,12 +181,13 @@ func TestObjectContactGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.Get(
+	_, err := client.Crm.Objects.Contacts.Get(
 		context.TODO(),
 		"contactId",
 		crm.ObjectContactGetParams{
 			Archived:              hubspotsdk.Bool(true),
 			Associations:          []string{"string"},
+			IDProperty:            hubspotsdk.String("idProperty"),
 			Properties:            []string{"string"},
 			PropertiesWithHistory: []string{"string"},
 		},
@@ -218,7 +214,7 @@ func TestObjectContactMerge(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.Merge(context.TODO(), crm.ObjectContactMergeParams{
+	_, err := client.Crm.Objects.Contacts.Merge(context.TODO(), crm.ObjectContactMergeParams{
 		PublicMergeInput: crm.PublicMergeInputParam{
 			ObjectIDToMerge: "objectIdToMerge",
 			PrimaryObjectID: "primaryObjectId",
@@ -246,22 +242,22 @@ func TestObjectContactSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contacts.Search(context.TODO(), crm.ObjectContactSearchParams{
+	_, err := client.Crm.Objects.Contacts.Search(context.TODO(), crm.ObjectContactSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

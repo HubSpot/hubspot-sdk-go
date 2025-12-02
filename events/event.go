@@ -12,15 +12,15 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // EventService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -82,8 +82,7 @@ func (r *EventService) ListEventTypes(ctx context.Context, opts ...option.Reques
 
 type CollectionResponseExternalUnifiedEvent struct {
 	Results []ExternalUnifiedEvent `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging          `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -114,7 +113,7 @@ type ExternalUnifiedEvent struct {
 	OccurredAt time.Time `json:"occurredAt,required" format:"date-time"`
 	// A key-value map of event-specific properties. The available properties depend on
 	// the event type definition.
-	Properties map[string]string `json:"properties"`
+	Properties map[string]string `json:"properties,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -155,10 +154,7 @@ type EventListParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// Pagination cursor for backward navigation. Retrieves events occurring before the
-	// specified cursor position. Note: Currently only forward pagination with after is
-	// supported.
+	After  param.Opt[string] `query:"after,omitzero" json:"-"`
 	Before param.Opt[string] `query:"before,omitzero" json:"-"`
 	// The event type name. You can retrieve available event types using the
 	// [event types endpoint](#get-%2Fevents%2Fv3%2Fevents%2Fevent-types).

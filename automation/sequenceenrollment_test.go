@@ -28,6 +28,7 @@ func TestSequenceEnrollmentEnrollWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Automation.Sequences.Enrollments.Enroll(context.TODO(), automation.SequenceEnrollmentEnrollParams{
+		UserID: "userId",
 		PublicSequenceEnrollmentRequest: automation.PublicSequenceEnrollmentRequestParam{
 			ContactID:          "contactId",
 			SenderEmail:        "senderEmail",

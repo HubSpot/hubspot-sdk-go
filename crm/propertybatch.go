@@ -8,16 +8,19 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // PropertyBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -64,14 +67,14 @@ func (r *PropertyBatchService) Delete(ctx context.Context, objectType string, bo
 }
 
 // Read a provided list of properties.
-func (r *PropertyBatchService) Get(ctx context.Context, objectType string, body PropertyBatchGetParams, opts ...option.RequestOption) (res *shared.BatchResponseProperty, err error) {
+func (r *PropertyBatchService) Get(ctx context.Context, objectType string, params PropertyBatchGetParams, opts ...option.RequestOption) (res *shared.BatchResponseProperty, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return
 	}
 	path := fmt.Sprintf("crm/v3/properties/%s/batch/read", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -100,7 +103,8 @@ func (r *PropertyBatchDeleteParams) UnmarshalJSON(data []byte) error {
 }
 
 type PropertyBatchGetParams struct {
-	BatchReadInputPropertyName BatchReadInputPropertyNameParam
+	BatchReadInputPropertyName shared.BatchReadInputPropertyNameParam
+	Locale                     param.Opt[string] `query:"locale,omitzero" json:"-"`
 	paramObj
 }
 
@@ -109,4 +113,12 @@ func (r PropertyBatchGetParams) MarshalJSON() (data []byte, err error) {
 }
 func (r *PropertyBatchGetParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.BatchReadInputPropertyName)
+}
+
+// URLQuery serializes [PropertyBatchGetParams]'s query parameters as `url.Values`.
+func (r PropertyBatchGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

@@ -35,7 +35,7 @@ func TestFileUpdateWithOptionalParams(t *testing.T) {
 		"321669910225",
 		files.FileUpdateParams{
 			FileUpdateInput: files.FileUpdateInputParam{
-				Access:            files.FileUpdateInputAccessPublicIndexable,
+				Access:            files.FileUpdateInputAccessHiddenIndexable,
 				ClearExpires:      hubspotsdk.Bool(true),
 				ExpiresAt:         hubspotsdk.Time(time.Now()),
 				IsUsableInContent: hubspotsdk.Bool(true),
@@ -199,7 +199,7 @@ func TestFileGetSignedURLWithOptionalParams(t *testing.T) {
 		"321669910225",
 		files.FileGetSignedURLParams{
 			ExpirationSeconds: hubspotsdk.Int(0),
-			Size:              files.FileGetSignedURLParamsSizeThumb,
+			Size:              files.FileGetSignedURLParamsSizeIcon,
 			Upscale:           hubspotsdk.Bool(true),
 		},
 	)
@@ -227,7 +227,7 @@ func TestFileImportFromURLAsyncWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Files.Files.ImportFromURLAsync(context.TODO(), files.FileImportFromURLAsyncParams{
 		ImportFromURLInput: files.ImportFromURLInputParam{
-			Access:                      files.ImportFromURLInputAccessPublicIndexable,
+			Access:                      files.ImportFromURLInputAccessHiddenIndexable,
 			URL:                         "url",
 			DuplicateValidationScope:    files.ImportFromURLInputDuplicateValidationScopeEntirePortal,
 			DuplicateValidationStrategy: files.ImportFromURLInputDuplicateValidationStrategyNone,

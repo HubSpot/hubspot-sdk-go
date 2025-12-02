@@ -22,7 +22,7 @@ import (
 )
 
 // PipelineService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -84,7 +84,7 @@ func (r *PipelineService) List(ctx context.Context, objectType string, opts ...o
 	return
 }
 
-// Delete the pipeline identified by `{pipelineId}`.
+// Delete a pipeline identified by its unique pipelineId
 func (r *PipelineService) Delete(ctx context.Context, pipelineID string, params PipelineDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -134,9 +134,7 @@ func (r *PipelineService) GetAudit(ctx context.Context, pipelineID string, query
 	return
 }
 
-// Replace all the properties of an existing pipeline with the values provided.
-// This will overwrite any existing pipeline stages. The updated pipeline will be
-// returned in the response.
+// Replace all properties of an existing pipeline with the provided values.
 func (r *PipelineService) Replace(ctx context.Context, pipelineID string, params PipelineReplaceParams, opts ...option.RequestOption) (res *Pipeline, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.ObjectType == "" {
@@ -304,11 +302,6 @@ type PipelineStage struct {
 	// A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's
 	// label must be unique within that pipeline.
 	Label string `json:"label,required"`
-	// The date the pipeline stage was last updated.
-	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// The date the pipeline was archived. `archivedAt` will only be present if the
-	// pipeline is archived.
-	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
 	// A JSON object containing properties that are not present on all object
 	// pipelines.
 	//
@@ -320,8 +313,16 @@ type PipelineStage struct {
 	// (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or
 	// has been closed by a member of your Support team. Possible values are `OPEN` or
 	// `CLOSED`.
-	Metadata map[string]string `json:"metadata"`
-	// Any of "CRM_PERMISSIONS_ENFORCEMENT", "READ_ONLY", "INTERNAL_ONLY".
+	Metadata map[string]string `json:"metadata,required"`
+	// The date the pipeline stage was last updated.
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
+	// The date the pipeline was archived. `archivedAt` will only be present if the
+	// pipeline is archived.
+	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
+	// Defines the level of write access for the pipeline stage, with possible values
+	// being CRM_PERMISSIONS_ENFORCEMENT, READ_ONLY, or INTERNAL_ONLY.
+	//
+	// Any of "CRM_PERMISSIONS_ENFORCEMENT", "INTERNAL_ONLY", "READ_ONLY".
 	WritePermissions PipelineStageWritePermissions `json:"writePermissions"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -330,9 +331,9 @@ type PipelineStage struct {
 		CreatedAt        respjson.Field
 		DisplayOrder     respjson.Field
 		Label            respjson.Field
+		Metadata         respjson.Field
 		UpdatedAt        respjson.Field
 		ArchivedAt       respjson.Field
-		Metadata         respjson.Field
 		WritePermissions respjson.Field
 		ExtraFields      map[string]respjson.Field
 		raw              string
@@ -345,17 +346,19 @@ func (r *PipelineStage) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Defines the level of write access for the pipeline stage, with possible values
+// being CRM_PERMISSIONS_ENFORCEMENT, READ_ONLY, or INTERNAL_ONLY.
 type PipelineStageWritePermissions string
 
 const (
-	PipelineStageWritePermissionsCRMPermissionsEnforcement PipelineStageWritePermissions = "CRM_PERMISSIONS_ENFORCEMENT"
-	PipelineStageWritePermissionsReadOnly                  PipelineStageWritePermissions = "READ_ONLY"
+	PipelineStageWritePermissionsCrmPermissionsEnforcement PipelineStageWritePermissions = "CRM_PERMISSIONS_ENFORCEMENT"
 	PipelineStageWritePermissionsInternalOnly              PipelineStageWritePermissions = "INTERNAL_ONLY"
+	PipelineStageWritePermissionsReadOnly                  PipelineStageWritePermissions = "READ_ONLY"
 )
 
 // An input used to create or replace a pipeline stage's definition.
 //
-// The properties DisplayOrder, Label are required.
+// The properties DisplayOrder, Label, Metadata are required.
 type PipelineStageInputParam struct {
 	// The order for displaying this pipeline stage. If two pipeline stages have a
 	// matching `displayOrder`, they will be sorted alphabetically by label.
@@ -374,7 +377,7 @@ type PipelineStageInputParam struct {
 	// (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or
 	// has been closed by a member of your Support team. Possible values are `OPEN` or
 	// `CLOSED`.
-	Metadata map[string]string `json:"metadata,omitzero"`
+	Metadata map[string]string `json:"metadata,omitzero,required"`
 	paramObj
 }
 
@@ -387,15 +390,9 @@ func (r *PipelineStageInputParam) UnmarshalJSON(data []byte) error {
 }
 
 // An input used to update some properties on a pipeline definition.
+//
+// The property Metadata is required.
 type PipelineStagePatchInputParam struct {
-	// Whether the pipeline is archived.
-	Archived param.Opt[bool] `json:"archived,omitzero"`
-	// The order for displaying this pipeline stage. If two pipeline stages have a
-	// matching `displayOrder`, they will be sorted alphabetically by label.
-	DisplayOrder param.Opt[int64] `json:"displayOrder,omitzero"`
-	// A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's
-	// label must be unique within that pipeline.
-	Label param.Opt[string] `json:"label,omitzero"`
 	// A JSON object containing properties that are not present on all object
 	// pipelines.
 	//
@@ -407,7 +404,15 @@ type PipelineStagePatchInputParam struct {
 	// (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or
 	// has been closed by a member of your Support team. Possible values are `OPEN` or
 	// `CLOSED`.
-	Metadata map[string]string `json:"metadata,omitzero"`
+	Metadata map[string]string `json:"metadata,omitzero,required"`
+	// Whether the pipeline is archived.
+	Archived param.Opt[bool] `json:"archived,omitzero"`
+	// The order for displaying this pipeline stage. If two pipeline stages have a
+	// matching `displayOrder`, they will be sorted alphabetically by label.
+	DisplayOrder param.Opt[int64] `json:"displayOrder,omitzero"`
+	// A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's
+	// label must be unique within that pipeline.
+	Label param.Opt[string] `json:"label,omitzero"`
 	paramObj
 }
 
@@ -420,13 +425,20 @@ func (r *PipelineStagePatchInputParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicAuditInfo struct {
-	Action     string    `json:"action,required"`
-	Identifier string    `json:"identifier,required"`
-	PortalID   int64     `json:"portalId,required"`
-	FromUserID int64     `json:"fromUserId"`
-	Message    string    `json:"message"`
-	RawObject  any       `json:"rawObject"`
-	Timestamp  time.Time `json:"timestamp" format:"date-time"`
+	// The action performed that triggered the audit event.
+	Action string `json:"action,required"`
+	// A unique string identifier for the audit event.
+	Identifier string `json:"identifier,required"`
+	// The unique identifier for the HubSpot portal where the audit event occurred.
+	PortalID int64 `json:"portalId,required"`
+	// The ID of the user who initiated the audit event.
+	FromUserID int64 `json:"fromUserId"`
+	// A descriptive message related to the audit event.
+	Message string `json:"message"`
+	// An object containing the raw data associated with the audit event.
+	RawObject any `json:"rawObject"`
+	// The date and time when the audit event took place.
+	Timestamp time.Time `json:"timestamp" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Action      respjson.Field
@@ -463,9 +475,11 @@ func (r *PipelineNewParams) UnmarshalJSON(data []byte) error {
 type PipelineUpdateParams struct {
 	ObjectType string `path:"objectType,required" json:"-"`
 	// An input used to update some properties on a pipeline definition.
-	PipelinePatchInput                  PipelinePatchInputParam
+	PipelinePatchInput PipelinePatchInputParam
+	// Indicates whether to validate deal stage usages before deleting the pipeline.
 	ValidateDealStageUsagesBeforeDelete param.Opt[bool] `query:"validateDealStageUsagesBeforeDelete,omitzero" json:"-"`
-	ValidateReferencesBeforeDelete      param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
+	// Indicates whether to validate references before deleting the pipeline.
+	ValidateReferencesBeforeDelete param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
 	paramObj
 }
 
@@ -485,9 +499,11 @@ func (r PipelineUpdateParams) URLQuery() (v url.Values, err error) {
 }
 
 type PipelineDeleteParams struct {
-	ObjectType                          string          `path:"objectType,required" json:"-"`
+	ObjectType string `path:"objectType,required" json:"-"`
+	// Indicates whether to validate deal stage usages before deleting the pipeline.
 	ValidateDealStageUsagesBeforeDelete param.Opt[bool] `query:"validateDealStageUsagesBeforeDelete,omitzero" json:"-"`
-	ValidateReferencesBeforeDelete      param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
+	// Indicates whether to validate references before deleting the pipeline.
+	ValidateReferencesBeforeDelete param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
 	paramObj
 }
 
@@ -512,9 +528,11 @@ type PipelineGetAuditParams struct {
 type PipelineReplaceParams struct {
 	ObjectType string `path:"objectType,required" json:"-"`
 	// An input used to create or replace a pipeline's definition.
-	PipelineInput                       PipelineInputParam
+	PipelineInput PipelineInputParam
+	// Indicates whether to validate deal stage usages before deleting the pipeline.
 	ValidateDealStageUsagesBeforeDelete param.Opt[bool] `query:"validateDealStageUsagesBeforeDelete,omitzero" json:"-"`
-	ValidateReferencesBeforeDelete      param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
+	// Indicates whether to validate references before deleting the pipeline.
+	ValidateReferencesBeforeDelete param.Opt[bool] `query:"validateReferencesBeforeDelete,omitzero" json:"-"`
 	paramObj
 }
 

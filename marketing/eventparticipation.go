@@ -13,11 +13,12 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 )
 
 // EventParticipationService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -62,21 +63,38 @@ func (r *EventParticipationService) GetByID(ctx context.Context, marketingEventI
 }
 
 // Read Contact's participations by identifier - email or internal id.
-func (r *EventParticipationService) ListBreakdownByContact(ctx context.Context, contactIdentifier string, query EventParticipationListBreakdownByContactParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalParticipationBreakdownForwardPaging, err error) {
+func (r *EventParticipationService) ListBreakdownByContact(ctx context.Context, contactIdentifier string, query EventParticipationListBreakdownByContactParams, opts ...option.RequestOption) (res *pagination.Page[ParticipationBreakdown], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if contactIdentifier == "" {
 		err = errors.New("missing required contactIdentifier parameter")
 		return
 	}
 	path := fmt.Sprintf("marketing/v3/marketing-events/participations/contacts/%s/breakdown", contactIdentifier)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Read Contact's participations by identifier - email or internal id.
+func (r *EventParticipationService) ListBreakdownByContactAutoPaging(ctx context.Context, contactIdentifier string, query EventParticipationListBreakdownByContactParams, opts ...option.RequestOption) *pagination.PageAutoPager[ParticipationBreakdown] {
+	return pagination.NewPageAutoPager(r.ListBreakdownByContact(ctx, contactIdentifier, query, opts...))
 }
 
 // Read Marketing event's participations breakdown with optional filters by
 // externalAccountId and externalEventId pair.
-func (r *EventParticipationService) ListBreakdownByExternalAccountAndEventID(ctx context.Context, externalEventID string, params EventParticipationListBreakdownByExternalAccountAndEventIDParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalParticipationBreakdownForwardPaging, err error) {
+func (r *EventParticipationService) ListBreakdownByExternalAccountAndEventID(ctx context.Context, externalEventID string, params EventParticipationListBreakdownByExternalAccountAndEventIDParams, opts ...option.RequestOption) (res *pagination.Page[ParticipationBreakdown], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if params.ExternalAccountID == "" {
 		err = errors.New("missing required externalAccountId parameter")
 		return
@@ -86,17 +104,47 @@ func (r *EventParticipationService) ListBreakdownByExternalAccountAndEventID(ctx
 		return
 	}
 	path := fmt.Sprintf("marketing/v3/marketing-events/participations/%s/%s/breakdown", params.ExternalAccountID, externalEventID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Read Marketing event's participations breakdown with optional filters by
+// externalAccountId and externalEventId pair.
+func (r *EventParticipationService) ListBreakdownByExternalAccountAndEventIDAutoPaging(ctx context.Context, externalEventID string, params EventParticipationListBreakdownByExternalAccountAndEventIDParams, opts ...option.RequestOption) *pagination.PageAutoPager[ParticipationBreakdown] {
+	return pagination.NewPageAutoPager(r.ListBreakdownByExternalAccountAndEventID(ctx, externalEventID, params, opts...))
 }
 
 // Read Marketing event's participations breakdown with optional filters by
 // internal identifier marketingEventId.
-func (r *EventParticipationService) ListBreakdownByID(ctx context.Context, marketingEventID int64, query EventParticipationListBreakdownByIDParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalParticipationBreakdownForwardPaging, err error) {
+func (r *EventParticipationService) ListBreakdownByID(ctx context.Context, marketingEventID int64, query EventParticipationListBreakdownByIDParams, opts ...option.RequestOption) (res *pagination.Page[ParticipationBreakdown], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := fmt.Sprintf("marketing/v3/marketing-events/participations/%v/breakdown", marketingEventID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Read Marketing event's participations breakdown with optional filters by
+// internal identifier marketingEventId.
+func (r *EventParticipationService) ListBreakdownByIDAutoPaging(ctx context.Context, marketingEventID int64, query EventParticipationListBreakdownByIDParams, opts ...option.RequestOption) *pagination.PageAutoPager[ParticipationBreakdown] {
+	return pagination.NewPageAutoPager(r.ListBreakdownByID(ctx, marketingEventID, query, opts...))
 }
 
 type EventParticipationGetByExternalAccountAndEventIDParams struct {

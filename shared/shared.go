@@ -40,7 +40,7 @@ func (r *AbTestCreateRequestVNextParam) UnmarshalJSON(data []byte) error {
 type ActionResponse struct {
 	CompletedAt time.Time `json:"completedAt,required" format:"date-time"`
 	StartedAt   time.Time `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      ActionResponseStatus `json:"status,required"`
 	Links       map[string]string    `json:"links"`
 	RequestedAt time.Time            `json:"requestedAt" format:"date-time"`
@@ -65,10 +65,10 @@ func (r *ActionResponse) UnmarshalJSON(data []byte) error {
 type ActionResponseStatus string
 
 const (
-	ActionResponseStatusPending    ActionResponseStatus = "PENDING"
-	ActionResponseStatusProcessing ActionResponseStatus = "PROCESSING"
 	ActionResponseStatusCanceled   ActionResponseStatus = "CANCELED"
 	ActionResponseStatusComplete   ActionResponseStatus = "COMPLETE"
+	ActionResponseStatusPending    ActionResponseStatus = "PENDING"
+	ActionResponseStatusProcessing ActionResponseStatus = "PROCESSING"
 )
 
 // The properties FromObjectTypeID, ToObjectTypeID are required.
@@ -92,7 +92,7 @@ func (r *AssociationDefinitionEggParam) UnmarshalJSON(data []byte) error {
 type AssociationSpec struct {
 	// The category of the association, such as "HUBSPOT_DEFINED".
 	//
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory AssociationSpecAssociationCategory `json:"associationCategory,required"`
 	// The ID representing the specific type of association.
 	AssociationTypeID int64 `json:"associationTypeId,required"`
@@ -125,8 +125,8 @@ type AssociationSpecAssociationCategory string
 
 const (
 	AssociationSpecAssociationCategoryHubspotDefined    AssociationSpecAssociationCategory = "HUBSPOT_DEFINED"
-	AssociationSpecAssociationCategoryUserDefined       AssociationSpecAssociationCategory = "USER_DEFINED"
 	AssociationSpecAssociationCategoryIntegratorDefined AssociationSpecAssociationCategory = "INTEGRATOR_DEFINED"
+	AssociationSpecAssociationCategoryUserDefined       AssociationSpecAssociationCategory = "USER_DEFINED"
 )
 
 // Defines the type, direction, and details of the relationship between two CRM
@@ -136,7 +136,7 @@ const (
 type AssociationSpecParam struct {
 	// The category of the association, such as "HUBSPOT_DEFINED".
 	//
-	// Any of "HUBSPOT_DEFINED", "USER_DEFINED", "INTEGRATOR_DEFINED".
+	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED".
 	AssociationCategory AssociationSpecAssociationCategory `json:"associationCategory,omitzero,required"`
 	// The ID representing the specific type of association.
 	AssociationTypeID int64 `json:"associationTypeId,required"`
@@ -210,11 +210,36 @@ func (r *BatchInputStringParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The properties Archived, DataSensitivity, Inputs are required.
+type BatchReadInputPropertyNameParam struct {
+	Archived bool `json:"archived,required"`
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
+	DataSensitivity BatchReadInputPropertyNameDataSensitivity `json:"dataSensitivity,omitzero,required"`
+	Inputs          []PropertyNameParam                       `json:"inputs,omitzero,required"`
+	paramObj
+}
+
+func (r BatchReadInputPropertyNameParam) MarshalJSON() (data []byte, err error) {
+	type shadow BatchReadInputPropertyNameParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *BatchReadInputPropertyNameParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type BatchReadInputPropertyNameDataSensitivity string
+
+const (
+	BatchReadInputPropertyNameDataSensitivityHighlySensitive BatchReadInputPropertyNameDataSensitivity = "highly_sensitive"
+	BatchReadInputPropertyNameDataSensitivityNonSensitive    BatchReadInputPropertyNameDataSensitivity = "non_sensitive"
+	BatchReadInputPropertyNameDataSensitivitySensitive       BatchReadInputPropertyNameDataSensitivity = "sensitive"
+)
+
 type BatchResponseProperty struct {
 	CompletedAt time.Time  `json:"completedAt,required" format:"date-time"`
 	Results     []Property `json:"results,required"`
 	StartedAt   time.Time  `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponsePropertyStatus `json:"status,required"`
 	Links       map[string]string           `json:"links"`
 	RequestedAt time.Time                   `json:"requestedAt" format:"date-time"`
@@ -240,10 +265,10 @@ func (r *BatchResponseProperty) UnmarshalJSON(data []byte) error {
 type BatchResponsePropertyStatus string
 
 const (
-	BatchResponsePropertyStatusPending    BatchResponsePropertyStatus = "PENDING"
-	BatchResponsePropertyStatusProcessing BatchResponsePropertyStatus = "PROCESSING"
 	BatchResponsePropertyStatusCanceled   BatchResponsePropertyStatus = "CANCELED"
 	BatchResponsePropertyStatusComplete   BatchResponsePropertyStatus = "COMPLETE"
+	BatchResponsePropertyStatusPending    BatchResponsePropertyStatus = "PENDING"
+	BatchResponsePropertyStatusProcessing BatchResponsePropertyStatus = "PROCESSING"
 )
 
 type CollectionResponseObjectSchemaNoPaging struct {
@@ -414,30 +439,27 @@ func (r *ObjectTypeDefinitionLabelsParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// A HubSpot property option
+// The options available when a property is an enumeration
 type Option struct {
-	// A description of the option.
-	Description string `json:"description,required"`
-	// The position of the item relative to others in the list.
-	DisplayOrder int64   `json:"displayOrder,required"`
-	DoubleData   float64 `json:"doubleData,required"`
-	// Whether the option is displayed in HubSpot's UI.
+	// Hidden options will not be displayed in HubSpot.
 	Hidden bool `json:"hidden,required"`
-	// A user-friendly label that identifies the option.
+	// A human-readable option label that will be shown in HubSpot.
 	Label string `json:"label,required"`
-	// Whether the option is read-only.
-	ReadOnly bool `json:"readOnly,required"`
-	// The actual value of the option.
+	// The internal value of the option, which must be used when setting the property
+	// value through the API.
 	Value string `json:"value,required"`
+	// A description of the option.
+	Description string `json:"description"`
+	// Options are displayed in order starting with the lowest positive integer value.
+	// Values of -1 will cause the option to be displayed after any positive values.
+	DisplayOrder int64 `json:"displayOrder"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Description  respjson.Field
-		DisplayOrder respjson.Field
-		DoubleData   respjson.Field
 		Hidden       respjson.Field
 		Label        respjson.Field
-		ReadOnly     respjson.Field
 		Value        respjson.Field
+		Description  respjson.Field
+		DisplayOrder respjson.Field
 		ExtraFields  map[string]respjson.Field
 		raw          string
 	} `json:"-"`
@@ -458,24 +480,22 @@ func (r Option) ToParam() OptionParam {
 	return param.Override[OptionParam](json.RawMessage(r.RawJSON()))
 }
 
-// A HubSpot property option
+// The options available when a property is an enumeration
 //
-// The properties Description, DisplayOrder, DoubleData, Hidden, Label, ReadOnly,
-// Value are required.
+// The properties Hidden, Label, Value are required.
 type OptionParam struct {
-	// A description of the option.
-	Description string `json:"description,required"`
-	// The position of the item relative to others in the list.
-	DisplayOrder int64   `json:"displayOrder,required"`
-	DoubleData   float64 `json:"doubleData,required"`
-	// Whether the option is displayed in HubSpot's UI.
+	// Hidden options will not be displayed in HubSpot.
 	Hidden bool `json:"hidden,required"`
-	// A user-friendly label that identifies the option.
+	// A human-readable option label that will be shown in HubSpot.
 	Label string `json:"label,required"`
-	// Whether the option is read-only.
-	ReadOnly bool `json:"readOnly,required"`
-	// The actual value of the option.
+	// The internal value of the option, which must be used when setting the property
+	// value through the API.
 	Value string `json:"value,required"`
+	// A description of the option.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// Options are displayed in order starting with the lowest positive integer value.
+	// Values of -1 will cause the option to be displayed after any positive values.
+	DisplayOrder param.Opt[int64] `json:"displayOrder,omitzero"`
 	paramObj
 }
 
@@ -502,6 +522,28 @@ func (r OptionInputParam) MarshalJSON() (data []byte, err error) {
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *OptionInputParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type Paging struct {
+	// Specifies the paging information needed to retrieve the next set of results in a
+	// paginated API response
+	Next NextPage `json:"next"`
+	// specifies the paging information needed to retrieve the previous set of results
+	// in a paginated API response
+	Prev PreviousPage `json:"prev"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Next        respjson.Field
+		Prev        respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r Paging) RawJSON() string { return r.JSON.raw }
+func (r *Paging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -562,7 +604,7 @@ type Property struct {
 	// Indicates the sensitivity level of the property, such as "non_sensitive",
 	// "sensitive", or "highly_sensitive".
 	//
-	// Any of "non_sensitive", "sensitive", "highly_sensitive".
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
 	DataSensitivity PropertyDataSensitivity `json:"dataSensitivity"`
 	// The order that this property should be displayed in the HubSpot UI relative to
 	// other properties for this object type. Properties are displayed in order
@@ -640,9 +682,9 @@ func (r *Property) UnmarshalJSON(data []byte) error {
 type PropertyDataSensitivity string
 
 const (
+	PropertyDataSensitivityHighlySensitive PropertyDataSensitivity = "highly_sensitive"
 	PropertyDataSensitivityNonSensitive    PropertyDataSensitivity = "non_sensitive"
 	PropertyDataSensitivitySensitive       PropertyDataSensitivity = "sensitive"
-	PropertyDataSensitivityHighlySensitive PropertyDataSensitivity = "highly_sensitive"
 )
 
 // The properties FieldType, GroupName, Label, Name, Type are required.
@@ -664,7 +706,7 @@ type PropertyCreateParam struct {
 	HasUniqueValue       param.Opt[bool]    `json:"hasUniqueValue,omitzero"`
 	Hidden               param.Opt[bool]    `json:"hidden,omitzero"`
 	ReferencedObjectType param.Opt[string]  `json:"referencedObjectType,omitzero"`
-	// Any of "non_sensitive", "sensitive", "highly_sensitive".
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
 	DataSensitivity PropertyCreateDataSensitivity `json:"dataSensitivity,omitzero"`
 	Options         []OptionInputParam            `json:"options,omitzero"`
 	paramObj
@@ -710,9 +752,9 @@ const (
 type PropertyCreateDataSensitivity string
 
 const (
+	PropertyCreateDataSensitivityHighlySensitive PropertyCreateDataSensitivity = "highly_sensitive"
 	PropertyCreateDataSensitivityNonSensitive    PropertyCreateDataSensitivity = "non_sensitive"
 	PropertyCreateDataSensitivitySensitive       PropertyCreateDataSensitivity = "sensitive"
-	PropertyCreateDataSensitivityHighlySensitive PropertyCreateDataSensitivity = "highly_sensitive"
 )
 
 // The properties Label, Name are required.
@@ -7935,8 +7977,8 @@ type PublicCalendarDatePropertyOperation struct {
 	OperationType PublicCalendarDatePropertyOperationOperationType `json:"operationType,required"`
 	Operator      string                                           `json:"operator,required"`
 	TimeUnit      string                                           `json:"timeUnit,required"`
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	FiscalYearStart PublicCalendarDatePropertyOperationFiscalYearStart `json:"fiscalYearStart"`
 	TimeUnitCount   int64                                              `json:"timeUnitCount"`
 	UseFiscalYear   bool                                               `json:"useFiscalYear"`
@@ -7979,18 +8021,18 @@ const (
 type PublicCalendarDatePropertyOperationFiscalYearStart string
 
 const (
-	PublicCalendarDatePropertyOperationFiscalYearStartJanuary   PublicCalendarDatePropertyOperationFiscalYearStart = "JANUARY"
-	PublicCalendarDatePropertyOperationFiscalYearStartFebruary  PublicCalendarDatePropertyOperationFiscalYearStart = "FEBRUARY"
-	PublicCalendarDatePropertyOperationFiscalYearStartMarch     PublicCalendarDatePropertyOperationFiscalYearStart = "MARCH"
 	PublicCalendarDatePropertyOperationFiscalYearStartApril     PublicCalendarDatePropertyOperationFiscalYearStart = "APRIL"
-	PublicCalendarDatePropertyOperationFiscalYearStartMay       PublicCalendarDatePropertyOperationFiscalYearStart = "MAY"
-	PublicCalendarDatePropertyOperationFiscalYearStartJune      PublicCalendarDatePropertyOperationFiscalYearStart = "JUNE"
-	PublicCalendarDatePropertyOperationFiscalYearStartJuly      PublicCalendarDatePropertyOperationFiscalYearStart = "JULY"
 	PublicCalendarDatePropertyOperationFiscalYearStartAugust    PublicCalendarDatePropertyOperationFiscalYearStart = "AUGUST"
-	PublicCalendarDatePropertyOperationFiscalYearStartSeptember PublicCalendarDatePropertyOperationFiscalYearStart = "SEPTEMBER"
-	PublicCalendarDatePropertyOperationFiscalYearStartOctober   PublicCalendarDatePropertyOperationFiscalYearStart = "OCTOBER"
-	PublicCalendarDatePropertyOperationFiscalYearStartNovember  PublicCalendarDatePropertyOperationFiscalYearStart = "NOVEMBER"
 	PublicCalendarDatePropertyOperationFiscalYearStartDecember  PublicCalendarDatePropertyOperationFiscalYearStart = "DECEMBER"
+	PublicCalendarDatePropertyOperationFiscalYearStartFebruary  PublicCalendarDatePropertyOperationFiscalYearStart = "FEBRUARY"
+	PublicCalendarDatePropertyOperationFiscalYearStartJanuary   PublicCalendarDatePropertyOperationFiscalYearStart = "JANUARY"
+	PublicCalendarDatePropertyOperationFiscalYearStartJuly      PublicCalendarDatePropertyOperationFiscalYearStart = "JULY"
+	PublicCalendarDatePropertyOperationFiscalYearStartJune      PublicCalendarDatePropertyOperationFiscalYearStart = "JUNE"
+	PublicCalendarDatePropertyOperationFiscalYearStartMarch     PublicCalendarDatePropertyOperationFiscalYearStart = "MARCH"
+	PublicCalendarDatePropertyOperationFiscalYearStartMay       PublicCalendarDatePropertyOperationFiscalYearStart = "MAY"
+	PublicCalendarDatePropertyOperationFiscalYearStartNovember  PublicCalendarDatePropertyOperationFiscalYearStart = "NOVEMBER"
+	PublicCalendarDatePropertyOperationFiscalYearStartOctober   PublicCalendarDatePropertyOperationFiscalYearStart = "OCTOBER"
+	PublicCalendarDatePropertyOperationFiscalYearStartSeptember PublicCalendarDatePropertyOperationFiscalYearStart = "SEPTEMBER"
 )
 
 // The properties IncludeObjectsWithNoValueSet, OperationType, Operator, TimeUnit
@@ -8003,8 +8045,8 @@ type PublicCalendarDatePropertyOperationParam struct {
 	TimeUnit      string                                           `json:"timeUnit,required"`
 	TimeUnitCount param.Opt[int64]                                 `json:"timeUnitCount,omitzero"`
 	UseFiscalYear param.Opt[bool]                                  `json:"useFiscalYear,omitzero"`
-	// Any of "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST",
-	// "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER".
+	// Any of "APRIL", "AUGUST", "DECEMBER", "FEBRUARY", "JANUARY", "JULY", "JUNE",
+	// "MARCH", "MAY", "NOVEMBER", "OCTOBER", "SEPTEMBER".
 	FiscalYearStart PublicCalendarDatePropertyOperationFiscalYearStart `json:"fiscalYearStart,omitzero"`
 	paramObj
 }
@@ -9340,10 +9382,10 @@ type PublicEmailEventFilter struct {
 	// Any of "EMAIL_EVENT".
 	FilterType PublicEmailEventFilterFilterType `json:"filterType,required"`
 	Level      string                           `json:"level,required"`
-	// Any of "LINK_CLICKED", "MARKED_SPAM", "OPENED", "OPENED_BUT_LINK_NOT_CLICKED",
-	// "OPENED_BUT_NOT_REPLIED", "REPLIED", "UNSUBSCRIBED", "BOUNCED", "RECEIVED",
-	// "RECEIVED_BUT_NOT_OPENED", "SENT", "SENT_BUT_LINK_NOT_CLICKED",
-	// "SENT_BUT_NOT_RECEIVED".
+	// Any of "BOUNCED", "LINK_CLICKED", "MARKED_SPAM", "OPENED",
+	// "OPENED_BUT_LINK_NOT_CLICKED", "OPENED_BUT_NOT_REPLIED", "RECEIVED",
+	// "RECEIVED_BUT_NOT_OPENED", "REPLIED", "SENT", "SENT_BUT_LINK_NOT_CLICKED",
+	// "SENT_BUT_NOT_RECEIVED", "UNSUBSCRIBED".
 	Operator        PublicEmailEventFilterOperator             `json:"operator,required"`
 	ClickURL        string                                     `json:"clickUrl"`
 	PruningRefineBy PublicEmailEventFilterPruningRefineByUnion `json:"pruningRefineBy"`
@@ -9385,19 +9427,19 @@ const (
 type PublicEmailEventFilterOperator string
 
 const (
+	PublicEmailEventFilterOperatorBounced                 PublicEmailEventFilterOperator = "BOUNCED"
 	PublicEmailEventFilterOperatorLinkClicked             PublicEmailEventFilterOperator = "LINK_CLICKED"
 	PublicEmailEventFilterOperatorMarkedSpam              PublicEmailEventFilterOperator = "MARKED_SPAM"
 	PublicEmailEventFilterOperatorOpened                  PublicEmailEventFilterOperator = "OPENED"
 	PublicEmailEventFilterOperatorOpenedButLinkNotClicked PublicEmailEventFilterOperator = "OPENED_BUT_LINK_NOT_CLICKED"
 	PublicEmailEventFilterOperatorOpenedButNotReplied     PublicEmailEventFilterOperator = "OPENED_BUT_NOT_REPLIED"
-	PublicEmailEventFilterOperatorReplied                 PublicEmailEventFilterOperator = "REPLIED"
-	PublicEmailEventFilterOperatorUnsubscribed            PublicEmailEventFilterOperator = "UNSUBSCRIBED"
-	PublicEmailEventFilterOperatorBounced                 PublicEmailEventFilterOperator = "BOUNCED"
 	PublicEmailEventFilterOperatorReceived                PublicEmailEventFilterOperator = "RECEIVED"
 	PublicEmailEventFilterOperatorReceivedButNotOpened    PublicEmailEventFilterOperator = "RECEIVED_BUT_NOT_OPENED"
+	PublicEmailEventFilterOperatorReplied                 PublicEmailEventFilterOperator = "REPLIED"
 	PublicEmailEventFilterOperatorSent                    PublicEmailEventFilterOperator = "SENT"
 	PublicEmailEventFilterOperatorSentButLinkNotClicked   PublicEmailEventFilterOperator = "SENT_BUT_LINK_NOT_CLICKED"
 	PublicEmailEventFilterOperatorSentButNotReceived      PublicEmailEventFilterOperator = "SENT_BUT_NOT_RECEIVED"
+	PublicEmailEventFilterOperatorUnsubscribed            PublicEmailEventFilterOperator = "UNSUBSCRIBED"
 )
 
 // PublicEmailEventFilterPruningRefineByUnion contains all possible properties and
@@ -9533,10 +9575,10 @@ type PublicEmailEventFilterParam struct {
 	// Any of "EMAIL_EVENT".
 	FilterType PublicEmailEventFilterFilterType `json:"filterType,omitzero,required"`
 	Level      string                           `json:"level,required"`
-	// Any of "LINK_CLICKED", "MARKED_SPAM", "OPENED", "OPENED_BUT_LINK_NOT_CLICKED",
-	// "OPENED_BUT_NOT_REPLIED", "REPLIED", "UNSUBSCRIBED", "BOUNCED", "RECEIVED",
-	// "RECEIVED_BUT_NOT_OPENED", "SENT", "SENT_BUT_LINK_NOT_CLICKED",
-	// "SENT_BUT_NOT_RECEIVED".
+	// Any of "BOUNCED", "LINK_CLICKED", "MARKED_SPAM", "OPENED",
+	// "OPENED_BUT_LINK_NOT_CLICKED", "OPENED_BUT_NOT_REPLIED", "RECEIVED",
+	// "RECEIVED_BUT_NOT_OPENED", "REPLIED", "SENT", "SENT_BUT_LINK_NOT_CLICKED",
+	// "SENT_BUT_NOT_RECEIVED", "UNSUBSCRIBED".
 	Operator        PublicEmailEventFilterOperator                  `json:"operator,omitzero,required"`
 	ClickURL        param.Opt[string]                               `json:"clickUrl,omitzero"`
 	PruningRefineBy PublicEmailEventFilterPruningRefineByUnionParam `json:"pruningRefineBy,omitzero"`
@@ -13252,6 +13294,167 @@ func (u PublicFormSubmissionOnPageFilterPruningRefineByUnionParam) GetPropertyPa
 	return nil
 }
 
+type PublicInListFilter struct {
+	// Any of "IN_LIST".
+	FilterType PublicInListFilterFilterType `json:"filterType,required"`
+	ListID     string                       `json:"listId,required"`
+	Operator   string                       `json:"operator,required"`
+	Metadata   PublicInListFilterMetadata   `json:"metadata"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		FilterType  respjson.Field
+		ListID      respjson.Field
+		Operator    respjson.Field
+		Metadata    respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicInListFilter) RawJSON() string { return r.JSON.raw }
+func (r *PublicInListFilter) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this PublicInListFilter to a PublicInListFilterParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// PublicInListFilterParam.Overrides()
+func (r PublicInListFilter) ToParam() PublicInListFilterParam {
+	return param.Override[PublicInListFilterParam](json.RawMessage(r.RawJSON()))
+}
+
+type PublicInListFilterFilterType string
+
+const (
+	PublicInListFilterFilterTypeInList PublicInListFilterFilterType = "IN_LIST"
+)
+
+// The properties FilterType, ListID, Operator are required.
+type PublicInListFilterParam struct {
+	// Any of "IN_LIST".
+	FilterType PublicInListFilterFilterType    `json:"filterType,omitzero,required"`
+	ListID     string                          `json:"listId,required"`
+	Operator   string                          `json:"operator,required"`
+	Metadata   PublicInListFilterMetadataParam `json:"metadata,omitzero"`
+	paramObj
+}
+
+func (r PublicInListFilterParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicInListFilterParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicInListFilterParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PublicInListFilterMetadata struct {
+	ID         string `json:"id,required"`
+	InListType string `json:"inListType,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		InListType  respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicInListFilterMetadata) RawJSON() string { return r.JSON.raw }
+func (r *PublicInListFilterMetadata) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this PublicInListFilterMetadata to a
+// PublicInListFilterMetadataParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// PublicInListFilterMetadataParam.Overrides()
+func (r PublicInListFilterMetadata) ToParam() PublicInListFilterMetadataParam {
+	return param.Override[PublicInListFilterMetadataParam](json.RawMessage(r.RawJSON()))
+}
+
+// The properties ID, InListType are required.
+type PublicInListFilterMetadataParam struct {
+	ID         string `json:"id,required"`
+	InListType string `json:"inListType,required"`
+	paramObj
+}
+
+func (r PublicInListFilterMetadataParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicInListFilterMetadataParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicInListFilterMetadataParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PublicIndexOffset struct {
+	Days         int64 `json:"days"`
+	Hours        int64 `json:"hours"`
+	Milliseconds int64 `json:"milliseconds"`
+	Minutes      int64 `json:"minutes"`
+	Months       int64 `json:"months"`
+	Quarters     int64 `json:"quarters"`
+	Seconds      int64 `json:"seconds"`
+	Weeks        int64 `json:"weeks"`
+	Years        int64 `json:"years"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Days         respjson.Field
+		Hours        respjson.Field
+		Milliseconds respjson.Field
+		Minutes      respjson.Field
+		Months       respjson.Field
+		Quarters     respjson.Field
+		Seconds      respjson.Field
+		Weeks        respjson.Field
+		Years        respjson.Field
+		ExtraFields  map[string]respjson.Field
+		raw          string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicIndexOffset) RawJSON() string { return r.JSON.raw }
+func (r *PublicIndexOffset) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this PublicIndexOffset to a PublicIndexOffsetParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// PublicIndexOffsetParam.Overrides()
+func (r PublicIndexOffset) ToParam() PublicIndexOffsetParam {
+	return param.Override[PublicIndexOffsetParam](json.RawMessage(r.RawJSON()))
+}
+
+type PublicIndexOffsetParam struct {
+	Days         param.Opt[int64] `json:"days,omitzero"`
+	Hours        param.Opt[int64] `json:"hours,omitzero"`
+	Milliseconds param.Opt[int64] `json:"milliseconds,omitzero"`
+	Minutes      param.Opt[int64] `json:"minutes,omitzero"`
+	Months       param.Opt[int64] `json:"months,omitzero"`
+	Quarters     param.Opt[int64] `json:"quarters,omitzero"`
+	Seconds      param.Opt[int64] `json:"seconds,omitzero"`
+	Weeks        param.Opt[int64] `json:"weeks,omitzero"`
+	Years        param.Opt[int64] `json:"years,omitzero"`
+	paramObj
+}
+
+func (r PublicIndexOffsetParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicIndexOffsetParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicIndexOffsetParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type PublicIndexedTimePoint struct {
 	IndexReference PublicIndexedTimePointIndexReferenceUnion `json:"indexReference,required"`
 	// Any of "INDEXED".
@@ -13583,167 +13786,6 @@ func (u PublicIndexedTimePointIndexReferenceUnionParam) GetMonth() *int64 {
 		return (*int64)(&vt.Month)
 	}
 	return nil
-}
-
-type PublicIndexOffset struct {
-	Days         int64 `json:"days"`
-	Hours        int64 `json:"hours"`
-	Milliseconds int64 `json:"milliseconds"`
-	Minutes      int64 `json:"minutes"`
-	Months       int64 `json:"months"`
-	Quarters     int64 `json:"quarters"`
-	Seconds      int64 `json:"seconds"`
-	Weeks        int64 `json:"weeks"`
-	Years        int64 `json:"years"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Days         respjson.Field
-		Hours        respjson.Field
-		Milliseconds respjson.Field
-		Minutes      respjson.Field
-		Months       respjson.Field
-		Quarters     respjson.Field
-		Seconds      respjson.Field
-		Weeks        respjson.Field
-		Years        respjson.Field
-		ExtraFields  map[string]respjson.Field
-		raw          string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicIndexOffset) RawJSON() string { return r.JSON.raw }
-func (r *PublicIndexOffset) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicIndexOffset to a PublicIndexOffsetParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicIndexOffsetParam.Overrides()
-func (r PublicIndexOffset) ToParam() PublicIndexOffsetParam {
-	return param.Override[PublicIndexOffsetParam](json.RawMessage(r.RawJSON()))
-}
-
-type PublicIndexOffsetParam struct {
-	Days         param.Opt[int64] `json:"days,omitzero"`
-	Hours        param.Opt[int64] `json:"hours,omitzero"`
-	Milliseconds param.Opt[int64] `json:"milliseconds,omitzero"`
-	Minutes      param.Opt[int64] `json:"minutes,omitzero"`
-	Months       param.Opt[int64] `json:"months,omitzero"`
-	Quarters     param.Opt[int64] `json:"quarters,omitzero"`
-	Seconds      param.Opt[int64] `json:"seconds,omitzero"`
-	Weeks        param.Opt[int64] `json:"weeks,omitzero"`
-	Years        param.Opt[int64] `json:"years,omitzero"`
-	paramObj
-}
-
-func (r PublicIndexOffsetParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicIndexOffsetParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicIndexOffsetParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicInListFilter struct {
-	// Any of "IN_LIST".
-	FilterType PublicInListFilterFilterType `json:"filterType,required"`
-	ListID     string                       `json:"listId,required"`
-	Operator   string                       `json:"operator,required"`
-	Metadata   PublicInListFilterMetadata   `json:"metadata"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FilterType  respjson.Field
-		ListID      respjson.Field
-		Operator    respjson.Field
-		Metadata    respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicInListFilter) RawJSON() string { return r.JSON.raw }
-func (r *PublicInListFilter) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicInListFilter to a PublicInListFilterParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicInListFilterParam.Overrides()
-func (r PublicInListFilter) ToParam() PublicInListFilterParam {
-	return param.Override[PublicInListFilterParam](json.RawMessage(r.RawJSON()))
-}
-
-type PublicInListFilterFilterType string
-
-const (
-	PublicInListFilterFilterTypeInList PublicInListFilterFilterType = "IN_LIST"
-)
-
-// The properties FilterType, ListID, Operator are required.
-type PublicInListFilterParam struct {
-	// Any of "IN_LIST".
-	FilterType PublicInListFilterFilterType    `json:"filterType,omitzero,required"`
-	ListID     string                          `json:"listId,required"`
-	Operator   string                          `json:"operator,required"`
-	Metadata   PublicInListFilterMetadataParam `json:"metadata,omitzero"`
-	paramObj
-}
-
-func (r PublicInListFilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicInListFilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicInListFilterParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicInListFilterMetadata struct {
-	ID         string `json:"id,required"`
-	InListType string `json:"inListType,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		InListType  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicInListFilterMetadata) RawJSON() string { return r.JSON.raw }
-func (r *PublicInListFilterMetadata) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicInListFilterMetadata to a
-// PublicInListFilterMetadataParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicInListFilterMetadataParam.Overrides()
-func (r PublicInListFilterMetadata) ToParam() PublicInListFilterMetadataParam {
-	return param.Override[PublicInListFilterMetadataParam](json.RawMessage(r.RawJSON()))
-}
-
-// The properties ID, InListType are required.
-type PublicInListFilterMetadataParam struct {
-	ID         string `json:"id,required"`
-	InListType string `json:"inListType,required"`
-	paramObj
-}
-
-func (r PublicInListFilterMetadataParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicInListFilterMetadataParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicInListFilterMetadataParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 type PublicIntegrationEventFilter struct {
@@ -20335,6 +20377,60 @@ func (u PublicNumAssociationsFilterCoalescingRefineByUnionParam) GetPropertyPars
 	return nil
 }
 
+type PublicNumOccurrencesRefineBy struct {
+	// Any of "NUM_OCCURRENCES".
+	Type           PublicNumOccurrencesRefineByType `json:"type,required"`
+	MaxOccurrences int64                            `json:"maxOccurrences"`
+	MinOccurrences int64                            `json:"minOccurrences"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Type           respjson.Field
+		MaxOccurrences respjson.Field
+		MinOccurrences respjson.Field
+		ExtraFields    map[string]respjson.Field
+		raw            string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicNumOccurrencesRefineBy) RawJSON() string { return r.JSON.raw }
+func (r *PublicNumOccurrencesRefineBy) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this PublicNumOccurrencesRefineBy to a
+// PublicNumOccurrencesRefineByParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// PublicNumOccurrencesRefineByParam.Overrides()
+func (r PublicNumOccurrencesRefineBy) ToParam() PublicNumOccurrencesRefineByParam {
+	return param.Override[PublicNumOccurrencesRefineByParam](json.RawMessage(r.RawJSON()))
+}
+
+type PublicNumOccurrencesRefineByType string
+
+const (
+	PublicNumOccurrencesRefineByTypeNumOccurrences PublicNumOccurrencesRefineByType = "NUM_OCCURRENCES"
+)
+
+// The property Type is required.
+type PublicNumOccurrencesRefineByParam struct {
+	// Any of "NUM_OCCURRENCES".
+	Type           PublicNumOccurrencesRefineByType `json:"type,omitzero,required"`
+	MaxOccurrences param.Opt[int64]                 `json:"maxOccurrences,omitzero"`
+	MinOccurrences param.Opt[int64]                 `json:"minOccurrences,omitzero"`
+	paramObj
+}
+
+func (r PublicNumOccurrencesRefineByParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicNumOccurrencesRefineByParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicNumOccurrencesRefineByParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type PublicNumberPropertyOperation struct {
 	IncludeObjectsWithNoValueSet bool `json:"includeObjectsWithNoValueSet,required"`
 	// Any of "NUMBER".
@@ -20390,60 +20486,6 @@ func (r PublicNumberPropertyOperationParam) MarshalJSON() (data []byte, err erro
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *PublicNumberPropertyOperationParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicNumOccurrencesRefineBy struct {
-	// Any of "NUM_OCCURRENCES".
-	Type           PublicNumOccurrencesRefineByType `json:"type,required"`
-	MaxOccurrences int64                            `json:"maxOccurrences"`
-	MinOccurrences int64                            `json:"minOccurrences"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Type           respjson.Field
-		MaxOccurrences respjson.Field
-		MinOccurrences respjson.Field
-		ExtraFields    map[string]respjson.Field
-		raw            string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicNumOccurrencesRefineBy) RawJSON() string { return r.JSON.raw }
-func (r *PublicNumOccurrencesRefineBy) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicNumOccurrencesRefineBy to a
-// PublicNumOccurrencesRefineByParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicNumOccurrencesRefineByParam.Overrides()
-func (r PublicNumOccurrencesRefineBy) ToParam() PublicNumOccurrencesRefineByParam {
-	return param.Override[PublicNumOccurrencesRefineByParam](json.RawMessage(r.RawJSON()))
-}
-
-type PublicNumOccurrencesRefineByType string
-
-const (
-	PublicNumOccurrencesRefineByTypeNumOccurrences PublicNumOccurrencesRefineByType = "NUM_OCCURRENCES"
-)
-
-// The property Type is required.
-type PublicNumOccurrencesRefineByParam struct {
-	// Any of "NUM_OCCURRENCES".
-	Type           PublicNumOccurrencesRefineByType `json:"type,omitzero,required"`
-	MaxOccurrences param.Opt[int64]                 `json:"maxOccurrences,omitzero"`
-	MinOccurrences param.Opt[int64]                 `json:"minOccurrences,omitzero"`
-	paramObj
-}
-
-func (r PublicNumOccurrencesRefineByParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicNumOccurrencesRefineByParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicNumOccurrencesRefineByParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -37924,8 +37966,8 @@ func (r *PublicWebinarFilterParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicWeekReference struct {
-	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-	// "SUNDAY".
+	// Any of "FRIDAY", "MONDAY", "SATURDAY", "SUNDAY", "THURSDAY", "TUESDAY",
+	// "WEDNESDAY".
 	DayOfWeek PublicWeekReferenceDayOfWeek `json:"dayOfWeek,required"`
 	// Any of "WEEK".
 	ReferenceType PublicWeekReferenceReferenceType `json:"referenceType,required"`
@@ -37964,13 +38006,13 @@ func (r PublicWeekReference) ToParam() PublicWeekReferenceParam {
 type PublicWeekReferenceDayOfWeek string
 
 const (
-	PublicWeekReferenceDayOfWeekMonday    PublicWeekReferenceDayOfWeek = "MONDAY"
-	PublicWeekReferenceDayOfWeekTuesday   PublicWeekReferenceDayOfWeek = "TUESDAY"
-	PublicWeekReferenceDayOfWeekWednesday PublicWeekReferenceDayOfWeek = "WEDNESDAY"
-	PublicWeekReferenceDayOfWeekThursday  PublicWeekReferenceDayOfWeek = "THURSDAY"
 	PublicWeekReferenceDayOfWeekFriday    PublicWeekReferenceDayOfWeek = "FRIDAY"
+	PublicWeekReferenceDayOfWeekMonday    PublicWeekReferenceDayOfWeek = "MONDAY"
 	PublicWeekReferenceDayOfWeekSaturday  PublicWeekReferenceDayOfWeek = "SATURDAY"
 	PublicWeekReferenceDayOfWeekSunday    PublicWeekReferenceDayOfWeek = "SUNDAY"
+	PublicWeekReferenceDayOfWeekThursday  PublicWeekReferenceDayOfWeek = "THURSDAY"
+	PublicWeekReferenceDayOfWeekTuesday   PublicWeekReferenceDayOfWeek = "TUESDAY"
+	PublicWeekReferenceDayOfWeekWednesday PublicWeekReferenceDayOfWeek = "WEDNESDAY"
 )
 
 type PublicWeekReferenceReferenceType string
@@ -37981,8 +38023,8 @@ const (
 
 // The properties DayOfWeek, ReferenceType are required.
 type PublicWeekReferenceParam struct {
-	// Any of "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY",
-	// "SUNDAY".
+	// Any of "FRIDAY", "MONDAY", "SATURDAY", "SUNDAY", "THURSDAY", "TUESDAY",
+	// "WEDNESDAY".
 	DayOfWeek PublicWeekReferenceDayOfWeek `json:"dayOfWeek,omitzero,required"`
 	// Any of "WEEK".
 	ReferenceType PublicWeekReferenceReferenceType `json:"referenceType,omitzero,required"`

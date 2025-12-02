@@ -38,7 +38,7 @@ func TestEventAttendanceNewByEventIDAndContactID(t *testing.T) {
 					Properties: map[string]string{
 						"foo": "string",
 					},
-					Vid: hubspotsdk.Int(0),
+					Vid: 0,
 				}},
 			},
 		},
@@ -72,11 +72,11 @@ func TestEventAttendanceNewByEventIDAndEmail(t *testing.T) {
 			ObjectID: "objectId",
 			BatchInputMarketingEventEmailSubscriber: marketing.BatchInputMarketingEventEmailSubscriberParam{
 				Inputs: []marketing.MarketingEventEmailSubscriberParam{{
-					Email:               "email",
-					InteractionDateTime: 0,
 					ContactProperties: map[string]string{
 						"foo": "string",
 					},
+					Email:               "email",
+					InteractionDateTime: 0,
 					Properties: map[string]string{
 						"foo": "string",
 					},
@@ -117,7 +117,7 @@ func TestEventAttendanceNewByExternalEventIDAndContactIDWithOptionalParams(t *te
 					Properties: map[string]string{
 						"foo": "string",
 					},
-					Vid: hubspotsdk.Int(0),
+					Vid: 0,
 				}},
 			},
 			ExternalAccountID: hubspotsdk.String("externalAccountId"),
@@ -152,11 +152,11 @@ func TestEventAttendanceNewByExternalEventIDAndEmailWithOptionalParams(t *testin
 			ExternalEventID: "externalEventId",
 			BatchInputMarketingEventEmailSubscriber: marketing.BatchInputMarketingEventEmailSubscriberParam{
 				Inputs: []marketing.MarketingEventEmailSubscriberParam{{
-					Email:               "email",
-					InteractionDateTime: 0,
 					ContactProperties: map[string]string{
 						"foo": "string",
 					},
+					Email:               "email",
+					InteractionDateTime: 0,
 					Properties: map[string]string{
 						"foo": "string",
 					},

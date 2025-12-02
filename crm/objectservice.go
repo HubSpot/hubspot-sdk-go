@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectServiceService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -121,6 +121,7 @@ func (r *ObjectServiceService) Get(ctx context.Context, serviceID string, query 
 	return
 }
 
+// Fetch objects via a search query
 func (r *ObjectServiceService) Search(ctx context.Context, body ObjectServiceSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-162/search"

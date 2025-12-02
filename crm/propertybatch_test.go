@@ -28,7 +28,7 @@ func TestPropertyBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Batch.New(
+	_, err := client.Crm.Properties.Batch.New(
 		context.TODO(),
 		"objectType",
 		crm.PropertyBatchNewParams{
@@ -40,7 +40,7 @@ func TestPropertyBatchNew(t *testing.T) {
 					Name:               "name",
 					Type:               shared.PropertyCreateTypeBool,
 					CalculationFormula: hubspotsdk.String("calculationFormula"),
-					DataSensitivity:    shared.PropertyCreateDataSensitivityNonSensitive,
+					DataSensitivity:    shared.PropertyCreateDataSensitivityHighlySensitive,
 					Description:        hubspotsdk.String("description"),
 					DisplayOrder:       hubspotsdk.Int(0),
 					ExternalOptions:    hubspotsdk.Bool(true),
@@ -81,7 +81,7 @@ func TestPropertyBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Properties.Batch.Delete(
+	err := client.Crm.Properties.Batch.Delete(
 		context.TODO(),
 		"objectType",
 		crm.PropertyBatchDeleteParams{
@@ -114,17 +114,18 @@ func TestPropertyBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Properties.Batch.Get(
+	_, err := client.Crm.Properties.Batch.Get(
 		context.TODO(),
 		"objectType",
 		crm.PropertyBatchGetParams{
-			BatchReadInputPropertyName: crm.BatchReadInputPropertyNameParam{
-				Archived: true,
+			BatchReadInputPropertyName: shared.BatchReadInputPropertyNameParam{
+				Archived:        true,
+				DataSensitivity: shared.BatchReadInputPropertyNameDataSensitivityHighlySensitive,
 				Inputs: []shared.PropertyNameParam{{
 					Name: "name",
 				}},
-				DataSensitivity: crm.BatchReadInputPropertyNameDataSensitivityNonSensitive,
 			},
+			Locale: hubspotsdk.String("locale"),
 		},
 	)
 	if err != nil {

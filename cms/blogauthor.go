@@ -24,7 +24,7 @@ import (
 )
 
 // BlogAuthorService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -220,7 +220,7 @@ type BatchResponseBlogAuthor struct {
 	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
 	// Status of batch operation.
 	//
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseBlogAuthorStatus `json:"status,required"`
 	// Links associated with batch operation.
 	Links map[string]string `json:"links"`
@@ -249,10 +249,10 @@ func (r *BatchResponseBlogAuthor) UnmarshalJSON(data []byte) error {
 type BatchResponseBlogAuthorStatus string
 
 const (
-	BatchResponseBlogAuthorStatusPending    BatchResponseBlogAuthorStatus = "PENDING"
-	BatchResponseBlogAuthorStatusProcessing BatchResponseBlogAuthorStatus = "PROCESSING"
 	BatchResponseBlogAuthorStatusCanceled   BatchResponseBlogAuthorStatus = "CANCELED"
 	BatchResponseBlogAuthorStatusComplete   BatchResponseBlogAuthorStatus = "COMPLETE"
+	BatchResponseBlogAuthorStatusPending    BatchResponseBlogAuthorStatus = "PENDING"
+	BatchResponseBlogAuthorStatusProcessing BatchResponseBlogAuthorStatus = "PROCESSING"
 )
 
 // Model definition for a Blog Author.
@@ -315,47 +315,47 @@ type BlogAuthor struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language BlogAuthorLanguage `json:"language,required"`
 	// URL to the blog author's LinkedIn page.
 	Linkedin string `json:"linkedin,required"`
@@ -785,6 +785,7 @@ const (
 	BlogAuthorLanguageHaw    BlogAuthorLanguage = "haw"
 	BlogAuthorLanguageHawUs  BlogAuthorLanguage = "haw-us"
 	BlogAuthorLanguageHe     BlogAuthorLanguage = "he"
+	BlogAuthorLanguageHeIl   BlogAuthorLanguage = "he-il"
 	BlogAuthorLanguageHi     BlogAuthorLanguage = "hi"
 	BlogAuthorLanguageHiIn   BlogAuthorLanguage = "hi-in"
 	BlogAuthorLanguageHr     BlogAuthorLanguage = "hr"
@@ -799,11 +800,11 @@ const (
 	BlogAuthorLanguageIa     BlogAuthorLanguage = "ia"
 	BlogAuthorLanguageIa001  BlogAuthorLanguage = "ia-001"
 	BlogAuthorLanguageID     BlogAuthorLanguage = "id"
+	BlogAuthorLanguageIDID   BlogAuthorLanguage = "id-id"
 	BlogAuthorLanguageIg     BlogAuthorLanguage = "ig"
 	BlogAuthorLanguageIgNg   BlogAuthorLanguage = "ig-ng"
 	BlogAuthorLanguageIi     BlogAuthorLanguage = "ii"
 	BlogAuthorLanguageIiCn   BlogAuthorLanguage = "ii-cn"
-	BlogAuthorLanguageIDID   BlogAuthorLanguage = "id-id"
 	BlogAuthorLanguageIs     BlogAuthorLanguage = "is"
 	BlogAuthorLanguageIsIs   BlogAuthorLanguage = "is-is"
 	BlogAuthorLanguageIt     BlogAuthorLanguage = "it"
@@ -811,13 +812,10 @@ const (
 	BlogAuthorLanguageItIt   BlogAuthorLanguage = "it-it"
 	BlogAuthorLanguageItSm   BlogAuthorLanguage = "it-sm"
 	BlogAuthorLanguageItVa   BlogAuthorLanguage = "it-va"
-	BlogAuthorLanguageHeIl   BlogAuthorLanguage = "he-il"
 	BlogAuthorLanguageJa     BlogAuthorLanguage = "ja"
 	BlogAuthorLanguageJaJp   BlogAuthorLanguage = "ja-jp"
 	BlogAuthorLanguageJgo    BlogAuthorLanguage = "jgo"
 	BlogAuthorLanguageJgoCm  BlogAuthorLanguage = "jgo-cm"
-	BlogAuthorLanguageYi     BlogAuthorLanguage = "yi"
-	BlogAuthorLanguageYi001  BlogAuthorLanguage = "yi-001"
 	BlogAuthorLanguageJmc    BlogAuthorLanguage = "jmc"
 	BlogAuthorLanguageJmcTz  BlogAuthorLanguage = "jmc-tz"
 	BlogAuthorLanguageJv     BlogAuthorLanguage = "jv"
@@ -861,10 +859,10 @@ const (
 	BlogAuthorLanguageKsfCm  BlogAuthorLanguage = "ksf-cm"
 	BlogAuthorLanguageKsh    BlogAuthorLanguage = "ksh"
 	BlogAuthorLanguageKshDe  BlogAuthorLanguage = "ksh-de"
-	BlogAuthorLanguageKw     BlogAuthorLanguage = "kw"
-	BlogAuthorLanguageKwGB   BlogAuthorLanguage = "kw-gb"
 	BlogAuthorLanguageKu     BlogAuthorLanguage = "ku"
 	BlogAuthorLanguageKuTr   BlogAuthorLanguage = "ku-tr"
+	BlogAuthorLanguageKw     BlogAuthorLanguage = "kw"
+	BlogAuthorLanguageKwGB   BlogAuthorLanguage = "kw-gb"
 	BlogAuthorLanguageKy     BlogAuthorLanguage = "ky"
 	BlogAuthorLanguageKyKg   BlogAuthorLanguage = "ky-kg"
 	BlogAuthorLanguageLag    BlogAuthorLanguage = "lag"
@@ -951,8 +949,8 @@ const (
 	BlogAuthorLanguageNl     BlogAuthorLanguage = "nl"
 	BlogAuthorLanguageNlAw   BlogAuthorLanguage = "nl-aw"
 	BlogAuthorLanguageNlBe   BlogAuthorLanguage = "nl-be"
-	BlogAuthorLanguageNlCh   BlogAuthorLanguage = "nl-ch"
 	BlogAuthorLanguageNlBq   BlogAuthorLanguage = "nl-bq"
+	BlogAuthorLanguageNlCh   BlogAuthorLanguage = "nl-ch"
 	BlogAuthorLanguageNlCw   BlogAuthorLanguage = "nl-cw"
 	BlogAuthorLanguageNlLu   BlogAuthorLanguage = "nl-lu"
 	BlogAuthorLanguageNlNl   BlogAuthorLanguage = "nl-nl"
@@ -1148,6 +1146,8 @@ const (
 	BlogAuthorLanguageXogUg  BlogAuthorLanguage = "xog-ug"
 	BlogAuthorLanguageYav    BlogAuthorLanguage = "yav"
 	BlogAuthorLanguageYavCm  BlogAuthorLanguage = "yav-cm"
+	BlogAuthorLanguageYi     BlogAuthorLanguage = "yi"
+	BlogAuthorLanguageYi001  BlogAuthorLanguage = "yi-001"
 	BlogAuthorLanguageYo     BlogAuthorLanguage = "yo"
 	BlogAuthorLanguageYoBj   BlogAuthorLanguage = "yo-bj"
 	BlogAuthorLanguageYoNg   BlogAuthorLanguage = "yo-ng"
@@ -1158,12 +1158,12 @@ const (
 	BlogAuthorLanguageZghMa  BlogAuthorLanguage = "zgh-ma"
 	BlogAuthorLanguageZh     BlogAuthorLanguage = "zh"
 	BlogAuthorLanguageZhCn   BlogAuthorLanguage = "zh-cn"
+	BlogAuthorLanguageZhHans BlogAuthorLanguage = "zh-hans"
+	BlogAuthorLanguageZhHant BlogAuthorLanguage = "zh-hant"
 	BlogAuthorLanguageZhHk   BlogAuthorLanguage = "zh-hk"
 	BlogAuthorLanguageZhMo   BlogAuthorLanguage = "zh-mo"
 	BlogAuthorLanguageZhSg   BlogAuthorLanguage = "zh-sg"
 	BlogAuthorLanguageZhTw   BlogAuthorLanguage = "zh-tw"
-	BlogAuthorLanguageZhHans BlogAuthorLanguage = "zh-hans"
-	BlogAuthorLanguageZhHant BlogAuthorLanguage = "zh-hant"
 	BlogAuthorLanguageZu     BlogAuthorLanguage = "zu"
 	BlogAuthorLanguageZuZa   BlogAuthorLanguage = "zu-za"
 )
@@ -1232,47 +1232,47 @@ type BlogAuthorParam struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language BlogAuthorLanguage `json:"language,omitzero,required"`
 	// URL to the blog author's LinkedIn page.
 	Linkedin string `json:"linkedin,required"`

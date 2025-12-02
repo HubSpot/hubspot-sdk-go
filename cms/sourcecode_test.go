@@ -91,7 +91,9 @@ func TestSourceCodeExtractAsync(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.SourceCode.ExtractAsync(context.TODO(), cms.SourceCodeExtractAsyncParams{
-		Path: "path",
+		FileExtractRequest: cms.FileExtractRequestParam{
+			Path: "path",
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

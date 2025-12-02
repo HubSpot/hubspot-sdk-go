@@ -19,7 +19,7 @@ import (
 )
 
 // LimitService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -123,14 +123,18 @@ func (r *LimitService) GetRecordLimits(ctx context.Context, opts ...option.Reque
 }
 
 type AssociationLabelLimitResponse struct {
+	// A list of all association labels.
 	AllLabels []string `json:"allLabels,required"`
 	// Defines an object type.
-	FromObjectType ObjectTypeDefinition `json:"fromObjectType,required"`
-	Limit          int64                `json:"limit,required"`
-	Percentage     float64              `json:"percentage,required"`
+	FromObjectType ObjectsSchemasObjectTypeDefinition `json:"fromObjectType,required"`
+	// The maximum number of association labels allowed.
+	Limit int64 `json:"limit,required"`
+	// The percentage of the association label limit that has been used.
+	Percentage float64 `json:"percentage,required"`
 	// Defines an object type.
-	ToObjectType ObjectTypeDefinition `json:"toObjectType,required"`
-	Usage        int64                `json:"usage,required"`
+	ToObjectType ObjectsSchemasObjectTypeDefinition `json:"toObjectType,required"`
+	// The current number of association labels used.
+	Usage int64 `json:"usage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AllLabels      respjson.Field
@@ -151,11 +155,14 @@ func (r *AssociationLabelLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type AssociationRecordLimitResponse struct {
-	AtLimitFromRecordSamples   []AtLimitRecordSample   `json:"atLimitFromRecordSamples,required"`
+	AtLimitFromRecordSamples []AtLimitRecordSample `json:"atLimitFromRecordSamples,required"`
+	// The maximum number of associations allowed for records.
 	Limit                      int64                   `json:"limit,required"`
 	NearLimitFromRecordSamples []NearLimitRecordSample `json:"nearLimitFromRecordSamples,required"`
-	TotalRecordsAtLimit        int64                   `json:"totalRecordsAtLimit,required"`
-	TotalRecordsNearLimit      int64                   `json:"totalRecordsNearLimit,required"`
+	// The total number of records that have reached their association limit.
+	TotalRecordsAtLimit int64 `json:"totalRecordsAtLimit,required"`
+	// The total number of records that are approaching their association limit.
+	TotalRecordsNearLimit int64 `json:"totalRecordsNearLimit,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		AtLimitFromRecordSamples   respjson.Field
@@ -175,8 +182,10 @@ func (r *AssociationRecordLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type AtLimitRecordSample struct {
-	Label    string `json:"label,required"`
-	ObjectID int64  `json:"objectId,required"`
+	// The label associated with a record that is at its limit.
+	Label string `json:"label,required"`
+	// The objectId of the object that is at its limit.
+	ObjectID int64 `json:"objectId,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Label       respjson.Field
@@ -193,10 +202,14 @@ func (r *AtLimitRecordSample) UnmarshalJSON(data []byte) error {
 }
 
 type CalculatedPropertyLimitResponse struct {
-	ByObjectType      []UsageForObjectType `json:"byObjectType,required"`
-	OverallLimit      int64                `json:"overallLimit,required"`
-	OverallPercentage float64              `json:"overallPercentage,required"`
-	OverallUsage      int64                `json:"overallUsage,required"`
+	ByObjectType []UsageForObjectType `json:"byObjectType,required"`
+	// The maximum number of calculated properties allowed.
+	OverallLimit int64 `json:"overallLimit,required"`
+	// The percentage of the overall limit that is currently being used for calculated
+	// properties.
+	OverallPercentage float64 `json:"overallPercentage,required"`
+	// The total number of calculated properties currently in use.
+	OverallUsage int64 `json:"overallUsage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ByObjectType      respjson.Field
@@ -249,9 +262,12 @@ func (r *CollectionResponseObjectTypeNearOrAtAssociationLimitNoPaging) Unmarshal
 }
 
 type CustomObjectLimitResponse struct {
-	Limit      int64   `json:"limit,required"`
+	// The maximum number of custom objects allowed.
+	Limit int64 `json:"limit,required"`
+	// The percentage of the custom object limit that is currently used.
 	Percentage float64 `json:"percentage,required"`
-	Usage      int64   `json:"usage,required"`
+	// The current number of custom objects used.
+	Usage int64 `json:"usage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Limit       respjson.Field
@@ -269,10 +285,13 @@ func (r *CustomObjectLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type CustomObjectRecordLimitResponse struct {
-	ByObjectType      []UsageForObjectType `json:"byObjectType,required"`
-	OverallLimit      int64                `json:"overallLimit,required"`
-	OverallPercentage float64              `json:"overallPercentage,required"`
-	OverallUsage      int64                `json:"overallUsage,required"`
+	ByObjectType []UsageForObjectType `json:"byObjectType,required"`
+	// The maximum number of custom object records allowed.
+	OverallLimit int64 `json:"overallLimit,required"`
+	// The percentage of the overall custom object record limit that has been used.
+	OverallPercentage float64 `json:"overallPercentage,required"`
+	// The total number of custom object records currently in use.
+	OverallUsage int64 `json:"overallUsage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ByObjectType      respjson.Field
@@ -291,10 +310,13 @@ func (r *CustomObjectRecordLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type CustomPropertyLimitResponse struct {
-	ByObjectType      []LimitAndUsageForObjectType `json:"byObjectType,required"`
-	OverallLimit      int64                        `json:"overallLimit,required"`
-	OverallPercentage float64                      `json:"overallPercentage,required"`
-	OverallUsage      int64                        `json:"overallUsage,required"`
+	ByObjectType []LimitAndUsageForObjectType `json:"byObjectType,required"`
+	// The total limit for custom properties across all objects.
+	OverallLimit int64 `json:"overallLimit,required"`
+	// The percentage of the overall custom property limit that has been used.
+	OverallPercentage float64 `json:"overallPercentage,required"`
+	// The total number of custom properties currently in use across all objects.
+	OverallUsage int64 `json:"overallUsage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ByObjectType      respjson.Field
@@ -313,12 +335,18 @@ func (r *CustomPropertyLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type LimitAndUsageForObjectType struct {
-	Limit         int64   `json:"limit,required"`
-	ObjectTypeID  string  `json:"objectTypeId,required"`
-	Percentage    float64 `json:"percentage,required"`
-	PluralLabel   string  `json:"pluralLabel,required"`
-	SingularLabel string  `json:"singularLabel,required"`
-	Usage         int64   `json:"usage,required"`
+	// The maximum allowed count for the object type.
+	Limit int64 `json:"limit,required"`
+	// The unique identifier for the object type.
+	ObjectTypeID string `json:"objectTypeId,required"`
+	// The percentage of the limit that has been used.
+	Percentage float64 `json:"percentage,required"`
+	// The plural label for the object type.
+	PluralLabel string `json:"pluralLabel,required"`
+	// The singular label for the object type.
+	SingularLabel string `json:"singularLabel,required"`
+	// The current usage count for the object type.
+	Usage int64 `json:"usage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Limit         respjson.Field
@@ -339,10 +367,14 @@ func (r *LimitAndUsageForObjectType) UnmarshalJSON(data []byte) error {
 }
 
 type NearLimitRecordSample struct {
-	Label      string  `json:"label,required"`
-	ObjectID   int64   `json:"objectId,required"`
+	// The primary identifier of the record.
+	Label string `json:"label,required"`
+	// The unique identifier for the object.
+	ObjectID int64 `json:"objectId,required"`
+	// The percentage of the limit that has been used.
 	Percentage float64 `json:"percentage,required"`
-	Usage      int64   `json:"usage,required"`
+	// The number of records currently in use.
+	Usage int64 `json:"usage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Label       respjson.Field
@@ -361,11 +393,16 @@ func (r *NearLimitRecordSample) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectTypeNearOrAtAssociationLimit struct {
-	HasRecordsAtLimit   bool   `json:"hasRecordsAtLimit,required"`
-	HasRecordsNearLimit bool   `json:"hasRecordsNearLimit,required"`
-	ObjectTypeID        string `json:"objectTypeId,required"`
-	PluralLabel         string `json:"pluralLabel,required"`
-	SingularLabel       string `json:"singularLabel,required"`
+	// Indicates whether there are records that have reached the association limit.
+	HasRecordsAtLimit bool `json:"hasRecordsAtLimit,required"`
+	// Indicates whether there are records that are approaching the association limit.
+	HasRecordsNearLimit bool `json:"hasRecordsNearLimit,required"`
+	// The unique identifier for the object type.
+	ObjectTypeID string `json:"objectTypeId,required"`
+	// The plural form of the label for the object type.
+	PluralLabel string `json:"pluralLabel,required"`
+	// The singular form of the label for the object type.
+	SingularLabel string `json:"singularLabel,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		HasRecordsAtLimit   respjson.Field
@@ -421,10 +458,14 @@ func (r *RecordLimitResponse) UnmarshalJSON(data []byte) error {
 }
 
 type UsageForObjectType struct {
-	ObjectTypeID  string `json:"objectTypeId,required"`
-	PluralLabel   string `json:"pluralLabel,required"`
+	// The unique identifier for the object type.
+	ObjectTypeID string `json:"objectTypeId,required"`
+	// The plural form of the label for the object type.
+	PluralLabel string `json:"pluralLabel,required"`
+	// The singular form of the label for the object type.
 	SingularLabel string `json:"singularLabel,required"`
-	Usage         int64  `json:"usage,required"`
+	// The number of records used for the object type.
+	Usage int64 `json:"usage,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ObjectTypeID  respjson.Field
@@ -443,8 +484,10 @@ func (r *UsageForObjectType) UnmarshalJSON(data []byte) error {
 }
 
 type LimitGetAssociationLabelLimitsParams struct {
+	// objectTypeId of the object type on the "from" side of the association
 	FromObjectTypeID param.Opt[string] `query:"fromObjectTypeId,omitzero" json:"-"`
-	ToObjectTypeID   param.Opt[string] `query:"toObjectTypeId,omitzero" json:"-"`
+	// objectTypeId of the object type on the "to" side of the association
+	ToObjectTypeID param.Opt[string] `query:"toObjectTypeId,omitzero" json:"-"`
 	paramObj
 }
 

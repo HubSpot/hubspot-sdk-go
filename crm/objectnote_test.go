@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectNoteNewWithOptionalParams(t *testing.T) {
+func TestObjectNoteNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,11 +28,8 @@ func TestObjectNoteNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Notes.New(context.TODO(), crm.ObjectNoteNewParams{
+	_, err := client.Crm.Objects.Notes.New(context.TODO(), crm.ObjectNoteNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Properties: map[string]string{
-				"foo": "string",
-			},
 			Associations: []crm.PublicAssociationsForObjectParam{{
 				To: shared.PublicObjectIDParam{
 					ID: "37295",
@@ -42,6 +39,9 @@ func TestObjectNoteNewWithOptionalParams(t *testing.T) {
 					AssociationTypeID:   0,
 				}},
 			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
 		},
 	})
 	if err != nil {
@@ -66,19 +66,13 @@ func TestObjectNoteUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Notes.Update(
+	_, err := client.Crm.Objects.Notes.Update(
 		context.TODO(),
 		"noteId",
 		crm.ObjectNoteUpdateParams{
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -106,7 +100,7 @@ func TestObjectNoteListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Notes.List(context.TODO(), crm.ObjectNoteListParams{
+	_, err := client.Crm.Objects.Notes.List(context.TODO(), crm.ObjectNoteListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -136,7 +130,7 @@ func TestObjectNoteDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Notes.Delete(context.TODO(), "noteId")
+	err := client.Crm.Objects.Notes.Delete(context.TODO(), "noteId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -159,7 +153,7 @@ func TestObjectNoteGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Notes.Get(
+	_, err := client.Crm.Objects.Notes.Get(
 		context.TODO(),
 		"noteId",
 		crm.ObjectNoteGetParams{
@@ -192,22 +186,22 @@ func TestObjectNoteSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Notes.Search(context.TODO(), crm.ObjectNoteSearchParams{
+	_, err := client.Crm.Objects.Notes.Search(context.TODO(), crm.ObjectNoteSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

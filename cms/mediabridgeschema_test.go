@@ -33,7 +33,7 @@ func TestMediaBridgeSchemaUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgeSchemaUpdateParams{
-			AppID: "appId",
+			AppID: 0,
 			ObjectTypeDefinitionPatch: crm.ObjectTypeDefinitionPatchParam{
 				ClearDescription: hubspotsdk.Bool(true),
 				Description:      hubspotsdk.String("description"),
@@ -58,7 +58,7 @@ func TestMediaBridgeSchemaUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestMediaBridgeSchemaList(t *testing.T) {
+func TestMediaBridgeSchemaListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -71,7 +71,13 @@ func TestMediaBridgeSchemaList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Cms.MediaBridge.Schemas.List(context.TODO(), "appId")
+	_, err := client.Cms.MediaBridge.Schemas.List(
+		context.TODO(),
+		0,
+		cms.MediaBridgeSchemaListParams{
+			Archived: hubspotsdk.Bool(true),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -98,7 +104,7 @@ func TestMediaBridgeSchemaNewAssociationWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgeSchemaNewAssociationParams{
-			AppID: "appId",
+			AppID: 0,
 			AssociationDefinitionEgg: shared.AssociationDefinitionEggParam{
 				FromObjectTypeID: "fromObjectTypeId",
 				ToObjectTypeID:   "toObjectTypeId",
@@ -132,7 +138,7 @@ func TestMediaBridgeSchemaDeleteAssociation(t *testing.T) {
 		context.TODO(),
 		"associationId",
 		cms.MediaBridgeSchemaDeleteAssociationParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
 		},
 	)
@@ -162,7 +168,7 @@ func TestMediaBridgeSchemaGet(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgeSchemaGetParams{
-			AppID: "appId",
+			AppID: 0,
 		},
 	)
 	if err != nil {

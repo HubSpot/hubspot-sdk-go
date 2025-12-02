@@ -27,7 +27,7 @@ func TestObjectPartnerServiceBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerServices.Batch.Update(context.TODO(), crm.ObjectPartnerServiceBatchUpdateParams{
+	_, err := client.Crm.Objects.PartnerServices.Batch.Update(context.TODO(), crm.ObjectPartnerServiceBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
 			Inputs: []crm.SimplePublicObjectBatchInputParam{{
 				ID: "id",
@@ -61,7 +61,7 @@ func TestObjectPartnerServiceBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerServices.Batch.Get(context.TODO(), crm.ObjectPartnerServiceBatchGetParams{
+	_, err := client.Crm.Objects.PartnerServices.Batch.Get(context.TODO(), crm.ObjectPartnerServiceBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",

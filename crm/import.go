@@ -26,7 +26,7 @@ import (
 )
 
 // ImportService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -93,11 +93,25 @@ func (r *ImportService) Get(ctx context.Context, importID int64, opts ...option.
 	return
 }
 
-func (r *ImportService) ListErrors(ctx context.Context, importID int64, query ImportListErrorsParams, opts ...option.RequestOption) (res *CollectionResponsePublicImportErrorForwardPaging, err error) {
+func (r *ImportService) ListErrors(ctx context.Context, importID int64, query ImportListErrorsParams, opts ...option.RequestOption) (res *pagination.Page[PublicImportError], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := fmt.Sprintf("crm/v3/imports/%v/errors", importID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+func (r *ImportService) ListErrorsAutoPaging(ctx context.Context, importID int64, query ImportListErrorsParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicImportError] {
+	return pagination.NewPageAutoPager(r.ListErrors(ctx, importID, query, opts...))
 }
 
 type CollectionResponsePublicImportErrorForwardPaging struct {
@@ -120,8 +134,7 @@ func (r *CollectionResponsePublicImportErrorForwardPaging) UnmarshalJSON(data []
 
 type CollectionResponsePublicImportResponse struct {
 	Results []PublicImportResponse `json:"results,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Paging  shared.Paging          `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -191,31 +204,33 @@ const (
 type PublicImportError struct {
 	ID        string `json:"id,required"`
 	CreatedAt int64  `json:"createdAt,required"`
-	// Any of "INCORRECT_NUMBER_OF_COLUMNS", "INVALID_OBJECT_ID",
-	// "INVALID_ASSOCIATION_IDENTIFIER", "NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER",
-	// "MULTIPLE_COMPANIES_WITH_THIS_DOMAIN", "PROPERTY_DEFINITION_NOT_FOUND",
-	// "PROPERTY_VALUE_NOT_FOUND", "COULD_NOT_FIND_OWNER", "MULTIPLE_OWNERS_FOUND",
-	// "COULD_NOT_FIND_BUSINESS_UNIT", "COULD_NOT_PARSE_NUMBER",
-	// "COULD_NOT_PARSE_DATE", "COULD_NOT_PARSE_TERM", "OUTSIDE_VALID_TIME_RANGE",
-	// "OUTSIDE_VALID_TERM_RANGE", "COULD_NOT_PARSE_ROW", "INVALID_ENUMERATION_OPTION",
-	// "AMBIGUOUS_ENUMERATION_OPTION", "FAILED_VALIDATION",
-	// "FAILED_TO_CREATE_ASSOCIATION", "ASSOCIATION_LIMIT_EXCEEDED", "FILE_NOT_FOUND",
-	// "INVALID_COLUMN_CONFIGURATION", "INVALID_FILE_TYPE", "INVALID_SPREADSHEET",
-	// "INVALID_SHEET_COUNT", "FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES",
-	// "UNKNOWN_BAD_REQUEST", "GDPR_BLACKLISTED_EMAIL", "DUPLICATE_ASSOCIATION_ID",
-	// "LIMIT_EXCEEDED", "PORTAL_WIDE_CUSTOM_OBJECT_LIMIT_EXCEEDED",
-	// "INVALID_ALTERNATE_ID", "INVALID_EMAIL", "SECONDARY_EMAIL_WRITE_FAILURE",
-	// "INVALID_DOMAIN", "DUPLICATE_ROW_CONTENT", "INVALID_NUMBER_SIZE",
-	// "UNKNOWN_ERROR", "FAILED_TO_OPT_OUT_CONTACT", "INVALID_REQUIRED_PROPERTY",
-	// "MISSING_REQUIRED_PROPERTY", "DUPLICATE_ALTERNATE_ID", "DUPLICATE_OBJECT_ID",
-	// "DUPLICATE_UNIQUE_PROPERTY_VALUE", "UNKNOWN_ASSOCIATION_RECORD_ID",
-	// "INVALID_RECORD_ID", "DUPLICATE_RECORD_ID",
-	// "INVALID_CUSTOM_PROPERTY_VALIDATION", "CREATE_ONLY_IMPORT",
-	// "UPDATE_ONLY_IMPORT", "COLUMN_TOO_LARGE", "ROW_DATA_TOO_LARGE",
-	// "MISSING_EVENT_TIMESTAMP", "INVALID_EVENT_TIMESTAMP", "INVALID_EVENT",
-	// "DUPLICATE_EVENT", "MISSING_EVENT_DEFINITION", "INVALID_ASSOCIATION_KEY",
-	// "ASSOCIATION_RECORD_NOT_FOUND", "MISSING_OBJECT_DEFINITION",
-	// "ASSOCIATION_LABEL_NOT_FOUND", "MANY_ERRORS_IN_ROW".
+	// Any of "AMBIGUOUS_ENUMERATION_OPTION", "ASSOCIATION_LABEL_NOT_FOUND",
+	// "ASSOCIATION_LIMIT_EXCEEDED", "ASSOCIATION_RECORD_NOT_FOUND",
+	// "COLUMN_TOO_LARGE", "COULD_NOT_FIND_BUSINESS_UNIT", "COULD_NOT_FIND_OWNER",
+	// "COULD_NOT_PARSE_DATE", "COULD_NOT_PARSE_NUMBER", "COULD_NOT_PARSE_ROW",
+	// "COULD_NOT_PARSE_TERM", "CREATE_ONLY_IMPORT", "DUPLICATE_ALTERNATE_ID",
+	// "DUPLICATE_ASSOCIATION_ID", "DUPLICATE_EVENT", "DUPLICATE_OBJECT_ID",
+	// "DUPLICATE_RECORD_ID", "DUPLICATE_ROW_CONTENT",
+	// "DUPLICATE_UNIQUE_PROPERTY_VALUE", "FAILED_TO_CREATE_ASSOCIATION",
+	// "FAILED_TO_OPT_OUT_CONTACT",
+	// "FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES", "FAILED_VALIDATION",
+	// "FILE_NOT_FOUND", "GDPR_BLACKLISTED_EMAIL", "INCORRECT_NUMBER_OF_COLUMNS",
+	// "INVALID_ALTERNATE_ID", "INVALID_ASSOCIATION_IDENTIFIER",
+	// "INVALID_ASSOCIATION_KEY", "INVALID_COLUMN_CONFIGURATION",
+	// "INVALID_CUSTOM_PROPERTY_VALIDATION", "INVALID_DOMAIN", "INVALID_EMAIL",
+	// "INVALID_ENUMERATION_OPTION", "INVALID_EVENT", "INVALID_EVENT_TIMESTAMP",
+	// "INVALID_FILE_TYPE", "INVALID_NUMBER_SIZE", "INVALID_OBJECT_ID",
+	// "INVALID_RECORD_ID", "INVALID_REQUIRED_PROPERTY", "INVALID_SHEET_COUNT",
+	// "INVALID_SPREADSHEET", "LIMIT_EXCEEDED", "MANY_ERRORS_IN_ROW",
+	// "MISSING_EVENT_DEFINITION", "MISSING_EVENT_TIMESTAMP",
+	// "MISSING_OBJECT_DEFINITION", "MISSING_REQUIRED_PROPERTY",
+	// "MULTIPLE_COMPANIES_WITH_THIS_DOMAIN", "MULTIPLE_OWNERS_FOUND",
+	// "NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER", "OUTSIDE_VALID_TERM_RANGE",
+	// "OUTSIDE_VALID_TIME_RANGE", "PORTAL_WIDE_CUSTOM_OBJECT_LIMIT_EXCEEDED",
+	// "PROPERTY_DEFINITION_NOT_FOUND", "PROPERTY_VALUE_NOT_FOUND",
+	// "ROW_DATA_TOO_LARGE", "SECONDARY_EMAIL_WRITE_FAILURE",
+	// "UNKNOWN_ASSOCIATION_RECORD_ID", "UNKNOWN_BAD_REQUEST", "UNKNOWN_ERROR",
+	// "UPDATE_ONLY_IMPORT".
 	ErrorType    PublicImportErrorErrorType `json:"errorType,required"`
 	SourceData   ImportRowCore              `json:"sourceData,required"`
 	ErrorMessage string                     `json:"errorMessage"`
@@ -227,46 +242,45 @@ type PublicImportError struct {
 	InvalidValue          string                  `json:"invalidValue"`
 	InvalidValueToDisplay string                  `json:"invalidValueToDisplay"`
 	KnownColumnNumber     int64                   `json:"knownColumnNumber"`
-	// Any of "CONTACT", "COMPANY", "DEAL", "ENGAGEMENT", "TICKET", "OWNER", "PRODUCT",
-	// "LINE_ITEM", "BET_DELIVERABLE_SERVICE", "CONTENT", "CONVERSATION", "BET_ALERT",
-	// "PORTAL", "QUOTE", "FORM_SUBMISSION_INBOUNDDB", "QUOTA", "UNSUBSCRIBE",
-	// "COMMUNICATION", "FEEDBACK_SUBMISSION", "ATTRIBUTION", "SALESFORCE_SYNC_ERROR",
-	// "RESTORABLE_CRM_OBJECT", "HUB", "LANDING_PAGE", "PRODUCT_OR_FOLDER", "TASK",
-	// "FORM", "MARKETING_EMAIL", "AD_ACCOUNT", "AD_CAMPAIGN", "AD_GROUP", "AD",
-	// "KEYWORD", "CAMPAIGN", "SOCIAL_CHANNEL", "SOCIAL_POST", "SITE_PAGE",
-	// "BLOG_POST", "IMPORT", "EXPORT", "CTA", "TASK_TEMPLATE",
-	// "AUTOMATION_PLATFORM_FLOW", "OBJECT_LIST", "NOTE", "MEETING_EVENT", "CALL",
-	// "EMAIL", "PUBLISHING_TASK", "CONVERSATION_SESSION",
-	// "CONTACT_CREATE_ATTRIBUTION", "INVOICE", "MARKETING_EVENT",
-	// "CONVERSATION_INBOX", "CHATFLOW", "MEDIA_BRIDGE", "SEQUENCE", "SEQUENCE_STEP",
-	// "FORECAST", "SNIPPET", "TEMPLATE", "DEAL_CREATE_ATTRIBUTION", "QUOTE_TEMPLATE",
-	// "QUOTE_MODULE", "QUOTE_MODULE_FIELD", "QUOTE_FIELD", "SEQUENCE_ENROLLMENT",
-	// "SUBSCRIPTION", "ACCEPTANCE_TEST", "SOCIAL_BROADCAST", "DEAL_SPLIT",
-	// "DEAL_REGISTRATION", "GOAL_TARGET", "GOAL_TARGET_GROUP",
-	// "PORTAL_OBJECT_SYNC_MESSAGE", "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER",
-	// "SEQUENCE_STEP_ENROLLMENT", "APPROVAL", "APPROVAL_STEP", "CTA_VARIANT",
-	// "SALES_DOCUMENT", "DISCOUNT", "FEE", "TAX", "MARKETING_CALENDAR",
-	// "PERMISSIONS_TESTING", "PRIVACY_SCANNER_COOKIE", "DATA_SYNC_STATE",
-	// "WEB_INTERACTIVE", "PLAYBOOK", "FOLDER", "PLAYBOOK_QUESTION",
-	// "PLAYBOOK_SUBMISSION", "PLAYBOOK_SUBMISSION_ANSWER", "COMMERCE_PAYMENT",
-	// "GSC_PROPERTY", "SOX_PROTECTED_DUMMY_TYPE", "BLOG_LISTING_PAGE",
-	// "QUARANTINED_SUBMISSION", "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT",
-	// "MARKETING_CAMPAIGN_UTM", "DISCOUNT_TEMPLATE", "DISCOUNT_CODE",
-	// "FEEDBACK_SURVEY", "CMS_URL", "SALES_TASK", "SALES_WORKLOAD", "USER",
-	// "POSTAL_MAIL", "SCHEMAS_BACKEND_TEST", "PAYMENT_LINK", "SUBMISSION_TAG",
-	// "CAMPAIGN_STEP", "SCHEDULING_PAGE", "SOX_PROTECTED_TEST_TYPE", "ORDER",
-	// "MARKETING_SMS", "PARTNER_ACCOUNT", "CAMPAIGN_TEMPLATE",
-	// "CAMPAIGN_TEMPLATE_STEP", "PLAYLIST", "CLIP", "CAMPAIGN_BUDGET_ITEM",
-	// "CAMPAIGN_SPEND_ITEM", "MIC", "CONTENT_AUDIT", "CONTENT_AUDIT_PAGE",
-	// "PLAYLIST_FOLDER", "LEAD", "ABANDONED_CART", "EXTERNAL_WEB_URL", "VIEW",
-	// "VIEW_BLOCK", "ROSTER", "CART", "AUTOMATION_PLATFORM_FLOW_ACTION",
-	// "SOCIAL_PROFILE", "PARTNER_CLIENT", "ROSTER_MEMBER",
-	// "MARKETING_EVENT_ATTENDANCE", "ALL_PAGES", "AI_FORECAST",
-	// "CRM_PIPELINES_DUMMY_TYPE", "KNOWLEDGE_ARTICLE", "PROPERTY_INFO",
-	// "DATA_PRIVACY_CONSENT", "GOAL_TEMPLATE", "SCORE_CONFIGURATION", "AUDIENCE",
-	// "PARTNER_CLIENT_REVENUE", "AUTOMATION_JOURNEY", "COMBO_EVENT_CONFIGURATION",
-	// "CRM_OBJECTS_DUMMY_TYPE", "CASE_STUDY", "SERVICE", "PODCAST_EPISODE",
-	// "PARTNER_SERVICE", "PROSPECTING_AGENT_CONTACT_ASSIGNMENT", "UNKNOWN".
+	// Any of "ABANDONED_CART", "ACCEPTANCE_TEST", "AD", "AD_ACCOUNT", "AD_CAMPAIGN",
+	// "AD_GROUP", "AI_FORECAST", "ALL_PAGES", "APPROVAL", "APPROVAL_STEP",
+	// "ATTRIBUTION", "AUDIENCE", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM_FLOW",
+	// "AUTOMATION_PLATFORM_FLOW_ACTION", "BET_ALERT", "BET_DELIVERABLE_SERVICE",
+	// "BLOG_LISTING_PAGE", "BLOG_POST", "CALL", "CAMPAIGN", "CAMPAIGN_BUDGET_ITEM",
+	// "CAMPAIGN_SPEND_ITEM", "CAMPAIGN_STEP", "CAMPAIGN_TEMPLATE",
+	// "CAMPAIGN_TEMPLATE_STEP", "CART", "CASE_STUDY", "CHATFLOW", "CLIP", "CMS_URL",
+	// "COMBO_EVENT_CONFIGURATION", "COMMERCE_PAYMENT", "COMMUNICATION", "COMPANY",
+	// "CONTACT", "CONTACT_CREATE_ATTRIBUTION", "CONTENT", "CONTENT_AUDIT",
+	// "CONTENT_AUDIT_PAGE", "CONVERSATION", "CONVERSATION_INBOX",
+	// "CONVERSATION_SESSION", "CRM_OBJECTS_DUMMY_TYPE", "CRM_PIPELINES_DUMMY_TYPE",
+	// "CTA", "CTA_VARIANT", "DATA_PRIVACY_CONSENT", "DATA_SYNC_STATE", "DEAL",
+	// "DEAL_CREATE_ATTRIBUTION", "DEAL_REGISTRATION", "DEAL_SPLIT", "DISCOUNT",
+	// "DISCOUNT_CODE", "DISCOUNT_TEMPLATE", "EMAIL", "ENGAGEMENT", "EXPORT",
+	// "EXTERNAL_WEB_URL", "FEE", "FEEDBACK_SUBMISSION", "FEEDBACK_SURVEY",
+	// "FILE_MANAGER_FILE", "FILE_MANAGER_FOLDER", "FOLDER", "FORECAST", "FORM",
+	// "FORM_SUBMISSION_INBOUNDDB", "GOAL_TARGET", "GOAL_TARGET_GROUP",
+	// "GOAL_TEMPLATE", "GSC_PROPERTY", "HUB", "IMPORT", "INVOICE", "KEYWORD",
+	// "KNOWLEDGE_ARTICLE", "LANDING_PAGE", "LEAD", "LINE_ITEM", "MARKETING_CALENDAR",
+	// "MARKETING_CAMPAIGN_UTM", "MARKETING_EMAIL", "MARKETING_EVENT",
+	// "MARKETING_EVENT_ATTENDANCE", "MARKETING_SMS", "MEDIA_BRIDGE", "MEETING_EVENT",
+	// "MIC", "NOTE", "OBJECT_LIST", "ORDER", "OWNER", "PARTNER_ACCOUNT",
+	// "PARTNER_CLIENT", "PARTNER_CLIENT_REVENUE", "PARTNER_SERVICE", "PAYMENT_LINK",
+	// "PAYMENT_SCHEDULE", "PAYMENT_SCHEDULE_INSTALLMENT", "PERMISSIONS_TESTING",
+	// "PLAYBOOK", "PLAYBOOK_QUESTION", "PLAYBOOK_SUBMISSION",
+	// "PLAYBOOK_SUBMISSION_ANSWER", "PLAYLIST", "PLAYLIST_FOLDER", "PODCAST_EPISODE",
+	// "PORTAL", "PORTAL_OBJECT_SYNC_MESSAGE", "POSTAL_MAIL", "PRIVACY_SCANNER_COOKIE",
+	// "PRODUCT", "PRODUCT_OR_FOLDER", "PROPERTY_INFO",
+	// "PROSPECTING_AGENT_CONTACT_ASSIGNMENT", "PUBLISHING_TASK",
+	// "QUARANTINED_SUBMISSION", "QUOTA", "QUOTE", "QUOTE_FIELD", "QUOTE_MODULE",
+	// "QUOTE_MODULE_FIELD", "QUOTE_TEMPLATE", "RESTORABLE_CRM_OBJECT", "ROSTER",
+	// "ROSTER_MEMBER", "SALES_DOCUMENT", "SALES_TASK", "SALES_WORKLOAD",
+	// "SALESFORCE_SYNC_ERROR", "SCHEDULING_PAGE", "SCHEMAS_BACKEND_TEST",
+	// "SCORE_CONFIGURATION", "SEQUENCE", "SEQUENCE_ENROLLMENT", "SEQUENCE_STEP",
+	// "SEQUENCE_STEP_ENROLLMENT", "SERVICE", "SITE_PAGE", "SNIPPET",
+	// "SOCIAL_BROADCAST", "SOCIAL_CHANNEL", "SOCIAL_POST", "SOCIAL_PROFILE",
+	// "SOX_PROTECTED_DUMMY_TYPE", "SOX_PROTECTED_TEST_TYPE", "SUBMISSION_TAG",
+	// "SUBSCRIPTION", "TASK", "TASK_TEMPLATE", "TAX", "TEMPLATE", "TICKET", "UNKNOWN",
+	// "UNSUBSCRIBE", "USER", "VIEW", "VIEW_BLOCK", "WEB_INTERACTIVE".
 	ObjectType   PublicImportErrorObjectType `json:"objectType"`
 	ObjectTypeID string                      `json:"objectTypeId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -297,235 +311,235 @@ func (r *PublicImportError) UnmarshalJSON(data []byte) error {
 type PublicImportErrorErrorType string
 
 const (
+	PublicImportErrorErrorTypeAmbiguousEnumerationOption                   PublicImportErrorErrorType = "AMBIGUOUS_ENUMERATION_OPTION"
+	PublicImportErrorErrorTypeAssociationLabelNotFound                     PublicImportErrorErrorType = "ASSOCIATION_LABEL_NOT_FOUND"
+	PublicImportErrorErrorTypeAssociationLimitExceeded                     PublicImportErrorErrorType = "ASSOCIATION_LIMIT_EXCEEDED"
+	PublicImportErrorErrorTypeAssociationRecordNotFound                    PublicImportErrorErrorType = "ASSOCIATION_RECORD_NOT_FOUND"
+	PublicImportErrorErrorTypeColumnTooLarge                               PublicImportErrorErrorType = "COLUMN_TOO_LARGE"
+	PublicImportErrorErrorTypeCouldNotFindBusinessUnit                     PublicImportErrorErrorType = "COULD_NOT_FIND_BUSINESS_UNIT"
+	PublicImportErrorErrorTypeCouldNotFindOwner                            PublicImportErrorErrorType = "COULD_NOT_FIND_OWNER"
+	PublicImportErrorErrorTypeCouldNotParseDate                            PublicImportErrorErrorType = "COULD_NOT_PARSE_DATE"
+	PublicImportErrorErrorTypeCouldNotParseNumber                          PublicImportErrorErrorType = "COULD_NOT_PARSE_NUMBER"
+	PublicImportErrorErrorTypeCouldNotParseRow                             PublicImportErrorErrorType = "COULD_NOT_PARSE_ROW"
+	PublicImportErrorErrorTypeCouldNotParseTerm                            PublicImportErrorErrorType = "COULD_NOT_PARSE_TERM"
+	PublicImportErrorErrorTypeCreateOnlyImport                             PublicImportErrorErrorType = "CREATE_ONLY_IMPORT"
+	PublicImportErrorErrorTypeDuplicateAlternateID                         PublicImportErrorErrorType = "DUPLICATE_ALTERNATE_ID"
+	PublicImportErrorErrorTypeDuplicateAssociationID                       PublicImportErrorErrorType = "DUPLICATE_ASSOCIATION_ID"
+	PublicImportErrorErrorTypeDuplicateEvent                               PublicImportErrorErrorType = "DUPLICATE_EVENT"
+	PublicImportErrorErrorTypeDuplicateObjectID                            PublicImportErrorErrorType = "DUPLICATE_OBJECT_ID"
+	PublicImportErrorErrorTypeDuplicateRecordID                            PublicImportErrorErrorType = "DUPLICATE_RECORD_ID"
+	PublicImportErrorErrorTypeDuplicateRowContent                          PublicImportErrorErrorType = "DUPLICATE_ROW_CONTENT"
+	PublicImportErrorErrorTypeDuplicateUniquePropertyValue                 PublicImportErrorErrorType = "DUPLICATE_UNIQUE_PROPERTY_VALUE"
+	PublicImportErrorErrorTypeFailedToCreateAssociation                    PublicImportErrorErrorType = "FAILED_TO_CREATE_ASSOCIATION"
+	PublicImportErrorErrorTypeFailedToOptOutContact                        PublicImportErrorErrorType = "FAILED_TO_OPT_OUT_CONTACT"
+	PublicImportErrorErrorTypeFailedToProcessObjectWithEmptyPropertyValues PublicImportErrorErrorType = "FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES"
+	PublicImportErrorErrorTypeFailedValidation                             PublicImportErrorErrorType = "FAILED_VALIDATION"
+	PublicImportErrorErrorTypeFileNotFound                                 PublicImportErrorErrorType = "FILE_NOT_FOUND"
+	PublicImportErrorErrorTypeGdprBlacklistedEmail                         PublicImportErrorErrorType = "GDPR_BLACKLISTED_EMAIL"
 	PublicImportErrorErrorTypeIncorrectNumberOfColumns                     PublicImportErrorErrorType = "INCORRECT_NUMBER_OF_COLUMNS"
-	PublicImportErrorErrorTypeInvalidObjectID                              PublicImportErrorErrorType = "INVALID_OBJECT_ID"
+	PublicImportErrorErrorTypeInvalidAlternateID                           PublicImportErrorErrorType = "INVALID_ALTERNATE_ID"
 	PublicImportErrorErrorTypeInvalidAssociationIdentifier                 PublicImportErrorErrorType = "INVALID_ASSOCIATION_IDENTIFIER"
-	PublicImportErrorErrorTypeNoObjectIDFromAssociationIdentifier          PublicImportErrorErrorType = "NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER"
+	PublicImportErrorErrorTypeInvalidAssociationKey                        PublicImportErrorErrorType = "INVALID_ASSOCIATION_KEY"
+	PublicImportErrorErrorTypeInvalidColumnConfiguration                   PublicImportErrorErrorType = "INVALID_COLUMN_CONFIGURATION"
+	PublicImportErrorErrorTypeInvalidCustomPropertyValidation              PublicImportErrorErrorType = "INVALID_CUSTOM_PROPERTY_VALIDATION"
+	PublicImportErrorErrorTypeInvalidDomain                                PublicImportErrorErrorType = "INVALID_DOMAIN"
+	PublicImportErrorErrorTypeInvalidEmail                                 PublicImportErrorErrorType = "INVALID_EMAIL"
+	PublicImportErrorErrorTypeInvalidEnumerationOption                     PublicImportErrorErrorType = "INVALID_ENUMERATION_OPTION"
+	PublicImportErrorErrorTypeInvalidEvent                                 PublicImportErrorErrorType = "INVALID_EVENT"
+	PublicImportErrorErrorTypeInvalidEventTimestamp                        PublicImportErrorErrorType = "INVALID_EVENT_TIMESTAMP"
+	PublicImportErrorErrorTypeInvalidFileType                              PublicImportErrorErrorType = "INVALID_FILE_TYPE"
+	PublicImportErrorErrorTypeInvalidNumberSize                            PublicImportErrorErrorType = "INVALID_NUMBER_SIZE"
+	PublicImportErrorErrorTypeInvalidObjectID                              PublicImportErrorErrorType = "INVALID_OBJECT_ID"
+	PublicImportErrorErrorTypeInvalidRecordID                              PublicImportErrorErrorType = "INVALID_RECORD_ID"
+	PublicImportErrorErrorTypeInvalidRequiredProperty                      PublicImportErrorErrorType = "INVALID_REQUIRED_PROPERTY"
+	PublicImportErrorErrorTypeInvalidSheetCount                            PublicImportErrorErrorType = "INVALID_SHEET_COUNT"
+	PublicImportErrorErrorTypeInvalidSpreadsheet                           PublicImportErrorErrorType = "INVALID_SPREADSHEET"
+	PublicImportErrorErrorTypeLimitExceeded                                PublicImportErrorErrorType = "LIMIT_EXCEEDED"
+	PublicImportErrorErrorTypeManyErrorsInRow                              PublicImportErrorErrorType = "MANY_ERRORS_IN_ROW"
+	PublicImportErrorErrorTypeMissingEventDefinition                       PublicImportErrorErrorType = "MISSING_EVENT_DEFINITION"
+	PublicImportErrorErrorTypeMissingEventTimestamp                        PublicImportErrorErrorType = "MISSING_EVENT_TIMESTAMP"
+	PublicImportErrorErrorTypeMissingObjectDefinition                      PublicImportErrorErrorType = "MISSING_OBJECT_DEFINITION"
+	PublicImportErrorErrorTypeMissingRequiredProperty                      PublicImportErrorErrorType = "MISSING_REQUIRED_PROPERTY"
 	PublicImportErrorErrorTypeMultipleCompaniesWithThisDomain              PublicImportErrorErrorType = "MULTIPLE_COMPANIES_WITH_THIS_DOMAIN"
+	PublicImportErrorErrorTypeMultipleOwnersFound                          PublicImportErrorErrorType = "MULTIPLE_OWNERS_FOUND"
+	PublicImportErrorErrorTypeNoObjectIDFromAssociationIdentifier          PublicImportErrorErrorType = "NO_OBJECT_ID_FROM_ASSOCIATION_IDENTIFIER"
+	PublicImportErrorErrorTypeOutsideValidTermRange                        PublicImportErrorErrorType = "OUTSIDE_VALID_TERM_RANGE"
+	PublicImportErrorErrorTypeOutsideValidTimeRange                        PublicImportErrorErrorType = "OUTSIDE_VALID_TIME_RANGE"
+	PublicImportErrorErrorTypePortalWideCustomObjectLimitExceeded          PublicImportErrorErrorType = "PORTAL_WIDE_CUSTOM_OBJECT_LIMIT_EXCEEDED"
 	PublicImportErrorErrorTypePropertyDefinitionNotFound                   PublicImportErrorErrorType = "PROPERTY_DEFINITION_NOT_FOUND"
 	PublicImportErrorErrorTypePropertyValueNotFound                        PublicImportErrorErrorType = "PROPERTY_VALUE_NOT_FOUND"
-	PublicImportErrorErrorTypeCouldNotFindOwner                            PublicImportErrorErrorType = "COULD_NOT_FIND_OWNER"
-	PublicImportErrorErrorTypeMultipleOwnersFound                          PublicImportErrorErrorType = "MULTIPLE_OWNERS_FOUND"
-	PublicImportErrorErrorTypeCouldNotFindBusinessUnit                     PublicImportErrorErrorType = "COULD_NOT_FIND_BUSINESS_UNIT"
-	PublicImportErrorErrorTypeCouldNotParseNumber                          PublicImportErrorErrorType = "COULD_NOT_PARSE_NUMBER"
-	PublicImportErrorErrorTypeCouldNotParseDate                            PublicImportErrorErrorType = "COULD_NOT_PARSE_DATE"
-	PublicImportErrorErrorTypeCouldNotParseTerm                            PublicImportErrorErrorType = "COULD_NOT_PARSE_TERM"
-	PublicImportErrorErrorTypeOutsideValidTimeRange                        PublicImportErrorErrorType = "OUTSIDE_VALID_TIME_RANGE"
-	PublicImportErrorErrorTypeOutsideValidTermRange                        PublicImportErrorErrorType = "OUTSIDE_VALID_TERM_RANGE"
-	PublicImportErrorErrorTypeCouldNotParseRow                             PublicImportErrorErrorType = "COULD_NOT_PARSE_ROW"
-	PublicImportErrorErrorTypeInvalidEnumerationOption                     PublicImportErrorErrorType = "INVALID_ENUMERATION_OPTION"
-	PublicImportErrorErrorTypeAmbiguousEnumerationOption                   PublicImportErrorErrorType = "AMBIGUOUS_ENUMERATION_OPTION"
-	PublicImportErrorErrorTypeFailedValidation                             PublicImportErrorErrorType = "FAILED_VALIDATION"
-	PublicImportErrorErrorTypeFailedToCreateAssociation                    PublicImportErrorErrorType = "FAILED_TO_CREATE_ASSOCIATION"
-	PublicImportErrorErrorTypeAssociationLimitExceeded                     PublicImportErrorErrorType = "ASSOCIATION_LIMIT_EXCEEDED"
-	PublicImportErrorErrorTypeFileNotFound                                 PublicImportErrorErrorType = "FILE_NOT_FOUND"
-	PublicImportErrorErrorTypeInvalidColumnConfiguration                   PublicImportErrorErrorType = "INVALID_COLUMN_CONFIGURATION"
-	PublicImportErrorErrorTypeInvalidFileType                              PublicImportErrorErrorType = "INVALID_FILE_TYPE"
-	PublicImportErrorErrorTypeInvalidSpreadsheet                           PublicImportErrorErrorType = "INVALID_SPREADSHEET"
-	PublicImportErrorErrorTypeInvalidSheetCount                            PublicImportErrorErrorType = "INVALID_SHEET_COUNT"
-	PublicImportErrorErrorTypeFailedToProcessObjectWithEmptyPropertyValues PublicImportErrorErrorType = "FAILED_TO_PROCESS_OBJECT_WITH_EMPTY_PROPERTY_VALUES"
-	PublicImportErrorErrorTypeUnknownBadRequest                            PublicImportErrorErrorType = "UNKNOWN_BAD_REQUEST"
-	PublicImportErrorErrorTypeGdprBlacklistedEmail                         PublicImportErrorErrorType = "GDPR_BLACKLISTED_EMAIL"
-	PublicImportErrorErrorTypeDuplicateAssociationID                       PublicImportErrorErrorType = "DUPLICATE_ASSOCIATION_ID"
-	PublicImportErrorErrorTypeLimitExceeded                                PublicImportErrorErrorType = "LIMIT_EXCEEDED"
-	PublicImportErrorErrorTypePortalWideCustomObjectLimitExceeded          PublicImportErrorErrorType = "PORTAL_WIDE_CUSTOM_OBJECT_LIMIT_EXCEEDED"
-	PublicImportErrorErrorTypeInvalidAlternateID                           PublicImportErrorErrorType = "INVALID_ALTERNATE_ID"
-	PublicImportErrorErrorTypeInvalidEmail                                 PublicImportErrorErrorType = "INVALID_EMAIL"
-	PublicImportErrorErrorTypeSecondaryEmailWriteFailure                   PublicImportErrorErrorType = "SECONDARY_EMAIL_WRITE_FAILURE"
-	PublicImportErrorErrorTypeInvalidDomain                                PublicImportErrorErrorType = "INVALID_DOMAIN"
-	PublicImportErrorErrorTypeDuplicateRowContent                          PublicImportErrorErrorType = "DUPLICATE_ROW_CONTENT"
-	PublicImportErrorErrorTypeInvalidNumberSize                            PublicImportErrorErrorType = "INVALID_NUMBER_SIZE"
-	PublicImportErrorErrorTypeUnknownError                                 PublicImportErrorErrorType = "UNKNOWN_ERROR"
-	PublicImportErrorErrorTypeFailedToOptOutContact                        PublicImportErrorErrorType = "FAILED_TO_OPT_OUT_CONTACT"
-	PublicImportErrorErrorTypeInvalidRequiredProperty                      PublicImportErrorErrorType = "INVALID_REQUIRED_PROPERTY"
-	PublicImportErrorErrorTypeMissingRequiredProperty                      PublicImportErrorErrorType = "MISSING_REQUIRED_PROPERTY"
-	PublicImportErrorErrorTypeDuplicateAlternateID                         PublicImportErrorErrorType = "DUPLICATE_ALTERNATE_ID"
-	PublicImportErrorErrorTypeDuplicateObjectID                            PublicImportErrorErrorType = "DUPLICATE_OBJECT_ID"
-	PublicImportErrorErrorTypeDuplicateUniquePropertyValue                 PublicImportErrorErrorType = "DUPLICATE_UNIQUE_PROPERTY_VALUE"
-	PublicImportErrorErrorTypeUnknownAssociationRecordID                   PublicImportErrorErrorType = "UNKNOWN_ASSOCIATION_RECORD_ID"
-	PublicImportErrorErrorTypeInvalidRecordID                              PublicImportErrorErrorType = "INVALID_RECORD_ID"
-	PublicImportErrorErrorTypeDuplicateRecordID                            PublicImportErrorErrorType = "DUPLICATE_RECORD_ID"
-	PublicImportErrorErrorTypeInvalidCustomPropertyValidation              PublicImportErrorErrorType = "INVALID_CUSTOM_PROPERTY_VALIDATION"
-	PublicImportErrorErrorTypeCreateOnlyImport                             PublicImportErrorErrorType = "CREATE_ONLY_IMPORT"
-	PublicImportErrorErrorTypeUpdateOnlyImport                             PublicImportErrorErrorType = "UPDATE_ONLY_IMPORT"
-	PublicImportErrorErrorTypeColumnTooLarge                               PublicImportErrorErrorType = "COLUMN_TOO_LARGE"
 	PublicImportErrorErrorTypeRowDataTooLarge                              PublicImportErrorErrorType = "ROW_DATA_TOO_LARGE"
-	PublicImportErrorErrorTypeMissingEventTimestamp                        PublicImportErrorErrorType = "MISSING_EVENT_TIMESTAMP"
-	PublicImportErrorErrorTypeInvalidEventTimestamp                        PublicImportErrorErrorType = "INVALID_EVENT_TIMESTAMP"
-	PublicImportErrorErrorTypeInvalidEvent                                 PublicImportErrorErrorType = "INVALID_EVENT"
-	PublicImportErrorErrorTypeDuplicateEvent                               PublicImportErrorErrorType = "DUPLICATE_EVENT"
-	PublicImportErrorErrorTypeMissingEventDefinition                       PublicImportErrorErrorType = "MISSING_EVENT_DEFINITION"
-	PublicImportErrorErrorTypeInvalidAssociationKey                        PublicImportErrorErrorType = "INVALID_ASSOCIATION_KEY"
-	PublicImportErrorErrorTypeAssociationRecordNotFound                    PublicImportErrorErrorType = "ASSOCIATION_RECORD_NOT_FOUND"
-	PublicImportErrorErrorTypeMissingObjectDefinition                      PublicImportErrorErrorType = "MISSING_OBJECT_DEFINITION"
-	PublicImportErrorErrorTypeAssociationLabelNotFound                     PublicImportErrorErrorType = "ASSOCIATION_LABEL_NOT_FOUND"
-	PublicImportErrorErrorTypeManyErrorsInRow                              PublicImportErrorErrorType = "MANY_ERRORS_IN_ROW"
+	PublicImportErrorErrorTypeSecondaryEmailWriteFailure                   PublicImportErrorErrorType = "SECONDARY_EMAIL_WRITE_FAILURE"
+	PublicImportErrorErrorTypeUnknownAssociationRecordID                   PublicImportErrorErrorType = "UNKNOWN_ASSOCIATION_RECORD_ID"
+	PublicImportErrorErrorTypeUnknownBadRequest                            PublicImportErrorErrorType = "UNKNOWN_BAD_REQUEST"
+	PublicImportErrorErrorTypeUnknownError                                 PublicImportErrorErrorType = "UNKNOWN_ERROR"
+	PublicImportErrorErrorTypeUpdateOnlyImport                             PublicImportErrorErrorType = "UPDATE_ONLY_IMPORT"
 )
 
 type PublicImportErrorObjectType string
 
 const (
-	PublicImportErrorObjectTypeContact                           PublicImportErrorObjectType = "CONTACT"
-	PublicImportErrorObjectTypeCompany                           PublicImportErrorObjectType = "COMPANY"
-	PublicImportErrorObjectTypeDeal                              PublicImportErrorObjectType = "DEAL"
-	PublicImportErrorObjectTypeEngagement                        PublicImportErrorObjectType = "ENGAGEMENT"
-	PublicImportErrorObjectTypeTicket                            PublicImportErrorObjectType = "TICKET"
-	PublicImportErrorObjectTypeOwner                             PublicImportErrorObjectType = "OWNER"
-	PublicImportErrorObjectTypeProduct                           PublicImportErrorObjectType = "PRODUCT"
-	PublicImportErrorObjectTypeLineItem                          PublicImportErrorObjectType = "LINE_ITEM"
-	PublicImportErrorObjectTypeBetDeliverableService             PublicImportErrorObjectType = "BET_DELIVERABLE_SERVICE"
-	PublicImportErrorObjectTypeContent                           PublicImportErrorObjectType = "CONTENT"
-	PublicImportErrorObjectTypeConversation                      PublicImportErrorObjectType = "CONVERSATION"
-	PublicImportErrorObjectTypeBetAlert                          PublicImportErrorObjectType = "BET_ALERT"
-	PublicImportErrorObjectTypePortal                            PublicImportErrorObjectType = "PORTAL"
-	PublicImportErrorObjectTypeQuote                             PublicImportErrorObjectType = "QUOTE"
-	PublicImportErrorObjectTypeFormSubmissionInbounddb           PublicImportErrorObjectType = "FORM_SUBMISSION_INBOUNDDB"
-	PublicImportErrorObjectTypeQuota                             PublicImportErrorObjectType = "QUOTA"
-	PublicImportErrorObjectTypeUnsubscribe                       PublicImportErrorObjectType = "UNSUBSCRIBE"
-	PublicImportErrorObjectTypeCommunication                     PublicImportErrorObjectType = "COMMUNICATION"
-	PublicImportErrorObjectTypeFeedbackSubmission                PublicImportErrorObjectType = "FEEDBACK_SUBMISSION"
-	PublicImportErrorObjectTypeAttribution                       PublicImportErrorObjectType = "ATTRIBUTION"
-	PublicImportErrorObjectTypeSalesforceSyncError               PublicImportErrorObjectType = "SALESFORCE_SYNC_ERROR"
-	PublicImportErrorObjectTypeRestorableCRMObject               PublicImportErrorObjectType = "RESTORABLE_CRM_OBJECT"
-	PublicImportErrorObjectTypeHub                               PublicImportErrorObjectType = "HUB"
-	PublicImportErrorObjectTypeLandingPage                       PublicImportErrorObjectType = "LANDING_PAGE"
-	PublicImportErrorObjectTypeProductOrFolder                   PublicImportErrorObjectType = "PRODUCT_OR_FOLDER"
-	PublicImportErrorObjectTypeTask                              PublicImportErrorObjectType = "TASK"
-	PublicImportErrorObjectTypeForm                              PublicImportErrorObjectType = "FORM"
-	PublicImportErrorObjectTypeMarketingEmail                    PublicImportErrorObjectType = "MARKETING_EMAIL"
+	PublicImportErrorObjectTypeAbandonedCart                     PublicImportErrorObjectType = "ABANDONED_CART"
+	PublicImportErrorObjectTypeAcceptanceTest                    PublicImportErrorObjectType = "ACCEPTANCE_TEST"
+	PublicImportErrorObjectTypeAd                                PublicImportErrorObjectType = "AD"
 	PublicImportErrorObjectTypeAdAccount                         PublicImportErrorObjectType = "AD_ACCOUNT"
 	PublicImportErrorObjectTypeAdCampaign                        PublicImportErrorObjectType = "AD_CAMPAIGN"
 	PublicImportErrorObjectTypeAdGroup                           PublicImportErrorObjectType = "AD_GROUP"
-	PublicImportErrorObjectTypeAd                                PublicImportErrorObjectType = "AD"
-	PublicImportErrorObjectTypeKeyword                           PublicImportErrorObjectType = "KEYWORD"
-	PublicImportErrorObjectTypeCampaign                          PublicImportErrorObjectType = "CAMPAIGN"
-	PublicImportErrorObjectTypeSocialChannel                     PublicImportErrorObjectType = "SOCIAL_CHANNEL"
-	PublicImportErrorObjectTypeSocialPost                        PublicImportErrorObjectType = "SOCIAL_POST"
-	PublicImportErrorObjectTypeSitePage                          PublicImportErrorObjectType = "SITE_PAGE"
-	PublicImportErrorObjectTypeBlogPost                          PublicImportErrorObjectType = "BLOG_POST"
-	PublicImportErrorObjectTypeImport                            PublicImportErrorObjectType = "IMPORT"
-	PublicImportErrorObjectTypeExport                            PublicImportErrorObjectType = "EXPORT"
-	PublicImportErrorObjectTypeCta                               PublicImportErrorObjectType = "CTA"
-	PublicImportErrorObjectTypeTaskTemplate                      PublicImportErrorObjectType = "TASK_TEMPLATE"
-	PublicImportErrorObjectTypeAutomationPlatformFlow            PublicImportErrorObjectType = "AUTOMATION_PLATFORM_FLOW"
-	PublicImportErrorObjectTypeObjectList                        PublicImportErrorObjectType = "OBJECT_LIST"
-	PublicImportErrorObjectTypeNote                              PublicImportErrorObjectType = "NOTE"
-	PublicImportErrorObjectTypeMeetingEvent                      PublicImportErrorObjectType = "MEETING_EVENT"
-	PublicImportErrorObjectTypeCall                              PublicImportErrorObjectType = "CALL"
-	PublicImportErrorObjectTypeEmail                             PublicImportErrorObjectType = "EMAIL"
-	PublicImportErrorObjectTypePublishingTask                    PublicImportErrorObjectType = "PUBLISHING_TASK"
-	PublicImportErrorObjectTypeConversationSession               PublicImportErrorObjectType = "CONVERSATION_SESSION"
-	PublicImportErrorObjectTypeContactCreateAttribution          PublicImportErrorObjectType = "CONTACT_CREATE_ATTRIBUTION"
-	PublicImportErrorObjectTypeInvoice                           PublicImportErrorObjectType = "INVOICE"
-	PublicImportErrorObjectTypeMarketingEvent                    PublicImportErrorObjectType = "MARKETING_EVENT"
-	PublicImportErrorObjectTypeConversationInbox                 PublicImportErrorObjectType = "CONVERSATION_INBOX"
-	PublicImportErrorObjectTypeChatflow                          PublicImportErrorObjectType = "CHATFLOW"
-	PublicImportErrorObjectTypeMediaBridge                       PublicImportErrorObjectType = "MEDIA_BRIDGE"
-	PublicImportErrorObjectTypeSequence                          PublicImportErrorObjectType = "SEQUENCE"
-	PublicImportErrorObjectTypeSequenceStep                      PublicImportErrorObjectType = "SEQUENCE_STEP"
-	PublicImportErrorObjectTypeForecast                          PublicImportErrorObjectType = "FORECAST"
-	PublicImportErrorObjectTypeSnippet                           PublicImportErrorObjectType = "SNIPPET"
-	PublicImportErrorObjectTypeTemplate                          PublicImportErrorObjectType = "TEMPLATE"
-	PublicImportErrorObjectTypeDealCreateAttribution             PublicImportErrorObjectType = "DEAL_CREATE_ATTRIBUTION"
-	PublicImportErrorObjectTypeQuoteTemplate                     PublicImportErrorObjectType = "QUOTE_TEMPLATE"
-	PublicImportErrorObjectTypeQuoteModule                       PublicImportErrorObjectType = "QUOTE_MODULE"
-	PublicImportErrorObjectTypeQuoteModuleField                  PublicImportErrorObjectType = "QUOTE_MODULE_FIELD"
-	PublicImportErrorObjectTypeQuoteField                        PublicImportErrorObjectType = "QUOTE_FIELD"
-	PublicImportErrorObjectTypeSequenceEnrollment                PublicImportErrorObjectType = "SEQUENCE_ENROLLMENT"
-	PublicImportErrorObjectTypeSubscription                      PublicImportErrorObjectType = "SUBSCRIPTION"
-	PublicImportErrorObjectTypeAcceptanceTest                    PublicImportErrorObjectType = "ACCEPTANCE_TEST"
-	PublicImportErrorObjectTypeSocialBroadcast                   PublicImportErrorObjectType = "SOCIAL_BROADCAST"
-	PublicImportErrorObjectTypeDealSplit                         PublicImportErrorObjectType = "DEAL_SPLIT"
-	PublicImportErrorObjectTypeDealRegistration                  PublicImportErrorObjectType = "DEAL_REGISTRATION"
-	PublicImportErrorObjectTypeGoalTarget                        PublicImportErrorObjectType = "GOAL_TARGET"
-	PublicImportErrorObjectTypeGoalTargetGroup                   PublicImportErrorObjectType = "GOAL_TARGET_GROUP"
-	PublicImportErrorObjectTypePortalObjectSyncMessage           PublicImportErrorObjectType = "PORTAL_OBJECT_SYNC_MESSAGE"
-	PublicImportErrorObjectTypeFileManagerFile                   PublicImportErrorObjectType = "FILE_MANAGER_FILE"
-	PublicImportErrorObjectTypeFileManagerFolder                 PublicImportErrorObjectType = "FILE_MANAGER_FOLDER"
-	PublicImportErrorObjectTypeSequenceStepEnrollment            PublicImportErrorObjectType = "SEQUENCE_STEP_ENROLLMENT"
+	PublicImportErrorObjectTypeAIForecast                        PublicImportErrorObjectType = "AI_FORECAST"
+	PublicImportErrorObjectTypeAllPages                          PublicImportErrorObjectType = "ALL_PAGES"
 	PublicImportErrorObjectTypeApproval                          PublicImportErrorObjectType = "APPROVAL"
 	PublicImportErrorObjectTypeApprovalStep                      PublicImportErrorObjectType = "APPROVAL_STEP"
+	PublicImportErrorObjectTypeAttribution                       PublicImportErrorObjectType = "ATTRIBUTION"
+	PublicImportErrorObjectTypeAudience                          PublicImportErrorObjectType = "AUDIENCE"
+	PublicImportErrorObjectTypeAutomationJourney                 PublicImportErrorObjectType = "AUTOMATION_JOURNEY"
+	PublicImportErrorObjectTypeAutomationPlatformFlow            PublicImportErrorObjectType = "AUTOMATION_PLATFORM_FLOW"
+	PublicImportErrorObjectTypeAutomationPlatformFlowAction      PublicImportErrorObjectType = "AUTOMATION_PLATFORM_FLOW_ACTION"
+	PublicImportErrorObjectTypeBetAlert                          PublicImportErrorObjectType = "BET_ALERT"
+	PublicImportErrorObjectTypeBetDeliverableService             PublicImportErrorObjectType = "BET_DELIVERABLE_SERVICE"
+	PublicImportErrorObjectTypeBlogListingPage                   PublicImportErrorObjectType = "BLOG_LISTING_PAGE"
+	PublicImportErrorObjectTypeBlogPost                          PublicImportErrorObjectType = "BLOG_POST"
+	PublicImportErrorObjectTypeCall                              PublicImportErrorObjectType = "CALL"
+	PublicImportErrorObjectTypeCampaign                          PublicImportErrorObjectType = "CAMPAIGN"
+	PublicImportErrorObjectTypeCampaignBudgetItem                PublicImportErrorObjectType = "CAMPAIGN_BUDGET_ITEM"
+	PublicImportErrorObjectTypeCampaignSpendItem                 PublicImportErrorObjectType = "CAMPAIGN_SPEND_ITEM"
+	PublicImportErrorObjectTypeCampaignStep                      PublicImportErrorObjectType = "CAMPAIGN_STEP"
+	PublicImportErrorObjectTypeCampaignTemplate                  PublicImportErrorObjectType = "CAMPAIGN_TEMPLATE"
+	PublicImportErrorObjectTypeCampaignTemplateStep              PublicImportErrorObjectType = "CAMPAIGN_TEMPLATE_STEP"
+	PublicImportErrorObjectTypeCart                              PublicImportErrorObjectType = "CART"
+	PublicImportErrorObjectTypeCaseStudy                         PublicImportErrorObjectType = "CASE_STUDY"
+	PublicImportErrorObjectTypeChatflow                          PublicImportErrorObjectType = "CHATFLOW"
+	PublicImportErrorObjectTypeClip                              PublicImportErrorObjectType = "CLIP"
+	PublicImportErrorObjectTypeCmsURL                            PublicImportErrorObjectType = "CMS_URL"
+	PublicImportErrorObjectTypeComboEventConfiguration           PublicImportErrorObjectType = "COMBO_EVENT_CONFIGURATION"
+	PublicImportErrorObjectTypeCommercePayment                   PublicImportErrorObjectType = "COMMERCE_PAYMENT"
+	PublicImportErrorObjectTypeCommunication                     PublicImportErrorObjectType = "COMMUNICATION"
+	PublicImportErrorObjectTypeCompany                           PublicImportErrorObjectType = "COMPANY"
+	PublicImportErrorObjectTypeContact                           PublicImportErrorObjectType = "CONTACT"
+	PublicImportErrorObjectTypeContactCreateAttribution          PublicImportErrorObjectType = "CONTACT_CREATE_ATTRIBUTION"
+	PublicImportErrorObjectTypeContent                           PublicImportErrorObjectType = "CONTENT"
+	PublicImportErrorObjectTypeContentAudit                      PublicImportErrorObjectType = "CONTENT_AUDIT"
+	PublicImportErrorObjectTypeContentAuditPage                  PublicImportErrorObjectType = "CONTENT_AUDIT_PAGE"
+	PublicImportErrorObjectTypeConversation                      PublicImportErrorObjectType = "CONVERSATION"
+	PublicImportErrorObjectTypeConversationInbox                 PublicImportErrorObjectType = "CONVERSATION_INBOX"
+	PublicImportErrorObjectTypeConversationSession               PublicImportErrorObjectType = "CONVERSATION_SESSION"
+	PublicImportErrorObjectTypeCrmObjectsDummyType               PublicImportErrorObjectType = "CRM_OBJECTS_DUMMY_TYPE"
+	PublicImportErrorObjectTypeCrmPipelinesDummyType             PublicImportErrorObjectType = "CRM_PIPELINES_DUMMY_TYPE"
+	PublicImportErrorObjectTypeCta                               PublicImportErrorObjectType = "CTA"
 	PublicImportErrorObjectTypeCtaVariant                        PublicImportErrorObjectType = "CTA_VARIANT"
-	PublicImportErrorObjectTypeSalesDocument                     PublicImportErrorObjectType = "SALES_DOCUMENT"
-	PublicImportErrorObjectTypeDiscount                          PublicImportErrorObjectType = "DISCOUNT"
-	PublicImportErrorObjectTypeFee                               PublicImportErrorObjectType = "FEE"
-	PublicImportErrorObjectTypeTax                               PublicImportErrorObjectType = "TAX"
-	PublicImportErrorObjectTypeMarketingCalendar                 PublicImportErrorObjectType = "MARKETING_CALENDAR"
-	PublicImportErrorObjectTypePermissionsTesting                PublicImportErrorObjectType = "PERMISSIONS_TESTING"
-	PublicImportErrorObjectTypePrivacyScannerCookie              PublicImportErrorObjectType = "PRIVACY_SCANNER_COOKIE"
+	PublicImportErrorObjectTypeDataPrivacyConsent                PublicImportErrorObjectType = "DATA_PRIVACY_CONSENT"
 	PublicImportErrorObjectTypeDataSyncState                     PublicImportErrorObjectType = "DATA_SYNC_STATE"
-	PublicImportErrorObjectTypeWebInteractive                    PublicImportErrorObjectType = "WEB_INTERACTIVE"
-	PublicImportErrorObjectTypePlaybook                          PublicImportErrorObjectType = "PLAYBOOK"
+	PublicImportErrorObjectTypeDeal                              PublicImportErrorObjectType = "DEAL"
+	PublicImportErrorObjectTypeDealCreateAttribution             PublicImportErrorObjectType = "DEAL_CREATE_ATTRIBUTION"
+	PublicImportErrorObjectTypeDealRegistration                  PublicImportErrorObjectType = "DEAL_REGISTRATION"
+	PublicImportErrorObjectTypeDealSplit                         PublicImportErrorObjectType = "DEAL_SPLIT"
+	PublicImportErrorObjectTypeDiscount                          PublicImportErrorObjectType = "DISCOUNT"
+	PublicImportErrorObjectTypeDiscountCode                      PublicImportErrorObjectType = "DISCOUNT_CODE"
+	PublicImportErrorObjectTypeDiscountTemplate                  PublicImportErrorObjectType = "DISCOUNT_TEMPLATE"
+	PublicImportErrorObjectTypeEmail                             PublicImportErrorObjectType = "EMAIL"
+	PublicImportErrorObjectTypeEngagement                        PublicImportErrorObjectType = "ENGAGEMENT"
+	PublicImportErrorObjectTypeExport                            PublicImportErrorObjectType = "EXPORT"
+	PublicImportErrorObjectTypeExternalWebURL                    PublicImportErrorObjectType = "EXTERNAL_WEB_URL"
+	PublicImportErrorObjectTypeFee                               PublicImportErrorObjectType = "FEE"
+	PublicImportErrorObjectTypeFeedbackSubmission                PublicImportErrorObjectType = "FEEDBACK_SUBMISSION"
+	PublicImportErrorObjectTypeFeedbackSurvey                    PublicImportErrorObjectType = "FEEDBACK_SURVEY"
+	PublicImportErrorObjectTypeFileManagerFile                   PublicImportErrorObjectType = "FILE_MANAGER_FILE"
+	PublicImportErrorObjectTypeFileManagerFolder                 PublicImportErrorObjectType = "FILE_MANAGER_FOLDER"
 	PublicImportErrorObjectTypeFolder                            PublicImportErrorObjectType = "FOLDER"
+	PublicImportErrorObjectTypeForecast                          PublicImportErrorObjectType = "FORECAST"
+	PublicImportErrorObjectTypeForm                              PublicImportErrorObjectType = "FORM"
+	PublicImportErrorObjectTypeFormSubmissionInbounddb           PublicImportErrorObjectType = "FORM_SUBMISSION_INBOUNDDB"
+	PublicImportErrorObjectTypeGoalTarget                        PublicImportErrorObjectType = "GOAL_TARGET"
+	PublicImportErrorObjectTypeGoalTargetGroup                   PublicImportErrorObjectType = "GOAL_TARGET_GROUP"
+	PublicImportErrorObjectTypeGoalTemplate                      PublicImportErrorObjectType = "GOAL_TEMPLATE"
+	PublicImportErrorObjectTypeGscProperty                       PublicImportErrorObjectType = "GSC_PROPERTY"
+	PublicImportErrorObjectTypeHub                               PublicImportErrorObjectType = "HUB"
+	PublicImportErrorObjectTypeImport                            PublicImportErrorObjectType = "IMPORT"
+	PublicImportErrorObjectTypeInvoice                           PublicImportErrorObjectType = "INVOICE"
+	PublicImportErrorObjectTypeKeyword                           PublicImportErrorObjectType = "KEYWORD"
+	PublicImportErrorObjectTypeKnowledgeArticle                  PublicImportErrorObjectType = "KNOWLEDGE_ARTICLE"
+	PublicImportErrorObjectTypeLandingPage                       PublicImportErrorObjectType = "LANDING_PAGE"
+	PublicImportErrorObjectTypeLead                              PublicImportErrorObjectType = "LEAD"
+	PublicImportErrorObjectTypeLineItem                          PublicImportErrorObjectType = "LINE_ITEM"
+	PublicImportErrorObjectTypeMarketingCalendar                 PublicImportErrorObjectType = "MARKETING_CALENDAR"
+	PublicImportErrorObjectTypeMarketingCampaignUtm              PublicImportErrorObjectType = "MARKETING_CAMPAIGN_UTM"
+	PublicImportErrorObjectTypeMarketingEmail                    PublicImportErrorObjectType = "MARKETING_EMAIL"
+	PublicImportErrorObjectTypeMarketingEvent                    PublicImportErrorObjectType = "MARKETING_EVENT"
+	PublicImportErrorObjectTypeMarketingEventAttendance          PublicImportErrorObjectType = "MARKETING_EVENT_ATTENDANCE"
+	PublicImportErrorObjectTypeMarketingSMS                      PublicImportErrorObjectType = "MARKETING_SMS"
+	PublicImportErrorObjectTypeMediaBridge                       PublicImportErrorObjectType = "MEDIA_BRIDGE"
+	PublicImportErrorObjectTypeMeetingEvent                      PublicImportErrorObjectType = "MEETING_EVENT"
+	PublicImportErrorObjectTypeMic                               PublicImportErrorObjectType = "MIC"
+	PublicImportErrorObjectTypeNote                              PublicImportErrorObjectType = "NOTE"
+	PublicImportErrorObjectTypeObjectList                        PublicImportErrorObjectType = "OBJECT_LIST"
+	PublicImportErrorObjectTypeOrder                             PublicImportErrorObjectType = "ORDER"
+	PublicImportErrorObjectTypeOwner                             PublicImportErrorObjectType = "OWNER"
+	PublicImportErrorObjectTypePartnerAccount                    PublicImportErrorObjectType = "PARTNER_ACCOUNT"
+	PublicImportErrorObjectTypePartnerClient                     PublicImportErrorObjectType = "PARTNER_CLIENT"
+	PublicImportErrorObjectTypePartnerClientRevenue              PublicImportErrorObjectType = "PARTNER_CLIENT_REVENUE"
+	PublicImportErrorObjectTypePartnerService                    PublicImportErrorObjectType = "PARTNER_SERVICE"
+	PublicImportErrorObjectTypePaymentLink                       PublicImportErrorObjectType = "PAYMENT_LINK"
+	PublicImportErrorObjectTypePaymentSchedule                   PublicImportErrorObjectType = "PAYMENT_SCHEDULE"
+	PublicImportErrorObjectTypePaymentScheduleInstallment        PublicImportErrorObjectType = "PAYMENT_SCHEDULE_INSTALLMENT"
+	PublicImportErrorObjectTypePermissionsTesting                PublicImportErrorObjectType = "PERMISSIONS_TESTING"
+	PublicImportErrorObjectTypePlaybook                          PublicImportErrorObjectType = "PLAYBOOK"
 	PublicImportErrorObjectTypePlaybookQuestion                  PublicImportErrorObjectType = "PLAYBOOK_QUESTION"
 	PublicImportErrorObjectTypePlaybookSubmission                PublicImportErrorObjectType = "PLAYBOOK_SUBMISSION"
 	PublicImportErrorObjectTypePlaybookSubmissionAnswer          PublicImportErrorObjectType = "PLAYBOOK_SUBMISSION_ANSWER"
-	PublicImportErrorObjectTypeCommercePayment                   PublicImportErrorObjectType = "COMMERCE_PAYMENT"
-	PublicImportErrorObjectTypeGscProperty                       PublicImportErrorObjectType = "GSC_PROPERTY"
-	PublicImportErrorObjectTypeSoxProtectedDummyType             PublicImportErrorObjectType = "SOX_PROTECTED_DUMMY_TYPE"
-	PublicImportErrorObjectTypeBlogListingPage                   PublicImportErrorObjectType = "BLOG_LISTING_PAGE"
+	PublicImportErrorObjectTypePlaylist                          PublicImportErrorObjectType = "PLAYLIST"
+	PublicImportErrorObjectTypePlaylistFolder                    PublicImportErrorObjectType = "PLAYLIST_FOLDER"
+	PublicImportErrorObjectTypePodcastEpisode                    PublicImportErrorObjectType = "PODCAST_EPISODE"
+	PublicImportErrorObjectTypePortal                            PublicImportErrorObjectType = "PORTAL"
+	PublicImportErrorObjectTypePortalObjectSyncMessage           PublicImportErrorObjectType = "PORTAL_OBJECT_SYNC_MESSAGE"
+	PublicImportErrorObjectTypePostalMail                        PublicImportErrorObjectType = "POSTAL_MAIL"
+	PublicImportErrorObjectTypePrivacyScannerCookie              PublicImportErrorObjectType = "PRIVACY_SCANNER_COOKIE"
+	PublicImportErrorObjectTypeProduct                           PublicImportErrorObjectType = "PRODUCT"
+	PublicImportErrorObjectTypeProductOrFolder                   PublicImportErrorObjectType = "PRODUCT_OR_FOLDER"
+	PublicImportErrorObjectTypePropertyInfo                      PublicImportErrorObjectType = "PROPERTY_INFO"
+	PublicImportErrorObjectTypeProspectingAgentContactAssignment PublicImportErrorObjectType = "PROSPECTING_AGENT_CONTACT_ASSIGNMENT"
+	PublicImportErrorObjectTypePublishingTask                    PublicImportErrorObjectType = "PUBLISHING_TASK"
 	PublicImportErrorObjectTypeQuarantinedSubmission             PublicImportErrorObjectType = "QUARANTINED_SUBMISSION"
-	PublicImportErrorObjectTypePaymentSchedule                   PublicImportErrorObjectType = "PAYMENT_SCHEDULE"
-	PublicImportErrorObjectTypePaymentScheduleInstallment        PublicImportErrorObjectType = "PAYMENT_SCHEDULE_INSTALLMENT"
-	PublicImportErrorObjectTypeMarketingCampaignUtm              PublicImportErrorObjectType = "MARKETING_CAMPAIGN_UTM"
-	PublicImportErrorObjectTypeDiscountTemplate                  PublicImportErrorObjectType = "DISCOUNT_TEMPLATE"
-	PublicImportErrorObjectTypeDiscountCode                      PublicImportErrorObjectType = "DISCOUNT_CODE"
-	PublicImportErrorObjectTypeFeedbackSurvey                    PublicImportErrorObjectType = "FEEDBACK_SURVEY"
-	PublicImportErrorObjectTypeCmsURL                            PublicImportErrorObjectType = "CMS_URL"
+	PublicImportErrorObjectTypeQuota                             PublicImportErrorObjectType = "QUOTA"
+	PublicImportErrorObjectTypeQuote                             PublicImportErrorObjectType = "QUOTE"
+	PublicImportErrorObjectTypeQuoteField                        PublicImportErrorObjectType = "QUOTE_FIELD"
+	PublicImportErrorObjectTypeQuoteModule                       PublicImportErrorObjectType = "QUOTE_MODULE"
+	PublicImportErrorObjectTypeQuoteModuleField                  PublicImportErrorObjectType = "QUOTE_MODULE_FIELD"
+	PublicImportErrorObjectTypeQuoteTemplate                     PublicImportErrorObjectType = "QUOTE_TEMPLATE"
+	PublicImportErrorObjectTypeRestorableCrmObject               PublicImportErrorObjectType = "RESTORABLE_CRM_OBJECT"
+	PublicImportErrorObjectTypeRoster                            PublicImportErrorObjectType = "ROSTER"
+	PublicImportErrorObjectTypeRosterMember                      PublicImportErrorObjectType = "ROSTER_MEMBER"
+	PublicImportErrorObjectTypeSalesDocument                     PublicImportErrorObjectType = "SALES_DOCUMENT"
 	PublicImportErrorObjectTypeSalesTask                         PublicImportErrorObjectType = "SALES_TASK"
 	PublicImportErrorObjectTypeSalesWorkload                     PublicImportErrorObjectType = "SALES_WORKLOAD"
-	PublicImportErrorObjectTypeUser                              PublicImportErrorObjectType = "USER"
-	PublicImportErrorObjectTypePostalMail                        PublicImportErrorObjectType = "POSTAL_MAIL"
-	PublicImportErrorObjectTypeSchemasBackendTest                PublicImportErrorObjectType = "SCHEMAS_BACKEND_TEST"
-	PublicImportErrorObjectTypePaymentLink                       PublicImportErrorObjectType = "PAYMENT_LINK"
-	PublicImportErrorObjectTypeSubmissionTag                     PublicImportErrorObjectType = "SUBMISSION_TAG"
-	PublicImportErrorObjectTypeCampaignStep                      PublicImportErrorObjectType = "CAMPAIGN_STEP"
+	PublicImportErrorObjectTypeSalesforceSyncError               PublicImportErrorObjectType = "SALESFORCE_SYNC_ERROR"
 	PublicImportErrorObjectTypeSchedulingPage                    PublicImportErrorObjectType = "SCHEDULING_PAGE"
+	PublicImportErrorObjectTypeSchemasBackendTest                PublicImportErrorObjectType = "SCHEMAS_BACKEND_TEST"
+	PublicImportErrorObjectTypeScoreConfiguration                PublicImportErrorObjectType = "SCORE_CONFIGURATION"
+	PublicImportErrorObjectTypeSequence                          PublicImportErrorObjectType = "SEQUENCE"
+	PublicImportErrorObjectTypeSequenceEnrollment                PublicImportErrorObjectType = "SEQUENCE_ENROLLMENT"
+	PublicImportErrorObjectTypeSequenceStep                      PublicImportErrorObjectType = "SEQUENCE_STEP"
+	PublicImportErrorObjectTypeSequenceStepEnrollment            PublicImportErrorObjectType = "SEQUENCE_STEP_ENROLLMENT"
+	PublicImportErrorObjectTypeService                           PublicImportErrorObjectType = "SERVICE"
+	PublicImportErrorObjectTypeSitePage                          PublicImportErrorObjectType = "SITE_PAGE"
+	PublicImportErrorObjectTypeSnippet                           PublicImportErrorObjectType = "SNIPPET"
+	PublicImportErrorObjectTypeSocialBroadcast                   PublicImportErrorObjectType = "SOCIAL_BROADCAST"
+	PublicImportErrorObjectTypeSocialChannel                     PublicImportErrorObjectType = "SOCIAL_CHANNEL"
+	PublicImportErrorObjectTypeSocialPost                        PublicImportErrorObjectType = "SOCIAL_POST"
+	PublicImportErrorObjectTypeSocialProfile                     PublicImportErrorObjectType = "SOCIAL_PROFILE"
+	PublicImportErrorObjectTypeSoxProtectedDummyType             PublicImportErrorObjectType = "SOX_PROTECTED_DUMMY_TYPE"
 	PublicImportErrorObjectTypeSoxProtectedTestType              PublicImportErrorObjectType = "SOX_PROTECTED_TEST_TYPE"
-	PublicImportErrorObjectTypeOrder                             PublicImportErrorObjectType = "ORDER"
-	PublicImportErrorObjectTypeMarketingSMS                      PublicImportErrorObjectType = "MARKETING_SMS"
-	PublicImportErrorObjectTypePartnerAccount                    PublicImportErrorObjectType = "PARTNER_ACCOUNT"
-	PublicImportErrorObjectTypeCampaignTemplate                  PublicImportErrorObjectType = "CAMPAIGN_TEMPLATE"
-	PublicImportErrorObjectTypeCampaignTemplateStep              PublicImportErrorObjectType = "CAMPAIGN_TEMPLATE_STEP"
-	PublicImportErrorObjectTypePlaylist                          PublicImportErrorObjectType = "PLAYLIST"
-	PublicImportErrorObjectTypeClip                              PublicImportErrorObjectType = "CLIP"
-	PublicImportErrorObjectTypeCampaignBudgetItem                PublicImportErrorObjectType = "CAMPAIGN_BUDGET_ITEM"
-	PublicImportErrorObjectTypeCampaignSpendItem                 PublicImportErrorObjectType = "CAMPAIGN_SPEND_ITEM"
-	PublicImportErrorObjectTypeMic                               PublicImportErrorObjectType = "MIC"
-	PublicImportErrorObjectTypeContentAudit                      PublicImportErrorObjectType = "CONTENT_AUDIT"
-	PublicImportErrorObjectTypeContentAuditPage                  PublicImportErrorObjectType = "CONTENT_AUDIT_PAGE"
-	PublicImportErrorObjectTypePlaylistFolder                    PublicImportErrorObjectType = "PLAYLIST_FOLDER"
-	PublicImportErrorObjectTypeLead                              PublicImportErrorObjectType = "LEAD"
-	PublicImportErrorObjectTypeAbandonedCart                     PublicImportErrorObjectType = "ABANDONED_CART"
-	PublicImportErrorObjectTypeExternalWebURL                    PublicImportErrorObjectType = "EXTERNAL_WEB_URL"
+	PublicImportErrorObjectTypeSubmissionTag                     PublicImportErrorObjectType = "SUBMISSION_TAG"
+	PublicImportErrorObjectTypeSubscription                      PublicImportErrorObjectType = "SUBSCRIPTION"
+	PublicImportErrorObjectTypeTask                              PublicImportErrorObjectType = "TASK"
+	PublicImportErrorObjectTypeTaskTemplate                      PublicImportErrorObjectType = "TASK_TEMPLATE"
+	PublicImportErrorObjectTypeTax                               PublicImportErrorObjectType = "TAX"
+	PublicImportErrorObjectTypeTemplate                          PublicImportErrorObjectType = "TEMPLATE"
+	PublicImportErrorObjectTypeTicket                            PublicImportErrorObjectType = "TICKET"
+	PublicImportErrorObjectTypeUnknown                           PublicImportErrorObjectType = "UNKNOWN"
+	PublicImportErrorObjectTypeUnsubscribe                       PublicImportErrorObjectType = "UNSUBSCRIBE"
+	PublicImportErrorObjectTypeUser                              PublicImportErrorObjectType = "USER"
 	PublicImportErrorObjectTypeView                              PublicImportErrorObjectType = "VIEW"
 	PublicImportErrorObjectTypeViewBlock                         PublicImportErrorObjectType = "VIEW_BLOCK"
-	PublicImportErrorObjectTypeRoster                            PublicImportErrorObjectType = "ROSTER"
-	PublicImportErrorObjectTypeCart                              PublicImportErrorObjectType = "CART"
-	PublicImportErrorObjectTypeAutomationPlatformFlowAction      PublicImportErrorObjectType = "AUTOMATION_PLATFORM_FLOW_ACTION"
-	PublicImportErrorObjectTypeSocialProfile                     PublicImportErrorObjectType = "SOCIAL_PROFILE"
-	PublicImportErrorObjectTypePartnerClient                     PublicImportErrorObjectType = "PARTNER_CLIENT"
-	PublicImportErrorObjectTypeRosterMember                      PublicImportErrorObjectType = "ROSTER_MEMBER"
-	PublicImportErrorObjectTypeMarketingEventAttendance          PublicImportErrorObjectType = "MARKETING_EVENT_ATTENDANCE"
-	PublicImportErrorObjectTypeAllPages                          PublicImportErrorObjectType = "ALL_PAGES"
-	PublicImportErrorObjectTypeAIForecast                        PublicImportErrorObjectType = "AI_FORECAST"
-	PublicImportErrorObjectTypeCRMPipelinesDummyType             PublicImportErrorObjectType = "CRM_PIPELINES_DUMMY_TYPE"
-	PublicImportErrorObjectTypeKnowledgeArticle                  PublicImportErrorObjectType = "KNOWLEDGE_ARTICLE"
-	PublicImportErrorObjectTypePropertyInfo                      PublicImportErrorObjectType = "PROPERTY_INFO"
-	PublicImportErrorObjectTypeDataPrivacyConsent                PublicImportErrorObjectType = "DATA_PRIVACY_CONSENT"
-	PublicImportErrorObjectTypeGoalTemplate                      PublicImportErrorObjectType = "GOAL_TEMPLATE"
-	PublicImportErrorObjectTypeScoreConfiguration                PublicImportErrorObjectType = "SCORE_CONFIGURATION"
-	PublicImportErrorObjectTypeAudience                          PublicImportErrorObjectType = "AUDIENCE"
-	PublicImportErrorObjectTypePartnerClientRevenue              PublicImportErrorObjectType = "PARTNER_CLIENT_REVENUE"
-	PublicImportErrorObjectTypeAutomationJourney                 PublicImportErrorObjectType = "AUTOMATION_JOURNEY"
-	PublicImportErrorObjectTypeComboEventConfiguration           PublicImportErrorObjectType = "COMBO_EVENT_CONFIGURATION"
-	PublicImportErrorObjectTypeCRMObjectsDummyType               PublicImportErrorObjectType = "CRM_OBJECTS_DUMMY_TYPE"
-	PublicImportErrorObjectTypeCaseStudy                         PublicImportErrorObjectType = "CASE_STUDY"
-	PublicImportErrorObjectTypeService                           PublicImportErrorObjectType = "SERVICE"
-	PublicImportErrorObjectTypePodcastEpisode                    PublicImportErrorObjectType = "PODCAST_EPISODE"
-	PublicImportErrorObjectTypePartnerService                    PublicImportErrorObjectType = "PARTNER_SERVICE"
-	PublicImportErrorObjectTypeProspectingAgentContactAssignment PublicImportErrorObjectType = "PROSPECTING_AGENT_CONTACT_ASSIGNMENT"
-	PublicImportErrorObjectTypeUnknown                           PublicImportErrorObjectType = "UNKNOWN"
+	PublicImportErrorObjectTypeWebInteractive                    PublicImportErrorObjectType = "WEB_INTERACTIVE"
 )
 
 type PublicImportMetadata struct {
@@ -561,8 +575,8 @@ type PublicImportResponse struct {
 	OptOutImport bool `json:"optOutImport,required"`
 	// The status of the import.
 	//
-	// Any of "STARTED", "PROCESSING", "DONE", "FAILED", "CANCELED", "DEFERRED",
-	// "REVERTED".
+	// Any of "CANCELED", "DEFERRED", "DONE", "FAILED", "PROCESSING", "REVERTED",
+	// "STARTED".
 	State             PublicImportResponseState `json:"state,required"`
 	UpdatedAt         time.Time                 `json:"updatedAt,required" format:"date-time"`
 	ImportName        string                    `json:"importName"`
@@ -598,20 +612,20 @@ func (r *PublicImportResponse) UnmarshalJSON(data []byte) error {
 type PublicImportResponseState string
 
 const (
-	PublicImportResponseStateStarted    PublicImportResponseState = "STARTED"
-	PublicImportResponseStateProcessing PublicImportResponseState = "PROCESSING"
-	PublicImportResponseStateDone       PublicImportResponseState = "DONE"
-	PublicImportResponseStateFailed     PublicImportResponseState = "FAILED"
 	PublicImportResponseStateCanceled   PublicImportResponseState = "CANCELED"
 	PublicImportResponseStateDeferred   PublicImportResponseState = "DEFERRED"
+	PublicImportResponseStateDone       PublicImportResponseState = "DONE"
+	PublicImportResponseStateFailed     PublicImportResponseState = "FAILED"
+	PublicImportResponseStateProcessing PublicImportResponseState = "PROCESSING"
 	PublicImportResponseStateReverted   PublicImportResponseState = "REVERTED"
+	PublicImportResponseStateStarted    PublicImportResponseState = "STARTED"
 )
 
 type PublicImportResponseImportSource string
 
 const (
 	PublicImportResponseImportSourceAPI           PublicImportResponseImportSource = "API"
-	PublicImportResponseImportSourceCRMUi         PublicImportResponseImportSource = "CRM_UI"
+	PublicImportResponseImportSourceCrmUi         PublicImportResponseImportSource = "CRM_UI"
 	PublicImportResponseImportSourceImport        PublicImportResponseImportSource = "IMPORT"
 	PublicImportResponseImportSourceMobileAndroid PublicImportResponseImportSource = "MOBILE_ANDROID"
 	PublicImportResponseImportSourceMobileIos     PublicImportResponseImportSource = "MOBILE_IOS"

@@ -29,16 +29,18 @@ func TestURLRedirectNewWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Cms.URLRedirects.New(context.TODO(), cms.URLRedirectNewParams{
-		Destination:             "destination",
-		RedirectStyle:           0,
-		RoutePrefix:             "routePrefix",
-		IsMatchFullURL:          hubspotsdk.Bool(true),
-		IsMatchQueryString:      hubspotsdk.Bool(true),
-		IsOnlyAfterNotFound:     hubspotsdk.Bool(true),
-		IsPattern:               hubspotsdk.Bool(true),
-		IsProtocolAgnostic:      hubspotsdk.Bool(true),
-		IsTrailingSlashOptional: hubspotsdk.Bool(true),
-		Precedence:              hubspotsdk.Int(0),
+		URLMappingCreateRequestBody: cms.URLMappingCreateRequestBodyParam{
+			Destination:             "destination",
+			RedirectStyle:           0,
+			RoutePrefix:             "routePrefix",
+			IsMatchFullURL:          hubspotsdk.Bool(true),
+			IsMatchQueryString:      hubspotsdk.Bool(true),
+			IsOnlyAfterNotFound:     hubspotsdk.Bool(true),
+			IsPattern:               hubspotsdk.Bool(true),
+			IsProtocolAgnostic:      hubspotsdk.Bool(true),
+			IsTrailingSlashOptional: hubspotsdk.Bool(true),
+			Precedence:              hubspotsdk.Int(0),
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -66,19 +68,21 @@ func TestURLRedirectUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"urlRedirectId",
 		cms.URLRedirectUpdateParams{
-			ID:                      "id",
-			Destination:             "destination",
-			IsMatchFullURL:          true,
-			IsMatchQueryString:      true,
-			IsOnlyAfterNotFound:     true,
-			IsPattern:               true,
-			IsProtocolAgnostic:      true,
-			IsTrailingSlashOptional: true,
-			Precedence:              0,
-			RedirectStyle:           0,
-			RoutePrefix:             "routePrefix",
-			Created:                 hubspotsdk.Time(time.Now()),
-			Updated:                 hubspotsdk.Time(time.Now()),
+			URLMapping: cms.URLMappingParam{
+				ID:                      "id",
+				Destination:             "destination",
+				IsMatchFullURL:          true,
+				IsMatchQueryString:      true,
+				IsOnlyAfterNotFound:     true,
+				IsPattern:               true,
+				IsProtocolAgnostic:      true,
+				IsTrailingSlashOptional: true,
+				Precedence:              0,
+				RedirectStyle:           0,
+				RoutePrefix:             "routePrefix",
+				Created:                 hubspotsdk.Time(time.Now()),
+				Updated:                 hubspotsdk.Time(time.Now()),
+			},
 		},
 	)
 	if err != nil {

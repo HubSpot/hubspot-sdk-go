@@ -10,7 +10,6 @@ import (
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
 	"github.com/stainless-sdks/hubspot-sdk-go/cms"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
@@ -33,7 +32,7 @@ func TestMediaBridgePropertyNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgePropertyNewParams{
-			AppID: "appId",
+			AppID: 0,
 			PropertyCreate: shared.PropertyCreateParam{
 				FieldType:          shared.PropertyCreateFieldTypeBooleancheckbox,
 				GroupName:          "groupName",
@@ -41,7 +40,7 @@ func TestMediaBridgePropertyNewWithOptionalParams(t *testing.T) {
 				Name:               "name",
 				Type:               shared.PropertyCreateTypeBool,
 				CalculationFormula: hubspotsdk.String("calculationFormula"),
-				DataSensitivity:    shared.PropertyCreateDataSensitivityNonSensitive,
+				DataSensitivity:    shared.PropertyCreateDataSensitivityHighlySensitive,
 				Description:        hubspotsdk.String("description"),
 				DisplayOrder:       hubspotsdk.Int(0),
 				ExternalOptions:    hubspotsdk.Bool(true),
@@ -85,25 +84,27 @@ func TestMediaBridgePropertyUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"propertyName",
 		cms.MediaBridgePropertyUpdateParams{
-			AppID:              "appId",
-			ObjectType:         "objectType",
-			CalculationFormula: hubspotsdk.String("calculationFormula"),
-			Description:        hubspotsdk.String("description"),
-			DisplayOrder:       hubspotsdk.Int(0),
-			FieldType:          cms.MediaBridgePropertyUpdateParamsFieldTypeBooleancheckbox,
-			FormField:          hubspotsdk.Bool(true),
-			GroupName:          hubspotsdk.String("groupName"),
-			HasUniqueValue:     hubspotsdk.Bool(true),
-			Hidden:             hubspotsdk.Bool(true),
-			Label:              hubspotsdk.String("label"),
-			Options: []shared.OptionInputParam{{
-				DisplayOrder: 0,
-				Hidden:       true,
-				Label:        "label",
-				Value:        "value",
-				Description:  hubspotsdk.String("description"),
-			}},
-			Type: cms.MediaBridgePropertyUpdateParamsTypeBool,
+			AppID:      0,
+			ObjectType: "objectType",
+			MediaBridgePropertyUpdate: cms.MediaBridgePropertyUpdateParam{
+				CalculationFormula: hubspotsdk.String("calculationFormula"),
+				Description:        hubspotsdk.String("description"),
+				DisplayOrder:       hubspotsdk.Int(0),
+				FieldType:          cms.MediaBridgePropertyUpdateFieldTypeBooleancheckbox,
+				FormField:          hubspotsdk.Bool(true),
+				GroupName:          hubspotsdk.String("groupName"),
+				HasUniqueValue:     hubspotsdk.Bool(true),
+				Hidden:             hubspotsdk.Bool(true),
+				Label:              hubspotsdk.String("label"),
+				Options: []shared.OptionInputParam{{
+					DisplayOrder: 0,
+					Hidden:       true,
+					Label:        "label",
+					Value:        "value",
+					Description:  hubspotsdk.String("description"),
+				}},
+				Type: cms.MediaBridgePropertyUpdateTypeBool,
+			},
 		},
 	)
 	if err != nil {
@@ -115,7 +116,7 @@ func TestMediaBridgePropertyUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestMediaBridgePropertyList(t *testing.T) {
+func TestMediaBridgePropertyListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -132,7 +133,9 @@ func TestMediaBridgePropertyList(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgePropertyListParams{
-			AppID: "appId",
+			AppID:      0,
+			Archived:   hubspotsdk.Bool(true),
+			Properties: hubspotsdk.String("properties"),
 		},
 	)
 	if err != nil {
@@ -161,42 +164,8 @@ func TestMediaBridgePropertyDelete(t *testing.T) {
 		context.TODO(),
 		"propertyName",
 		cms.MediaBridgePropertyDeleteParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestMediaBridgePropertyArchiveBatch(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	err := client.Cms.MediaBridge.Properties.ArchiveBatch(
-		context.TODO(),
-		"objectType",
-		cms.MediaBridgePropertyArchiveBatchParams{
-			AppID: "appId",
-			BatchInputPropertyName: shared.BatchInputPropertyNameParam{
-				Inputs: []shared.PropertyNameParam{{
-					Name: "name",
-				}},
-			},
 		},
 	)
 	if err != nil {
@@ -225,7 +194,7 @@ func TestMediaBridgePropertyNewBatch(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgePropertyNewBatchParams{
-			AppID: "appId",
+			AppID: 0,
 			BatchInputPropertyCreate: shared.BatchInputPropertyCreateParam{
 				Inputs: []shared.PropertyCreateParam{{
 					FieldType:          shared.PropertyCreateFieldTypeBooleancheckbox,
@@ -234,7 +203,7 @@ func TestMediaBridgePropertyNewBatch(t *testing.T) {
 					Name:               "name",
 					Type:               shared.PropertyCreateTypeBool,
 					CalculationFormula: hubspotsdk.String("calculationFormula"),
-					DataSensitivity:    shared.PropertyCreateDataSensitivityNonSensitive,
+					DataSensitivity:    shared.PropertyCreateDataSensitivityHighlySensitive,
 					Description:        hubspotsdk.String("description"),
 					DisplayOrder:       hubspotsdk.Int(0),
 					ExternalOptions:    hubspotsdk.Bool(true),
@@ -262,7 +231,41 @@ func TestMediaBridgePropertyNewBatch(t *testing.T) {
 	}
 }
 
-func TestMediaBridgePropertyGet(t *testing.T) {
+func TestMediaBridgePropertyDeleteBatch(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	err := client.Cms.MediaBridge.Properties.DeleteBatch(
+		context.TODO(),
+		"objectType",
+		cms.MediaBridgePropertyDeleteBatchParams{
+			AppID: 0,
+			BatchInputPropertyName: shared.BatchInputPropertyNameParam{
+				Inputs: []shared.PropertyNameParam{{
+					Name: "name",
+				}},
+			},
+		},
+	)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestMediaBridgePropertyGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -279,8 +282,10 @@ func TestMediaBridgePropertyGet(t *testing.T) {
 		context.TODO(),
 		"propertyName",
 		cms.MediaBridgePropertyGetParams{
-			AppID:      "appId",
+			AppID:      0,
 			ObjectType: "objectType",
+			Archived:   hubspotsdk.Bool(true),
+			Properties: hubspotsdk.String("properties"),
 		},
 	)
 	if err != nil {
@@ -292,7 +297,7 @@ func TestMediaBridgePropertyGet(t *testing.T) {
 	}
 }
 
-func TestMediaBridgePropertyGetBatchWithOptionalParams(t *testing.T) {
+func TestMediaBridgePropertyGetBatch(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -309,13 +314,13 @@ func TestMediaBridgePropertyGetBatchWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		cms.MediaBridgePropertyGetBatchParams{
-			AppID: "appId",
-			BatchReadInputPropertyName: crm.BatchReadInputPropertyNameParam{
-				Archived: true,
+			AppID: 0,
+			BatchReadInputPropertyName: shared.BatchReadInputPropertyNameParam{
+				Archived:        true,
+				DataSensitivity: shared.BatchReadInputPropertyNameDataSensitivityHighlySensitive,
 				Inputs: []shared.PropertyNameParam{{
 					Name: "name",
 				}},
-				DataSensitivity: crm.BatchReadInputPropertyNameDataSensitivityNonSensitive,
 			},
 		},
 	)

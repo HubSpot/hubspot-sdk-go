@@ -28,12 +28,9 @@ func TestUserBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Users.Batch.New(context.TODO(), crm.UserBatchNewParams{
+	_, err := client.Crm.Users.Batch.New(context.TODO(), crm.UserBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 			Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -43,6 +40,9 @@ func TestUserBatchNew(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 				ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 			}},
 		},
@@ -69,7 +69,7 @@ func TestUserBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Users.Batch.Update(context.TODO(), crm.UserBatchUpdateParams{
+	_, err := client.Crm.Users.Batch.Update(context.TODO(), crm.UserBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
 			Inputs: []crm.SimplePublicObjectBatchInputParam{{
 				ID: "id",
@@ -103,7 +103,7 @@ func TestUserBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Users.Batch.Delete(context.TODO(), crm.UserBatchDeleteParams{
+	err := client.Crm.Users.Batch.Delete(context.TODO(), crm.UserBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -132,7 +132,7 @@ func TestUserBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Users.Batch.Get(context.TODO(), crm.UserBatchGetParams{
+	_, err := client.Crm.Users.Batch.Get(context.TODO(), crm.UserBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -165,7 +165,7 @@ func TestUserBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Users.Batch.Upsert(context.TODO(), crm.UserBatchUpsertParams{
+	_, err := client.Crm.Users.Batch.Upsert(context.TODO(), crm.UserBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
 			Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
 				ID: "id",

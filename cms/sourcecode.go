@@ -5,6 +5,7 @@ package cms
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -16,6 +17,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiform"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
@@ -24,7 +26,7 @@ import (
 )
 
 // SourceCodeService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -47,7 +49,7 @@ func NewSourceCodeService(opts ...option.RequestOption) (r SourceCodeService) {
 // the specified path.
 //
 // Deprecated: deprecated
-func (r *SourceCodeService) New(ctx context.Context, path string, params SourceCodeNewParams, opts ...option.RequestOption) (res *SourceCodeNewResponse, err error) {
+func (r *SourceCodeService) New(ctx context.Context, path string, params SourceCodeNewParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
@@ -117,7 +119,7 @@ func (r *SourceCodeService) GetExtractionStatus(ctx context.Context, taskID int6
 
 // Gets the metadata object for the file at the specified path in the specified
 // environment.
-func (r *SourceCodeService) GetMetadata(ctx context.Context, path string, params SourceCodeGetMetadataParams, opts ...option.RequestOption) (res *SourceCodeGetMetadataResponse, err error) {
+func (r *SourceCodeService) GetMetadata(ctx context.Context, path string, params SourceCodeGetMetadataParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
@@ -134,7 +136,7 @@ func (r *SourceCodeService) GetMetadata(ctx context.Context, path string, params
 
 // Upserts a file at the specified path in the specified environment. Accepts
 // multipart/form-data content type.
-func (r *SourceCodeService) Upsert(ctx context.Context, path string, params SourceCodeUpsertParams, opts ...option.RequestOption) (res *SourceCodeUpsertResponse, err error) {
+func (r *SourceCodeService) Upsert(ctx context.Context, path string, params SourceCodeUpsertParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
@@ -167,7 +169,7 @@ func (r *SourceCodeService) Validate(ctx context.Context, path string, params So
 	return
 }
 
-type SourceCodeNewResponse struct {
+type AssetFileMetadata struct {
 	// The path of the file in the CMS Developer File System.
 	ID string `json:"id,required"`
 	// Timestamp of when the object was first created.
@@ -200,84 +202,22 @@ type SourceCodeNewResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r SourceCodeNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *SourceCodeNewResponse) UnmarshalJSON(data []byte) error {
+func (r AssetFileMetadata) RawJSON() string { return r.JSON.raw }
+func (r *AssetFileMetadata) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type SourceCodeGetMetadataResponse struct {
-	// The path of the file in the CMS Developer File System.
-	ID string `json:"id,required"`
-	// Timestamp of when the object was first created.
-	CreatedAt int64 `json:"createdAt,required"`
-	// Determines whether or not this path points to a folder.
-	Folder bool `json:"folder,required"`
-	// The name of the file.
-	Name string `json:"name,required"`
-	// Timestamp of when the object was last updated.
-	UpdatedAt int64 `json:"updatedAt,required"`
-	// Timestamp of when the object was archived (deleted).
-	ArchivedAt int64 `json:"archivedAt"`
-	// If the object is a folder, contains the filenames of the files within the
-	// folder.
-	Children []string `json:"children"`
-	Hash     string   `json:"hash"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		CreatedAt   respjson.Field
-		Folder      respjson.Field
-		Name        respjson.Field
-		UpdatedAt   respjson.Field
-		ArchivedAt  respjson.Field
-		Children    respjson.Field
-		Hash        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
+// The property Path is required.
+type FileExtractRequestParam struct {
+	Path string `json:"path,required"`
+	paramObj
 }
 
-// Returns the unmodified JSON received from the API
-func (r SourceCodeGetMetadataResponse) RawJSON() string { return r.JSON.raw }
-func (r *SourceCodeGetMetadataResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+func (r FileExtractRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow FileExtractRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
 }
-
-type SourceCodeUpsertResponse struct {
-	// The path of the file in the CMS Developer File System.
-	ID string `json:"id,required"`
-	// Timestamp of when the object was first created.
-	CreatedAt int64 `json:"createdAt,required"`
-	// Determines whether or not this path points to a folder.
-	Folder bool `json:"folder,required"`
-	// The name of the file.
-	Name string `json:"name,required"`
-	// Timestamp of when the object was last updated.
-	UpdatedAt int64 `json:"updatedAt,required"`
-	// Timestamp of when the object was archived (deleted).
-	ArchivedAt int64 `json:"archivedAt"`
-	// If the object is a folder, contains the filenames of the files within the
-	// folder.
-	Children []string `json:"children"`
-	Hash     string   `json:"hash"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		CreatedAt   respjson.Field
-		Folder      respjson.Field
-		Name        respjson.Field
-		UpdatedAt   respjson.Field
-		ArchivedAt  respjson.Field
-		Children    respjson.Field
-		Hash        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SourceCodeUpsertResponse) RawJSON() string { return r.JSON.raw }
-func (r *SourceCodeUpsertResponse) UnmarshalJSON(data []byte) error {
+func (r *FileExtractRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -311,16 +251,15 @@ type SourceCodeDeleteParams struct {
 }
 
 type SourceCodeExtractAsyncParams struct {
-	Path string `json:"path,required"`
+	FileExtractRequest FileExtractRequestParam
 	paramObj
 }
 
 func (r SourceCodeExtractAsyncParams) MarshalJSON() (data []byte, err error) {
-	type shadow SourceCodeExtractAsyncParams
-	return param.MarshalObject(r, (*shadow)(&r))
+	return shimjson.Marshal(r.FileExtractRequest)
 }
 func (r *SourceCodeExtractAsyncParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return json.Unmarshal(data, &r.FileExtractRequest)
 }
 
 type SourceCodeGetParams struct {

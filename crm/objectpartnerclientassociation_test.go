@@ -27,7 +27,7 @@ func TestObjectPartnerClientAssociationUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.Associations.Update(
+	_, err := client.Crm.Objects.PartnerClients.Associations.Update(
 		context.TODO(),
 		"associationType",
 		crm.ObjectPartnerClientAssociationUpdateParams{
@@ -58,7 +58,7 @@ func TestObjectPartnerClientAssociationListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.Associations.List(
+	_, err := client.Crm.Objects.PartnerClients.Associations.List(
 		context.TODO(),
 		"toObjectType",
 		crm.ObjectPartnerClientAssociationListParams{
@@ -90,7 +90,7 @@ func TestObjectPartnerClientAssociationDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.PartnerClients.Associations.Delete(
+	err := client.Crm.Objects.PartnerClients.Associations.Delete(
 		context.TODO(),
 		"associationType",
 		crm.ObjectPartnerClientAssociationDeleteParams{

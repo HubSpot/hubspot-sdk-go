@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -15,7 +14,7 @@ import (
 )
 
 // PageService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -114,7 +113,7 @@ type BatchResponseContentFolder struct {
 	CompletedAt time.Time       `json:"completedAt,required" format:"date-time"`
 	Results     []ContentFolder `json:"results,required"`
 	StartedAt   time.Time       `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseContentFolderStatus `json:"status,required"`
 	Links       map[string]string                `json:"links"`
 	RequestedAt time.Time                        `json:"requestedAt" format:"date-time"`
@@ -140,10 +139,10 @@ func (r *BatchResponseContentFolder) UnmarshalJSON(data []byte) error {
 type BatchResponseContentFolderStatus string
 
 const (
-	BatchResponseContentFolderStatusPending    BatchResponseContentFolderStatus = "PENDING"
-	BatchResponseContentFolderStatusProcessing BatchResponseContentFolderStatus = "PROCESSING"
 	BatchResponseContentFolderStatusCanceled   BatchResponseContentFolderStatus = "CANCELED"
 	BatchResponseContentFolderStatusComplete   BatchResponseContentFolderStatus = "COMPLETE"
+	BatchResponseContentFolderStatusPending    BatchResponseContentFolderStatus = "PENDING"
+	BatchResponseContentFolderStatusProcessing BatchResponseContentFolderStatus = "PROCESSING"
 )
 
 // Response object for successful batch operations on pages.
@@ -151,7 +150,7 @@ type BatchResponsePage struct {
 	CompletedAt time.Time `json:"completedAt,required" format:"date-time"`
 	Results     []Page    `json:"results,required"`
 	StartedAt   time.Time `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponsePageStatus `json:"status,required"`
 	Links       map[string]string       `json:"links"`
 	RequestedAt time.Time               `json:"requestedAt" format:"date-time"`
@@ -177,10 +176,10 @@ func (r *BatchResponsePage) UnmarshalJSON(data []byte) error {
 type BatchResponsePageStatus string
 
 const (
-	BatchResponsePageStatusPending    BatchResponsePageStatus = "PENDING"
-	BatchResponsePageStatusProcessing BatchResponsePageStatus = "PROCESSING"
 	BatchResponsePageStatusCanceled   BatchResponsePageStatus = "CANCELED"
 	BatchResponsePageStatusComplete   BatchResponsePageStatus = "COMPLETE"
+	BatchResponsePageStatusPending    BatchResponsePageStatus = "PENDING"
+	BatchResponsePageStatusProcessing BatchResponsePageStatus = "PROCESSING"
 )
 
 // Response object for collections of content folders with pagination information.
@@ -235,9 +234,8 @@ type CollectionResponseWithTotalVersionContentFolder struct {
 	// Collection of content folder versions.
 	Results []VersionContentFolder `json:"results,required"`
 	// Total number of content folder versions.
-	Total int64 `json:"total,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Total  int64         `json:"total,required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -259,9 +257,8 @@ type CollectionResponseWithTotalVersionPage struct {
 	// Collection of page versions.
 	Results []VersionPage `json:"results,required"`
 	// Total number of page versions.
-	Total int64 `json:"total,required"`
-	// Contains information pagination of results.
-	Paging marketing.Paging `json:"paging"`
+	Total  int64         `json:"total,required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -370,95 +367,14 @@ func (r *ContentLanguageCloneRequestVNextParam) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type ContentLanguageVariation struct {
-	ID                       int64              `json:"id,required"`
-	ArchivedInDashboard      bool               `json:"archivedInDashboard,required"`
-	AuthorName               string             `json:"authorName,required"`
-	Campaign                 string             `json:"campaign,required"`
-	Created                  time.Time          `json:"created,required" format:"date-time"`
-	Name                     string             `json:"name,required"`
-	Password                 string             `json:"password,required"`
-	PublicAccessRules        []PublicAccessRule `json:"publicAccessRules,required"`
-	PublicAccessRulesEnabled bool               `json:"publicAccessRulesEnabled,required"`
-	PublishDate              time.Time          `json:"publishDate,required" format:"date-time"`
-	Slug                     string             `json:"slug,required"`
-	State                    string             `json:"state,required"`
-	Updated                  time.Time          `json:"updated,required" format:"date-time"`
-	TagIDs                   []int64            `json:"tagIds"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                       respjson.Field
-		ArchivedInDashboard      respjson.Field
-		AuthorName               respjson.Field
-		Campaign                 respjson.Field
-		Created                  respjson.Field
-		Name                     respjson.Field
-		Password                 respjson.Field
-		PublicAccessRules        respjson.Field
-		PublicAccessRulesEnabled respjson.Field
-		PublishDate              respjson.Field
-		Slug                     respjson.Field
-		State                    respjson.Field
-		Updated                  respjson.Field
-		TagIDs                   respjson.Field
-		ExtraFields              map[string]respjson.Field
-		raw                      string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r ContentLanguageVariation) RawJSON() string { return r.JSON.raw }
-func (r *ContentLanguageVariation) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this ContentLanguageVariation to a
-// ContentLanguageVariationParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// ContentLanguageVariationParam.Overrides()
-func (r ContentLanguageVariation) ToParam() ContentLanguageVariationParam {
-	return param.Override[ContentLanguageVariationParam](json.RawMessage(r.RawJSON()))
-}
-
-// The properties ID, ArchivedInDashboard, AuthorName, Campaign, Created, Name,
-// Password, PublicAccessRules, PublicAccessRulesEnabled, PublishDate, Slug, State,
-// Updated are required.
-type ContentLanguageVariationParam struct {
-	ID                       int64              `json:"id,required"`
-	ArchivedInDashboard      bool               `json:"archivedInDashboard,required"`
-	AuthorName               string             `json:"authorName,required"`
-	Campaign                 string             `json:"campaign,required"`
-	Created                  time.Time          `json:"created,required" format:"date-time"`
-	Name                     string             `json:"name,required"`
-	Password                 string             `json:"password,required"`
-	PublicAccessRules        []PublicAccessRule `json:"publicAccessRules,omitzero,required"`
-	PublicAccessRulesEnabled bool               `json:"publicAccessRulesEnabled,required"`
-	PublishDate              time.Time          `json:"publishDate,required" format:"date-time"`
-	Slug                     string             `json:"slug,required"`
-	State                    string             `json:"state,required"`
-	Updated                  time.Time          `json:"updated,required" format:"date-time"`
-	TagIDs                   []int64            `json:"tagIds,omitzero"`
-	paramObj
-}
-
-func (r ContentLanguageVariationParam) MarshalJSON() (data []byte, err error) {
-	type shadow ContentLanguageVariationParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ContentLanguageVariationParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // Model definition for a landing page or site page.
 type Page struct {
 	// The unique ID of the page.
 	ID string `json:"id,required"`
 	// The status of the AB test associated with this page, if applicable
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus PageAbStatus `json:"abStatus,required"`
 	// The ID of the AB test associated with this page, if applicable
 	AbTestID string `json:"abTestId,required"`
@@ -480,7 +396,7 @@ type Page struct {
 	// An ENUM descibing the type of this object. Should be either LANDING_PAGE or
 	// SITE_PAGE.
 	//
-	// Any of "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12".
+	// Any of "0", "1", "10", "11", "12", "2", "3", "4", "5", "6", "7", "8", "9".
 	ContentTypeCategory PageContentTypeCategory `json:"contentTypeCategory,required"`
 	Created             time.Time               `json:"created,required" format:"date-time"`
 	// The ID of the user that created this page.
@@ -488,15 +404,15 @@ type Page struct {
 	CurrentlyPublished bool   `json:"currentlyPublished,required"`
 	// A generated ENUM descibing the current state of this page.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
-	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT".
+	// Any of "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT",
+	// "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_FOR_FORM",
+	// "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	CurrentState PageCurrentState `json:"currentState,required"`
 	// The domain this page will resolve to. If null, the page will default to the
 	// primary domain for this content type.
@@ -571,47 +487,47 @@ type Page struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language       PageLanguage             `json:"language,required"`
 	LayoutSections map[string]LayoutSection `json:"layoutSections,required"`
 	// Optional override to set the URL to be used in the rel=canonical link tag on the
@@ -661,9 +577,9 @@ type Page struct {
 	TemplatePath        string         `json:"templatePath,required"`
 	ThemeSettingsValues map[string]any `json:"themeSettingsValues,required"`
 	// ID of the primary page this object was translated from.
-	TranslatedFromID string                              `json:"translatedFromId,required"`
-	Translations     map[string]ContentLanguageVariation `json:"translations,required"`
-	Updated          time.Time                           `json:"updated,required" format:"date-time"`
+	TranslatedFromID string                                   `json:"translatedFromId,required"`
+	Translations     map[string]PagesContentLanguageVariation `json:"translations,required"`
+	Updated          time.Time                                `json:"updated,required" format:"date-time"`
 	// The ID of the user that updated this page.
 	UpdatedByID string `json:"updatedById,required"`
 	// A generated field representing the URL of this page.
@@ -758,14 +674,14 @@ func (r Page) ToParam() PageParam {
 type PageAbStatus string
 
 const (
-	PageAbStatusMaster                PageAbStatus = "master"
-	PageAbStatusVariant               PageAbStatus = "variant"
+	PageAbStatusAutomatedLoserVariant PageAbStatus = "automated_loser_variant"
+	PageAbStatusAutomatedMaster       PageAbStatus = "automated_master"
+	PageAbStatusAutomatedVariant      PageAbStatus = "automated_variant"
 	PageAbStatusLoserVariant          PageAbStatus = "loser_variant"
 	PageAbStatusMabMaster             PageAbStatus = "mab_master"
 	PageAbStatusMabVariant            PageAbStatus = "mab_variant"
-	PageAbStatusAutomatedMaster       PageAbStatus = "automated_master"
-	PageAbStatusAutomatedVariant      PageAbStatus = "automated_variant"
-	PageAbStatusAutomatedLoserVariant PageAbStatus = "automated_loser_variant"
+	PageAbStatusMaster                PageAbStatus = "master"
+	PageAbStatusVariant               PageAbStatus = "variant"
 )
 
 // An ENUM descibing the type of this object. Should be either LANDING_PAGE or
@@ -775,6 +691,9 @@ type PageContentTypeCategory string
 const (
 	PageContentTypeCategory0  PageContentTypeCategory = "0"
 	PageContentTypeCategory1  PageContentTypeCategory = "1"
+	PageContentTypeCategory10 PageContentTypeCategory = "10"
+	PageContentTypeCategory11 PageContentTypeCategory = "11"
+	PageContentTypeCategory12 PageContentTypeCategory = "12"
 	PageContentTypeCategory2  PageContentTypeCategory = "2"
 	PageContentTypeCategory3  PageContentTypeCategory = "3"
 	PageContentTypeCategory4  PageContentTypeCategory = "4"
@@ -783,9 +702,6 @@ const (
 	PageContentTypeCategory7  PageContentTypeCategory = "7"
 	PageContentTypeCategory8  PageContentTypeCategory = "8"
 	PageContentTypeCategory9  PageContentTypeCategory = "9"
-	PageContentTypeCategory10 PageContentTypeCategory = "10"
-	PageContentTypeCategory11 PageContentTypeCategory = "11"
-	PageContentTypeCategory12 PageContentTypeCategory = "12"
 )
 
 // A generated ENUM descibing the current state of this page.
@@ -793,12 +709,17 @@ type PageCurrentState string
 
 const (
 	PageCurrentStateAutomated               PageCurrentState = "AUTOMATED"
+	PageCurrentStateAutomatedAb             PageCurrentState = "AUTOMATED_AB"
+	PageCurrentStateAutomatedAbVariant      PageCurrentState = "AUTOMATED_AB_VARIANT"
 	PageCurrentStateAutomatedDraft          PageCurrentState = "AUTOMATED_DRAFT"
-	PageCurrentStateAutomatedSending        PageCurrentState = "AUTOMATED_SENDING"
+	PageCurrentStateAutomatedDraftAb        PageCurrentState = "AUTOMATED_DRAFT_AB"
+	PageCurrentStateAutomatedDraftAbvariant PageCurrentState = "AUTOMATED_DRAFT_ABVARIANT"
 	PageCurrentStateAutomatedForForm        PageCurrentState = "AUTOMATED_FOR_FORM"
 	PageCurrentStateAutomatedForFormBuffer  PageCurrentState = "AUTOMATED_FOR_FORM_BUFFER"
 	PageCurrentStateAutomatedForFormDraft   PageCurrentState = "AUTOMATED_FOR_FORM_DRAFT"
 	PageCurrentStateAutomatedForFormLegacy  PageCurrentState = "AUTOMATED_FOR_FORM_LEGACY"
+	PageCurrentStateAutomatedLoserAbvariant PageCurrentState = "AUTOMATED_LOSER_ABVARIANT"
+	PageCurrentStateAutomatedSending        PageCurrentState = "AUTOMATED_SENDING"
 	PageCurrentStateBlogEmailDraft          PageCurrentState = "BLOG_EMAIL_DRAFT"
 	PageCurrentStateBlogEmailPublished      PageCurrentState = "BLOG_EMAIL_PUBLISHED"
 	PageCurrentStateDraft                   PageCurrentState = "DRAFT"
@@ -818,11 +739,6 @@ const (
 	PageCurrentStateScheduled               PageCurrentState = "SCHEDULED"
 	PageCurrentStateScheduledAb             PageCurrentState = "SCHEDULED_AB"
 	PageCurrentStateScheduledOrPublished    PageCurrentState = "SCHEDULED_OR_PUBLISHED"
-	PageCurrentStateAutomatedAb             PageCurrentState = "AUTOMATED_AB"
-	PageCurrentStateAutomatedAbVariant      PageCurrentState = "AUTOMATED_AB_VARIANT"
-	PageCurrentStateAutomatedDraftAb        PageCurrentState = "AUTOMATED_DRAFT_AB"
-	PageCurrentStateAutomatedDraftAbvariant PageCurrentState = "AUTOMATED_DRAFT_ABVARIANT"
-	PageCurrentStateAutomatedLoserAbvariant PageCurrentState = "AUTOMATED_LOSER_ABVARIANT"
 )
 
 // The explicitly defined ISO 639 language code of the page. If null, the page will
@@ -1203,6 +1119,7 @@ const (
 	PageLanguageHaw    PageLanguage = "haw"
 	PageLanguageHawUs  PageLanguage = "haw-us"
 	PageLanguageHe     PageLanguage = "he"
+	PageLanguageHeIl   PageLanguage = "he-il"
 	PageLanguageHi     PageLanguage = "hi"
 	PageLanguageHiIn   PageLanguage = "hi-in"
 	PageLanguageHr     PageLanguage = "hr"
@@ -1217,11 +1134,11 @@ const (
 	PageLanguageIa     PageLanguage = "ia"
 	PageLanguageIa001  PageLanguage = "ia-001"
 	PageLanguageID     PageLanguage = "id"
+	PageLanguageIDID   PageLanguage = "id-id"
 	PageLanguageIg     PageLanguage = "ig"
 	PageLanguageIgNg   PageLanguage = "ig-ng"
 	PageLanguageIi     PageLanguage = "ii"
 	PageLanguageIiCn   PageLanguage = "ii-cn"
-	PageLanguageIDID   PageLanguage = "id-id"
 	PageLanguageIs     PageLanguage = "is"
 	PageLanguageIsIs   PageLanguage = "is-is"
 	PageLanguageIt     PageLanguage = "it"
@@ -1229,13 +1146,10 @@ const (
 	PageLanguageItIt   PageLanguage = "it-it"
 	PageLanguageItSm   PageLanguage = "it-sm"
 	PageLanguageItVa   PageLanguage = "it-va"
-	PageLanguageHeIl   PageLanguage = "he-il"
 	PageLanguageJa     PageLanguage = "ja"
 	PageLanguageJaJp   PageLanguage = "ja-jp"
 	PageLanguageJgo    PageLanguage = "jgo"
 	PageLanguageJgoCm  PageLanguage = "jgo-cm"
-	PageLanguageYi     PageLanguage = "yi"
-	PageLanguageYi001  PageLanguage = "yi-001"
 	PageLanguageJmc    PageLanguage = "jmc"
 	PageLanguageJmcTz  PageLanguage = "jmc-tz"
 	PageLanguageJv     PageLanguage = "jv"
@@ -1279,10 +1193,10 @@ const (
 	PageLanguageKsfCm  PageLanguage = "ksf-cm"
 	PageLanguageKsh    PageLanguage = "ksh"
 	PageLanguageKshDe  PageLanguage = "ksh-de"
-	PageLanguageKw     PageLanguage = "kw"
-	PageLanguageKwGB   PageLanguage = "kw-gb"
 	PageLanguageKu     PageLanguage = "ku"
 	PageLanguageKuTr   PageLanguage = "ku-tr"
+	PageLanguageKw     PageLanguage = "kw"
+	PageLanguageKwGB   PageLanguage = "kw-gb"
 	PageLanguageKy     PageLanguage = "ky"
 	PageLanguageKyKg   PageLanguage = "ky-kg"
 	PageLanguageLag    PageLanguage = "lag"
@@ -1369,8 +1283,8 @@ const (
 	PageLanguageNl     PageLanguage = "nl"
 	PageLanguageNlAw   PageLanguage = "nl-aw"
 	PageLanguageNlBe   PageLanguage = "nl-be"
-	PageLanguageNlCh   PageLanguage = "nl-ch"
 	PageLanguageNlBq   PageLanguage = "nl-bq"
+	PageLanguageNlCh   PageLanguage = "nl-ch"
 	PageLanguageNlCw   PageLanguage = "nl-cw"
 	PageLanguageNlLu   PageLanguage = "nl-lu"
 	PageLanguageNlNl   PageLanguage = "nl-nl"
@@ -1566,6 +1480,8 @@ const (
 	PageLanguageXogUg  PageLanguage = "xog-ug"
 	PageLanguageYav    PageLanguage = "yav"
 	PageLanguageYavCm  PageLanguage = "yav-cm"
+	PageLanguageYi     PageLanguage = "yi"
+	PageLanguageYi001  PageLanguage = "yi-001"
 	PageLanguageYo     PageLanguage = "yo"
 	PageLanguageYoBj   PageLanguage = "yo-bj"
 	PageLanguageYoNg   PageLanguage = "yo-ng"
@@ -1576,12 +1492,12 @@ const (
 	PageLanguageZghMa  PageLanguage = "zgh-ma"
 	PageLanguageZh     PageLanguage = "zh"
 	PageLanguageZhCn   PageLanguage = "zh-cn"
+	PageLanguageZhHans PageLanguage = "zh-hans"
+	PageLanguageZhHant PageLanguage = "zh-hant"
 	PageLanguageZhHk   PageLanguage = "zh-hk"
 	PageLanguageZhMo   PageLanguage = "zh-mo"
 	PageLanguageZhSg   PageLanguage = "zh-sg"
 	PageLanguageZhTw   PageLanguage = "zh-tw"
-	PageLanguageZhHans PageLanguage = "zh-hans"
-	PageLanguageZhHant PageLanguage = "zh-hant"
 	PageLanguageZu     PageLanguage = "zu"
 	PageLanguageZuZa   PageLanguage = "zu-za"
 )
@@ -1606,8 +1522,8 @@ type PageParam struct {
 	ID string `json:"id,required"`
 	// The status of the AB test associated with this page, if applicable
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus PageAbStatus `json:"abStatus,omitzero,required"`
 	// The ID of the AB test associated with this page, if applicable
 	AbTestID string `json:"abTestId,required"`
@@ -1629,7 +1545,7 @@ type PageParam struct {
 	// An ENUM descibing the type of this object. Should be either LANDING_PAGE or
 	// SITE_PAGE.
 	//
-	// Any of "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12".
+	// Any of "0", "1", "10", "11", "12", "2", "3", "4", "5", "6", "7", "8", "9".
 	ContentTypeCategory PageContentTypeCategory `json:"contentTypeCategory,omitzero,required"`
 	Created             time.Time               `json:"created,required" format:"date-time"`
 	// The ID of the user that created this page.
@@ -1637,15 +1553,15 @@ type PageParam struct {
 	CurrentlyPublished bool   `json:"currentlyPublished,required"`
 	// A generated ENUM descibing the current state of this page.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
-	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT".
+	// Any of "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT",
+	// "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_FOR_FORM",
+	// "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	CurrentState PageCurrentState `json:"currentState,omitzero,required"`
 	// The domain this page will resolve to. If null, the page will default to the
 	// primary domain for this content type.
@@ -1720,47 +1636,47 @@ type PageParam struct {
 	// "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur",
 	// "fur-it", "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es",
 	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "hi", "hi-in",
-	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "he-il", "ja", "ja-jp", "jgo", "jgo-cm",
-	// "yi", "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz",
-	// "kam", "kam-ke", "kde", "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki",
-	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
-	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
-	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "kw", "kw-gb", "ku", "ku-tr",
-	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
-	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
-	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
-	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe",
-	// "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk",
-	// "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms",
-	// "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my",
-	// "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd",
-	// "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl", "nl-aw",
-	// "nl-be", "nl-ch", "nl-bq", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg",
-	// "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa",
-	// "pa-in", "pa-pk", "pcm", "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
-	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
-	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so",
-	// "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr",
-	// "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax",
-	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in",
-	// "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg",
-	// "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
-	// "to-to", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq", "twq-ne", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wae",
-	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm", "yo",
-	// "yo-bj", "yo-ng", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zh-hans", "zh-hant", "zu", "zu-za".
+	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
+	// "hi-in", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am",
+	// "ia", "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is",
+	// "it", "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "khq", "khq-ml", "ki", "ki-ke", "kk", "kk-kz", "kkj",
+	// "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km", "km-kh", "kn", "kn-in", "ko",
+	// "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in", "ksb", "ksb-tz", "ksf",
+	// "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb", "ky", "ky-kg", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd",
+	// "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu",
+	// "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in",
+	// "mas", "mas-ke", "mas-tz", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
+	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in",
+	// "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
+	// "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl",
+	// "ne", "ne-in", "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw",
+	// "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nn-no", "nnh",
+	// "nnh-cm", "no", "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "om", "om-et",
+	// "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm",
+	// "pcm-ng", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "rm", "rm-ch", "rn",
+	// "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg",
+	// "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa",
+	// "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "smn", "smn-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
+	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
+	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
+	// "ti-et", "tk", "tk-tm", "tl", "to", "to-to", "tr", "tr-cy", "tr-tr", "tt",
+	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
+	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
+	// "xog-ug", "yav", "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yue",
+	// "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant",
+	// "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language       PageLanguage                  `json:"language,omitzero,required"`
 	LayoutSections map[string]LayoutSectionParam `json:"layoutSections,omitzero,required"`
 	// Optional override to set the URL to be used in the rel=canonical link tag on the
@@ -1810,9 +1726,9 @@ type PageParam struct {
 	TemplatePath        string         `json:"templatePath,required"`
 	ThemeSettingsValues map[string]any `json:"themeSettingsValues,omitzero,required"`
 	// ID of the primary page this object was translated from.
-	TranslatedFromID string                                   `json:"translatedFromId,required"`
-	Translations     map[string]ContentLanguageVariationParam `json:"translations,omitzero,required"`
-	Updated          time.Time                                `json:"updated,required" format:"date-time"`
+	TranslatedFromID string                                        `json:"translatedFromId,required"`
+	Translations     map[string]PagesContentLanguageVariationParam `json:"translations,omitzero,required"`
+	Updated          time.Time                                     `json:"updated,required" format:"date-time"`
 	// The ID of the user that updated this page.
 	UpdatedByID string `json:"updatedById,required"`
 	// A generated field representing the URL of this page.
@@ -1832,6 +1748,87 @@ func (r PageParam) MarshalJSON() (data []byte, err error) {
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *PageParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PagesContentLanguageVariation struct {
+	ID                       int64              `json:"id,required"`
+	ArchivedInDashboard      bool               `json:"archivedInDashboard,required"`
+	AuthorName               string             `json:"authorName,required"`
+	Campaign                 string             `json:"campaign,required"`
+	Created                  time.Time          `json:"created,required" format:"date-time"`
+	Name                     string             `json:"name,required"`
+	Password                 string             `json:"password,required"`
+	PublicAccessRules        []PublicAccessRule `json:"publicAccessRules,required"`
+	PublicAccessRulesEnabled bool               `json:"publicAccessRulesEnabled,required"`
+	PublishDate              time.Time          `json:"publishDate,required" format:"date-time"`
+	Slug                     string             `json:"slug,required"`
+	State                    string             `json:"state,required"`
+	Updated                  time.Time          `json:"updated,required" format:"date-time"`
+	TagIDs                   []int64            `json:"tagIds"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                       respjson.Field
+		ArchivedInDashboard      respjson.Field
+		AuthorName               respjson.Field
+		Campaign                 respjson.Field
+		Created                  respjson.Field
+		Name                     respjson.Field
+		Password                 respjson.Field
+		PublicAccessRules        respjson.Field
+		PublicAccessRulesEnabled respjson.Field
+		PublishDate              respjson.Field
+		Slug                     respjson.Field
+		State                    respjson.Field
+		Updated                  respjson.Field
+		TagIDs                   respjson.Field
+		ExtraFields              map[string]respjson.Field
+		raw                      string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PagesContentLanguageVariation) RawJSON() string { return r.JSON.raw }
+func (r *PagesContentLanguageVariation) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this PagesContentLanguageVariation to a
+// PagesContentLanguageVariationParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// PagesContentLanguageVariationParam.Overrides()
+func (r PagesContentLanguageVariation) ToParam() PagesContentLanguageVariationParam {
+	return param.Override[PagesContentLanguageVariationParam](json.RawMessage(r.RawJSON()))
+}
+
+// The properties ID, ArchivedInDashboard, AuthorName, Campaign, Created, Name,
+// Password, PublicAccessRules, PublicAccessRulesEnabled, PublishDate, Slug, State,
+// Updated are required.
+type PagesContentLanguageVariationParam struct {
+	ID                       int64              `json:"id,required"`
+	ArchivedInDashboard      bool               `json:"archivedInDashboard,required"`
+	AuthorName               string             `json:"authorName,required"`
+	Campaign                 string             `json:"campaign,required"`
+	Created                  time.Time          `json:"created,required" format:"date-time"`
+	Name                     string             `json:"name,required"`
+	Password                 string             `json:"password,required"`
+	PublicAccessRules        []PublicAccessRule `json:"publicAccessRules,omitzero,required"`
+	PublicAccessRulesEnabled bool               `json:"publicAccessRulesEnabled,required"`
+	PublishDate              time.Time          `json:"publishDate,required" format:"date-time"`
+	Slug                     string             `json:"slug,required"`
+	State                    string             `json:"state,required"`
+	Updated                  time.Time          `json:"updated,required" format:"date-time"`
+	TagIDs                   []int64            `json:"tagIds,omitzero"`
+	paramObj
+}
+
+func (r PagesContentLanguageVariationParam) MarshalJSON() (data []byte, err error) {
+	type shadow PagesContentLanguageVariationParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PagesContentLanguageVariationParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 

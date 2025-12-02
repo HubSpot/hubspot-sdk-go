@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectPartnerClientService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -42,11 +42,6 @@ func NewObjectPartnerClientService(opts ...option.RequestOption) (r ObjectPartne
 	return
 }
 
-// Perform a partial update of an Object identified by `{objectId}`. `{objectId}`
-// refers to the internal object ID by default, or optionally any unique property
-// value as specified by the `idProperty` query param. Provided property values
-// will be overwritten. Read-only and non-existent properties will be ignored.
-// Properties values can be cleared by passing an empty string.
 func (r *ObjectPartnerClientService) Update(ctx context.Context, partnerClientID string, params ObjectPartnerClientUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if partnerClientID == "" {
@@ -58,8 +53,6 @@ func (r *ObjectPartnerClientService) Update(ctx context.Context, partnerClientID
 	return
 }
 
-// Read a page of objects. Control what is returned via the `properties` query
-// param.
 func (r *ObjectPartnerClientService) List(ctx context.Context, query ObjectPartnerClientListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -77,16 +70,10 @@ func (r *ObjectPartnerClientService) List(ctx context.Context, query ObjectPartn
 	return res, nil
 }
 
-// Read a page of objects. Control what is returned via the `properties` query
-// param.
 func (r *ObjectPartnerClientService) ListAutoPaging(ctx context.Context, query ObjectPartnerClientListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Read an Object identified by `{objectId}`. `{objectId}` refers to the internal
-// object ID by default, or optionally any unique property value as specified by
-// the `idProperty` query param. Control what is returned via the `properties`
-// query param.
 func (r *ObjectPartnerClientService) Get(ctx context.Context, partnerClientID string, query ObjectPartnerClientGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if partnerClientID == "" {
@@ -109,8 +96,7 @@ type ObjectPartnerClientUpdateParams struct {
 	// Represents the input required to create or update a CRM object, containing an
 	// object with property names and their corresponding values.
 	SimplePublicObjectInput SimplePublicObjectInputParam
-	// The name of a property whose values are unique for this object
-	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	IDProperty              param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
 
@@ -131,26 +117,12 @@ func (r ObjectPartnerClientUpdateParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectPartnerClientListParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	// A comma separated list of object types to retrieve associated IDs for. If any of
-	// the specified associations do not exist, they will be ignored.
-	Associations []string `query:"associations,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned in the response. If any
-	// of the specified properties are not present on the requested object(s), they
-	// will be ignored.
-	Properties []string `query:"properties,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned along with their history
-	// of previous values. If any of the specified properties are not present on the
-	// requested object(s), they will be ignored. Usage of this parameter will reduce
-	// the maximum number of partner clients that can be read by a single request.
-	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	After                 param.Opt[string] `query:"after,omitzero" json:"-"`
+	Archived              param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Limit                 param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	Associations          []string          `query:"associations,omitzero" json:"-"`
+	Properties            []string          `query:"properties,omitzero" json:"-"`
+	PropertiesWithHistory []string          `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
 
@@ -164,21 +136,11 @@ func (r ObjectPartnerClientListParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectPartnerClientGetParams struct {
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// The name of a property whose values are unique for this object
-	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
-	// A comma separated list of object types to retrieve associated IDs for. If any of
-	// the specified associations do not exist, they will be ignored.
-	Associations []string `query:"associations,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned in the response. If any
-	// of the specified properties are not present on the requested object(s), they
-	// will be ignored.
-	Properties []string `query:"properties,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned along with their history
-	// of previous values. If any of the specified properties are not present on the
-	// requested object(s), they will be ignored.
-	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	Archived              param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	IDProperty            param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	Associations          []string          `query:"associations,omitzero" json:"-"`
+	Properties            []string          `query:"properties,omitzero" json:"-"`
+	PropertiesWithHistory []string          `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
 

@@ -7,7 +7,7 @@ import (
 )
 
 // ExtensionService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -17,7 +17,6 @@ type ExtensionService struct {
 	Calling           ExtensionCallingService
 	Cards             ExtensionCardService
 	VideoConferencing ExtensionVideoConferencingService
-	Videoconferencing ExtensionVideoconferencingService
 }
 
 // NewExtensionService generates a new service that applies the given options to
@@ -29,6 +28,5 @@ func NewExtensionService(opts ...option.RequestOption) (r ExtensionService) {
 	r.Calling = NewExtensionCallingService(opts...)
 	r.Cards = NewExtensionCardService(opts...)
 	r.VideoConferencing = NewExtensionVideoConferencingService(opts...)
-	r.Videoconferencing = NewExtensionVideoconferencingService(opts...)
 	return
 }

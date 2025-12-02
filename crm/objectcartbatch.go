@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectCartBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,7 @@ func NewObjectCartBatchService(opts ...option.RequestOption) (r ObjectCartBatchS
 	return
 }
 
-// Create a batch of carts
+// Create a batch of carts with specified properties and associations.
 func (r *ObjectCartBatchService) New(ctx context.Context, body ObjectCartBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/carts/batch/create"
@@ -43,7 +43,7 @@ func (r *ObjectCartBatchService) New(ctx context.Context, body ObjectCartBatchNe
 	return
 }
 
-// Update a batch of carts by internal ID, or unique property values
+// Update a batch of carts using their internal IDs or unique property values.
 func (r *ObjectCartBatchService) Update(ctx context.Context, body ObjectCartBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/carts/batch/update"
@@ -51,7 +51,7 @@ func (r *ObjectCartBatchService) Update(ctx context.Context, body ObjectCartBatc
 	return
 }
 
-// Archive a batch of carts by ID
+// Archive a batch of carts identified by their IDs.
 func (r *ObjectCartBatchService) Delete(ctx context.Context, body ObjectCartBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)

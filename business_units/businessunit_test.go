@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package businessUnits_test
+package business_units_test
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/businessUnits"
+	"github.com/stainless-sdks/hubspot-sdk-go/business_units"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
@@ -30,7 +30,7 @@ func TestBusinessUnitGetByUserIDWithOptionalParams(t *testing.T) {
 	_, err := client.BusinessUnits.GetByUserID(
 		context.TODO(),
 		"userId",
-		businessUnits.BusinessUnitGetByUserIDParams{
+		business_units.BusinessUnitGetByUserIDParams{
 			Name:       []string{"string"},
 			Properties: []string{"string"},
 		},

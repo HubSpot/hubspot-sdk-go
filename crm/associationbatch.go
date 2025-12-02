@@ -17,7 +17,7 @@ import (
 )
 
 // AssociationBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,6 +35,8 @@ func NewAssociationBatchService(opts ...option.RequestOption) (r AssociationBatc
 	return
 }
 
+// This endpoint allows you to create multiple associations between specified
+// 'from' and 'to' object types in a single batch request.
 func (r *AssociationBatchService) New(ctx context.Context, toObjectType string, params AssociationBatchNewParams, opts ...option.RequestOption) (res *BatchResponsePublicAssociation, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.FromObjectType == "" {
@@ -50,6 +52,8 @@ func (r *AssociationBatchService) New(ctx context.Context, toObjectType string, 
 	return
 }
 
+// This endpoint allows you to archive multiple associations between specified
+// 'from' and 'to' object types in a single batch request.
 func (r *AssociationBatchService) Delete(ctx context.Context, toObjectType string, params AssociationBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -66,6 +70,8 @@ func (r *AssociationBatchService) Delete(ctx context.Context, toObjectType strin
 	return
 }
 
+// This endpoint allows you to retrieve multiple associations between specified
+// 'from' and 'to' object types in a single batch request.
 func (r *AssociationBatchService) Get(ctx context.Context, toObjectType string, params AssociationBatchGetParams, opts ...option.RequestOption) (res *BatchResponsePublicAssociationMulti, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.FromObjectType == "" {

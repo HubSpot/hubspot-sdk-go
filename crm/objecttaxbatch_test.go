@@ -28,12 +28,9 @@ func TestObjectTaxBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Taxes.Batch.New(context.TODO(), crm.ObjectTaxBatchNewParams{
+	_, err := client.Crm.Objects.Taxes.Batch.New(context.TODO(), crm.ObjectTaxBatchNewParams{
 		BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 			Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-				Properties: map[string]string{
-					"foo": "string",
-				},
 				Associations: []crm.PublicAssociationsForObjectParam{{
 					To: shared.PublicObjectIDParam{
 						ID: "37295",
@@ -43,6 +40,9 @@ func TestObjectTaxBatchNew(t *testing.T) {
 						AssociationTypeID:   0,
 					}},
 				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
 				ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 			}},
 		},
@@ -69,7 +69,7 @@ func TestObjectTaxBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Taxes.Batch.Update(context.TODO(), crm.ObjectTaxBatchUpdateParams{
+	_, err := client.Crm.Objects.Taxes.Batch.Update(context.TODO(), crm.ObjectTaxBatchUpdateParams{
 		BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
 			Inputs: []crm.SimplePublicObjectBatchInputParam{{
 				ID: "id",
@@ -103,7 +103,7 @@ func TestObjectTaxBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Taxes.Batch.Delete(context.TODO(), crm.ObjectTaxBatchDeleteParams{
+	err := client.Crm.Objects.Taxes.Batch.Delete(context.TODO(), crm.ObjectTaxBatchDeleteParams{
 		BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -132,7 +132,7 @@ func TestObjectTaxBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Taxes.Batch.Get(context.TODO(), crm.ObjectTaxBatchGetParams{
+	_, err := client.Crm.Objects.Taxes.Batch.Get(context.TODO(), crm.ObjectTaxBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",
@@ -165,7 +165,7 @@ func TestObjectTaxBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Taxes.Batch.Upsert(context.TODO(), crm.ObjectTaxBatchUpsertParams{
+	_, err := client.Crm.Objects.Taxes.Batch.Upsert(context.TODO(), crm.ObjectTaxBatchUpsertParams{
 		BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
 			Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
 				ID: "id",

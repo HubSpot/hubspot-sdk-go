@@ -29,7 +29,7 @@ func TestMessageNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Conversations.Messages.New(
 		context.TODO(),
-		"threadId",
+		0,
 		conversations.MessageNewParams{
 			PublicMessageEgg: conversations.PublicMessageEggUnionParam{
 				OfPublicConversationsMessageEgg: &conversations.PublicConversationsMessageEggParam{
@@ -72,7 +72,7 @@ func TestMessageNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestMessageList(t *testing.T) {
+func TestMessageListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -85,7 +85,17 @@ func TestMessageList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Messages.List(context.TODO(), "threadId")
+	_, err := client.Conversations.Messages.List(
+		context.TODO(),
+		0,
+		conversations.MessageListParams{
+			After:    hubspotsdk.String("after"),
+			Archived: hubspotsdk.Bool(true),
+			Limit:    hubspotsdk.Int(0),
+			Property: hubspotsdk.String("property"),
+			Sort:     []string{"string"},
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -95,7 +105,7 @@ func TestMessageList(t *testing.T) {
 	}
 }
 
-func TestMessageGet(t *testing.T) {
+func TestMessageGetWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -112,7 +122,8 @@ func TestMessageGet(t *testing.T) {
 		context.TODO(),
 		"messageId",
 		conversations.MessageGetParams{
-			ThreadID: "threadId",
+			ThreadID: 0,
+			Property: hubspotsdk.String("property"),
 		},
 	)
 	if err != nil {
@@ -124,7 +135,7 @@ func TestMessageGet(t *testing.T) {
 	}
 }
 
-func TestMessageGetOriginalContent(t *testing.T) {
+func TestMessageGetOriginalContentWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -141,7 +152,8 @@ func TestMessageGetOriginalContent(t *testing.T) {
 		context.TODO(),
 		"messageId",
 		conversations.MessageGetOriginalContentParams{
-			ThreadID: "threadId",
+			ThreadID: 0,
+			Property: hubspotsdk.String("property"),
 		},
 	)
 	if err != nil {

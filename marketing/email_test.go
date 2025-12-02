@@ -160,10 +160,10 @@ func TestEmailNewWithOptionalParams(t *testing.T) {
 				SubscriptionName:   hubspotsdk.String("subscriptionName"),
 			},
 			Testing: marketing.PublicEmailTestingDetailsParam{
-				AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultMaster,
-				AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultMaster,
-				AbStatus:            marketing.PublicEmailTestingDetailsAbStatusMaster,
-				AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByOpens,
+				AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedLoserVariant,
+				AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultAutomatedLoserVariant,
+				AbStatus:            marketing.PublicEmailTestingDetailsAbStatusAutomatedLoserVariant,
+				AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByDelivered,
 				AbTestPercentage:    hubspotsdk.Int(0),
 				HoursToWait:         hubspotsdk.Int(0),
 				IsAbVariation:       hubspotsdk.Bool(true),
@@ -355,10 +355,10 @@ func TestEmailUpdateWithOptionalParams(t *testing.T) {
 					SubscriptionName:   hubspotsdk.String("subscriptionName"),
 				},
 				Testing: marketing.PublicEmailTestingDetailsParam{
-					AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultMaster,
-					AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultMaster,
-					AbStatus:            marketing.PublicEmailTestingDetailsAbStatusMaster,
-					AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByOpens,
+					AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedLoserVariant,
+					AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultAutomatedLoserVariant,
+					AbStatus:            marketing.PublicEmailTestingDetailsAbStatusAutomatedLoserVariant,
+					AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByDelivered,
 					AbTestPercentage:    hubspotsdk.Int(0),
 					HoursToWait:         hubspotsdk.Int(0),
 					IsAbVariation:       hubspotsdk.Bool(true),
@@ -431,6 +431,9 @@ func TestEmailListWithOptionalParams(t *testing.T) {
 		IsPublished:            hubspotsdk.Bool(true),
 		Limit:                  hubspotsdk.Int(0),
 		MarketingCampaignNames: hubspotsdk.Bool(true),
+		PublishedAfter:         hubspotsdk.Time(time.Now()),
+		PublishedAt:            hubspotsdk.Time(time.Now()),
+		PublishedBefore:        hubspotsdk.Time(time.Now()),
 		Sort:                   []string{"string"},
 		Type:                   marketing.EmailListParamsTypeAbEmail,
 		UpdatedAfter:           hubspotsdk.Time(time.Now()),
@@ -566,7 +569,7 @@ func TestEmailGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestEmailGetAbTestVariation(t *testing.T) {
+func TestEmailGetAbTestVariationWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -579,7 +582,17 @@ func TestEmailGetAbTestVariation(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Marketing.Emails.GetAbTestVariation(context.TODO(), "emailId")
+	_, err := client.Marketing.Emails.GetAbTestVariation(
+		context.TODO(),
+		"emailId",
+		marketing.EmailGetAbTestVariationParams{
+			Archived:               hubspotsdk.Bool(true),
+			IncludedProperties:     []string{"string"},
+			IncludeStats:           hubspotsdk.Bool(true),
+			MarketingCampaignNames: hubspotsdk.Bool(true),
+			WorkflowNames:          hubspotsdk.Bool(true),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -945,10 +958,10 @@ func TestEmailUpdateDraftWithOptionalParams(t *testing.T) {
 					SubscriptionName:   hubspotsdk.String("subscriptionName"),
 				},
 				Testing: marketing.PublicEmailTestingDetailsParam{
-					AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultMaster,
-					AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultMaster,
-					AbStatus:            marketing.PublicEmailTestingDetailsAbStatusMaster,
-					AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByOpens,
+					AbSampleSizeDefault: marketing.PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedLoserVariant,
+					AbSamplingDefault:   marketing.PublicEmailTestingDetailsAbSamplingDefaultAutomatedLoserVariant,
+					AbStatus:            marketing.PublicEmailTestingDetailsAbStatusAutomatedLoserVariant,
+					AbSuccessMetric:     marketing.PublicEmailTestingDetailsAbSuccessMetricClicksByDelivered,
 					AbTestPercentage:    hubspotsdk.Int(0),
 					HoursToWait:         hubspotsdk.Int(0),
 					IsAbVariation:       hubspotsdk.Bool(true),

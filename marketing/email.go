@@ -24,7 +24,7 @@ import (
 )
 
 // EmailService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -136,14 +136,14 @@ func (r *EmailService) Get(ctx context.Context, emailID string, query EmailGetPa
 // This endpoint lets you obtain the variation of an A/B marketing email. If the
 // email is variation A (master) it will return variation B (variant) and vice
 // versa.
-func (r *EmailService) GetAbTestVariation(ctx context.Context, emailID string, opts ...option.RequestOption) (res *PublicEmail, err error) {
+func (r *EmailService) GetAbTestVariation(ctx context.Context, emailID string, query EmailGetAbTestVariationParams, opts ...option.RequestOption) (res *PublicEmail, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
 	}
 	path := fmt.Sprintf("marketing/v3/emails/%s/ab-test/get-variation", emailID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -179,15 +179,32 @@ func (r *EmailService) GetRevision(ctx context.Context, revisionID string, query
 // Get a list of all versions of a marketing email, with each entry including the
 // full state of that particular version. To view the most recent version, sort by
 // the updatedAt parameter.
-func (r *EmailService) ListRevisions(ctx context.Context, emailID string, query EmailListRevisionsParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalVersionPublicEmail, err error) {
+func (r *EmailService) ListRevisions(ctx context.Context, emailID string, query EmailListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[VersionPublicEmail], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if emailID == "" {
 		err = errors.New("missing required emailId parameter")
 		return
 	}
 	path := fmt.Sprintf("marketing/v3/emails/%s/revisions", emailID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Get a list of all versions of a marketing email, with each entry including the
+// full state of that particular version. To view the most recent version, sort by
+// the updatedAt parameter.
+func (r *EmailService) ListRevisionsAutoPaging(ctx context.Context, emailID string, query EmailListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[VersionPublicEmail] {
+	return pagination.NewPageAutoPager(r.ListRevisions(ctx, emailID, query, opts...))
 }
 
 // If you have a Marketing Hub Enterprise account or the transactional email
@@ -355,9 +372,8 @@ type CollectionResponseWithTotalVersionPublicEmail struct {
 	// Collection of emails.
 	Results []VersionPublicEmail `json:"results,required"`
 	// Total number of emails.
-	Total int64 `json:"total,required"`
-	// Contains information pagination of results.
-	Paging Paging `json:"paging"`
+	Total  int64         `json:"total,required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -425,14 +441,14 @@ type EmailCreateRequestParam struct {
 	// "ann", "ann-ng", "ar", "ar-001", "ar-ae", "ar-bh", "ar-dj", "ar-dz", "ar-eg",
 	// "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw", "ar-lb", "ar-ly",
 	// "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd", "ar-so", "ar-ss",
-	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "asa", "asa-tz", "ast", "ast-es",
-	// "as-in", "az", "az-az", "bas", "bas-cm", "be", "bem", "bem-zm", "bez", "bez-tz",
-	// "be-by", "bg", "bgc", "bgc-in", "bg-bg", "bho", "bho-in", "bm", "bm-ml", "bn",
-	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "brx", "brx-in", "br-fr", "bs",
+	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa", "asa-tz", "ast",
+	// "ast-es", "az", "az-az", "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez",
+	// "bez-tz", "bg", "bg-bg", "bgc", "bgc-in", "bho", "bho-in", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
 	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
-	// "ce", "ceb", "ceb-ph", "ce-ru", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
 	// "ckb-iq", "ckb-ir", "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb",
-	// "da", "dav", "dav-ke", "da-dk", "da-gl", "de", "de-at", "de-be", "de-ch",
+	// "da", "da-dk", "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch",
 	// "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in",
 	// "dsb", "dsb-de", "dua", "dua-cm", "dyo", "dyo-sn", "dz", "dz-bt", "ebu",
 	// "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001",
@@ -445,65 +461,65 @@ type EmailCreateRequestParam struct {
 	// "en-kn", "en-ky", "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo",
 	// "en-mp", "en-ms", "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na",
 	// "en-nf", "en-ng", "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk",
-	// "en-pn", "en-pr", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg",
-	// "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001", "es",
-	// "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se",
+	// "en-sg", "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk",
+	// "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc",
+	// "en-vg", "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
+	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
 	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
 	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
 	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
 	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fil", "fil-ph", "fi-fi",
-	// "fo", "fo-dk", "fo-fo", "fr", "frr", "frr-de", "fr-be", "fr-bf", "fr-bi",
-	// "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm",
-	// "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht",
-	// "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr",
-	// "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn",
-	// "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur", "fur-it",
+	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
+	// "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
+	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
+	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
+	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
+	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
+	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
 	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gsw",
-	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "guz", "guz-ke", "gu-in", "gv", "gv-im",
-	// "ha", "haw", "haw-us", "ha-gh", "ha-ne", "ha-ng", "he", "he-il", "hi", "hi-in",
+	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im",
+	// "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in",
 	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "yi",
-	// "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "kab", "kab-dz", "kam",
-	// "kam-ke", "ka-ge", "kde", "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "khq",
-	// "khq-ml", "ki", "ki-ke", "kk", "kkj", "kkj-cm", "kk-kz", "kl", "kln", "kln-ke",
-	// "kl-gl", "km", "km-kh", "kn", "kn-in", "ko", "kok", "kok-in", "ko-kp", "ko-kr",
-	// "ks", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ks-in", "ku", "ku-tr",
-	// "kw", "kw-gb", "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug",
-	// "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
-	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "luo", "luo-ke", "luy", "luy-ke",
-	// "lu-cd", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
-	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mgh", "mgh-mz", "mgo",
-	// "mgo-cm", "mg-mg", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mni",
-	// "mni-in", "mn-mn", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg",
-	// "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na",
-	// "nb", "nb-no", "nb-sj", "nd", "nds", "nds-de", "nds-nl", "nd-zw", "ne", "ne-in",
-	// "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl",
-	// "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nnh", "nnh-cm", "nn-no", "no",
-	// "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om",
-	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
-	// "pcm", "pcm-ng", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "rof", "rof-tz",
-	// "ro-md", "ro-ro", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua",
-	// "rw", "rwk", "rwk-tz", "rw-rw", "sa", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sa-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se",
-	// "seh", "seh-mz", "ses", "ses-ml", "se-fi", "se-no", "se-se", "sg", "sg-cf",
-	// "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz",
-	// "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "teo", "teo-ke",
-	// "teo-ug", "te-in", "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk",
-	// "tk-tm", "tl", "to", "tok", "tok-001", "to-to", "tr", "tr-cy", "tr-tr", "tt",
-	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
-	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
-	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
-	// "xog-ug", "yav", "yav-cm", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
+	// "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is", "it",
+	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
+	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
+	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
+	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb",
+	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
+	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
+	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
+	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf", "mdf-ru", "mer",
+	// "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm",
+	// "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in",
+	// "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua",
+	// "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no",
+	// "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl",
+	// "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx",
+	// "nmg", "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss",
+	// "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om", "om-et", "om-ke", "or", "or-in",
+	// "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pis",
+	// "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in",
+	// "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru",
+	// "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk",
+	// "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in",
+	// "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
+	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
+	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sms", "sms-fi", "sn",
+	// "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk",
+	// "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv",
+	// "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta",
+	// "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug",
+	// "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq",
+	// "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk",
+	// "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun",
+	// "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
+	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
 	// "yrl-ve", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans",
 	// "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language EmailCreateRequestLanguage `json:"language,omitzero"`
@@ -511,45 +527,44 @@ type EmailCreateRequestParam struct {
 	RssData PublicRssEmailDetailsParam `json:"rssData,omitzero"`
 	// The email state.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
+	// Any of "AGENT_GENERATED", "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT",
+	// "AUTOMATED_DRAFT", "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT",
 	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT", "AGENT_GENERATED".
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	State EmailCreateRequestState `json:"state,omitzero"`
 	// The email subcategory.
 	//
-	// Any of "ab_master", "ab_variant", "ab_loser_variant", "page_stub",
-	// "landing_page", "site_page", "legacy_page", "ab_master_site_page",
-	// "ab_variant_site_page", "ab_loser_variant_site_page",
-	// "performable_landing_page", "performable_landing_page_cutover", "staged_page",
-	// "automated", "automated_for_deal", "automated_for_form",
-	// "automated_for_form_legacy", "automated_for_form_buffer",
-	// "automated_for_form_draft", "automated_for_crm", "rss_to_email",
-	// "rss_to_email_child", "blog_email", "blog_email_child", "optin_email",
-	// "optin_followup_email", "batch", "resubscribe_email",
-	// "unsubscribe_confirmation_email", "resubscribe_confirmation_email",
-	// "single_send_api", "marketing_single_send_api", "smtp_token", "localtime",
-	// "automated_for_ticket", "automated_for_leadflow", "automated_for_feedback_ces",
-	// "automated_for_feedback_nps", "automated_for_feedback_custom",
-	// "membership_registration", "membership_password_saved",
-	// "membership_password_reset", "membership_otp_login",
-	// "membership_passwordless_auth", "membership_email_verification",
-	// "membership_registration_follow_up", "membership_verification",
-	// "membership_follow_up", "ticket_closed_kickback_email",
-	// "ticket_opened_kickback_email", "automated_for_custom_survey",
-	// "discardable_stub", "normal_blog_post", "legacy_blog_post",
-	// "imported_blog_post", "automated_ab_master", "automated_ab_variant",
-	// "web_interactive", "portal_content", "page_instance_layout",
+	// Any of "ab_loser_variant", "ab_loser_variant_site_page", "ab_master",
+	// "ab_master_site_page", "ab_variant", "ab_variant_site_page", "automated",
+	// "automated_ab_master", "automated_ab_variant", "automated_for_crm",
+	// "automated_for_custom_survey", "automated_for_deal",
+	// "automated_for_feedback_ces", "automated_for_feedback_custom",
+	// "automated_for_feedback_nps", "automated_for_form", "automated_for_form_buffer",
+	// "automated_for_form_draft", "automated_for_form_legacy",
+	// "automated_for_leadflow", "automated_for_ticket", "batch",
+	// "blog_article_instance_layout", "blog_article_listing", "blog_author_detail",
+	// "blog_email", "blog_email_child", "case_study", "case_study_instance_layout",
+	// "case_study_listing", "discardable_stub", "imported_blog_post", "kb_404_page",
 	// "kb_article_instance_layout", "kb_listing", "kb_search_results",
-	// "kb_support_form", "kb_404_page", "case_study", "case_study_listing",
-	// "case_study_instance_layout", "scp_static_page", "scp_instance_layout_page",
-	// "podcast_instance_layout", "podcast_listing", "blog_article_instance_layout",
-	// "blog_article_listing", "blog_author_detail", "UNKNOWN".
+	// "kb_support_form", "landing_page", "legacy_blog_post", "legacy_page",
+	// "localtime", "marketing_single_send_api", "membership_email_verification",
+	// "membership_follow_up", "membership_otp_login", "membership_password_reset",
+	// "membership_password_saved", "membership_passwordless_auth",
+	// "membership_registration", "membership_registration_follow_up",
+	// "membership_verification", "normal_blog_post", "optin_email",
+	// "optin_followup_email", "page_instance_layout", "page_stub",
+	// "performable_landing_page", "performable_landing_page_cutover",
+	// "podcast_instance_layout", "podcast_listing", "portal_content",
+	// "resubscribe_confirmation_email", "resubscribe_email", "rss_to_email",
+	// "rss_to_email_child", "scp_instance_layout_page", "scp_static_page",
+	// "single_send_api", "site_page", "smtp_token", "staged_page",
+	// "ticket_closed_kickback_email", "ticket_opened_kickback_email", "UNKNOWN",
+	// "unsubscribe_confirmation_email", "web_interactive".
 	Subcategory EmailCreateRequestSubcategory `json:"subcategory,omitzero"`
 	// Data structure representing the subscription fields of the email.
 	SubscriptionDetails PublicEmailSubscriptionDetailsParam `json:"subscriptionDetails,omitzero"`
@@ -613,25 +628,25 @@ const (
 	EmailCreateRequestLanguageArTn   EmailCreateRequestLanguage = "ar-tn"
 	EmailCreateRequestLanguageArYe   EmailCreateRequestLanguage = "ar-ye"
 	EmailCreateRequestLanguageAs     EmailCreateRequestLanguage = "as"
+	EmailCreateRequestLanguageAsIn   EmailCreateRequestLanguage = "as-in"
 	EmailCreateRequestLanguageAsa    EmailCreateRequestLanguage = "asa"
 	EmailCreateRequestLanguageAsaTz  EmailCreateRequestLanguage = "asa-tz"
 	EmailCreateRequestLanguageAst    EmailCreateRequestLanguage = "ast"
 	EmailCreateRequestLanguageAstEs  EmailCreateRequestLanguage = "ast-es"
-	EmailCreateRequestLanguageAsIn   EmailCreateRequestLanguage = "as-in"
 	EmailCreateRequestLanguageAz     EmailCreateRequestLanguage = "az"
 	EmailCreateRequestLanguageAzAz   EmailCreateRequestLanguage = "az-az"
 	EmailCreateRequestLanguageBas    EmailCreateRequestLanguage = "bas"
 	EmailCreateRequestLanguageBasCm  EmailCreateRequestLanguage = "bas-cm"
 	EmailCreateRequestLanguageBe     EmailCreateRequestLanguage = "be"
+	EmailCreateRequestLanguageBeBy   EmailCreateRequestLanguage = "be-by"
 	EmailCreateRequestLanguageBem    EmailCreateRequestLanguage = "bem"
 	EmailCreateRequestLanguageBemZm  EmailCreateRequestLanguage = "bem-zm"
 	EmailCreateRequestLanguageBez    EmailCreateRequestLanguage = "bez"
 	EmailCreateRequestLanguageBezTz  EmailCreateRequestLanguage = "bez-tz"
-	EmailCreateRequestLanguageBeBy   EmailCreateRequestLanguage = "be-by"
 	EmailCreateRequestLanguageBg     EmailCreateRequestLanguage = "bg"
+	EmailCreateRequestLanguageBgBg   EmailCreateRequestLanguage = "bg-bg"
 	EmailCreateRequestLanguageBgc    EmailCreateRequestLanguage = "bgc"
 	EmailCreateRequestLanguageBgcIn  EmailCreateRequestLanguage = "bgc-in"
-	EmailCreateRequestLanguageBgBg   EmailCreateRequestLanguage = "bg-bg"
 	EmailCreateRequestLanguageBho    EmailCreateRequestLanguage = "bho"
 	EmailCreateRequestLanguageBhoIn  EmailCreateRequestLanguage = "bho-in"
 	EmailCreateRequestLanguageBm     EmailCreateRequestLanguage = "bm"
@@ -643,9 +658,9 @@ const (
 	EmailCreateRequestLanguageBoCn   EmailCreateRequestLanguage = "bo-cn"
 	EmailCreateRequestLanguageBoIn   EmailCreateRequestLanguage = "bo-in"
 	EmailCreateRequestLanguageBr     EmailCreateRequestLanguage = "br"
+	EmailCreateRequestLanguageBrFr   EmailCreateRequestLanguage = "br-fr"
 	EmailCreateRequestLanguageBrx    EmailCreateRequestLanguage = "brx"
 	EmailCreateRequestLanguageBrxIn  EmailCreateRequestLanguage = "brx-in"
-	EmailCreateRequestLanguageBrFr   EmailCreateRequestLanguage = "br-fr"
 	EmailCreateRequestLanguageBs     EmailCreateRequestLanguage = "bs"
 	EmailCreateRequestLanguageBsBa   EmailCreateRequestLanguage = "bs-ba"
 	EmailCreateRequestLanguageCa     EmailCreateRequestLanguage = "ca"
@@ -657,9 +672,9 @@ const (
 	EmailCreateRequestLanguageCcpBd  EmailCreateRequestLanguage = "ccp-bd"
 	EmailCreateRequestLanguageCcpIn  EmailCreateRequestLanguage = "ccp-in"
 	EmailCreateRequestLanguageCe     EmailCreateRequestLanguage = "ce"
+	EmailCreateRequestLanguageCeRu   EmailCreateRequestLanguage = "ce-ru"
 	EmailCreateRequestLanguageCeb    EmailCreateRequestLanguage = "ceb"
 	EmailCreateRequestLanguageCebPh  EmailCreateRequestLanguage = "ceb-ph"
-	EmailCreateRequestLanguageCeRu   EmailCreateRequestLanguage = "ce-ru"
 	EmailCreateRequestLanguageCgg    EmailCreateRequestLanguage = "cgg"
 	EmailCreateRequestLanguageCggUg  EmailCreateRequestLanguage = "cgg-ug"
 	EmailCreateRequestLanguageChr    EmailCreateRequestLanguage = "chr"
@@ -676,10 +691,10 @@ const (
 	EmailCreateRequestLanguageCy     EmailCreateRequestLanguage = "cy"
 	EmailCreateRequestLanguageCyGB   EmailCreateRequestLanguage = "cy-gb"
 	EmailCreateRequestLanguageDa     EmailCreateRequestLanguage = "da"
-	EmailCreateRequestLanguageDav    EmailCreateRequestLanguage = "dav"
-	EmailCreateRequestLanguageDavKe  EmailCreateRequestLanguage = "dav-ke"
 	EmailCreateRequestLanguageDaDk   EmailCreateRequestLanguage = "da-dk"
 	EmailCreateRequestLanguageDaGl   EmailCreateRequestLanguage = "da-gl"
+	EmailCreateRequestLanguageDav    EmailCreateRequestLanguage = "dav"
+	EmailCreateRequestLanguageDavKe  EmailCreateRequestLanguage = "dav-ke"
 	EmailCreateRequestLanguageDe     EmailCreateRequestLanguage = "de"
 	EmailCreateRequestLanguageDeAt   EmailCreateRequestLanguage = "de-at"
 	EmailCreateRequestLanguageDeBe   EmailCreateRequestLanguage = "de-be"
@@ -793,6 +808,7 @@ const (
 	EmailCreateRequestLanguageEnPk   EmailCreateRequestLanguage = "en-pk"
 	EmailCreateRequestLanguageEnPn   EmailCreateRequestLanguage = "en-pn"
 	EmailCreateRequestLanguageEnPr   EmailCreateRequestLanguage = "en-pr"
+	EmailCreateRequestLanguageEnPt   EmailCreateRequestLanguage = "en-pt"
 	EmailCreateRequestLanguageEnPw   EmailCreateRequestLanguage = "en-pw"
 	EmailCreateRequestLanguageEnRw   EmailCreateRequestLanguage = "en-rw"
 	EmailCreateRequestLanguageEnSb   EmailCreateRequestLanguage = "en-sb"
@@ -878,15 +894,13 @@ const (
 	EmailCreateRequestLanguageFfSl   EmailCreateRequestLanguage = "ff-sl"
 	EmailCreateRequestLanguageFfSn   EmailCreateRequestLanguage = "ff-sn"
 	EmailCreateRequestLanguageFi     EmailCreateRequestLanguage = "fi"
+	EmailCreateRequestLanguageFiFi   EmailCreateRequestLanguage = "fi-fi"
 	EmailCreateRequestLanguageFil    EmailCreateRequestLanguage = "fil"
 	EmailCreateRequestLanguageFilPh  EmailCreateRequestLanguage = "fil-ph"
-	EmailCreateRequestLanguageFiFi   EmailCreateRequestLanguage = "fi-fi"
 	EmailCreateRequestLanguageFo     EmailCreateRequestLanguage = "fo"
 	EmailCreateRequestLanguageFoDk   EmailCreateRequestLanguage = "fo-dk"
 	EmailCreateRequestLanguageFoFo   EmailCreateRequestLanguage = "fo-fo"
 	EmailCreateRequestLanguageFr     EmailCreateRequestLanguage = "fr"
-	EmailCreateRequestLanguageFrr    EmailCreateRequestLanguage = "frr"
-	EmailCreateRequestLanguageFrrDe  EmailCreateRequestLanguage = "frr-de"
 	EmailCreateRequestLanguageFrBe   EmailCreateRequestLanguage = "fr-be"
 	EmailCreateRequestLanguageFrBf   EmailCreateRequestLanguage = "fr-bf"
 	EmailCreateRequestLanguageFrBi   EmailCreateRequestLanguage = "fr-bi"
@@ -933,6 +947,8 @@ const (
 	EmailCreateRequestLanguageFrVu   EmailCreateRequestLanguage = "fr-vu"
 	EmailCreateRequestLanguageFrWf   EmailCreateRequestLanguage = "fr-wf"
 	EmailCreateRequestLanguageFrYt   EmailCreateRequestLanguage = "fr-yt"
+	EmailCreateRequestLanguageFrr    EmailCreateRequestLanguage = "frr"
+	EmailCreateRequestLanguageFrrDe  EmailCreateRequestLanguage = "frr-de"
 	EmailCreateRequestLanguageFur    EmailCreateRequestLanguage = "fur"
 	EmailCreateRequestLanguageFurIt  EmailCreateRequestLanguage = "fur-it"
 	EmailCreateRequestLanguageFy     EmailCreateRequestLanguage = "fy"
@@ -949,17 +965,17 @@ const (
 	EmailCreateRequestLanguageGswFr  EmailCreateRequestLanguage = "gsw-fr"
 	EmailCreateRequestLanguageGswLi  EmailCreateRequestLanguage = "gsw-li"
 	EmailCreateRequestLanguageGu     EmailCreateRequestLanguage = "gu"
+	EmailCreateRequestLanguageGuIn   EmailCreateRequestLanguage = "gu-in"
 	EmailCreateRequestLanguageGuz    EmailCreateRequestLanguage = "guz"
 	EmailCreateRequestLanguageGuzKe  EmailCreateRequestLanguage = "guz-ke"
-	EmailCreateRequestLanguageGuIn   EmailCreateRequestLanguage = "gu-in"
 	EmailCreateRequestLanguageGv     EmailCreateRequestLanguage = "gv"
 	EmailCreateRequestLanguageGvIm   EmailCreateRequestLanguage = "gv-im"
 	EmailCreateRequestLanguageHa     EmailCreateRequestLanguage = "ha"
-	EmailCreateRequestLanguageHaw    EmailCreateRequestLanguage = "haw"
-	EmailCreateRequestLanguageHawUs  EmailCreateRequestLanguage = "haw-us"
 	EmailCreateRequestLanguageHaGh   EmailCreateRequestLanguage = "ha-gh"
 	EmailCreateRequestLanguageHaNe   EmailCreateRequestLanguage = "ha-ne"
 	EmailCreateRequestLanguageHaNg   EmailCreateRequestLanguage = "ha-ng"
+	EmailCreateRequestLanguageHaw    EmailCreateRequestLanguage = "haw"
+	EmailCreateRequestLanguageHawUs  EmailCreateRequestLanguage = "haw-us"
 	EmailCreateRequestLanguageHe     EmailCreateRequestLanguage = "he"
 	EmailCreateRequestLanguageHeIl   EmailCreateRequestLanguage = "he-il"
 	EmailCreateRequestLanguageHi     EmailCreateRequestLanguage = "hi"
@@ -976,11 +992,11 @@ const (
 	EmailCreateRequestLanguageIa     EmailCreateRequestLanguage = "ia"
 	EmailCreateRequestLanguageIa001  EmailCreateRequestLanguage = "ia-001"
 	EmailCreateRequestLanguageID     EmailCreateRequestLanguage = "id"
+	EmailCreateRequestLanguageIDID   EmailCreateRequestLanguage = "id-id"
 	EmailCreateRequestLanguageIg     EmailCreateRequestLanguage = "ig"
 	EmailCreateRequestLanguageIgNg   EmailCreateRequestLanguage = "ig-ng"
 	EmailCreateRequestLanguageIi     EmailCreateRequestLanguage = "ii"
 	EmailCreateRequestLanguageIiCn   EmailCreateRequestLanguage = "ii-cn"
-	EmailCreateRequestLanguageIDID   EmailCreateRequestLanguage = "id-id"
 	EmailCreateRequestLanguageIs     EmailCreateRequestLanguage = "is"
 	EmailCreateRequestLanguageIsIs   EmailCreateRequestLanguage = "is-is"
 	EmailCreateRequestLanguageIt     EmailCreateRequestLanguage = "it"
@@ -992,53 +1008,52 @@ const (
 	EmailCreateRequestLanguageJaJp   EmailCreateRequestLanguage = "ja-jp"
 	EmailCreateRequestLanguageJgo    EmailCreateRequestLanguage = "jgo"
 	EmailCreateRequestLanguageJgoCm  EmailCreateRequestLanguage = "jgo-cm"
-	EmailCreateRequestLanguageYi     EmailCreateRequestLanguage = "yi"
-	EmailCreateRequestLanguageYi001  EmailCreateRequestLanguage = "yi-001"
 	EmailCreateRequestLanguageJmc    EmailCreateRequestLanguage = "jmc"
 	EmailCreateRequestLanguageJmcTz  EmailCreateRequestLanguage = "jmc-tz"
 	EmailCreateRequestLanguageJv     EmailCreateRequestLanguage = "jv"
 	EmailCreateRequestLanguageJvID   EmailCreateRequestLanguage = "jv-id"
 	EmailCreateRequestLanguageKa     EmailCreateRequestLanguage = "ka"
+	EmailCreateRequestLanguageKaGe   EmailCreateRequestLanguage = "ka-ge"
 	EmailCreateRequestLanguageKab    EmailCreateRequestLanguage = "kab"
 	EmailCreateRequestLanguageKabDz  EmailCreateRequestLanguage = "kab-dz"
 	EmailCreateRequestLanguageKam    EmailCreateRequestLanguage = "kam"
 	EmailCreateRequestLanguageKamKe  EmailCreateRequestLanguage = "kam-ke"
-	EmailCreateRequestLanguageKaGe   EmailCreateRequestLanguage = "ka-ge"
 	EmailCreateRequestLanguageKde    EmailCreateRequestLanguage = "kde"
 	EmailCreateRequestLanguageKdeTz  EmailCreateRequestLanguage = "kde-tz"
 	EmailCreateRequestLanguageKea    EmailCreateRequestLanguage = "kea"
 	EmailCreateRequestLanguageKeaCv  EmailCreateRequestLanguage = "kea-cv"
 	EmailCreateRequestLanguageKgp    EmailCreateRequestLanguage = "kgp"
 	EmailCreateRequestLanguageKgpBr  EmailCreateRequestLanguage = "kgp-br"
+	EmailCreateRequestLanguageKh     EmailCreateRequestLanguage = "kh"
 	EmailCreateRequestLanguageKhq    EmailCreateRequestLanguage = "khq"
 	EmailCreateRequestLanguageKhqMl  EmailCreateRequestLanguage = "khq-ml"
 	EmailCreateRequestLanguageKi     EmailCreateRequestLanguage = "ki"
 	EmailCreateRequestLanguageKiKe   EmailCreateRequestLanguage = "ki-ke"
 	EmailCreateRequestLanguageKk     EmailCreateRequestLanguage = "kk"
+	EmailCreateRequestLanguageKkKz   EmailCreateRequestLanguage = "kk-kz"
 	EmailCreateRequestLanguageKkj    EmailCreateRequestLanguage = "kkj"
 	EmailCreateRequestLanguageKkjCm  EmailCreateRequestLanguage = "kkj-cm"
-	EmailCreateRequestLanguageKkKz   EmailCreateRequestLanguage = "kk-kz"
 	EmailCreateRequestLanguageKl     EmailCreateRequestLanguage = "kl"
+	EmailCreateRequestLanguageKlGl   EmailCreateRequestLanguage = "kl-gl"
 	EmailCreateRequestLanguageKln    EmailCreateRequestLanguage = "kln"
 	EmailCreateRequestLanguageKlnKe  EmailCreateRequestLanguage = "kln-ke"
-	EmailCreateRequestLanguageKlGl   EmailCreateRequestLanguage = "kl-gl"
 	EmailCreateRequestLanguageKm     EmailCreateRequestLanguage = "km"
 	EmailCreateRequestLanguageKmKh   EmailCreateRequestLanguage = "km-kh"
 	EmailCreateRequestLanguageKn     EmailCreateRequestLanguage = "kn"
 	EmailCreateRequestLanguageKnIn   EmailCreateRequestLanguage = "kn-in"
 	EmailCreateRequestLanguageKo     EmailCreateRequestLanguage = "ko"
-	EmailCreateRequestLanguageKok    EmailCreateRequestLanguage = "kok"
-	EmailCreateRequestLanguageKokIn  EmailCreateRequestLanguage = "kok-in"
 	EmailCreateRequestLanguageKoKp   EmailCreateRequestLanguage = "ko-kp"
 	EmailCreateRequestLanguageKoKr   EmailCreateRequestLanguage = "ko-kr"
+	EmailCreateRequestLanguageKok    EmailCreateRequestLanguage = "kok"
+	EmailCreateRequestLanguageKokIn  EmailCreateRequestLanguage = "kok-in"
 	EmailCreateRequestLanguageKs     EmailCreateRequestLanguage = "ks"
+	EmailCreateRequestLanguageKsIn   EmailCreateRequestLanguage = "ks-in"
 	EmailCreateRequestLanguageKsb    EmailCreateRequestLanguage = "ksb"
 	EmailCreateRequestLanguageKsbTz  EmailCreateRequestLanguage = "ksb-tz"
 	EmailCreateRequestLanguageKsf    EmailCreateRequestLanguage = "ksf"
 	EmailCreateRequestLanguageKsfCm  EmailCreateRequestLanguage = "ksf-cm"
 	EmailCreateRequestLanguageKsh    EmailCreateRequestLanguage = "ksh"
 	EmailCreateRequestLanguageKshDe  EmailCreateRequestLanguage = "ksh-de"
-	EmailCreateRequestLanguageKsIn   EmailCreateRequestLanguage = "ks-in"
 	EmailCreateRequestLanguageKu     EmailCreateRequestLanguage = "ku"
 	EmailCreateRequestLanguageKuTr   EmailCreateRequestLanguage = "ku-tr"
 	EmailCreateRequestLanguageKw     EmailCreateRequestLanguage = "kw"
@@ -1066,11 +1081,11 @@ const (
 	EmailCreateRequestLanguageLt     EmailCreateRequestLanguage = "lt"
 	EmailCreateRequestLanguageLtLt   EmailCreateRequestLanguage = "lt-lt"
 	EmailCreateRequestLanguageLu     EmailCreateRequestLanguage = "lu"
+	EmailCreateRequestLanguageLuCd   EmailCreateRequestLanguage = "lu-cd"
 	EmailCreateRequestLanguageLuo    EmailCreateRequestLanguage = "luo"
 	EmailCreateRequestLanguageLuoKe  EmailCreateRequestLanguage = "luo-ke"
 	EmailCreateRequestLanguageLuy    EmailCreateRequestLanguage = "luy"
 	EmailCreateRequestLanguageLuyKe  EmailCreateRequestLanguage = "luy-ke"
-	EmailCreateRequestLanguageLuCd   EmailCreateRequestLanguage = "lu-cd"
 	EmailCreateRequestLanguageLv     EmailCreateRequestLanguage = "lv"
 	EmailCreateRequestLanguageLvLv   EmailCreateRequestLanguage = "lv-lv"
 	EmailCreateRequestLanguageMai    EmailCreateRequestLanguage = "mai"
@@ -1085,11 +1100,11 @@ const (
 	EmailCreateRequestLanguageMfe    EmailCreateRequestLanguage = "mfe"
 	EmailCreateRequestLanguageMfeMu  EmailCreateRequestLanguage = "mfe-mu"
 	EmailCreateRequestLanguageMg     EmailCreateRequestLanguage = "mg"
+	EmailCreateRequestLanguageMgMg   EmailCreateRequestLanguage = "mg-mg"
 	EmailCreateRequestLanguageMgh    EmailCreateRequestLanguage = "mgh"
 	EmailCreateRequestLanguageMghMz  EmailCreateRequestLanguage = "mgh-mz"
 	EmailCreateRequestLanguageMgo    EmailCreateRequestLanguage = "mgo"
 	EmailCreateRequestLanguageMgoCm  EmailCreateRequestLanguage = "mgo-cm"
-	EmailCreateRequestLanguageMgMg   EmailCreateRequestLanguage = "mg-mg"
 	EmailCreateRequestLanguageMi     EmailCreateRequestLanguage = "mi"
 	EmailCreateRequestLanguageMiNz   EmailCreateRequestLanguage = "mi-nz"
 	EmailCreateRequestLanguageMk     EmailCreateRequestLanguage = "mk"
@@ -1097,9 +1112,9 @@ const (
 	EmailCreateRequestLanguageMl     EmailCreateRequestLanguage = "ml"
 	EmailCreateRequestLanguageMlIn   EmailCreateRequestLanguage = "ml-in"
 	EmailCreateRequestLanguageMn     EmailCreateRequestLanguage = "mn"
+	EmailCreateRequestLanguageMnMn   EmailCreateRequestLanguage = "mn-mn"
 	EmailCreateRequestLanguageMni    EmailCreateRequestLanguage = "mni"
 	EmailCreateRequestLanguageMniIn  EmailCreateRequestLanguage = "mni-in"
-	EmailCreateRequestLanguageMnMn   EmailCreateRequestLanguage = "mn-mn"
 	EmailCreateRequestLanguageMr     EmailCreateRequestLanguage = "mr"
 	EmailCreateRequestLanguageMrIn   EmailCreateRequestLanguage = "mr-in"
 	EmailCreateRequestLanguageMs     EmailCreateRequestLanguage = "ms"
@@ -1121,10 +1136,10 @@ const (
 	EmailCreateRequestLanguageNbNo   EmailCreateRequestLanguage = "nb-no"
 	EmailCreateRequestLanguageNbSj   EmailCreateRequestLanguage = "nb-sj"
 	EmailCreateRequestLanguageNd     EmailCreateRequestLanguage = "nd"
+	EmailCreateRequestLanguageNdZw   EmailCreateRequestLanguage = "nd-zw"
 	EmailCreateRequestLanguageNds    EmailCreateRequestLanguage = "nds"
 	EmailCreateRequestLanguageNdsDe  EmailCreateRequestLanguage = "nds-de"
 	EmailCreateRequestLanguageNdsNl  EmailCreateRequestLanguage = "nds-nl"
-	EmailCreateRequestLanguageNdZw   EmailCreateRequestLanguage = "nd-zw"
 	EmailCreateRequestLanguageNe     EmailCreateRequestLanguage = "ne"
 	EmailCreateRequestLanguageNeIn   EmailCreateRequestLanguage = "ne-in"
 	EmailCreateRequestLanguageNeNp   EmailCreateRequestLanguage = "ne-np"
@@ -1141,9 +1156,9 @@ const (
 	EmailCreateRequestLanguageNmg    EmailCreateRequestLanguage = "nmg"
 	EmailCreateRequestLanguageNmgCm  EmailCreateRequestLanguage = "nmg-cm"
 	EmailCreateRequestLanguageNn     EmailCreateRequestLanguage = "nn"
+	EmailCreateRequestLanguageNnNo   EmailCreateRequestLanguage = "nn-no"
 	EmailCreateRequestLanguageNnh    EmailCreateRequestLanguage = "nnh"
 	EmailCreateRequestLanguageNnhCm  EmailCreateRequestLanguage = "nnh-cm"
-	EmailCreateRequestLanguageNnNo   EmailCreateRequestLanguage = "nn-no"
 	EmailCreateRequestLanguageNo     EmailCreateRequestLanguage = "no"
 	EmailCreateRequestLanguageNoNo   EmailCreateRequestLanguage = "no-no"
 	EmailCreateRequestLanguageNus    EmailCreateRequestLanguage = "nus"
@@ -1199,10 +1214,10 @@ const (
 	EmailCreateRequestLanguageRn     EmailCreateRequestLanguage = "rn"
 	EmailCreateRequestLanguageRnBi   EmailCreateRequestLanguage = "rn-bi"
 	EmailCreateRequestLanguageRo     EmailCreateRequestLanguage = "ro"
-	EmailCreateRequestLanguageRof    EmailCreateRequestLanguage = "rof"
-	EmailCreateRequestLanguageRofTz  EmailCreateRequestLanguage = "rof-tz"
 	EmailCreateRequestLanguageRoMd   EmailCreateRequestLanguage = "ro-md"
 	EmailCreateRequestLanguageRoRo   EmailCreateRequestLanguage = "ro-ro"
+	EmailCreateRequestLanguageRof    EmailCreateRequestLanguage = "rof"
+	EmailCreateRequestLanguageRofTz  EmailCreateRequestLanguage = "rof-tz"
 	EmailCreateRequestLanguageRu     EmailCreateRequestLanguage = "ru"
 	EmailCreateRequestLanguageRuBy   EmailCreateRequestLanguage = "ru-by"
 	EmailCreateRequestLanguageRuKg   EmailCreateRequestLanguage = "ru-kg"
@@ -1211,17 +1226,17 @@ const (
 	EmailCreateRequestLanguageRuRu   EmailCreateRequestLanguage = "ru-ru"
 	EmailCreateRequestLanguageRuUa   EmailCreateRequestLanguage = "ru-ua"
 	EmailCreateRequestLanguageRw     EmailCreateRequestLanguage = "rw"
+	EmailCreateRequestLanguageRwRw   EmailCreateRequestLanguage = "rw-rw"
 	EmailCreateRequestLanguageRwk    EmailCreateRequestLanguage = "rwk"
 	EmailCreateRequestLanguageRwkTz  EmailCreateRequestLanguage = "rwk-tz"
-	EmailCreateRequestLanguageRwRw   EmailCreateRequestLanguage = "rw-rw"
 	EmailCreateRequestLanguageSa     EmailCreateRequestLanguage = "sa"
+	EmailCreateRequestLanguageSaIn   EmailCreateRequestLanguage = "sa-in"
 	EmailCreateRequestLanguageSah    EmailCreateRequestLanguage = "sah"
 	EmailCreateRequestLanguageSahRu  EmailCreateRequestLanguage = "sah-ru"
 	EmailCreateRequestLanguageSaq    EmailCreateRequestLanguage = "saq"
 	EmailCreateRequestLanguageSaqKe  EmailCreateRequestLanguage = "saq-ke"
 	EmailCreateRequestLanguageSat    EmailCreateRequestLanguage = "sat"
 	EmailCreateRequestLanguageSatIn  EmailCreateRequestLanguage = "sat-in"
-	EmailCreateRequestLanguageSaIn   EmailCreateRequestLanguage = "sa-in"
 	EmailCreateRequestLanguageSbp    EmailCreateRequestLanguage = "sbp"
 	EmailCreateRequestLanguageSbpTz  EmailCreateRequestLanguage = "sbp-tz"
 	EmailCreateRequestLanguageSc     EmailCreateRequestLanguage = "sc"
@@ -1230,13 +1245,13 @@ const (
 	EmailCreateRequestLanguageSdIn   EmailCreateRequestLanguage = "sd-in"
 	EmailCreateRequestLanguageSdPk   EmailCreateRequestLanguage = "sd-pk"
 	EmailCreateRequestLanguageSe     EmailCreateRequestLanguage = "se"
+	EmailCreateRequestLanguageSeFi   EmailCreateRequestLanguage = "se-fi"
+	EmailCreateRequestLanguageSeNo   EmailCreateRequestLanguage = "se-no"
+	EmailCreateRequestLanguageSeSe   EmailCreateRequestLanguage = "se-se"
 	EmailCreateRequestLanguageSeh    EmailCreateRequestLanguage = "seh"
 	EmailCreateRequestLanguageSehMz  EmailCreateRequestLanguage = "seh-mz"
 	EmailCreateRequestLanguageSes    EmailCreateRequestLanguage = "ses"
 	EmailCreateRequestLanguageSesMl  EmailCreateRequestLanguage = "ses-ml"
-	EmailCreateRequestLanguageSeFi   EmailCreateRequestLanguage = "se-fi"
-	EmailCreateRequestLanguageSeNo   EmailCreateRequestLanguage = "se-no"
-	EmailCreateRequestLanguageSeSe   EmailCreateRequestLanguage = "se-se"
 	EmailCreateRequestLanguageSg     EmailCreateRequestLanguage = "sg"
 	EmailCreateRequestLanguageSgCf   EmailCreateRequestLanguage = "sg-cf"
 	EmailCreateRequestLanguageShi    EmailCreateRequestLanguage = "shi"
@@ -1286,10 +1301,10 @@ const (
 	EmailCreateRequestLanguageTaMy   EmailCreateRequestLanguage = "ta-my"
 	EmailCreateRequestLanguageTaSg   EmailCreateRequestLanguage = "ta-sg"
 	EmailCreateRequestLanguageTe     EmailCreateRequestLanguage = "te"
+	EmailCreateRequestLanguageTeIn   EmailCreateRequestLanguage = "te-in"
 	EmailCreateRequestLanguageTeo    EmailCreateRequestLanguage = "teo"
 	EmailCreateRequestLanguageTeoKe  EmailCreateRequestLanguage = "teo-ke"
 	EmailCreateRequestLanguageTeoUg  EmailCreateRequestLanguage = "teo-ug"
-	EmailCreateRequestLanguageTeIn   EmailCreateRequestLanguage = "te-in"
 	EmailCreateRequestLanguageTg     EmailCreateRequestLanguage = "tg"
 	EmailCreateRequestLanguageTgTj   EmailCreateRequestLanguage = "tg-tj"
 	EmailCreateRequestLanguageTh     EmailCreateRequestLanguage = "th"
@@ -1301,9 +1316,9 @@ const (
 	EmailCreateRequestLanguageTkTm   EmailCreateRequestLanguage = "tk-tm"
 	EmailCreateRequestLanguageTl     EmailCreateRequestLanguage = "tl"
 	EmailCreateRequestLanguageTo     EmailCreateRequestLanguage = "to"
+	EmailCreateRequestLanguageToTo   EmailCreateRequestLanguage = "to-to"
 	EmailCreateRequestLanguageTok    EmailCreateRequestLanguage = "tok"
 	EmailCreateRequestLanguageTok001 EmailCreateRequestLanguage = "tok-001"
-	EmailCreateRequestLanguageToTo   EmailCreateRequestLanguage = "to-to"
 	EmailCreateRequestLanguageTr     EmailCreateRequestLanguage = "tr"
 	EmailCreateRequestLanguageTrCy   EmailCreateRequestLanguage = "tr-cy"
 	EmailCreateRequestLanguageTrTr   EmailCreateRequestLanguage = "tr-tr"
@@ -1341,6 +1356,8 @@ const (
 	EmailCreateRequestLanguageXogUg  EmailCreateRequestLanguage = "xog-ug"
 	EmailCreateRequestLanguageYav    EmailCreateRequestLanguage = "yav"
 	EmailCreateRequestLanguageYavCm  EmailCreateRequestLanguage = "yav-cm"
+	EmailCreateRequestLanguageYi     EmailCreateRequestLanguage = "yi"
+	EmailCreateRequestLanguageYi001  EmailCreateRequestLanguage = "yi-001"
 	EmailCreateRequestLanguageYo     EmailCreateRequestLanguage = "yo"
 	EmailCreateRequestLanguageYoBj   EmailCreateRequestLanguage = "yo-bj"
 	EmailCreateRequestLanguageYoNg   EmailCreateRequestLanguage = "yo-ng"
@@ -1369,13 +1386,19 @@ const (
 type EmailCreateRequestState string
 
 const (
+	EmailCreateRequestStateAgentGenerated          EmailCreateRequestState = "AGENT_GENERATED"
 	EmailCreateRequestStateAutomated               EmailCreateRequestState = "AUTOMATED"
+	EmailCreateRequestStateAutomatedAb             EmailCreateRequestState = "AUTOMATED_AB"
+	EmailCreateRequestStateAutomatedAbVariant      EmailCreateRequestState = "AUTOMATED_AB_VARIANT"
 	EmailCreateRequestStateAutomatedDraft          EmailCreateRequestState = "AUTOMATED_DRAFT"
-	EmailCreateRequestStateAutomatedSending        EmailCreateRequestState = "AUTOMATED_SENDING"
+	EmailCreateRequestStateAutomatedDraftAb        EmailCreateRequestState = "AUTOMATED_DRAFT_AB"
+	EmailCreateRequestStateAutomatedDraftAbvariant EmailCreateRequestState = "AUTOMATED_DRAFT_ABVARIANT"
 	EmailCreateRequestStateAutomatedForForm        EmailCreateRequestState = "AUTOMATED_FOR_FORM"
 	EmailCreateRequestStateAutomatedForFormBuffer  EmailCreateRequestState = "AUTOMATED_FOR_FORM_BUFFER"
 	EmailCreateRequestStateAutomatedForFormDraft   EmailCreateRequestState = "AUTOMATED_FOR_FORM_DRAFT"
 	EmailCreateRequestStateAutomatedForFormLegacy  EmailCreateRequestState = "AUTOMATED_FOR_FORM_LEGACY"
+	EmailCreateRequestStateAutomatedLoserAbvariant EmailCreateRequestState = "AUTOMATED_LOSER_ABVARIANT"
+	EmailCreateRequestStateAutomatedSending        EmailCreateRequestState = "AUTOMATED_SENDING"
 	EmailCreateRequestStateBlogEmailDraft          EmailCreateRequestState = "BLOG_EMAIL_DRAFT"
 	EmailCreateRequestStateBlogEmailPublished      EmailCreateRequestState = "BLOG_EMAIL_PUBLISHED"
 	EmailCreateRequestStateDraft                   EmailCreateRequestState = "DRAFT"
@@ -1395,99 +1418,93 @@ const (
 	EmailCreateRequestStateScheduled               EmailCreateRequestState = "SCHEDULED"
 	EmailCreateRequestStateScheduledAb             EmailCreateRequestState = "SCHEDULED_AB"
 	EmailCreateRequestStateScheduledOrPublished    EmailCreateRequestState = "SCHEDULED_OR_PUBLISHED"
-	EmailCreateRequestStateAutomatedAb             EmailCreateRequestState = "AUTOMATED_AB"
-	EmailCreateRequestStateAutomatedAbVariant      EmailCreateRequestState = "AUTOMATED_AB_VARIANT"
-	EmailCreateRequestStateAutomatedDraftAb        EmailCreateRequestState = "AUTOMATED_DRAFT_AB"
-	EmailCreateRequestStateAutomatedDraftAbvariant EmailCreateRequestState = "AUTOMATED_DRAFT_ABVARIANT"
-	EmailCreateRequestStateAutomatedLoserAbvariant EmailCreateRequestState = "AUTOMATED_LOSER_ABVARIANT"
-	EmailCreateRequestStateAgentGenerated          EmailCreateRequestState = "AGENT_GENERATED"
 )
 
 // The email subcategory.
 type EmailCreateRequestSubcategory string
 
 const (
-	EmailCreateRequestSubcategoryAbMaster                       EmailCreateRequestSubcategory = "ab_master"
-	EmailCreateRequestSubcategoryAbVariant                      EmailCreateRequestSubcategory = "ab_variant"
 	EmailCreateRequestSubcategoryAbLoserVariant                 EmailCreateRequestSubcategory = "ab_loser_variant"
-	EmailCreateRequestSubcategoryPageStub                       EmailCreateRequestSubcategory = "page_stub"
-	EmailCreateRequestSubcategoryLandingPage                    EmailCreateRequestSubcategory = "landing_page"
-	EmailCreateRequestSubcategorySitePage                       EmailCreateRequestSubcategory = "site_page"
-	EmailCreateRequestSubcategoryLegacyPage                     EmailCreateRequestSubcategory = "legacy_page"
-	EmailCreateRequestSubcategoryAbMasterSitePage               EmailCreateRequestSubcategory = "ab_master_site_page"
-	EmailCreateRequestSubcategoryAbVariantSitePage              EmailCreateRequestSubcategory = "ab_variant_site_page"
 	EmailCreateRequestSubcategoryAbLoserVariantSitePage         EmailCreateRequestSubcategory = "ab_loser_variant_site_page"
-	EmailCreateRequestSubcategoryPerformableLandingPage         EmailCreateRequestSubcategory = "performable_landing_page"
-	EmailCreateRequestSubcategoryPerformableLandingPageCutover  EmailCreateRequestSubcategory = "performable_landing_page_cutover"
-	EmailCreateRequestSubcategoryStagedPage                     EmailCreateRequestSubcategory = "staged_page"
+	EmailCreateRequestSubcategoryAbMaster                       EmailCreateRequestSubcategory = "ab_master"
+	EmailCreateRequestSubcategoryAbMasterSitePage               EmailCreateRequestSubcategory = "ab_master_site_page"
+	EmailCreateRequestSubcategoryAbVariant                      EmailCreateRequestSubcategory = "ab_variant"
+	EmailCreateRequestSubcategoryAbVariantSitePage              EmailCreateRequestSubcategory = "ab_variant_site_page"
 	EmailCreateRequestSubcategoryAutomated                      EmailCreateRequestSubcategory = "automated"
-	EmailCreateRequestSubcategoryAutomatedForDeal               EmailCreateRequestSubcategory = "automated_for_deal"
-	EmailCreateRequestSubcategoryAutomatedForForm               EmailCreateRequestSubcategory = "automated_for_form"
-	EmailCreateRequestSubcategoryAutomatedForFormLegacy         EmailCreateRequestSubcategory = "automated_for_form_legacy"
-	EmailCreateRequestSubcategoryAutomatedForFormBuffer         EmailCreateRequestSubcategory = "automated_for_form_buffer"
-	EmailCreateRequestSubcategoryAutomatedForFormDraft          EmailCreateRequestSubcategory = "automated_for_form_draft"
-	EmailCreateRequestSubcategoryAutomatedForCRM                EmailCreateRequestSubcategory = "automated_for_crm"
-	EmailCreateRequestSubcategoryRssToEmail                     EmailCreateRequestSubcategory = "rss_to_email"
-	EmailCreateRequestSubcategoryRssToEmailChild                EmailCreateRequestSubcategory = "rss_to_email_child"
-	EmailCreateRequestSubcategoryBlogEmail                      EmailCreateRequestSubcategory = "blog_email"
-	EmailCreateRequestSubcategoryBlogEmailChild                 EmailCreateRequestSubcategory = "blog_email_child"
-	EmailCreateRequestSubcategoryOptinEmail                     EmailCreateRequestSubcategory = "optin_email"
-	EmailCreateRequestSubcategoryOptinFollowupEmail             EmailCreateRequestSubcategory = "optin_followup_email"
-	EmailCreateRequestSubcategoryBatch                          EmailCreateRequestSubcategory = "batch"
-	EmailCreateRequestSubcategoryResubscribeEmail               EmailCreateRequestSubcategory = "resubscribe_email"
-	EmailCreateRequestSubcategoryUnsubscribeConfirmationEmail   EmailCreateRequestSubcategory = "unsubscribe_confirmation_email"
-	EmailCreateRequestSubcategoryResubscribeConfirmationEmail   EmailCreateRequestSubcategory = "resubscribe_confirmation_email"
-	EmailCreateRequestSubcategorySingleSendAPI                  EmailCreateRequestSubcategory = "single_send_api"
-	EmailCreateRequestSubcategoryMarketingSingleSendAPI         EmailCreateRequestSubcategory = "marketing_single_send_api"
-	EmailCreateRequestSubcategorySmtpToken                      EmailCreateRequestSubcategory = "smtp_token"
-	EmailCreateRequestSubcategoryLocaltime                      EmailCreateRequestSubcategory = "localtime"
-	EmailCreateRequestSubcategoryAutomatedForTicket             EmailCreateRequestSubcategory = "automated_for_ticket"
-	EmailCreateRequestSubcategoryAutomatedForLeadflow           EmailCreateRequestSubcategory = "automated_for_leadflow"
-	EmailCreateRequestSubcategoryAutomatedForFeedbackCes        EmailCreateRequestSubcategory = "automated_for_feedback_ces"
-	EmailCreateRequestSubcategoryAutomatedForFeedbackNps        EmailCreateRequestSubcategory = "automated_for_feedback_nps"
-	EmailCreateRequestSubcategoryAutomatedForFeedbackCustom     EmailCreateRequestSubcategory = "automated_for_feedback_custom"
-	EmailCreateRequestSubcategoryMembershipRegistration         EmailCreateRequestSubcategory = "membership_registration"
-	EmailCreateRequestSubcategoryMembershipPasswordSaved        EmailCreateRequestSubcategory = "membership_password_saved"
-	EmailCreateRequestSubcategoryMembershipPasswordReset        EmailCreateRequestSubcategory = "membership_password_reset"
-	EmailCreateRequestSubcategoryMembershipOtpLogin             EmailCreateRequestSubcategory = "membership_otp_login"
-	EmailCreateRequestSubcategoryMembershipPasswordlessAuth     EmailCreateRequestSubcategory = "membership_passwordless_auth"
-	EmailCreateRequestSubcategoryMembershipEmailVerification    EmailCreateRequestSubcategory = "membership_email_verification"
-	EmailCreateRequestSubcategoryMembershipRegistrationFollowUp EmailCreateRequestSubcategory = "membership_registration_follow_up"
-	EmailCreateRequestSubcategoryMembershipVerification         EmailCreateRequestSubcategory = "membership_verification"
-	EmailCreateRequestSubcategoryMembershipFollowUp             EmailCreateRequestSubcategory = "membership_follow_up"
-	EmailCreateRequestSubcategoryTicketClosedKickbackEmail      EmailCreateRequestSubcategory = "ticket_closed_kickback_email"
-	EmailCreateRequestSubcategoryTicketOpenedKickbackEmail      EmailCreateRequestSubcategory = "ticket_opened_kickback_email"
-	EmailCreateRequestSubcategoryAutomatedForCustomSurvey       EmailCreateRequestSubcategory = "automated_for_custom_survey"
-	EmailCreateRequestSubcategoryDiscardableStub                EmailCreateRequestSubcategory = "discardable_stub"
-	EmailCreateRequestSubcategoryNormalBlogPost                 EmailCreateRequestSubcategory = "normal_blog_post"
-	EmailCreateRequestSubcategoryLegacyBlogPost                 EmailCreateRequestSubcategory = "legacy_blog_post"
-	EmailCreateRequestSubcategoryImportedBlogPost               EmailCreateRequestSubcategory = "imported_blog_post"
 	EmailCreateRequestSubcategoryAutomatedAbMaster              EmailCreateRequestSubcategory = "automated_ab_master"
 	EmailCreateRequestSubcategoryAutomatedAbVariant             EmailCreateRequestSubcategory = "automated_ab_variant"
-	EmailCreateRequestSubcategoryWebInteractive                 EmailCreateRequestSubcategory = "web_interactive"
-	EmailCreateRequestSubcategoryPortalContent                  EmailCreateRequestSubcategory = "portal_content"
-	EmailCreateRequestSubcategoryPageInstanceLayout             EmailCreateRequestSubcategory = "page_instance_layout"
+	EmailCreateRequestSubcategoryAutomatedForCrm                EmailCreateRequestSubcategory = "automated_for_crm"
+	EmailCreateRequestSubcategoryAutomatedForCustomSurvey       EmailCreateRequestSubcategory = "automated_for_custom_survey"
+	EmailCreateRequestSubcategoryAutomatedForDeal               EmailCreateRequestSubcategory = "automated_for_deal"
+	EmailCreateRequestSubcategoryAutomatedForFeedbackCes        EmailCreateRequestSubcategory = "automated_for_feedback_ces"
+	EmailCreateRequestSubcategoryAutomatedForFeedbackCustom     EmailCreateRequestSubcategory = "automated_for_feedback_custom"
+	EmailCreateRequestSubcategoryAutomatedForFeedbackNps        EmailCreateRequestSubcategory = "automated_for_feedback_nps"
+	EmailCreateRequestSubcategoryAutomatedForForm               EmailCreateRequestSubcategory = "automated_for_form"
+	EmailCreateRequestSubcategoryAutomatedForFormBuffer         EmailCreateRequestSubcategory = "automated_for_form_buffer"
+	EmailCreateRequestSubcategoryAutomatedForFormDraft          EmailCreateRequestSubcategory = "automated_for_form_draft"
+	EmailCreateRequestSubcategoryAutomatedForFormLegacy         EmailCreateRequestSubcategory = "automated_for_form_legacy"
+	EmailCreateRequestSubcategoryAutomatedForLeadflow           EmailCreateRequestSubcategory = "automated_for_leadflow"
+	EmailCreateRequestSubcategoryAutomatedForTicket             EmailCreateRequestSubcategory = "automated_for_ticket"
+	EmailCreateRequestSubcategoryBatch                          EmailCreateRequestSubcategory = "batch"
+	EmailCreateRequestSubcategoryBlogArticleInstanceLayout      EmailCreateRequestSubcategory = "blog_article_instance_layout"
+	EmailCreateRequestSubcategoryBlogArticleListing             EmailCreateRequestSubcategory = "blog_article_listing"
+	EmailCreateRequestSubcategoryBlogAuthorDetail               EmailCreateRequestSubcategory = "blog_author_detail"
+	EmailCreateRequestSubcategoryBlogEmail                      EmailCreateRequestSubcategory = "blog_email"
+	EmailCreateRequestSubcategoryBlogEmailChild                 EmailCreateRequestSubcategory = "blog_email_child"
+	EmailCreateRequestSubcategoryCaseStudy                      EmailCreateRequestSubcategory = "case_study"
+	EmailCreateRequestSubcategoryCaseStudyInstanceLayout        EmailCreateRequestSubcategory = "case_study_instance_layout"
+	EmailCreateRequestSubcategoryCaseStudyListing               EmailCreateRequestSubcategory = "case_study_listing"
+	EmailCreateRequestSubcategoryDiscardableStub                EmailCreateRequestSubcategory = "discardable_stub"
+	EmailCreateRequestSubcategoryImportedBlogPost               EmailCreateRequestSubcategory = "imported_blog_post"
+	EmailCreateRequestSubcategoryKB404Page                      EmailCreateRequestSubcategory = "kb_404_page"
 	EmailCreateRequestSubcategoryKBArticleInstanceLayout        EmailCreateRequestSubcategory = "kb_article_instance_layout"
 	EmailCreateRequestSubcategoryKBListing                      EmailCreateRequestSubcategory = "kb_listing"
 	EmailCreateRequestSubcategoryKBSearchResults                EmailCreateRequestSubcategory = "kb_search_results"
 	EmailCreateRequestSubcategoryKBSupportForm                  EmailCreateRequestSubcategory = "kb_support_form"
-	EmailCreateRequestSubcategoryKB404Page                      EmailCreateRequestSubcategory = "kb_404_page"
-	EmailCreateRequestSubcategoryCaseStudy                      EmailCreateRequestSubcategory = "case_study"
-	EmailCreateRequestSubcategoryCaseStudyListing               EmailCreateRequestSubcategory = "case_study_listing"
-	EmailCreateRequestSubcategoryCaseStudyInstanceLayout        EmailCreateRequestSubcategory = "case_study_instance_layout"
-	EmailCreateRequestSubcategoryScpStaticPage                  EmailCreateRequestSubcategory = "scp_static_page"
-	EmailCreateRequestSubcategoryScpInstanceLayoutPage          EmailCreateRequestSubcategory = "scp_instance_layout_page"
+	EmailCreateRequestSubcategoryLandingPage                    EmailCreateRequestSubcategory = "landing_page"
+	EmailCreateRequestSubcategoryLegacyBlogPost                 EmailCreateRequestSubcategory = "legacy_blog_post"
+	EmailCreateRequestSubcategoryLegacyPage                     EmailCreateRequestSubcategory = "legacy_page"
+	EmailCreateRequestSubcategoryLocaltime                      EmailCreateRequestSubcategory = "localtime"
+	EmailCreateRequestSubcategoryMarketingSingleSendAPI         EmailCreateRequestSubcategory = "marketing_single_send_api"
+	EmailCreateRequestSubcategoryMembershipEmailVerification    EmailCreateRequestSubcategory = "membership_email_verification"
+	EmailCreateRequestSubcategoryMembershipFollowUp             EmailCreateRequestSubcategory = "membership_follow_up"
+	EmailCreateRequestSubcategoryMembershipOtpLogin             EmailCreateRequestSubcategory = "membership_otp_login"
+	EmailCreateRequestSubcategoryMembershipPasswordReset        EmailCreateRequestSubcategory = "membership_password_reset"
+	EmailCreateRequestSubcategoryMembershipPasswordSaved        EmailCreateRequestSubcategory = "membership_password_saved"
+	EmailCreateRequestSubcategoryMembershipPasswordlessAuth     EmailCreateRequestSubcategory = "membership_passwordless_auth"
+	EmailCreateRequestSubcategoryMembershipRegistration         EmailCreateRequestSubcategory = "membership_registration"
+	EmailCreateRequestSubcategoryMembershipRegistrationFollowUp EmailCreateRequestSubcategory = "membership_registration_follow_up"
+	EmailCreateRequestSubcategoryMembershipVerification         EmailCreateRequestSubcategory = "membership_verification"
+	EmailCreateRequestSubcategoryNormalBlogPost                 EmailCreateRequestSubcategory = "normal_blog_post"
+	EmailCreateRequestSubcategoryOptinEmail                     EmailCreateRequestSubcategory = "optin_email"
+	EmailCreateRequestSubcategoryOptinFollowupEmail             EmailCreateRequestSubcategory = "optin_followup_email"
+	EmailCreateRequestSubcategoryPageInstanceLayout             EmailCreateRequestSubcategory = "page_instance_layout"
+	EmailCreateRequestSubcategoryPageStub                       EmailCreateRequestSubcategory = "page_stub"
+	EmailCreateRequestSubcategoryPerformableLandingPage         EmailCreateRequestSubcategory = "performable_landing_page"
+	EmailCreateRequestSubcategoryPerformableLandingPageCutover  EmailCreateRequestSubcategory = "performable_landing_page_cutover"
 	EmailCreateRequestSubcategoryPodcastInstanceLayout          EmailCreateRequestSubcategory = "podcast_instance_layout"
 	EmailCreateRequestSubcategoryPodcastListing                 EmailCreateRequestSubcategory = "podcast_listing"
-	EmailCreateRequestSubcategoryBlogArticleInstanceLayout      EmailCreateRequestSubcategory = "blog_article_instance_layout"
-	EmailCreateRequestSubcategoryBlogArticleListing             EmailCreateRequestSubcategory = "blog_article_listing"
-	EmailCreateRequestSubcategoryBlogAuthorDetail               EmailCreateRequestSubcategory = "blog_author_detail"
+	EmailCreateRequestSubcategoryPortalContent                  EmailCreateRequestSubcategory = "portal_content"
+	EmailCreateRequestSubcategoryResubscribeConfirmationEmail   EmailCreateRequestSubcategory = "resubscribe_confirmation_email"
+	EmailCreateRequestSubcategoryResubscribeEmail               EmailCreateRequestSubcategory = "resubscribe_email"
+	EmailCreateRequestSubcategoryRssToEmail                     EmailCreateRequestSubcategory = "rss_to_email"
+	EmailCreateRequestSubcategoryRssToEmailChild                EmailCreateRequestSubcategory = "rss_to_email_child"
+	EmailCreateRequestSubcategoryScpInstanceLayoutPage          EmailCreateRequestSubcategory = "scp_instance_layout_page"
+	EmailCreateRequestSubcategoryScpStaticPage                  EmailCreateRequestSubcategory = "scp_static_page"
+	EmailCreateRequestSubcategorySingleSendAPI                  EmailCreateRequestSubcategory = "single_send_api"
+	EmailCreateRequestSubcategorySitePage                       EmailCreateRequestSubcategory = "site_page"
+	EmailCreateRequestSubcategorySmtpToken                      EmailCreateRequestSubcategory = "smtp_token"
+	EmailCreateRequestSubcategoryStagedPage                     EmailCreateRequestSubcategory = "staged_page"
+	EmailCreateRequestSubcategoryTicketClosedKickbackEmail      EmailCreateRequestSubcategory = "ticket_closed_kickback_email"
+	EmailCreateRequestSubcategoryTicketOpenedKickbackEmail      EmailCreateRequestSubcategory = "ticket_opened_kickback_email"
 	EmailCreateRequestSubcategoryUnknown                        EmailCreateRequestSubcategory = "UNKNOWN"
+	EmailCreateRequestSubcategoryUnsubscribeConfirmationEmail   EmailCreateRequestSubcategory = "unsubscribe_confirmation_email"
+	EmailCreateRequestSubcategoryWebInteractive                 EmailCreateRequestSubcategory = "web_interactive"
 )
 
 type EmailStatisticInterval struct {
-	Aggregations EmailStatisticsData `json:"aggregations"`
-	Interval     Interval            `json:"interval"`
+	Aggregations EmailStatisticsData `json:"aggregations,required"`
+	Interval     Interval            `json:"interval,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Aggregations respjson.Field
@@ -1557,14 +1574,14 @@ type EmailUpdateRequestParam struct {
 	// "ann", "ann-ng", "ar", "ar-001", "ar-ae", "ar-bh", "ar-dj", "ar-dz", "ar-eg",
 	// "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw", "ar-lb", "ar-ly",
 	// "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd", "ar-so", "ar-ss",
-	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "asa", "asa-tz", "ast", "ast-es",
-	// "as-in", "az", "az-az", "bas", "bas-cm", "be", "bem", "bem-zm", "bez", "bez-tz",
-	// "be-by", "bg", "bgc", "bgc-in", "bg-bg", "bho", "bho-in", "bm", "bm-ml", "bn",
-	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "brx", "brx-in", "br-fr", "bs",
+	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa", "asa-tz", "ast",
+	// "ast-es", "az", "az-az", "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez",
+	// "bez-tz", "bg", "bg-bg", "bgc", "bgc-in", "bho", "bho-in", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
 	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
-	// "ce", "ceb", "ceb-ph", "ce-ru", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
 	// "ckb-iq", "ckb-ir", "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb",
-	// "da", "dav", "dav-ke", "da-dk", "da-gl", "de", "de-at", "de-be", "de-ch",
+	// "da", "da-dk", "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch",
 	// "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in",
 	// "dsb", "dsb-de", "dua", "dua-cm", "dyo", "dyo-sn", "dz", "dz-bt", "ebu",
 	// "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001",
@@ -1577,65 +1594,65 @@ type EmailUpdateRequestParam struct {
 	// "en-kn", "en-ky", "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo",
 	// "en-mp", "en-ms", "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na",
 	// "en-nf", "en-ng", "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk",
-	// "en-pn", "en-pr", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg",
-	// "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001", "es",
-	// "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se",
+	// "en-sg", "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk",
+	// "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc",
+	// "en-vg", "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
+	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
 	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
 	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
 	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
 	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fil", "fil-ph", "fi-fi",
-	// "fo", "fo-dk", "fo-fo", "fr", "frr", "frr-de", "fr-be", "fr-bf", "fr-bi",
-	// "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm",
-	// "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht",
-	// "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr",
-	// "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn",
-	// "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur", "fur-it",
+	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
+	// "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
+	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
+	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
+	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
+	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
+	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
 	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gsw",
-	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "guz", "guz-ke", "gu-in", "gv", "gv-im",
-	// "ha", "haw", "haw-us", "ha-gh", "ha-ne", "ha-ng", "he", "he-il", "hi", "hi-in",
+	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im",
+	// "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in",
 	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "yi",
-	// "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "kab", "kab-dz", "kam",
-	// "kam-ke", "ka-ge", "kde", "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "khq",
-	// "khq-ml", "ki", "ki-ke", "kk", "kkj", "kkj-cm", "kk-kz", "kl", "kln", "kln-ke",
-	// "kl-gl", "km", "km-kh", "kn", "kn-in", "ko", "kok", "kok-in", "ko-kp", "ko-kr",
-	// "ks", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ks-in", "ku", "ku-tr",
-	// "kw", "kw-gb", "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug",
-	// "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
-	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "luo", "luo-ke", "luy", "luy-ke",
-	// "lu-cd", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
-	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mgh", "mgh-mz", "mgo",
-	// "mgo-cm", "mg-mg", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mni",
-	// "mni-in", "mn-mn", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg",
-	// "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na",
-	// "nb", "nb-no", "nb-sj", "nd", "nds", "nds-de", "nds-nl", "nd-zw", "ne", "ne-in",
-	// "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl",
-	// "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nnh", "nnh-cm", "nn-no", "no",
-	// "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om",
-	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
-	// "pcm", "pcm-ng", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "rof", "rof-tz",
-	// "ro-md", "ro-ro", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua",
-	// "rw", "rwk", "rwk-tz", "rw-rw", "sa", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sa-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se",
-	// "seh", "seh-mz", "ses", "ses-ml", "se-fi", "se-no", "se-se", "sg", "sg-cf",
-	// "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz",
-	// "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "teo", "teo-ke",
-	// "teo-ug", "te-in", "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk",
-	// "tk-tm", "tl", "to", "tok", "tok-001", "to-to", "tr", "tr-cy", "tr-tr", "tt",
-	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
-	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
-	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
-	// "xog-ug", "yav", "yav-cm", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
+	// "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is", "it",
+	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
+	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
+	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
+	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb",
+	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
+	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
+	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
+	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf", "mdf-ru", "mer",
+	// "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm",
+	// "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in",
+	// "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua",
+	// "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no",
+	// "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl",
+	// "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx",
+	// "nmg", "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss",
+	// "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om", "om-et", "om-ke", "or", "or-in",
+	// "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pis",
+	// "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in",
+	// "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru",
+	// "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk",
+	// "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in",
+	// "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
+	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
+	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sms", "sms-fi", "sn",
+	// "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk",
+	// "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv",
+	// "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta",
+	// "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug",
+	// "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq",
+	// "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk",
+	// "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun",
+	// "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
+	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
 	// "yrl-ve", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans",
 	// "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language EmailUpdateRequestLanguage `json:"language,omitzero"`
@@ -1643,45 +1660,44 @@ type EmailUpdateRequestParam struct {
 	RssData PublicRssEmailDetailsParam `json:"rssData,omitzero"`
 	// The email state.
 	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
+	// Any of "AGENT_GENERATED", "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT",
+	// "AUTOMATED_DRAFT", "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT",
 	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT", "AGENT_GENERATED".
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	State EmailUpdateRequestState `json:"state,omitzero"`
 	// The email subcategory.
 	//
-	// Any of "ab_master", "ab_variant", "ab_loser_variant", "page_stub",
-	// "landing_page", "site_page", "legacy_page", "ab_master_site_page",
-	// "ab_variant_site_page", "ab_loser_variant_site_page",
-	// "performable_landing_page", "performable_landing_page_cutover", "staged_page",
-	// "automated", "automated_for_deal", "automated_for_form",
-	// "automated_for_form_legacy", "automated_for_form_buffer",
-	// "automated_for_form_draft", "automated_for_crm", "rss_to_email",
-	// "rss_to_email_child", "blog_email", "blog_email_child", "optin_email",
-	// "optin_followup_email", "batch", "resubscribe_email",
-	// "unsubscribe_confirmation_email", "resubscribe_confirmation_email",
-	// "single_send_api", "marketing_single_send_api", "smtp_token", "localtime",
-	// "automated_for_ticket", "automated_for_leadflow", "automated_for_feedback_ces",
-	// "automated_for_feedback_nps", "automated_for_feedback_custom",
-	// "membership_registration", "membership_password_saved",
-	// "membership_password_reset", "membership_otp_login",
-	// "membership_passwordless_auth", "membership_email_verification",
-	// "membership_registration_follow_up", "membership_verification",
-	// "membership_follow_up", "ticket_closed_kickback_email",
-	// "ticket_opened_kickback_email", "automated_for_custom_survey",
-	// "discardable_stub", "normal_blog_post", "legacy_blog_post",
-	// "imported_blog_post", "automated_ab_master", "automated_ab_variant",
-	// "web_interactive", "portal_content", "page_instance_layout",
+	// Any of "ab_loser_variant", "ab_loser_variant_site_page", "ab_master",
+	// "ab_master_site_page", "ab_variant", "ab_variant_site_page", "automated",
+	// "automated_ab_master", "automated_ab_variant", "automated_for_crm",
+	// "automated_for_custom_survey", "automated_for_deal",
+	// "automated_for_feedback_ces", "automated_for_feedback_custom",
+	// "automated_for_feedback_nps", "automated_for_form", "automated_for_form_buffer",
+	// "automated_for_form_draft", "automated_for_form_legacy",
+	// "automated_for_leadflow", "automated_for_ticket", "batch",
+	// "blog_article_instance_layout", "blog_article_listing", "blog_author_detail",
+	// "blog_email", "blog_email_child", "case_study", "case_study_instance_layout",
+	// "case_study_listing", "discardable_stub", "imported_blog_post", "kb_404_page",
 	// "kb_article_instance_layout", "kb_listing", "kb_search_results",
-	// "kb_support_form", "kb_404_page", "case_study", "case_study_listing",
-	// "case_study_instance_layout", "scp_static_page", "scp_instance_layout_page",
-	// "podcast_instance_layout", "podcast_listing", "blog_article_instance_layout",
-	// "blog_article_listing", "blog_author_detail", "UNKNOWN".
+	// "kb_support_form", "landing_page", "legacy_blog_post", "legacy_page",
+	// "localtime", "marketing_single_send_api", "membership_email_verification",
+	// "membership_follow_up", "membership_otp_login", "membership_password_reset",
+	// "membership_password_saved", "membership_passwordless_auth",
+	// "membership_registration", "membership_registration_follow_up",
+	// "membership_verification", "normal_blog_post", "optin_email",
+	// "optin_followup_email", "page_instance_layout", "page_stub",
+	// "performable_landing_page", "performable_landing_page_cutover",
+	// "podcast_instance_layout", "podcast_listing", "portal_content",
+	// "resubscribe_confirmation_email", "resubscribe_email", "rss_to_email",
+	// "rss_to_email_child", "scp_instance_layout_page", "scp_static_page",
+	// "single_send_api", "site_page", "smtp_token", "staged_page",
+	// "ticket_closed_kickback_email", "ticket_opened_kickback_email", "UNKNOWN",
+	// "unsubscribe_confirmation_email", "web_interactive".
 	Subcategory EmailUpdateRequestSubcategory `json:"subcategory,omitzero"`
 	// Data structure representing the subscription fields of the email.
 	SubscriptionDetails PublicEmailSubscriptionDetailsParam `json:"subscriptionDetails,omitzero"`
@@ -1745,25 +1761,25 @@ const (
 	EmailUpdateRequestLanguageArTn   EmailUpdateRequestLanguage = "ar-tn"
 	EmailUpdateRequestLanguageArYe   EmailUpdateRequestLanguage = "ar-ye"
 	EmailUpdateRequestLanguageAs     EmailUpdateRequestLanguage = "as"
+	EmailUpdateRequestLanguageAsIn   EmailUpdateRequestLanguage = "as-in"
 	EmailUpdateRequestLanguageAsa    EmailUpdateRequestLanguage = "asa"
 	EmailUpdateRequestLanguageAsaTz  EmailUpdateRequestLanguage = "asa-tz"
 	EmailUpdateRequestLanguageAst    EmailUpdateRequestLanguage = "ast"
 	EmailUpdateRequestLanguageAstEs  EmailUpdateRequestLanguage = "ast-es"
-	EmailUpdateRequestLanguageAsIn   EmailUpdateRequestLanguage = "as-in"
 	EmailUpdateRequestLanguageAz     EmailUpdateRequestLanguage = "az"
 	EmailUpdateRequestLanguageAzAz   EmailUpdateRequestLanguage = "az-az"
 	EmailUpdateRequestLanguageBas    EmailUpdateRequestLanguage = "bas"
 	EmailUpdateRequestLanguageBasCm  EmailUpdateRequestLanguage = "bas-cm"
 	EmailUpdateRequestLanguageBe     EmailUpdateRequestLanguage = "be"
+	EmailUpdateRequestLanguageBeBy   EmailUpdateRequestLanguage = "be-by"
 	EmailUpdateRequestLanguageBem    EmailUpdateRequestLanguage = "bem"
 	EmailUpdateRequestLanguageBemZm  EmailUpdateRequestLanguage = "bem-zm"
 	EmailUpdateRequestLanguageBez    EmailUpdateRequestLanguage = "bez"
 	EmailUpdateRequestLanguageBezTz  EmailUpdateRequestLanguage = "bez-tz"
-	EmailUpdateRequestLanguageBeBy   EmailUpdateRequestLanguage = "be-by"
 	EmailUpdateRequestLanguageBg     EmailUpdateRequestLanguage = "bg"
+	EmailUpdateRequestLanguageBgBg   EmailUpdateRequestLanguage = "bg-bg"
 	EmailUpdateRequestLanguageBgc    EmailUpdateRequestLanguage = "bgc"
 	EmailUpdateRequestLanguageBgcIn  EmailUpdateRequestLanguage = "bgc-in"
-	EmailUpdateRequestLanguageBgBg   EmailUpdateRequestLanguage = "bg-bg"
 	EmailUpdateRequestLanguageBho    EmailUpdateRequestLanguage = "bho"
 	EmailUpdateRequestLanguageBhoIn  EmailUpdateRequestLanguage = "bho-in"
 	EmailUpdateRequestLanguageBm     EmailUpdateRequestLanguage = "bm"
@@ -1775,9 +1791,9 @@ const (
 	EmailUpdateRequestLanguageBoCn   EmailUpdateRequestLanguage = "bo-cn"
 	EmailUpdateRequestLanguageBoIn   EmailUpdateRequestLanguage = "bo-in"
 	EmailUpdateRequestLanguageBr     EmailUpdateRequestLanguage = "br"
+	EmailUpdateRequestLanguageBrFr   EmailUpdateRequestLanguage = "br-fr"
 	EmailUpdateRequestLanguageBrx    EmailUpdateRequestLanguage = "brx"
 	EmailUpdateRequestLanguageBrxIn  EmailUpdateRequestLanguage = "brx-in"
-	EmailUpdateRequestLanguageBrFr   EmailUpdateRequestLanguage = "br-fr"
 	EmailUpdateRequestLanguageBs     EmailUpdateRequestLanguage = "bs"
 	EmailUpdateRequestLanguageBsBa   EmailUpdateRequestLanguage = "bs-ba"
 	EmailUpdateRequestLanguageCa     EmailUpdateRequestLanguage = "ca"
@@ -1789,9 +1805,9 @@ const (
 	EmailUpdateRequestLanguageCcpBd  EmailUpdateRequestLanguage = "ccp-bd"
 	EmailUpdateRequestLanguageCcpIn  EmailUpdateRequestLanguage = "ccp-in"
 	EmailUpdateRequestLanguageCe     EmailUpdateRequestLanguage = "ce"
+	EmailUpdateRequestLanguageCeRu   EmailUpdateRequestLanguage = "ce-ru"
 	EmailUpdateRequestLanguageCeb    EmailUpdateRequestLanguage = "ceb"
 	EmailUpdateRequestLanguageCebPh  EmailUpdateRequestLanguage = "ceb-ph"
-	EmailUpdateRequestLanguageCeRu   EmailUpdateRequestLanguage = "ce-ru"
 	EmailUpdateRequestLanguageCgg    EmailUpdateRequestLanguage = "cgg"
 	EmailUpdateRequestLanguageCggUg  EmailUpdateRequestLanguage = "cgg-ug"
 	EmailUpdateRequestLanguageChr    EmailUpdateRequestLanguage = "chr"
@@ -1808,10 +1824,10 @@ const (
 	EmailUpdateRequestLanguageCy     EmailUpdateRequestLanguage = "cy"
 	EmailUpdateRequestLanguageCyGB   EmailUpdateRequestLanguage = "cy-gb"
 	EmailUpdateRequestLanguageDa     EmailUpdateRequestLanguage = "da"
-	EmailUpdateRequestLanguageDav    EmailUpdateRequestLanguage = "dav"
-	EmailUpdateRequestLanguageDavKe  EmailUpdateRequestLanguage = "dav-ke"
 	EmailUpdateRequestLanguageDaDk   EmailUpdateRequestLanguage = "da-dk"
 	EmailUpdateRequestLanguageDaGl   EmailUpdateRequestLanguage = "da-gl"
+	EmailUpdateRequestLanguageDav    EmailUpdateRequestLanguage = "dav"
+	EmailUpdateRequestLanguageDavKe  EmailUpdateRequestLanguage = "dav-ke"
 	EmailUpdateRequestLanguageDe     EmailUpdateRequestLanguage = "de"
 	EmailUpdateRequestLanguageDeAt   EmailUpdateRequestLanguage = "de-at"
 	EmailUpdateRequestLanguageDeBe   EmailUpdateRequestLanguage = "de-be"
@@ -1925,6 +1941,7 @@ const (
 	EmailUpdateRequestLanguageEnPk   EmailUpdateRequestLanguage = "en-pk"
 	EmailUpdateRequestLanguageEnPn   EmailUpdateRequestLanguage = "en-pn"
 	EmailUpdateRequestLanguageEnPr   EmailUpdateRequestLanguage = "en-pr"
+	EmailUpdateRequestLanguageEnPt   EmailUpdateRequestLanguage = "en-pt"
 	EmailUpdateRequestLanguageEnPw   EmailUpdateRequestLanguage = "en-pw"
 	EmailUpdateRequestLanguageEnRw   EmailUpdateRequestLanguage = "en-rw"
 	EmailUpdateRequestLanguageEnSb   EmailUpdateRequestLanguage = "en-sb"
@@ -2010,15 +2027,13 @@ const (
 	EmailUpdateRequestLanguageFfSl   EmailUpdateRequestLanguage = "ff-sl"
 	EmailUpdateRequestLanguageFfSn   EmailUpdateRequestLanguage = "ff-sn"
 	EmailUpdateRequestLanguageFi     EmailUpdateRequestLanguage = "fi"
+	EmailUpdateRequestLanguageFiFi   EmailUpdateRequestLanguage = "fi-fi"
 	EmailUpdateRequestLanguageFil    EmailUpdateRequestLanguage = "fil"
 	EmailUpdateRequestLanguageFilPh  EmailUpdateRequestLanguage = "fil-ph"
-	EmailUpdateRequestLanguageFiFi   EmailUpdateRequestLanguage = "fi-fi"
 	EmailUpdateRequestLanguageFo     EmailUpdateRequestLanguage = "fo"
 	EmailUpdateRequestLanguageFoDk   EmailUpdateRequestLanguage = "fo-dk"
 	EmailUpdateRequestLanguageFoFo   EmailUpdateRequestLanguage = "fo-fo"
 	EmailUpdateRequestLanguageFr     EmailUpdateRequestLanguage = "fr"
-	EmailUpdateRequestLanguageFrr    EmailUpdateRequestLanguage = "frr"
-	EmailUpdateRequestLanguageFrrDe  EmailUpdateRequestLanguage = "frr-de"
 	EmailUpdateRequestLanguageFrBe   EmailUpdateRequestLanguage = "fr-be"
 	EmailUpdateRequestLanguageFrBf   EmailUpdateRequestLanguage = "fr-bf"
 	EmailUpdateRequestLanguageFrBi   EmailUpdateRequestLanguage = "fr-bi"
@@ -2065,6 +2080,8 @@ const (
 	EmailUpdateRequestLanguageFrVu   EmailUpdateRequestLanguage = "fr-vu"
 	EmailUpdateRequestLanguageFrWf   EmailUpdateRequestLanguage = "fr-wf"
 	EmailUpdateRequestLanguageFrYt   EmailUpdateRequestLanguage = "fr-yt"
+	EmailUpdateRequestLanguageFrr    EmailUpdateRequestLanguage = "frr"
+	EmailUpdateRequestLanguageFrrDe  EmailUpdateRequestLanguage = "frr-de"
 	EmailUpdateRequestLanguageFur    EmailUpdateRequestLanguage = "fur"
 	EmailUpdateRequestLanguageFurIt  EmailUpdateRequestLanguage = "fur-it"
 	EmailUpdateRequestLanguageFy     EmailUpdateRequestLanguage = "fy"
@@ -2081,17 +2098,17 @@ const (
 	EmailUpdateRequestLanguageGswFr  EmailUpdateRequestLanguage = "gsw-fr"
 	EmailUpdateRequestLanguageGswLi  EmailUpdateRequestLanguage = "gsw-li"
 	EmailUpdateRequestLanguageGu     EmailUpdateRequestLanguage = "gu"
+	EmailUpdateRequestLanguageGuIn   EmailUpdateRequestLanguage = "gu-in"
 	EmailUpdateRequestLanguageGuz    EmailUpdateRequestLanguage = "guz"
 	EmailUpdateRequestLanguageGuzKe  EmailUpdateRequestLanguage = "guz-ke"
-	EmailUpdateRequestLanguageGuIn   EmailUpdateRequestLanguage = "gu-in"
 	EmailUpdateRequestLanguageGv     EmailUpdateRequestLanguage = "gv"
 	EmailUpdateRequestLanguageGvIm   EmailUpdateRequestLanguage = "gv-im"
 	EmailUpdateRequestLanguageHa     EmailUpdateRequestLanguage = "ha"
-	EmailUpdateRequestLanguageHaw    EmailUpdateRequestLanguage = "haw"
-	EmailUpdateRequestLanguageHawUs  EmailUpdateRequestLanguage = "haw-us"
 	EmailUpdateRequestLanguageHaGh   EmailUpdateRequestLanguage = "ha-gh"
 	EmailUpdateRequestLanguageHaNe   EmailUpdateRequestLanguage = "ha-ne"
 	EmailUpdateRequestLanguageHaNg   EmailUpdateRequestLanguage = "ha-ng"
+	EmailUpdateRequestLanguageHaw    EmailUpdateRequestLanguage = "haw"
+	EmailUpdateRequestLanguageHawUs  EmailUpdateRequestLanguage = "haw-us"
 	EmailUpdateRequestLanguageHe     EmailUpdateRequestLanguage = "he"
 	EmailUpdateRequestLanguageHeIl   EmailUpdateRequestLanguage = "he-il"
 	EmailUpdateRequestLanguageHi     EmailUpdateRequestLanguage = "hi"
@@ -2108,11 +2125,11 @@ const (
 	EmailUpdateRequestLanguageIa     EmailUpdateRequestLanguage = "ia"
 	EmailUpdateRequestLanguageIa001  EmailUpdateRequestLanguage = "ia-001"
 	EmailUpdateRequestLanguageID     EmailUpdateRequestLanguage = "id"
+	EmailUpdateRequestLanguageIDID   EmailUpdateRequestLanguage = "id-id"
 	EmailUpdateRequestLanguageIg     EmailUpdateRequestLanguage = "ig"
 	EmailUpdateRequestLanguageIgNg   EmailUpdateRequestLanguage = "ig-ng"
 	EmailUpdateRequestLanguageIi     EmailUpdateRequestLanguage = "ii"
 	EmailUpdateRequestLanguageIiCn   EmailUpdateRequestLanguage = "ii-cn"
-	EmailUpdateRequestLanguageIDID   EmailUpdateRequestLanguage = "id-id"
 	EmailUpdateRequestLanguageIs     EmailUpdateRequestLanguage = "is"
 	EmailUpdateRequestLanguageIsIs   EmailUpdateRequestLanguage = "is-is"
 	EmailUpdateRequestLanguageIt     EmailUpdateRequestLanguage = "it"
@@ -2124,53 +2141,52 @@ const (
 	EmailUpdateRequestLanguageJaJp   EmailUpdateRequestLanguage = "ja-jp"
 	EmailUpdateRequestLanguageJgo    EmailUpdateRequestLanguage = "jgo"
 	EmailUpdateRequestLanguageJgoCm  EmailUpdateRequestLanguage = "jgo-cm"
-	EmailUpdateRequestLanguageYi     EmailUpdateRequestLanguage = "yi"
-	EmailUpdateRequestLanguageYi001  EmailUpdateRequestLanguage = "yi-001"
 	EmailUpdateRequestLanguageJmc    EmailUpdateRequestLanguage = "jmc"
 	EmailUpdateRequestLanguageJmcTz  EmailUpdateRequestLanguage = "jmc-tz"
 	EmailUpdateRequestLanguageJv     EmailUpdateRequestLanguage = "jv"
 	EmailUpdateRequestLanguageJvID   EmailUpdateRequestLanguage = "jv-id"
 	EmailUpdateRequestLanguageKa     EmailUpdateRequestLanguage = "ka"
+	EmailUpdateRequestLanguageKaGe   EmailUpdateRequestLanguage = "ka-ge"
 	EmailUpdateRequestLanguageKab    EmailUpdateRequestLanguage = "kab"
 	EmailUpdateRequestLanguageKabDz  EmailUpdateRequestLanguage = "kab-dz"
 	EmailUpdateRequestLanguageKam    EmailUpdateRequestLanguage = "kam"
 	EmailUpdateRequestLanguageKamKe  EmailUpdateRequestLanguage = "kam-ke"
-	EmailUpdateRequestLanguageKaGe   EmailUpdateRequestLanguage = "ka-ge"
 	EmailUpdateRequestLanguageKde    EmailUpdateRequestLanguage = "kde"
 	EmailUpdateRequestLanguageKdeTz  EmailUpdateRequestLanguage = "kde-tz"
 	EmailUpdateRequestLanguageKea    EmailUpdateRequestLanguage = "kea"
 	EmailUpdateRequestLanguageKeaCv  EmailUpdateRequestLanguage = "kea-cv"
 	EmailUpdateRequestLanguageKgp    EmailUpdateRequestLanguage = "kgp"
 	EmailUpdateRequestLanguageKgpBr  EmailUpdateRequestLanguage = "kgp-br"
+	EmailUpdateRequestLanguageKh     EmailUpdateRequestLanguage = "kh"
 	EmailUpdateRequestLanguageKhq    EmailUpdateRequestLanguage = "khq"
 	EmailUpdateRequestLanguageKhqMl  EmailUpdateRequestLanguage = "khq-ml"
 	EmailUpdateRequestLanguageKi     EmailUpdateRequestLanguage = "ki"
 	EmailUpdateRequestLanguageKiKe   EmailUpdateRequestLanguage = "ki-ke"
 	EmailUpdateRequestLanguageKk     EmailUpdateRequestLanguage = "kk"
+	EmailUpdateRequestLanguageKkKz   EmailUpdateRequestLanguage = "kk-kz"
 	EmailUpdateRequestLanguageKkj    EmailUpdateRequestLanguage = "kkj"
 	EmailUpdateRequestLanguageKkjCm  EmailUpdateRequestLanguage = "kkj-cm"
-	EmailUpdateRequestLanguageKkKz   EmailUpdateRequestLanguage = "kk-kz"
 	EmailUpdateRequestLanguageKl     EmailUpdateRequestLanguage = "kl"
+	EmailUpdateRequestLanguageKlGl   EmailUpdateRequestLanguage = "kl-gl"
 	EmailUpdateRequestLanguageKln    EmailUpdateRequestLanguage = "kln"
 	EmailUpdateRequestLanguageKlnKe  EmailUpdateRequestLanguage = "kln-ke"
-	EmailUpdateRequestLanguageKlGl   EmailUpdateRequestLanguage = "kl-gl"
 	EmailUpdateRequestLanguageKm     EmailUpdateRequestLanguage = "km"
 	EmailUpdateRequestLanguageKmKh   EmailUpdateRequestLanguage = "km-kh"
 	EmailUpdateRequestLanguageKn     EmailUpdateRequestLanguage = "kn"
 	EmailUpdateRequestLanguageKnIn   EmailUpdateRequestLanguage = "kn-in"
 	EmailUpdateRequestLanguageKo     EmailUpdateRequestLanguage = "ko"
-	EmailUpdateRequestLanguageKok    EmailUpdateRequestLanguage = "kok"
-	EmailUpdateRequestLanguageKokIn  EmailUpdateRequestLanguage = "kok-in"
 	EmailUpdateRequestLanguageKoKp   EmailUpdateRequestLanguage = "ko-kp"
 	EmailUpdateRequestLanguageKoKr   EmailUpdateRequestLanguage = "ko-kr"
+	EmailUpdateRequestLanguageKok    EmailUpdateRequestLanguage = "kok"
+	EmailUpdateRequestLanguageKokIn  EmailUpdateRequestLanguage = "kok-in"
 	EmailUpdateRequestLanguageKs     EmailUpdateRequestLanguage = "ks"
+	EmailUpdateRequestLanguageKsIn   EmailUpdateRequestLanguage = "ks-in"
 	EmailUpdateRequestLanguageKsb    EmailUpdateRequestLanguage = "ksb"
 	EmailUpdateRequestLanguageKsbTz  EmailUpdateRequestLanguage = "ksb-tz"
 	EmailUpdateRequestLanguageKsf    EmailUpdateRequestLanguage = "ksf"
 	EmailUpdateRequestLanguageKsfCm  EmailUpdateRequestLanguage = "ksf-cm"
 	EmailUpdateRequestLanguageKsh    EmailUpdateRequestLanguage = "ksh"
 	EmailUpdateRequestLanguageKshDe  EmailUpdateRequestLanguage = "ksh-de"
-	EmailUpdateRequestLanguageKsIn   EmailUpdateRequestLanguage = "ks-in"
 	EmailUpdateRequestLanguageKu     EmailUpdateRequestLanguage = "ku"
 	EmailUpdateRequestLanguageKuTr   EmailUpdateRequestLanguage = "ku-tr"
 	EmailUpdateRequestLanguageKw     EmailUpdateRequestLanguage = "kw"
@@ -2198,11 +2214,11 @@ const (
 	EmailUpdateRequestLanguageLt     EmailUpdateRequestLanguage = "lt"
 	EmailUpdateRequestLanguageLtLt   EmailUpdateRequestLanguage = "lt-lt"
 	EmailUpdateRequestLanguageLu     EmailUpdateRequestLanguage = "lu"
+	EmailUpdateRequestLanguageLuCd   EmailUpdateRequestLanguage = "lu-cd"
 	EmailUpdateRequestLanguageLuo    EmailUpdateRequestLanguage = "luo"
 	EmailUpdateRequestLanguageLuoKe  EmailUpdateRequestLanguage = "luo-ke"
 	EmailUpdateRequestLanguageLuy    EmailUpdateRequestLanguage = "luy"
 	EmailUpdateRequestLanguageLuyKe  EmailUpdateRequestLanguage = "luy-ke"
-	EmailUpdateRequestLanguageLuCd   EmailUpdateRequestLanguage = "lu-cd"
 	EmailUpdateRequestLanguageLv     EmailUpdateRequestLanguage = "lv"
 	EmailUpdateRequestLanguageLvLv   EmailUpdateRequestLanguage = "lv-lv"
 	EmailUpdateRequestLanguageMai    EmailUpdateRequestLanguage = "mai"
@@ -2217,11 +2233,11 @@ const (
 	EmailUpdateRequestLanguageMfe    EmailUpdateRequestLanguage = "mfe"
 	EmailUpdateRequestLanguageMfeMu  EmailUpdateRequestLanguage = "mfe-mu"
 	EmailUpdateRequestLanguageMg     EmailUpdateRequestLanguage = "mg"
+	EmailUpdateRequestLanguageMgMg   EmailUpdateRequestLanguage = "mg-mg"
 	EmailUpdateRequestLanguageMgh    EmailUpdateRequestLanguage = "mgh"
 	EmailUpdateRequestLanguageMghMz  EmailUpdateRequestLanguage = "mgh-mz"
 	EmailUpdateRequestLanguageMgo    EmailUpdateRequestLanguage = "mgo"
 	EmailUpdateRequestLanguageMgoCm  EmailUpdateRequestLanguage = "mgo-cm"
-	EmailUpdateRequestLanguageMgMg   EmailUpdateRequestLanguage = "mg-mg"
 	EmailUpdateRequestLanguageMi     EmailUpdateRequestLanguage = "mi"
 	EmailUpdateRequestLanguageMiNz   EmailUpdateRequestLanguage = "mi-nz"
 	EmailUpdateRequestLanguageMk     EmailUpdateRequestLanguage = "mk"
@@ -2229,9 +2245,9 @@ const (
 	EmailUpdateRequestLanguageMl     EmailUpdateRequestLanguage = "ml"
 	EmailUpdateRequestLanguageMlIn   EmailUpdateRequestLanguage = "ml-in"
 	EmailUpdateRequestLanguageMn     EmailUpdateRequestLanguage = "mn"
+	EmailUpdateRequestLanguageMnMn   EmailUpdateRequestLanguage = "mn-mn"
 	EmailUpdateRequestLanguageMni    EmailUpdateRequestLanguage = "mni"
 	EmailUpdateRequestLanguageMniIn  EmailUpdateRequestLanguage = "mni-in"
-	EmailUpdateRequestLanguageMnMn   EmailUpdateRequestLanguage = "mn-mn"
 	EmailUpdateRequestLanguageMr     EmailUpdateRequestLanguage = "mr"
 	EmailUpdateRequestLanguageMrIn   EmailUpdateRequestLanguage = "mr-in"
 	EmailUpdateRequestLanguageMs     EmailUpdateRequestLanguage = "ms"
@@ -2253,10 +2269,10 @@ const (
 	EmailUpdateRequestLanguageNbNo   EmailUpdateRequestLanguage = "nb-no"
 	EmailUpdateRequestLanguageNbSj   EmailUpdateRequestLanguage = "nb-sj"
 	EmailUpdateRequestLanguageNd     EmailUpdateRequestLanguage = "nd"
+	EmailUpdateRequestLanguageNdZw   EmailUpdateRequestLanguage = "nd-zw"
 	EmailUpdateRequestLanguageNds    EmailUpdateRequestLanguage = "nds"
 	EmailUpdateRequestLanguageNdsDe  EmailUpdateRequestLanguage = "nds-de"
 	EmailUpdateRequestLanguageNdsNl  EmailUpdateRequestLanguage = "nds-nl"
-	EmailUpdateRequestLanguageNdZw   EmailUpdateRequestLanguage = "nd-zw"
 	EmailUpdateRequestLanguageNe     EmailUpdateRequestLanguage = "ne"
 	EmailUpdateRequestLanguageNeIn   EmailUpdateRequestLanguage = "ne-in"
 	EmailUpdateRequestLanguageNeNp   EmailUpdateRequestLanguage = "ne-np"
@@ -2273,9 +2289,9 @@ const (
 	EmailUpdateRequestLanguageNmg    EmailUpdateRequestLanguage = "nmg"
 	EmailUpdateRequestLanguageNmgCm  EmailUpdateRequestLanguage = "nmg-cm"
 	EmailUpdateRequestLanguageNn     EmailUpdateRequestLanguage = "nn"
+	EmailUpdateRequestLanguageNnNo   EmailUpdateRequestLanguage = "nn-no"
 	EmailUpdateRequestLanguageNnh    EmailUpdateRequestLanguage = "nnh"
 	EmailUpdateRequestLanguageNnhCm  EmailUpdateRequestLanguage = "nnh-cm"
-	EmailUpdateRequestLanguageNnNo   EmailUpdateRequestLanguage = "nn-no"
 	EmailUpdateRequestLanguageNo     EmailUpdateRequestLanguage = "no"
 	EmailUpdateRequestLanguageNoNo   EmailUpdateRequestLanguage = "no-no"
 	EmailUpdateRequestLanguageNus    EmailUpdateRequestLanguage = "nus"
@@ -2331,10 +2347,10 @@ const (
 	EmailUpdateRequestLanguageRn     EmailUpdateRequestLanguage = "rn"
 	EmailUpdateRequestLanguageRnBi   EmailUpdateRequestLanguage = "rn-bi"
 	EmailUpdateRequestLanguageRo     EmailUpdateRequestLanguage = "ro"
-	EmailUpdateRequestLanguageRof    EmailUpdateRequestLanguage = "rof"
-	EmailUpdateRequestLanguageRofTz  EmailUpdateRequestLanguage = "rof-tz"
 	EmailUpdateRequestLanguageRoMd   EmailUpdateRequestLanguage = "ro-md"
 	EmailUpdateRequestLanguageRoRo   EmailUpdateRequestLanguage = "ro-ro"
+	EmailUpdateRequestLanguageRof    EmailUpdateRequestLanguage = "rof"
+	EmailUpdateRequestLanguageRofTz  EmailUpdateRequestLanguage = "rof-tz"
 	EmailUpdateRequestLanguageRu     EmailUpdateRequestLanguage = "ru"
 	EmailUpdateRequestLanguageRuBy   EmailUpdateRequestLanguage = "ru-by"
 	EmailUpdateRequestLanguageRuKg   EmailUpdateRequestLanguage = "ru-kg"
@@ -2343,17 +2359,17 @@ const (
 	EmailUpdateRequestLanguageRuRu   EmailUpdateRequestLanguage = "ru-ru"
 	EmailUpdateRequestLanguageRuUa   EmailUpdateRequestLanguage = "ru-ua"
 	EmailUpdateRequestLanguageRw     EmailUpdateRequestLanguage = "rw"
+	EmailUpdateRequestLanguageRwRw   EmailUpdateRequestLanguage = "rw-rw"
 	EmailUpdateRequestLanguageRwk    EmailUpdateRequestLanguage = "rwk"
 	EmailUpdateRequestLanguageRwkTz  EmailUpdateRequestLanguage = "rwk-tz"
-	EmailUpdateRequestLanguageRwRw   EmailUpdateRequestLanguage = "rw-rw"
 	EmailUpdateRequestLanguageSa     EmailUpdateRequestLanguage = "sa"
+	EmailUpdateRequestLanguageSaIn   EmailUpdateRequestLanguage = "sa-in"
 	EmailUpdateRequestLanguageSah    EmailUpdateRequestLanguage = "sah"
 	EmailUpdateRequestLanguageSahRu  EmailUpdateRequestLanguage = "sah-ru"
 	EmailUpdateRequestLanguageSaq    EmailUpdateRequestLanguage = "saq"
 	EmailUpdateRequestLanguageSaqKe  EmailUpdateRequestLanguage = "saq-ke"
 	EmailUpdateRequestLanguageSat    EmailUpdateRequestLanguage = "sat"
 	EmailUpdateRequestLanguageSatIn  EmailUpdateRequestLanguage = "sat-in"
-	EmailUpdateRequestLanguageSaIn   EmailUpdateRequestLanguage = "sa-in"
 	EmailUpdateRequestLanguageSbp    EmailUpdateRequestLanguage = "sbp"
 	EmailUpdateRequestLanguageSbpTz  EmailUpdateRequestLanguage = "sbp-tz"
 	EmailUpdateRequestLanguageSc     EmailUpdateRequestLanguage = "sc"
@@ -2362,13 +2378,13 @@ const (
 	EmailUpdateRequestLanguageSdIn   EmailUpdateRequestLanguage = "sd-in"
 	EmailUpdateRequestLanguageSdPk   EmailUpdateRequestLanguage = "sd-pk"
 	EmailUpdateRequestLanguageSe     EmailUpdateRequestLanguage = "se"
+	EmailUpdateRequestLanguageSeFi   EmailUpdateRequestLanguage = "se-fi"
+	EmailUpdateRequestLanguageSeNo   EmailUpdateRequestLanguage = "se-no"
+	EmailUpdateRequestLanguageSeSe   EmailUpdateRequestLanguage = "se-se"
 	EmailUpdateRequestLanguageSeh    EmailUpdateRequestLanguage = "seh"
 	EmailUpdateRequestLanguageSehMz  EmailUpdateRequestLanguage = "seh-mz"
 	EmailUpdateRequestLanguageSes    EmailUpdateRequestLanguage = "ses"
 	EmailUpdateRequestLanguageSesMl  EmailUpdateRequestLanguage = "ses-ml"
-	EmailUpdateRequestLanguageSeFi   EmailUpdateRequestLanguage = "se-fi"
-	EmailUpdateRequestLanguageSeNo   EmailUpdateRequestLanguage = "se-no"
-	EmailUpdateRequestLanguageSeSe   EmailUpdateRequestLanguage = "se-se"
 	EmailUpdateRequestLanguageSg     EmailUpdateRequestLanguage = "sg"
 	EmailUpdateRequestLanguageSgCf   EmailUpdateRequestLanguage = "sg-cf"
 	EmailUpdateRequestLanguageShi    EmailUpdateRequestLanguage = "shi"
@@ -2418,10 +2434,10 @@ const (
 	EmailUpdateRequestLanguageTaMy   EmailUpdateRequestLanguage = "ta-my"
 	EmailUpdateRequestLanguageTaSg   EmailUpdateRequestLanguage = "ta-sg"
 	EmailUpdateRequestLanguageTe     EmailUpdateRequestLanguage = "te"
+	EmailUpdateRequestLanguageTeIn   EmailUpdateRequestLanguage = "te-in"
 	EmailUpdateRequestLanguageTeo    EmailUpdateRequestLanguage = "teo"
 	EmailUpdateRequestLanguageTeoKe  EmailUpdateRequestLanguage = "teo-ke"
 	EmailUpdateRequestLanguageTeoUg  EmailUpdateRequestLanguage = "teo-ug"
-	EmailUpdateRequestLanguageTeIn   EmailUpdateRequestLanguage = "te-in"
 	EmailUpdateRequestLanguageTg     EmailUpdateRequestLanguage = "tg"
 	EmailUpdateRequestLanguageTgTj   EmailUpdateRequestLanguage = "tg-tj"
 	EmailUpdateRequestLanguageTh     EmailUpdateRequestLanguage = "th"
@@ -2433,9 +2449,9 @@ const (
 	EmailUpdateRequestLanguageTkTm   EmailUpdateRequestLanguage = "tk-tm"
 	EmailUpdateRequestLanguageTl     EmailUpdateRequestLanguage = "tl"
 	EmailUpdateRequestLanguageTo     EmailUpdateRequestLanguage = "to"
+	EmailUpdateRequestLanguageToTo   EmailUpdateRequestLanguage = "to-to"
 	EmailUpdateRequestLanguageTok    EmailUpdateRequestLanguage = "tok"
 	EmailUpdateRequestLanguageTok001 EmailUpdateRequestLanguage = "tok-001"
-	EmailUpdateRequestLanguageToTo   EmailUpdateRequestLanguage = "to-to"
 	EmailUpdateRequestLanguageTr     EmailUpdateRequestLanguage = "tr"
 	EmailUpdateRequestLanguageTrCy   EmailUpdateRequestLanguage = "tr-cy"
 	EmailUpdateRequestLanguageTrTr   EmailUpdateRequestLanguage = "tr-tr"
@@ -2473,6 +2489,8 @@ const (
 	EmailUpdateRequestLanguageXogUg  EmailUpdateRequestLanguage = "xog-ug"
 	EmailUpdateRequestLanguageYav    EmailUpdateRequestLanguage = "yav"
 	EmailUpdateRequestLanguageYavCm  EmailUpdateRequestLanguage = "yav-cm"
+	EmailUpdateRequestLanguageYi     EmailUpdateRequestLanguage = "yi"
+	EmailUpdateRequestLanguageYi001  EmailUpdateRequestLanguage = "yi-001"
 	EmailUpdateRequestLanguageYo     EmailUpdateRequestLanguage = "yo"
 	EmailUpdateRequestLanguageYoBj   EmailUpdateRequestLanguage = "yo-bj"
 	EmailUpdateRequestLanguageYoNg   EmailUpdateRequestLanguage = "yo-ng"
@@ -2501,13 +2519,19 @@ const (
 type EmailUpdateRequestState string
 
 const (
+	EmailUpdateRequestStateAgentGenerated          EmailUpdateRequestState = "AGENT_GENERATED"
 	EmailUpdateRequestStateAutomated               EmailUpdateRequestState = "AUTOMATED"
+	EmailUpdateRequestStateAutomatedAb             EmailUpdateRequestState = "AUTOMATED_AB"
+	EmailUpdateRequestStateAutomatedAbVariant      EmailUpdateRequestState = "AUTOMATED_AB_VARIANT"
 	EmailUpdateRequestStateAutomatedDraft          EmailUpdateRequestState = "AUTOMATED_DRAFT"
-	EmailUpdateRequestStateAutomatedSending        EmailUpdateRequestState = "AUTOMATED_SENDING"
+	EmailUpdateRequestStateAutomatedDraftAb        EmailUpdateRequestState = "AUTOMATED_DRAFT_AB"
+	EmailUpdateRequestStateAutomatedDraftAbvariant EmailUpdateRequestState = "AUTOMATED_DRAFT_ABVARIANT"
 	EmailUpdateRequestStateAutomatedForForm        EmailUpdateRequestState = "AUTOMATED_FOR_FORM"
 	EmailUpdateRequestStateAutomatedForFormBuffer  EmailUpdateRequestState = "AUTOMATED_FOR_FORM_BUFFER"
 	EmailUpdateRequestStateAutomatedForFormDraft   EmailUpdateRequestState = "AUTOMATED_FOR_FORM_DRAFT"
 	EmailUpdateRequestStateAutomatedForFormLegacy  EmailUpdateRequestState = "AUTOMATED_FOR_FORM_LEGACY"
+	EmailUpdateRequestStateAutomatedLoserAbvariant EmailUpdateRequestState = "AUTOMATED_LOSER_ABVARIANT"
+	EmailUpdateRequestStateAutomatedSending        EmailUpdateRequestState = "AUTOMATED_SENDING"
 	EmailUpdateRequestStateBlogEmailDraft          EmailUpdateRequestState = "BLOG_EMAIL_DRAFT"
 	EmailUpdateRequestStateBlogEmailPublished      EmailUpdateRequestState = "BLOG_EMAIL_PUBLISHED"
 	EmailUpdateRequestStateDraft                   EmailUpdateRequestState = "DRAFT"
@@ -2527,94 +2551,88 @@ const (
 	EmailUpdateRequestStateScheduled               EmailUpdateRequestState = "SCHEDULED"
 	EmailUpdateRequestStateScheduledAb             EmailUpdateRequestState = "SCHEDULED_AB"
 	EmailUpdateRequestStateScheduledOrPublished    EmailUpdateRequestState = "SCHEDULED_OR_PUBLISHED"
-	EmailUpdateRequestStateAutomatedAb             EmailUpdateRequestState = "AUTOMATED_AB"
-	EmailUpdateRequestStateAutomatedAbVariant      EmailUpdateRequestState = "AUTOMATED_AB_VARIANT"
-	EmailUpdateRequestStateAutomatedDraftAb        EmailUpdateRequestState = "AUTOMATED_DRAFT_AB"
-	EmailUpdateRequestStateAutomatedDraftAbvariant EmailUpdateRequestState = "AUTOMATED_DRAFT_ABVARIANT"
-	EmailUpdateRequestStateAutomatedLoserAbvariant EmailUpdateRequestState = "AUTOMATED_LOSER_ABVARIANT"
-	EmailUpdateRequestStateAgentGenerated          EmailUpdateRequestState = "AGENT_GENERATED"
 )
 
 // The email subcategory.
 type EmailUpdateRequestSubcategory string
 
 const (
-	EmailUpdateRequestSubcategoryAbMaster                       EmailUpdateRequestSubcategory = "ab_master"
-	EmailUpdateRequestSubcategoryAbVariant                      EmailUpdateRequestSubcategory = "ab_variant"
 	EmailUpdateRequestSubcategoryAbLoserVariant                 EmailUpdateRequestSubcategory = "ab_loser_variant"
-	EmailUpdateRequestSubcategoryPageStub                       EmailUpdateRequestSubcategory = "page_stub"
-	EmailUpdateRequestSubcategoryLandingPage                    EmailUpdateRequestSubcategory = "landing_page"
-	EmailUpdateRequestSubcategorySitePage                       EmailUpdateRequestSubcategory = "site_page"
-	EmailUpdateRequestSubcategoryLegacyPage                     EmailUpdateRequestSubcategory = "legacy_page"
-	EmailUpdateRequestSubcategoryAbMasterSitePage               EmailUpdateRequestSubcategory = "ab_master_site_page"
-	EmailUpdateRequestSubcategoryAbVariantSitePage              EmailUpdateRequestSubcategory = "ab_variant_site_page"
 	EmailUpdateRequestSubcategoryAbLoserVariantSitePage         EmailUpdateRequestSubcategory = "ab_loser_variant_site_page"
-	EmailUpdateRequestSubcategoryPerformableLandingPage         EmailUpdateRequestSubcategory = "performable_landing_page"
-	EmailUpdateRequestSubcategoryPerformableLandingPageCutover  EmailUpdateRequestSubcategory = "performable_landing_page_cutover"
-	EmailUpdateRequestSubcategoryStagedPage                     EmailUpdateRequestSubcategory = "staged_page"
+	EmailUpdateRequestSubcategoryAbMaster                       EmailUpdateRequestSubcategory = "ab_master"
+	EmailUpdateRequestSubcategoryAbMasterSitePage               EmailUpdateRequestSubcategory = "ab_master_site_page"
+	EmailUpdateRequestSubcategoryAbVariant                      EmailUpdateRequestSubcategory = "ab_variant"
+	EmailUpdateRequestSubcategoryAbVariantSitePage              EmailUpdateRequestSubcategory = "ab_variant_site_page"
 	EmailUpdateRequestSubcategoryAutomated                      EmailUpdateRequestSubcategory = "automated"
-	EmailUpdateRequestSubcategoryAutomatedForDeal               EmailUpdateRequestSubcategory = "automated_for_deal"
-	EmailUpdateRequestSubcategoryAutomatedForForm               EmailUpdateRequestSubcategory = "automated_for_form"
-	EmailUpdateRequestSubcategoryAutomatedForFormLegacy         EmailUpdateRequestSubcategory = "automated_for_form_legacy"
-	EmailUpdateRequestSubcategoryAutomatedForFormBuffer         EmailUpdateRequestSubcategory = "automated_for_form_buffer"
-	EmailUpdateRequestSubcategoryAutomatedForFormDraft          EmailUpdateRequestSubcategory = "automated_for_form_draft"
-	EmailUpdateRequestSubcategoryAutomatedForCRM                EmailUpdateRequestSubcategory = "automated_for_crm"
-	EmailUpdateRequestSubcategoryRssToEmail                     EmailUpdateRequestSubcategory = "rss_to_email"
-	EmailUpdateRequestSubcategoryRssToEmailChild                EmailUpdateRequestSubcategory = "rss_to_email_child"
-	EmailUpdateRequestSubcategoryBlogEmail                      EmailUpdateRequestSubcategory = "blog_email"
-	EmailUpdateRequestSubcategoryBlogEmailChild                 EmailUpdateRequestSubcategory = "blog_email_child"
-	EmailUpdateRequestSubcategoryOptinEmail                     EmailUpdateRequestSubcategory = "optin_email"
-	EmailUpdateRequestSubcategoryOptinFollowupEmail             EmailUpdateRequestSubcategory = "optin_followup_email"
-	EmailUpdateRequestSubcategoryBatch                          EmailUpdateRequestSubcategory = "batch"
-	EmailUpdateRequestSubcategoryResubscribeEmail               EmailUpdateRequestSubcategory = "resubscribe_email"
-	EmailUpdateRequestSubcategoryUnsubscribeConfirmationEmail   EmailUpdateRequestSubcategory = "unsubscribe_confirmation_email"
-	EmailUpdateRequestSubcategoryResubscribeConfirmationEmail   EmailUpdateRequestSubcategory = "resubscribe_confirmation_email"
-	EmailUpdateRequestSubcategorySingleSendAPI                  EmailUpdateRequestSubcategory = "single_send_api"
-	EmailUpdateRequestSubcategoryMarketingSingleSendAPI         EmailUpdateRequestSubcategory = "marketing_single_send_api"
-	EmailUpdateRequestSubcategorySmtpToken                      EmailUpdateRequestSubcategory = "smtp_token"
-	EmailUpdateRequestSubcategoryLocaltime                      EmailUpdateRequestSubcategory = "localtime"
-	EmailUpdateRequestSubcategoryAutomatedForTicket             EmailUpdateRequestSubcategory = "automated_for_ticket"
-	EmailUpdateRequestSubcategoryAutomatedForLeadflow           EmailUpdateRequestSubcategory = "automated_for_leadflow"
-	EmailUpdateRequestSubcategoryAutomatedForFeedbackCes        EmailUpdateRequestSubcategory = "automated_for_feedback_ces"
-	EmailUpdateRequestSubcategoryAutomatedForFeedbackNps        EmailUpdateRequestSubcategory = "automated_for_feedback_nps"
-	EmailUpdateRequestSubcategoryAutomatedForFeedbackCustom     EmailUpdateRequestSubcategory = "automated_for_feedback_custom"
-	EmailUpdateRequestSubcategoryMembershipRegistration         EmailUpdateRequestSubcategory = "membership_registration"
-	EmailUpdateRequestSubcategoryMembershipPasswordSaved        EmailUpdateRequestSubcategory = "membership_password_saved"
-	EmailUpdateRequestSubcategoryMembershipPasswordReset        EmailUpdateRequestSubcategory = "membership_password_reset"
-	EmailUpdateRequestSubcategoryMembershipOtpLogin             EmailUpdateRequestSubcategory = "membership_otp_login"
-	EmailUpdateRequestSubcategoryMembershipPasswordlessAuth     EmailUpdateRequestSubcategory = "membership_passwordless_auth"
-	EmailUpdateRequestSubcategoryMembershipEmailVerification    EmailUpdateRequestSubcategory = "membership_email_verification"
-	EmailUpdateRequestSubcategoryMembershipRegistrationFollowUp EmailUpdateRequestSubcategory = "membership_registration_follow_up"
-	EmailUpdateRequestSubcategoryMembershipVerification         EmailUpdateRequestSubcategory = "membership_verification"
-	EmailUpdateRequestSubcategoryMembershipFollowUp             EmailUpdateRequestSubcategory = "membership_follow_up"
-	EmailUpdateRequestSubcategoryTicketClosedKickbackEmail      EmailUpdateRequestSubcategory = "ticket_closed_kickback_email"
-	EmailUpdateRequestSubcategoryTicketOpenedKickbackEmail      EmailUpdateRequestSubcategory = "ticket_opened_kickback_email"
-	EmailUpdateRequestSubcategoryAutomatedForCustomSurvey       EmailUpdateRequestSubcategory = "automated_for_custom_survey"
-	EmailUpdateRequestSubcategoryDiscardableStub                EmailUpdateRequestSubcategory = "discardable_stub"
-	EmailUpdateRequestSubcategoryNormalBlogPost                 EmailUpdateRequestSubcategory = "normal_blog_post"
-	EmailUpdateRequestSubcategoryLegacyBlogPost                 EmailUpdateRequestSubcategory = "legacy_blog_post"
-	EmailUpdateRequestSubcategoryImportedBlogPost               EmailUpdateRequestSubcategory = "imported_blog_post"
 	EmailUpdateRequestSubcategoryAutomatedAbMaster              EmailUpdateRequestSubcategory = "automated_ab_master"
 	EmailUpdateRequestSubcategoryAutomatedAbVariant             EmailUpdateRequestSubcategory = "automated_ab_variant"
-	EmailUpdateRequestSubcategoryWebInteractive                 EmailUpdateRequestSubcategory = "web_interactive"
-	EmailUpdateRequestSubcategoryPortalContent                  EmailUpdateRequestSubcategory = "portal_content"
-	EmailUpdateRequestSubcategoryPageInstanceLayout             EmailUpdateRequestSubcategory = "page_instance_layout"
+	EmailUpdateRequestSubcategoryAutomatedForCrm                EmailUpdateRequestSubcategory = "automated_for_crm"
+	EmailUpdateRequestSubcategoryAutomatedForCustomSurvey       EmailUpdateRequestSubcategory = "automated_for_custom_survey"
+	EmailUpdateRequestSubcategoryAutomatedForDeal               EmailUpdateRequestSubcategory = "automated_for_deal"
+	EmailUpdateRequestSubcategoryAutomatedForFeedbackCes        EmailUpdateRequestSubcategory = "automated_for_feedback_ces"
+	EmailUpdateRequestSubcategoryAutomatedForFeedbackCustom     EmailUpdateRequestSubcategory = "automated_for_feedback_custom"
+	EmailUpdateRequestSubcategoryAutomatedForFeedbackNps        EmailUpdateRequestSubcategory = "automated_for_feedback_nps"
+	EmailUpdateRequestSubcategoryAutomatedForForm               EmailUpdateRequestSubcategory = "automated_for_form"
+	EmailUpdateRequestSubcategoryAutomatedForFormBuffer         EmailUpdateRequestSubcategory = "automated_for_form_buffer"
+	EmailUpdateRequestSubcategoryAutomatedForFormDraft          EmailUpdateRequestSubcategory = "automated_for_form_draft"
+	EmailUpdateRequestSubcategoryAutomatedForFormLegacy         EmailUpdateRequestSubcategory = "automated_for_form_legacy"
+	EmailUpdateRequestSubcategoryAutomatedForLeadflow           EmailUpdateRequestSubcategory = "automated_for_leadflow"
+	EmailUpdateRequestSubcategoryAutomatedForTicket             EmailUpdateRequestSubcategory = "automated_for_ticket"
+	EmailUpdateRequestSubcategoryBatch                          EmailUpdateRequestSubcategory = "batch"
+	EmailUpdateRequestSubcategoryBlogArticleInstanceLayout      EmailUpdateRequestSubcategory = "blog_article_instance_layout"
+	EmailUpdateRequestSubcategoryBlogArticleListing             EmailUpdateRequestSubcategory = "blog_article_listing"
+	EmailUpdateRequestSubcategoryBlogAuthorDetail               EmailUpdateRequestSubcategory = "blog_author_detail"
+	EmailUpdateRequestSubcategoryBlogEmail                      EmailUpdateRequestSubcategory = "blog_email"
+	EmailUpdateRequestSubcategoryBlogEmailChild                 EmailUpdateRequestSubcategory = "blog_email_child"
+	EmailUpdateRequestSubcategoryCaseStudy                      EmailUpdateRequestSubcategory = "case_study"
+	EmailUpdateRequestSubcategoryCaseStudyInstanceLayout        EmailUpdateRequestSubcategory = "case_study_instance_layout"
+	EmailUpdateRequestSubcategoryCaseStudyListing               EmailUpdateRequestSubcategory = "case_study_listing"
+	EmailUpdateRequestSubcategoryDiscardableStub                EmailUpdateRequestSubcategory = "discardable_stub"
+	EmailUpdateRequestSubcategoryImportedBlogPost               EmailUpdateRequestSubcategory = "imported_blog_post"
+	EmailUpdateRequestSubcategoryKB404Page                      EmailUpdateRequestSubcategory = "kb_404_page"
 	EmailUpdateRequestSubcategoryKBArticleInstanceLayout        EmailUpdateRequestSubcategory = "kb_article_instance_layout"
 	EmailUpdateRequestSubcategoryKBListing                      EmailUpdateRequestSubcategory = "kb_listing"
 	EmailUpdateRequestSubcategoryKBSearchResults                EmailUpdateRequestSubcategory = "kb_search_results"
 	EmailUpdateRequestSubcategoryKBSupportForm                  EmailUpdateRequestSubcategory = "kb_support_form"
-	EmailUpdateRequestSubcategoryKB404Page                      EmailUpdateRequestSubcategory = "kb_404_page"
-	EmailUpdateRequestSubcategoryCaseStudy                      EmailUpdateRequestSubcategory = "case_study"
-	EmailUpdateRequestSubcategoryCaseStudyListing               EmailUpdateRequestSubcategory = "case_study_listing"
-	EmailUpdateRequestSubcategoryCaseStudyInstanceLayout        EmailUpdateRequestSubcategory = "case_study_instance_layout"
-	EmailUpdateRequestSubcategoryScpStaticPage                  EmailUpdateRequestSubcategory = "scp_static_page"
-	EmailUpdateRequestSubcategoryScpInstanceLayoutPage          EmailUpdateRequestSubcategory = "scp_instance_layout_page"
+	EmailUpdateRequestSubcategoryLandingPage                    EmailUpdateRequestSubcategory = "landing_page"
+	EmailUpdateRequestSubcategoryLegacyBlogPost                 EmailUpdateRequestSubcategory = "legacy_blog_post"
+	EmailUpdateRequestSubcategoryLegacyPage                     EmailUpdateRequestSubcategory = "legacy_page"
+	EmailUpdateRequestSubcategoryLocaltime                      EmailUpdateRequestSubcategory = "localtime"
+	EmailUpdateRequestSubcategoryMarketingSingleSendAPI         EmailUpdateRequestSubcategory = "marketing_single_send_api"
+	EmailUpdateRequestSubcategoryMembershipEmailVerification    EmailUpdateRequestSubcategory = "membership_email_verification"
+	EmailUpdateRequestSubcategoryMembershipFollowUp             EmailUpdateRequestSubcategory = "membership_follow_up"
+	EmailUpdateRequestSubcategoryMembershipOtpLogin             EmailUpdateRequestSubcategory = "membership_otp_login"
+	EmailUpdateRequestSubcategoryMembershipPasswordReset        EmailUpdateRequestSubcategory = "membership_password_reset"
+	EmailUpdateRequestSubcategoryMembershipPasswordSaved        EmailUpdateRequestSubcategory = "membership_password_saved"
+	EmailUpdateRequestSubcategoryMembershipPasswordlessAuth     EmailUpdateRequestSubcategory = "membership_passwordless_auth"
+	EmailUpdateRequestSubcategoryMembershipRegistration         EmailUpdateRequestSubcategory = "membership_registration"
+	EmailUpdateRequestSubcategoryMembershipRegistrationFollowUp EmailUpdateRequestSubcategory = "membership_registration_follow_up"
+	EmailUpdateRequestSubcategoryMembershipVerification         EmailUpdateRequestSubcategory = "membership_verification"
+	EmailUpdateRequestSubcategoryNormalBlogPost                 EmailUpdateRequestSubcategory = "normal_blog_post"
+	EmailUpdateRequestSubcategoryOptinEmail                     EmailUpdateRequestSubcategory = "optin_email"
+	EmailUpdateRequestSubcategoryOptinFollowupEmail             EmailUpdateRequestSubcategory = "optin_followup_email"
+	EmailUpdateRequestSubcategoryPageInstanceLayout             EmailUpdateRequestSubcategory = "page_instance_layout"
+	EmailUpdateRequestSubcategoryPageStub                       EmailUpdateRequestSubcategory = "page_stub"
+	EmailUpdateRequestSubcategoryPerformableLandingPage         EmailUpdateRequestSubcategory = "performable_landing_page"
+	EmailUpdateRequestSubcategoryPerformableLandingPageCutover  EmailUpdateRequestSubcategory = "performable_landing_page_cutover"
 	EmailUpdateRequestSubcategoryPodcastInstanceLayout          EmailUpdateRequestSubcategory = "podcast_instance_layout"
 	EmailUpdateRequestSubcategoryPodcastListing                 EmailUpdateRequestSubcategory = "podcast_listing"
-	EmailUpdateRequestSubcategoryBlogArticleInstanceLayout      EmailUpdateRequestSubcategory = "blog_article_instance_layout"
-	EmailUpdateRequestSubcategoryBlogArticleListing             EmailUpdateRequestSubcategory = "blog_article_listing"
-	EmailUpdateRequestSubcategoryBlogAuthorDetail               EmailUpdateRequestSubcategory = "blog_author_detail"
+	EmailUpdateRequestSubcategoryPortalContent                  EmailUpdateRequestSubcategory = "portal_content"
+	EmailUpdateRequestSubcategoryResubscribeConfirmationEmail   EmailUpdateRequestSubcategory = "resubscribe_confirmation_email"
+	EmailUpdateRequestSubcategoryResubscribeEmail               EmailUpdateRequestSubcategory = "resubscribe_email"
+	EmailUpdateRequestSubcategoryRssToEmail                     EmailUpdateRequestSubcategory = "rss_to_email"
+	EmailUpdateRequestSubcategoryRssToEmailChild                EmailUpdateRequestSubcategory = "rss_to_email_child"
+	EmailUpdateRequestSubcategoryScpInstanceLayoutPage          EmailUpdateRequestSubcategory = "scp_instance_layout_page"
+	EmailUpdateRequestSubcategoryScpStaticPage                  EmailUpdateRequestSubcategory = "scp_static_page"
+	EmailUpdateRequestSubcategorySingleSendAPI                  EmailUpdateRequestSubcategory = "single_send_api"
+	EmailUpdateRequestSubcategorySitePage                       EmailUpdateRequestSubcategory = "site_page"
+	EmailUpdateRequestSubcategorySmtpToken                      EmailUpdateRequestSubcategory = "smtp_token"
+	EmailUpdateRequestSubcategoryStagedPage                     EmailUpdateRequestSubcategory = "staged_page"
+	EmailUpdateRequestSubcategoryTicketClosedKickbackEmail      EmailUpdateRequestSubcategory = "ticket_closed_kickback_email"
+	EmailUpdateRequestSubcategoryTicketOpenedKickbackEmail      EmailUpdateRequestSubcategory = "ticket_opened_kickback_email"
 	EmailUpdateRequestSubcategoryUnknown                        EmailUpdateRequestSubcategory = "UNKNOWN"
+	EmailUpdateRequestSubcategoryUnsubscribeConfirmationEmail   EmailUpdateRequestSubcategory = "unsubscribe_confirmation_email"
+	EmailUpdateRequestSubcategoryWebInteractive                 EmailUpdateRequestSubcategory = "web_interactive"
 )
 
 type Interval struct {
@@ -2632,29 +2650,6 @@ type Interval struct {
 // Returns the unmodified JSON received from the API
 func (r Interval) RawJSON() string { return r.JSON.raw }
 func (r *Interval) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Contains information pagination of results.
-type Paging struct {
-	// Specifies the paging information needed to retrieve the next set of results in a
-	// paginated API response
-	Next shared.NextPage `json:"next,required"`
-	// specifies the paging information needed to retrieve the previous set of results
-	// in a paginated API response
-	Prev shared.PreviousPage `json:"prev"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Next        respjson.Field
-		Prev        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r Paging) RawJSON() string { return r.JSON.raw }
-func (r *Paging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -2750,34 +2745,9 @@ func (r *PublicDividerStyleSettingsParam) UnmarshalJSON(data []byte) error {
 
 // A marketing email
 type PublicEmail struct {
+	IsAb bool `json:"isAb,required"`
 	// The email ID.
-	ID string `json:"id,required"`
-	// Data structure representing the content of the email.
-	Content PublicEmailContent `json:"content,required"`
-	// Data structure representing the from fields on the email.
-	From PublicEmailFromDetails `json:"from,required"`
-	// The name of the email, as displayed on the email dashboard.
-	Name string `json:"name,required"`
-	// Determines whether the email will be sent immediately on publish.
-	SendOnPublish bool `json:"sendOnPublish,required"`
-	// The email state.
-	//
-	// Any of "AUTOMATED", "AUTOMATED_DRAFT", "AUTOMATED_SENDING",
-	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
-	// "AUTOMATED_FOR_FORM_LEGACY", "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED",
-	// "DRAFT", "DRAFT_AB", "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT",
-	// "PAGE_STUB", "PRE_PROCESSING", "PROCESSING", "PUBLISHED", "PUBLISHED_AB",
-	// "PUBLISHED_AB_VARIANT", "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT",
-	// "RSS_TO_EMAIL_PUBLISHED", "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED",
-	// "AUTOMATED_AB", "AUTOMATED_AB_VARIANT", "AUTOMATED_DRAFT_AB",
-	// "AUTOMATED_DRAFT_ABVARIANT", "AUTOMATED_LOSER_ABVARIANT", "AGENT_GENERATED".
-	State PublicEmailState `json:"state,required"`
-	// The email subcategory.
-	Subcategory string `json:"subcategory,required"`
-	// The subject of the email.
-	Subject string `json:"subject,required"`
-	// Data structure representing the to fields of the email.
-	To PublicEmailToDetails `json:"to,required"`
+	ID string `json:"id"`
 	// The active domain of the email.
 	ActiveDomain string `json:"activeDomain"`
 	// List of emailCampaignIds.
@@ -2792,6 +2762,8 @@ type PublicEmail struct {
 	CampaignUtm  string `json:"campaignUtm"`
 	// The ID of the email this email was cloned from.
 	ClonedFrom string `json:"clonedFrom"`
+	// Data structure representing the content of the email.
+	Content PublicEmailContent `json:"content"`
 	// The date and time of the email's creation, in ISO8601 representation.
 	CreatedAt time.Time `json:"createdAt" format:"date-time"`
 	// The id of the user who created the email.
@@ -2805,7 +2777,8 @@ type PublicEmail struct {
 	FeedbackSurveyID string `json:"feedbackSurveyId"`
 	FolderID         int64  `json:"folderId"`
 	FolderIDV2       int64  `json:"folderIdV2"`
-	IsAb             bool   `json:"isAb"`
+	// Data structure representing the from fields on the email.
+	From PublicEmailFromDetails `json:"from"`
 	// Returns the published status of the email. This is read only.
 	IsPublished bool `json:"isPublished"`
 	// Returns whether the email is a transactional email or not. This is read only.
@@ -2815,14 +2788,14 @@ type PublicEmail struct {
 	// "ann", "ann-ng", "ar", "ar-001", "ar-ae", "ar-bh", "ar-dj", "ar-dz", "ar-eg",
 	// "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw", "ar-lb", "ar-ly",
 	// "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd", "ar-so", "ar-ss",
-	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "asa", "asa-tz", "ast", "ast-es",
-	// "as-in", "az", "az-az", "bas", "bas-cm", "be", "bem", "bem-zm", "bez", "bez-tz",
-	// "be-by", "bg", "bgc", "bgc-in", "bg-bg", "bho", "bho-in", "bm", "bm-ml", "bn",
-	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "brx", "brx-in", "br-fr", "bs",
+	// "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa", "asa-tz", "ast",
+	// "ast-es", "az", "az-az", "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez",
+	// "bez-tz", "bg", "bg-bg", "bgc", "bgc-in", "bho", "bho-in", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
 	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
-	// "ce", "ceb", "ceb-ph", "ce-ru", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
 	// "ckb-iq", "ckb-ir", "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb",
-	// "da", "dav", "dav-ke", "da-dk", "da-gl", "de", "de-at", "de-be", "de-ch",
+	// "da", "da-dk", "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch",
 	// "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in",
 	// "dsb", "dsb-de", "dua", "dua-cm", "dyo", "dyo-sn", "dz", "dz-bt", "ebu",
 	// "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001",
@@ -2835,70 +2808,72 @@ type PublicEmail struct {
 	// "en-kn", "en-ky", "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo",
 	// "en-mp", "en-ms", "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na",
 	// "en-nf", "en-ng", "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk",
-	// "en-pn", "en-pr", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg",
-	// "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001", "es",
-	// "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se",
+	// "en-sg", "en-sh", "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-tk",
+	// "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc",
+	// "en-vg", "en-vi", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
+	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
 	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
 	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
 	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
 	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fil", "fil-ph", "fi-fi",
-	// "fo", "fo-dk", "fo-fo", "fr", "frr", "frr-de", "fr-be", "fr-bf", "fr-bi",
-	// "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm",
-	// "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht",
-	// "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr",
-	// "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn",
-	// "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur", "fur-it",
+	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
+	// "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
+	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
+	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
+	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
+	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
+	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
 	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gsw",
-	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "guz", "guz-ke", "gu-in", "gv", "gv-im",
-	// "ha", "haw", "haw-us", "ha-gh", "ha-ne", "ha-ng", "he", "he-il", "hi", "hi-in",
+	// "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im",
+	// "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in",
 	// "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "hu", "hu-hu", "hy", "hy-am", "ia",
-	// "ia-001", "id", "ig", "ig-ng", "ii", "ii-cn", "id-id", "is", "is-is", "it",
-	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "yi",
-	// "yi-001", "jmc", "jmc-tz", "jv", "jv-id", "ka", "kab", "kab-dz", "kam",
-	// "kam-ke", "ka-ge", "kde", "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "khq",
-	// "khq-ml", "ki", "ki-ke", "kk", "kkj", "kkj-cm", "kk-kz", "kl", "kln", "kln-ke",
-	// "kl-gl", "km", "km-kh", "kn", "kn-in", "ko", "kok", "kok-in", "ko-kp", "ko-kr",
-	// "ks", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ks-in", "ku", "ku-tr",
-	// "kw", "kw-gb", "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug",
-	// "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
-	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "luo", "luo-ke", "luy", "luy-ke",
-	// "lu-cd", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
-	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mgh", "mgh-mz", "mgo",
-	// "mgo-cm", "mg-mg", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mni",
-	// "mni-in", "mn-mn", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg",
-	// "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na",
-	// "nb", "nb-no", "nb-sj", "nd", "nds", "nds-de", "nds-nl", "nd-zw", "ne", "ne-in",
-	// "ne-np", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl",
-	// "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nnh", "nnh-cm", "nn-no", "no",
-	// "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om",
-	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
-	// "pcm", "pcm-ng", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps",
-	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
-	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
-	// "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "rof", "rof-tz",
-	// "ro-md", "ro-ro", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua",
-	// "rw", "rwk", "rwk-tz", "rw-rw", "sa", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sa-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se",
-	// "seh", "seh-mz", "ses", "ses-ml", "se-fi", "se-no", "se-se", "sg", "sg-cf",
-	// "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz",
-	// "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "teo", "teo-ke",
-	// "teo-ug", "te-in", "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk",
-	// "tk-tm", "tl", "to", "tok", "tok-001", "to-to", "tr", "tr-cy", "tr-tr", "tt",
-	// "tt-ru", "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
-	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo",
-	// "vo-001", "vun", "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog",
-	// "xog-ug", "yav", "yav-cm", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
+	// "ia-001", "id", "id-id", "ig", "ig-ng", "ii", "ii-cn", "is", "is-is", "it",
+	// "it-ch", "it-it", "it-sm", "it-va", "ja", "ja-jp", "jgo", "jgo-cm", "jmc",
+	// "jmc-tz", "jv", "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kde",
+	// "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
+	// "ki-ke", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke", "km",
+	// "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "ks", "ks-in",
+	// "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr", "kw", "kw-gb",
+	// "ky", "ky-kg", "lag", "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us",
+	// "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc", "lrc-iq",
+	// "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy", "luy-ke", "lv",
+	// "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf", "mdf-ru", "mer",
+	// "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz", "mgo", "mgo-cm",
+	// "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn", "mn-mn", "mni", "mni-in",
+	// "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my", "ms-sg", "mt", "mt-mt", "mua",
+	// "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq", "naq-na", "nb", "nb-no",
+	// "nb-sj", "nd", "nd-zw", "nds", "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "nl",
+	// "nl-aw", "nl-be", "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx",
+	// "nmg", "nmg-cm", "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nus", "nus-ss",
+	// "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "om", "om-et", "om-ke", "or", "or-in",
+	// "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pis",
+	// "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
+	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
+	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in",
+	// "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz", "ru",
+	// "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw", "rwk",
+	// "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in",
+	// "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no",
+	// "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si",
+	// "si-lk", "sk", "sk-sk", "sl", "sl-si", "smn", "smn-fi", "sms", "sms-fi", "sn",
+	// "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk",
+	// "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk", "su", "su-id", "sv",
+	// "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "ta",
+	// "ta-in", "ta-lk", "ta-my", "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug",
+	// "tg", "tg-tj", "th", "th-th", "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "twq",
+	// "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk",
+	// "uz", "uz-af", "uz-uz", "vai", "vai-lr", "vi", "vi-vn", "vo", "vo-001", "vun",
+	// "vun-tz", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
+	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
 	// "yrl-ve", "yue", "yue-cn", "yue-hk", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans",
 	// "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
-	Language               PublicEmailLanguage `json:"language"`
-	PreviewKey             string              `json:"previewKey"`
-	PrimaryEmailCampaignID string              `json:"primaryEmailCampaignId"`
+	Language PublicEmailLanguage `json:"language"`
+	// The name of the email, as displayed on the email dashboard.
+	Name                   string `json:"name"`
+	PreviewKey             string `json:"previewKey"`
+	PrimaryEmailCampaignID string `json:"primaryEmailCampaignId"`
 	// The date and time the email is scheduled for, in ISO8601 representation. This is
 	// only used in local time or scheduled emails.
 	PublishDate time.Time `json:"publishDate" format:"date-time"`
@@ -2912,26 +2887,46 @@ type PublicEmail struct {
 	PublishedByName string `json:"publishedByName"`
 	// RSS related data if it is a blog or rss email.
 	RssData PublicRssEmailDetails `json:"rssData"`
-	Stats   EmailStatisticsData   `json:"stats"`
+	// Determines whether the email will be sent immediately on publish.
+	SendOnPublish bool `json:"sendOnPublish"`
+	// The email state.
+	//
+	// Any of "AGENT_GENERATED", "AUTOMATED", "AUTOMATED_AB", "AUTOMATED_AB_VARIANT",
+	// "AUTOMATED_DRAFT", "AUTOMATED_DRAFT_AB", "AUTOMATED_DRAFT_ABVARIANT",
+	// "AUTOMATED_FOR_FORM", "AUTOMATED_FOR_FORM_BUFFER", "AUTOMATED_FOR_FORM_DRAFT",
+	// "AUTOMATED_FOR_FORM_LEGACY", "AUTOMATED_LOSER_ABVARIANT", "AUTOMATED_SENDING",
+	// "BLOG_EMAIL_DRAFT", "BLOG_EMAIL_PUBLISHED", "DRAFT", "DRAFT_AB",
+	// "DRAFT_AB_VARIANT", "ERROR", "LOSER_AB_VARIANT", "PAGE_STUB", "PRE_PROCESSING",
+	// "PROCESSING", "PUBLISHED", "PUBLISHED_AB", "PUBLISHED_AB_VARIANT",
+	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
+	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
+	State PublicEmailState    `json:"state"`
+	Stats EmailStatisticsData `json:"stats"`
+	// The email subcategory.
+	Subcategory string `json:"subcategory"`
+	// The subject of the email.
+	Subject string `json:"subject"`
 	// Data structure representing the subscription fields of the email.
 	SubscriptionDetails PublicEmailSubscriptionDetails `json:"subscriptionDetails"`
 	TeamsWithAccess     []string                       `json:"teamsWithAccess"`
 	// AB testing related data. This property is only returned for AB type emails.
 	Testing PublicEmailTestingDetails `json:"testing"`
+	// Data structure representing the to fields of the email.
+	To PublicEmailToDetails `json:"to"`
 	// The email type, this is derived from other properties on the email such as
 	// subcategory.
 	//
-	// Any of "AB_EMAIL", "BATCH_EMAIL", "LOCALTIME_EMAIL", "AUTOMATED_AB_EMAIL",
-	// "BLOG_EMAIL", "BLOG_EMAIL_CHILD", "RSS_EMAIL", "RSS_EMAIL_CHILD",
-	// "RESUBSCRIBE_EMAIL", "OPTIN_EMAIL", "OPTIN_FOLLOWUP_EMAIL", "AUTOMATED_EMAIL",
-	// "FEEDBACK_CES_EMAIL", "FEEDBACK_CUSTOM_EMAIL", "FEEDBACK_CUSTOM_SURVEY_EMAIL",
-	// "FEEDBACK_NPS_EMAIL", "FOLLOWUP_EMAIL", "LEADFLOW_EMAIL", "SINGLE_SEND_API",
-	// "MARKETING_SINGLE_SEND_API", "SMTP_TOKEN", "TICKET_EMAIL",
-	// "MEMBERSHIP_REGISTRATION_EMAIL", "MEMBERSHIP_PASSWORD_SAVED_EMAIL",
-	// "MEMBERSHIP_PASSWORD_RESET_EMAIL", "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL",
-	// "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL", "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL",
-	// "MEMBERSHIP_OTP_LOGIN_EMAIL", "MEMBERSHIP_FOLLOW_UP_EMAIL",
-	// "MEMBERSHIP_VERIFICATION_EMAIL".
+	// Any of "AB_EMAIL", "AUTOMATED_AB_EMAIL", "AUTOMATED_EMAIL", "BATCH_EMAIL",
+	// "BLOG_EMAIL", "BLOG_EMAIL_CHILD", "FEEDBACK_CES_EMAIL", "FEEDBACK_CUSTOM_EMAIL",
+	// "FEEDBACK_CUSTOM_SURVEY_EMAIL", "FEEDBACK_NPS_EMAIL", "FOLLOWUP_EMAIL",
+	// "LEADFLOW_EMAIL", "LOCALTIME_EMAIL", "MARKETING_SINGLE_SEND_API",
+	// "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL", "MEMBERSHIP_FOLLOW_UP_EMAIL",
+	// "MEMBERSHIP_OTP_LOGIN_EMAIL", "MEMBERSHIP_PASSWORD_RESET_EMAIL",
+	// "MEMBERSHIP_PASSWORD_SAVED_EMAIL", "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL",
+	// "MEMBERSHIP_REGISTRATION_EMAIL", "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL",
+	// "MEMBERSHIP_VERIFICATION_EMAIL", "OPTIN_EMAIL", "OPTIN_FOLLOWUP_EMAIL",
+	// "RESUBSCRIBE_EMAIL", "RSS_EMAIL", "RSS_EMAIL_CHILD", "SINGLE_SEND_API",
+	// "SMTP_TOKEN", "TICKET_EMAIL".
 	Type          PublicEmailType `json:"type"`
 	UnpublishedAt time.Time       `json:"unpublishedAt" format:"date-time"`
 	// The date and time of the last update to the email, in ISO8601 representation.
@@ -2944,15 +2939,8 @@ type PublicEmail struct {
 	WorkflowNames []string `json:"workflowNames"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
+		IsAb                   respjson.Field
 		ID                     respjson.Field
-		Content                respjson.Field
-		From                   respjson.Field
-		Name                   respjson.Field
-		SendOnPublish          respjson.Field
-		State                  respjson.Field
-		Subcategory            respjson.Field
-		Subject                respjson.Field
-		To                     respjson.Field
 		ActiveDomain           respjson.Field
 		AllEmailCampaignIDs    respjson.Field
 		Archived               respjson.Field
@@ -2961,6 +2949,7 @@ type PublicEmail struct {
 		CampaignName           respjson.Field
 		CampaignUtm            respjson.Field
 		ClonedFrom             respjson.Field
+		Content                respjson.Field
 		CreatedAt              respjson.Field
 		CreatedByID            respjson.Field
 		DeletedAt              respjson.Field
@@ -2969,11 +2958,12 @@ type PublicEmail struct {
 		FeedbackSurveyID       respjson.Field
 		FolderID               respjson.Field
 		FolderIDV2             respjson.Field
-		IsAb                   respjson.Field
+		From                   respjson.Field
 		IsPublished            respjson.Field
 		IsTransactional        respjson.Field
 		JitterSendTime         respjson.Field
 		Language               respjson.Field
+		Name                   respjson.Field
 		PreviewKey             respjson.Field
 		PrimaryEmailCampaignID respjson.Field
 		PublishDate            respjson.Field
@@ -2982,10 +2972,15 @@ type PublicEmail struct {
 		PublishedByID          respjson.Field
 		PublishedByName        respjson.Field
 		RssData                respjson.Field
+		SendOnPublish          respjson.Field
+		State                  respjson.Field
 		Stats                  respjson.Field
+		Subcategory            respjson.Field
+		Subject                respjson.Field
 		SubscriptionDetails    respjson.Field
 		TeamsWithAccess        respjson.Field
 		Testing                respjson.Field
+		To                     respjson.Field
 		Type                   respjson.Field
 		UnpublishedAt          respjson.Field
 		UpdatedAt              respjson.Field
@@ -3003,44 +2998,6 @@ func (r PublicEmail) RawJSON() string { return r.JSON.raw }
 func (r *PublicEmail) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// The email state.
-type PublicEmailState string
-
-const (
-	PublicEmailStateAutomated               PublicEmailState = "AUTOMATED"
-	PublicEmailStateAutomatedDraft          PublicEmailState = "AUTOMATED_DRAFT"
-	PublicEmailStateAutomatedSending        PublicEmailState = "AUTOMATED_SENDING"
-	PublicEmailStateAutomatedForForm        PublicEmailState = "AUTOMATED_FOR_FORM"
-	PublicEmailStateAutomatedForFormBuffer  PublicEmailState = "AUTOMATED_FOR_FORM_BUFFER"
-	PublicEmailStateAutomatedForFormDraft   PublicEmailState = "AUTOMATED_FOR_FORM_DRAFT"
-	PublicEmailStateAutomatedForFormLegacy  PublicEmailState = "AUTOMATED_FOR_FORM_LEGACY"
-	PublicEmailStateBlogEmailDraft          PublicEmailState = "BLOG_EMAIL_DRAFT"
-	PublicEmailStateBlogEmailPublished      PublicEmailState = "BLOG_EMAIL_PUBLISHED"
-	PublicEmailStateDraft                   PublicEmailState = "DRAFT"
-	PublicEmailStateDraftAb                 PublicEmailState = "DRAFT_AB"
-	PublicEmailStateDraftAbVariant          PublicEmailState = "DRAFT_AB_VARIANT"
-	PublicEmailStateError                   PublicEmailState = "ERROR"
-	PublicEmailStateLoserAbVariant          PublicEmailState = "LOSER_AB_VARIANT"
-	PublicEmailStatePageStub                PublicEmailState = "PAGE_STUB"
-	PublicEmailStatePreProcessing           PublicEmailState = "PRE_PROCESSING"
-	PublicEmailStateProcessing              PublicEmailState = "PROCESSING"
-	PublicEmailStatePublished               PublicEmailState = "PUBLISHED"
-	PublicEmailStatePublishedAb             PublicEmailState = "PUBLISHED_AB"
-	PublicEmailStatePublishedAbVariant      PublicEmailState = "PUBLISHED_AB_VARIANT"
-	PublicEmailStatePublishedOrScheduled    PublicEmailState = "PUBLISHED_OR_SCHEDULED"
-	PublicEmailStateRssToEmailDraft         PublicEmailState = "RSS_TO_EMAIL_DRAFT"
-	PublicEmailStateRssToEmailPublished     PublicEmailState = "RSS_TO_EMAIL_PUBLISHED"
-	PublicEmailStateScheduled               PublicEmailState = "SCHEDULED"
-	PublicEmailStateScheduledAb             PublicEmailState = "SCHEDULED_AB"
-	PublicEmailStateScheduledOrPublished    PublicEmailState = "SCHEDULED_OR_PUBLISHED"
-	PublicEmailStateAutomatedAb             PublicEmailState = "AUTOMATED_AB"
-	PublicEmailStateAutomatedAbVariant      PublicEmailState = "AUTOMATED_AB_VARIANT"
-	PublicEmailStateAutomatedDraftAb        PublicEmailState = "AUTOMATED_DRAFT_AB"
-	PublicEmailStateAutomatedDraftAbvariant PublicEmailState = "AUTOMATED_DRAFT_ABVARIANT"
-	PublicEmailStateAutomatedLoserAbvariant PublicEmailState = "AUTOMATED_LOSER_ABVARIANT"
-	PublicEmailStateAgentGenerated          PublicEmailState = "AGENT_GENERATED"
-)
 
 type PublicEmailEmailTemplateMode string
 
@@ -3093,25 +3050,25 @@ const (
 	PublicEmailLanguageArTn   PublicEmailLanguage = "ar-tn"
 	PublicEmailLanguageArYe   PublicEmailLanguage = "ar-ye"
 	PublicEmailLanguageAs     PublicEmailLanguage = "as"
+	PublicEmailLanguageAsIn   PublicEmailLanguage = "as-in"
 	PublicEmailLanguageAsa    PublicEmailLanguage = "asa"
 	PublicEmailLanguageAsaTz  PublicEmailLanguage = "asa-tz"
 	PublicEmailLanguageAst    PublicEmailLanguage = "ast"
 	PublicEmailLanguageAstEs  PublicEmailLanguage = "ast-es"
-	PublicEmailLanguageAsIn   PublicEmailLanguage = "as-in"
 	PublicEmailLanguageAz     PublicEmailLanguage = "az"
 	PublicEmailLanguageAzAz   PublicEmailLanguage = "az-az"
 	PublicEmailLanguageBas    PublicEmailLanguage = "bas"
 	PublicEmailLanguageBasCm  PublicEmailLanguage = "bas-cm"
 	PublicEmailLanguageBe     PublicEmailLanguage = "be"
+	PublicEmailLanguageBeBy   PublicEmailLanguage = "be-by"
 	PublicEmailLanguageBem    PublicEmailLanguage = "bem"
 	PublicEmailLanguageBemZm  PublicEmailLanguage = "bem-zm"
 	PublicEmailLanguageBez    PublicEmailLanguage = "bez"
 	PublicEmailLanguageBezTz  PublicEmailLanguage = "bez-tz"
-	PublicEmailLanguageBeBy   PublicEmailLanguage = "be-by"
 	PublicEmailLanguageBg     PublicEmailLanguage = "bg"
+	PublicEmailLanguageBgBg   PublicEmailLanguage = "bg-bg"
 	PublicEmailLanguageBgc    PublicEmailLanguage = "bgc"
 	PublicEmailLanguageBgcIn  PublicEmailLanguage = "bgc-in"
-	PublicEmailLanguageBgBg   PublicEmailLanguage = "bg-bg"
 	PublicEmailLanguageBho    PublicEmailLanguage = "bho"
 	PublicEmailLanguageBhoIn  PublicEmailLanguage = "bho-in"
 	PublicEmailLanguageBm     PublicEmailLanguage = "bm"
@@ -3123,9 +3080,9 @@ const (
 	PublicEmailLanguageBoCn   PublicEmailLanguage = "bo-cn"
 	PublicEmailLanguageBoIn   PublicEmailLanguage = "bo-in"
 	PublicEmailLanguageBr     PublicEmailLanguage = "br"
+	PublicEmailLanguageBrFr   PublicEmailLanguage = "br-fr"
 	PublicEmailLanguageBrx    PublicEmailLanguage = "brx"
 	PublicEmailLanguageBrxIn  PublicEmailLanguage = "brx-in"
-	PublicEmailLanguageBrFr   PublicEmailLanguage = "br-fr"
 	PublicEmailLanguageBs     PublicEmailLanguage = "bs"
 	PublicEmailLanguageBsBa   PublicEmailLanguage = "bs-ba"
 	PublicEmailLanguageCa     PublicEmailLanguage = "ca"
@@ -3137,9 +3094,9 @@ const (
 	PublicEmailLanguageCcpBd  PublicEmailLanguage = "ccp-bd"
 	PublicEmailLanguageCcpIn  PublicEmailLanguage = "ccp-in"
 	PublicEmailLanguageCe     PublicEmailLanguage = "ce"
+	PublicEmailLanguageCeRu   PublicEmailLanguage = "ce-ru"
 	PublicEmailLanguageCeb    PublicEmailLanguage = "ceb"
 	PublicEmailLanguageCebPh  PublicEmailLanguage = "ceb-ph"
-	PublicEmailLanguageCeRu   PublicEmailLanguage = "ce-ru"
 	PublicEmailLanguageCgg    PublicEmailLanguage = "cgg"
 	PublicEmailLanguageCggUg  PublicEmailLanguage = "cgg-ug"
 	PublicEmailLanguageChr    PublicEmailLanguage = "chr"
@@ -3156,10 +3113,10 @@ const (
 	PublicEmailLanguageCy     PublicEmailLanguage = "cy"
 	PublicEmailLanguageCyGB   PublicEmailLanguage = "cy-gb"
 	PublicEmailLanguageDa     PublicEmailLanguage = "da"
-	PublicEmailLanguageDav    PublicEmailLanguage = "dav"
-	PublicEmailLanguageDavKe  PublicEmailLanguage = "dav-ke"
 	PublicEmailLanguageDaDk   PublicEmailLanguage = "da-dk"
 	PublicEmailLanguageDaGl   PublicEmailLanguage = "da-gl"
+	PublicEmailLanguageDav    PublicEmailLanguage = "dav"
+	PublicEmailLanguageDavKe  PublicEmailLanguage = "dav-ke"
 	PublicEmailLanguageDe     PublicEmailLanguage = "de"
 	PublicEmailLanguageDeAt   PublicEmailLanguage = "de-at"
 	PublicEmailLanguageDeBe   PublicEmailLanguage = "de-be"
@@ -3273,6 +3230,7 @@ const (
 	PublicEmailLanguageEnPk   PublicEmailLanguage = "en-pk"
 	PublicEmailLanguageEnPn   PublicEmailLanguage = "en-pn"
 	PublicEmailLanguageEnPr   PublicEmailLanguage = "en-pr"
+	PublicEmailLanguageEnPt   PublicEmailLanguage = "en-pt"
 	PublicEmailLanguageEnPw   PublicEmailLanguage = "en-pw"
 	PublicEmailLanguageEnRw   PublicEmailLanguage = "en-rw"
 	PublicEmailLanguageEnSb   PublicEmailLanguage = "en-sb"
@@ -3358,15 +3316,13 @@ const (
 	PublicEmailLanguageFfSl   PublicEmailLanguage = "ff-sl"
 	PublicEmailLanguageFfSn   PublicEmailLanguage = "ff-sn"
 	PublicEmailLanguageFi     PublicEmailLanguage = "fi"
+	PublicEmailLanguageFiFi   PublicEmailLanguage = "fi-fi"
 	PublicEmailLanguageFil    PublicEmailLanguage = "fil"
 	PublicEmailLanguageFilPh  PublicEmailLanguage = "fil-ph"
-	PublicEmailLanguageFiFi   PublicEmailLanguage = "fi-fi"
 	PublicEmailLanguageFo     PublicEmailLanguage = "fo"
 	PublicEmailLanguageFoDk   PublicEmailLanguage = "fo-dk"
 	PublicEmailLanguageFoFo   PublicEmailLanguage = "fo-fo"
 	PublicEmailLanguageFr     PublicEmailLanguage = "fr"
-	PublicEmailLanguageFrr    PublicEmailLanguage = "frr"
-	PublicEmailLanguageFrrDe  PublicEmailLanguage = "frr-de"
 	PublicEmailLanguageFrBe   PublicEmailLanguage = "fr-be"
 	PublicEmailLanguageFrBf   PublicEmailLanguage = "fr-bf"
 	PublicEmailLanguageFrBi   PublicEmailLanguage = "fr-bi"
@@ -3413,6 +3369,8 @@ const (
 	PublicEmailLanguageFrVu   PublicEmailLanguage = "fr-vu"
 	PublicEmailLanguageFrWf   PublicEmailLanguage = "fr-wf"
 	PublicEmailLanguageFrYt   PublicEmailLanguage = "fr-yt"
+	PublicEmailLanguageFrr    PublicEmailLanguage = "frr"
+	PublicEmailLanguageFrrDe  PublicEmailLanguage = "frr-de"
 	PublicEmailLanguageFur    PublicEmailLanguage = "fur"
 	PublicEmailLanguageFurIt  PublicEmailLanguage = "fur-it"
 	PublicEmailLanguageFy     PublicEmailLanguage = "fy"
@@ -3429,17 +3387,17 @@ const (
 	PublicEmailLanguageGswFr  PublicEmailLanguage = "gsw-fr"
 	PublicEmailLanguageGswLi  PublicEmailLanguage = "gsw-li"
 	PublicEmailLanguageGu     PublicEmailLanguage = "gu"
+	PublicEmailLanguageGuIn   PublicEmailLanguage = "gu-in"
 	PublicEmailLanguageGuz    PublicEmailLanguage = "guz"
 	PublicEmailLanguageGuzKe  PublicEmailLanguage = "guz-ke"
-	PublicEmailLanguageGuIn   PublicEmailLanguage = "gu-in"
 	PublicEmailLanguageGv     PublicEmailLanguage = "gv"
 	PublicEmailLanguageGvIm   PublicEmailLanguage = "gv-im"
 	PublicEmailLanguageHa     PublicEmailLanguage = "ha"
-	PublicEmailLanguageHaw    PublicEmailLanguage = "haw"
-	PublicEmailLanguageHawUs  PublicEmailLanguage = "haw-us"
 	PublicEmailLanguageHaGh   PublicEmailLanguage = "ha-gh"
 	PublicEmailLanguageHaNe   PublicEmailLanguage = "ha-ne"
 	PublicEmailLanguageHaNg   PublicEmailLanguage = "ha-ng"
+	PublicEmailLanguageHaw    PublicEmailLanguage = "haw"
+	PublicEmailLanguageHawUs  PublicEmailLanguage = "haw-us"
 	PublicEmailLanguageHe     PublicEmailLanguage = "he"
 	PublicEmailLanguageHeIl   PublicEmailLanguage = "he-il"
 	PublicEmailLanguageHi     PublicEmailLanguage = "hi"
@@ -3456,11 +3414,11 @@ const (
 	PublicEmailLanguageIa     PublicEmailLanguage = "ia"
 	PublicEmailLanguageIa001  PublicEmailLanguage = "ia-001"
 	PublicEmailLanguageID     PublicEmailLanguage = "id"
+	PublicEmailLanguageIDID   PublicEmailLanguage = "id-id"
 	PublicEmailLanguageIg     PublicEmailLanguage = "ig"
 	PublicEmailLanguageIgNg   PublicEmailLanguage = "ig-ng"
 	PublicEmailLanguageIi     PublicEmailLanguage = "ii"
 	PublicEmailLanguageIiCn   PublicEmailLanguage = "ii-cn"
-	PublicEmailLanguageIDID   PublicEmailLanguage = "id-id"
 	PublicEmailLanguageIs     PublicEmailLanguage = "is"
 	PublicEmailLanguageIsIs   PublicEmailLanguage = "is-is"
 	PublicEmailLanguageIt     PublicEmailLanguage = "it"
@@ -3472,53 +3430,52 @@ const (
 	PublicEmailLanguageJaJp   PublicEmailLanguage = "ja-jp"
 	PublicEmailLanguageJgo    PublicEmailLanguage = "jgo"
 	PublicEmailLanguageJgoCm  PublicEmailLanguage = "jgo-cm"
-	PublicEmailLanguageYi     PublicEmailLanguage = "yi"
-	PublicEmailLanguageYi001  PublicEmailLanguage = "yi-001"
 	PublicEmailLanguageJmc    PublicEmailLanguage = "jmc"
 	PublicEmailLanguageJmcTz  PublicEmailLanguage = "jmc-tz"
 	PublicEmailLanguageJv     PublicEmailLanguage = "jv"
 	PublicEmailLanguageJvID   PublicEmailLanguage = "jv-id"
 	PublicEmailLanguageKa     PublicEmailLanguage = "ka"
+	PublicEmailLanguageKaGe   PublicEmailLanguage = "ka-ge"
 	PublicEmailLanguageKab    PublicEmailLanguage = "kab"
 	PublicEmailLanguageKabDz  PublicEmailLanguage = "kab-dz"
 	PublicEmailLanguageKam    PublicEmailLanguage = "kam"
 	PublicEmailLanguageKamKe  PublicEmailLanguage = "kam-ke"
-	PublicEmailLanguageKaGe   PublicEmailLanguage = "ka-ge"
 	PublicEmailLanguageKde    PublicEmailLanguage = "kde"
 	PublicEmailLanguageKdeTz  PublicEmailLanguage = "kde-tz"
 	PublicEmailLanguageKea    PublicEmailLanguage = "kea"
 	PublicEmailLanguageKeaCv  PublicEmailLanguage = "kea-cv"
 	PublicEmailLanguageKgp    PublicEmailLanguage = "kgp"
 	PublicEmailLanguageKgpBr  PublicEmailLanguage = "kgp-br"
+	PublicEmailLanguageKh     PublicEmailLanguage = "kh"
 	PublicEmailLanguageKhq    PublicEmailLanguage = "khq"
 	PublicEmailLanguageKhqMl  PublicEmailLanguage = "khq-ml"
 	PublicEmailLanguageKi     PublicEmailLanguage = "ki"
 	PublicEmailLanguageKiKe   PublicEmailLanguage = "ki-ke"
 	PublicEmailLanguageKk     PublicEmailLanguage = "kk"
+	PublicEmailLanguageKkKz   PublicEmailLanguage = "kk-kz"
 	PublicEmailLanguageKkj    PublicEmailLanguage = "kkj"
 	PublicEmailLanguageKkjCm  PublicEmailLanguage = "kkj-cm"
-	PublicEmailLanguageKkKz   PublicEmailLanguage = "kk-kz"
 	PublicEmailLanguageKl     PublicEmailLanguage = "kl"
+	PublicEmailLanguageKlGl   PublicEmailLanguage = "kl-gl"
 	PublicEmailLanguageKln    PublicEmailLanguage = "kln"
 	PublicEmailLanguageKlnKe  PublicEmailLanguage = "kln-ke"
-	PublicEmailLanguageKlGl   PublicEmailLanguage = "kl-gl"
 	PublicEmailLanguageKm     PublicEmailLanguage = "km"
 	PublicEmailLanguageKmKh   PublicEmailLanguage = "km-kh"
 	PublicEmailLanguageKn     PublicEmailLanguage = "kn"
 	PublicEmailLanguageKnIn   PublicEmailLanguage = "kn-in"
 	PublicEmailLanguageKo     PublicEmailLanguage = "ko"
-	PublicEmailLanguageKok    PublicEmailLanguage = "kok"
-	PublicEmailLanguageKokIn  PublicEmailLanguage = "kok-in"
 	PublicEmailLanguageKoKp   PublicEmailLanguage = "ko-kp"
 	PublicEmailLanguageKoKr   PublicEmailLanguage = "ko-kr"
+	PublicEmailLanguageKok    PublicEmailLanguage = "kok"
+	PublicEmailLanguageKokIn  PublicEmailLanguage = "kok-in"
 	PublicEmailLanguageKs     PublicEmailLanguage = "ks"
+	PublicEmailLanguageKsIn   PublicEmailLanguage = "ks-in"
 	PublicEmailLanguageKsb    PublicEmailLanguage = "ksb"
 	PublicEmailLanguageKsbTz  PublicEmailLanguage = "ksb-tz"
 	PublicEmailLanguageKsf    PublicEmailLanguage = "ksf"
 	PublicEmailLanguageKsfCm  PublicEmailLanguage = "ksf-cm"
 	PublicEmailLanguageKsh    PublicEmailLanguage = "ksh"
 	PublicEmailLanguageKshDe  PublicEmailLanguage = "ksh-de"
-	PublicEmailLanguageKsIn   PublicEmailLanguage = "ks-in"
 	PublicEmailLanguageKu     PublicEmailLanguage = "ku"
 	PublicEmailLanguageKuTr   PublicEmailLanguage = "ku-tr"
 	PublicEmailLanguageKw     PublicEmailLanguage = "kw"
@@ -3546,11 +3503,11 @@ const (
 	PublicEmailLanguageLt     PublicEmailLanguage = "lt"
 	PublicEmailLanguageLtLt   PublicEmailLanguage = "lt-lt"
 	PublicEmailLanguageLu     PublicEmailLanguage = "lu"
+	PublicEmailLanguageLuCd   PublicEmailLanguage = "lu-cd"
 	PublicEmailLanguageLuo    PublicEmailLanguage = "luo"
 	PublicEmailLanguageLuoKe  PublicEmailLanguage = "luo-ke"
 	PublicEmailLanguageLuy    PublicEmailLanguage = "luy"
 	PublicEmailLanguageLuyKe  PublicEmailLanguage = "luy-ke"
-	PublicEmailLanguageLuCd   PublicEmailLanguage = "lu-cd"
 	PublicEmailLanguageLv     PublicEmailLanguage = "lv"
 	PublicEmailLanguageLvLv   PublicEmailLanguage = "lv-lv"
 	PublicEmailLanguageMai    PublicEmailLanguage = "mai"
@@ -3565,11 +3522,11 @@ const (
 	PublicEmailLanguageMfe    PublicEmailLanguage = "mfe"
 	PublicEmailLanguageMfeMu  PublicEmailLanguage = "mfe-mu"
 	PublicEmailLanguageMg     PublicEmailLanguage = "mg"
+	PublicEmailLanguageMgMg   PublicEmailLanguage = "mg-mg"
 	PublicEmailLanguageMgh    PublicEmailLanguage = "mgh"
 	PublicEmailLanguageMghMz  PublicEmailLanguage = "mgh-mz"
 	PublicEmailLanguageMgo    PublicEmailLanguage = "mgo"
 	PublicEmailLanguageMgoCm  PublicEmailLanguage = "mgo-cm"
-	PublicEmailLanguageMgMg   PublicEmailLanguage = "mg-mg"
 	PublicEmailLanguageMi     PublicEmailLanguage = "mi"
 	PublicEmailLanguageMiNz   PublicEmailLanguage = "mi-nz"
 	PublicEmailLanguageMk     PublicEmailLanguage = "mk"
@@ -3577,9 +3534,9 @@ const (
 	PublicEmailLanguageMl     PublicEmailLanguage = "ml"
 	PublicEmailLanguageMlIn   PublicEmailLanguage = "ml-in"
 	PublicEmailLanguageMn     PublicEmailLanguage = "mn"
+	PublicEmailLanguageMnMn   PublicEmailLanguage = "mn-mn"
 	PublicEmailLanguageMni    PublicEmailLanguage = "mni"
 	PublicEmailLanguageMniIn  PublicEmailLanguage = "mni-in"
-	PublicEmailLanguageMnMn   PublicEmailLanguage = "mn-mn"
 	PublicEmailLanguageMr     PublicEmailLanguage = "mr"
 	PublicEmailLanguageMrIn   PublicEmailLanguage = "mr-in"
 	PublicEmailLanguageMs     PublicEmailLanguage = "ms"
@@ -3601,10 +3558,10 @@ const (
 	PublicEmailLanguageNbNo   PublicEmailLanguage = "nb-no"
 	PublicEmailLanguageNbSj   PublicEmailLanguage = "nb-sj"
 	PublicEmailLanguageNd     PublicEmailLanguage = "nd"
+	PublicEmailLanguageNdZw   PublicEmailLanguage = "nd-zw"
 	PublicEmailLanguageNds    PublicEmailLanguage = "nds"
 	PublicEmailLanguageNdsDe  PublicEmailLanguage = "nds-de"
 	PublicEmailLanguageNdsNl  PublicEmailLanguage = "nds-nl"
-	PublicEmailLanguageNdZw   PublicEmailLanguage = "nd-zw"
 	PublicEmailLanguageNe     PublicEmailLanguage = "ne"
 	PublicEmailLanguageNeIn   PublicEmailLanguage = "ne-in"
 	PublicEmailLanguageNeNp   PublicEmailLanguage = "ne-np"
@@ -3621,9 +3578,9 @@ const (
 	PublicEmailLanguageNmg    PublicEmailLanguage = "nmg"
 	PublicEmailLanguageNmgCm  PublicEmailLanguage = "nmg-cm"
 	PublicEmailLanguageNn     PublicEmailLanguage = "nn"
+	PublicEmailLanguageNnNo   PublicEmailLanguage = "nn-no"
 	PublicEmailLanguageNnh    PublicEmailLanguage = "nnh"
 	PublicEmailLanguageNnhCm  PublicEmailLanguage = "nnh-cm"
-	PublicEmailLanguageNnNo   PublicEmailLanguage = "nn-no"
 	PublicEmailLanguageNo     PublicEmailLanguage = "no"
 	PublicEmailLanguageNoNo   PublicEmailLanguage = "no-no"
 	PublicEmailLanguageNus    PublicEmailLanguage = "nus"
@@ -3679,10 +3636,10 @@ const (
 	PublicEmailLanguageRn     PublicEmailLanguage = "rn"
 	PublicEmailLanguageRnBi   PublicEmailLanguage = "rn-bi"
 	PublicEmailLanguageRo     PublicEmailLanguage = "ro"
-	PublicEmailLanguageRof    PublicEmailLanguage = "rof"
-	PublicEmailLanguageRofTz  PublicEmailLanguage = "rof-tz"
 	PublicEmailLanguageRoMd   PublicEmailLanguage = "ro-md"
 	PublicEmailLanguageRoRo   PublicEmailLanguage = "ro-ro"
+	PublicEmailLanguageRof    PublicEmailLanguage = "rof"
+	PublicEmailLanguageRofTz  PublicEmailLanguage = "rof-tz"
 	PublicEmailLanguageRu     PublicEmailLanguage = "ru"
 	PublicEmailLanguageRuBy   PublicEmailLanguage = "ru-by"
 	PublicEmailLanguageRuKg   PublicEmailLanguage = "ru-kg"
@@ -3691,17 +3648,17 @@ const (
 	PublicEmailLanguageRuRu   PublicEmailLanguage = "ru-ru"
 	PublicEmailLanguageRuUa   PublicEmailLanguage = "ru-ua"
 	PublicEmailLanguageRw     PublicEmailLanguage = "rw"
+	PublicEmailLanguageRwRw   PublicEmailLanguage = "rw-rw"
 	PublicEmailLanguageRwk    PublicEmailLanguage = "rwk"
 	PublicEmailLanguageRwkTz  PublicEmailLanguage = "rwk-tz"
-	PublicEmailLanguageRwRw   PublicEmailLanguage = "rw-rw"
 	PublicEmailLanguageSa     PublicEmailLanguage = "sa"
+	PublicEmailLanguageSaIn   PublicEmailLanguage = "sa-in"
 	PublicEmailLanguageSah    PublicEmailLanguage = "sah"
 	PublicEmailLanguageSahRu  PublicEmailLanguage = "sah-ru"
 	PublicEmailLanguageSaq    PublicEmailLanguage = "saq"
 	PublicEmailLanguageSaqKe  PublicEmailLanguage = "saq-ke"
 	PublicEmailLanguageSat    PublicEmailLanguage = "sat"
 	PublicEmailLanguageSatIn  PublicEmailLanguage = "sat-in"
-	PublicEmailLanguageSaIn   PublicEmailLanguage = "sa-in"
 	PublicEmailLanguageSbp    PublicEmailLanguage = "sbp"
 	PublicEmailLanguageSbpTz  PublicEmailLanguage = "sbp-tz"
 	PublicEmailLanguageSc     PublicEmailLanguage = "sc"
@@ -3710,13 +3667,13 @@ const (
 	PublicEmailLanguageSdIn   PublicEmailLanguage = "sd-in"
 	PublicEmailLanguageSdPk   PublicEmailLanguage = "sd-pk"
 	PublicEmailLanguageSe     PublicEmailLanguage = "se"
+	PublicEmailLanguageSeFi   PublicEmailLanguage = "se-fi"
+	PublicEmailLanguageSeNo   PublicEmailLanguage = "se-no"
+	PublicEmailLanguageSeSe   PublicEmailLanguage = "se-se"
 	PublicEmailLanguageSeh    PublicEmailLanguage = "seh"
 	PublicEmailLanguageSehMz  PublicEmailLanguage = "seh-mz"
 	PublicEmailLanguageSes    PublicEmailLanguage = "ses"
 	PublicEmailLanguageSesMl  PublicEmailLanguage = "ses-ml"
-	PublicEmailLanguageSeFi   PublicEmailLanguage = "se-fi"
-	PublicEmailLanguageSeNo   PublicEmailLanguage = "se-no"
-	PublicEmailLanguageSeSe   PublicEmailLanguage = "se-se"
 	PublicEmailLanguageSg     PublicEmailLanguage = "sg"
 	PublicEmailLanguageSgCf   PublicEmailLanguage = "sg-cf"
 	PublicEmailLanguageShi    PublicEmailLanguage = "shi"
@@ -3766,10 +3723,10 @@ const (
 	PublicEmailLanguageTaMy   PublicEmailLanguage = "ta-my"
 	PublicEmailLanguageTaSg   PublicEmailLanguage = "ta-sg"
 	PublicEmailLanguageTe     PublicEmailLanguage = "te"
+	PublicEmailLanguageTeIn   PublicEmailLanguage = "te-in"
 	PublicEmailLanguageTeo    PublicEmailLanguage = "teo"
 	PublicEmailLanguageTeoKe  PublicEmailLanguage = "teo-ke"
 	PublicEmailLanguageTeoUg  PublicEmailLanguage = "teo-ug"
-	PublicEmailLanguageTeIn   PublicEmailLanguage = "te-in"
 	PublicEmailLanguageTg     PublicEmailLanguage = "tg"
 	PublicEmailLanguageTgTj   PublicEmailLanguage = "tg-tj"
 	PublicEmailLanguageTh     PublicEmailLanguage = "th"
@@ -3781,9 +3738,9 @@ const (
 	PublicEmailLanguageTkTm   PublicEmailLanguage = "tk-tm"
 	PublicEmailLanguageTl     PublicEmailLanguage = "tl"
 	PublicEmailLanguageTo     PublicEmailLanguage = "to"
+	PublicEmailLanguageToTo   PublicEmailLanguage = "to-to"
 	PublicEmailLanguageTok    PublicEmailLanguage = "tok"
 	PublicEmailLanguageTok001 PublicEmailLanguage = "tok-001"
-	PublicEmailLanguageToTo   PublicEmailLanguage = "to-to"
 	PublicEmailLanguageTr     PublicEmailLanguage = "tr"
 	PublicEmailLanguageTrCy   PublicEmailLanguage = "tr-cy"
 	PublicEmailLanguageTrTr   PublicEmailLanguage = "tr-tr"
@@ -3821,6 +3778,8 @@ const (
 	PublicEmailLanguageXogUg  PublicEmailLanguage = "xog-ug"
 	PublicEmailLanguageYav    PublicEmailLanguage = "yav"
 	PublicEmailLanguageYavCm  PublicEmailLanguage = "yav-cm"
+	PublicEmailLanguageYi     PublicEmailLanguage = "yi"
+	PublicEmailLanguageYi001  PublicEmailLanguage = "yi-001"
 	PublicEmailLanguageYo     PublicEmailLanguage = "yo"
 	PublicEmailLanguageYoBj   PublicEmailLanguage = "yo-bj"
 	PublicEmailLanguageYoNg   PublicEmailLanguage = "yo-ng"
@@ -3845,42 +3804,80 @@ const (
 	PublicEmailLanguageZuZa   PublicEmailLanguage = "zu-za"
 )
 
+// The email state.
+type PublicEmailState string
+
+const (
+	PublicEmailStateAgentGenerated          PublicEmailState = "AGENT_GENERATED"
+	PublicEmailStateAutomated               PublicEmailState = "AUTOMATED"
+	PublicEmailStateAutomatedAb             PublicEmailState = "AUTOMATED_AB"
+	PublicEmailStateAutomatedAbVariant      PublicEmailState = "AUTOMATED_AB_VARIANT"
+	PublicEmailStateAutomatedDraft          PublicEmailState = "AUTOMATED_DRAFT"
+	PublicEmailStateAutomatedDraftAb        PublicEmailState = "AUTOMATED_DRAFT_AB"
+	PublicEmailStateAutomatedDraftAbvariant PublicEmailState = "AUTOMATED_DRAFT_ABVARIANT"
+	PublicEmailStateAutomatedForForm        PublicEmailState = "AUTOMATED_FOR_FORM"
+	PublicEmailStateAutomatedForFormBuffer  PublicEmailState = "AUTOMATED_FOR_FORM_BUFFER"
+	PublicEmailStateAutomatedForFormDraft   PublicEmailState = "AUTOMATED_FOR_FORM_DRAFT"
+	PublicEmailStateAutomatedForFormLegacy  PublicEmailState = "AUTOMATED_FOR_FORM_LEGACY"
+	PublicEmailStateAutomatedLoserAbvariant PublicEmailState = "AUTOMATED_LOSER_ABVARIANT"
+	PublicEmailStateAutomatedSending        PublicEmailState = "AUTOMATED_SENDING"
+	PublicEmailStateBlogEmailDraft          PublicEmailState = "BLOG_EMAIL_DRAFT"
+	PublicEmailStateBlogEmailPublished      PublicEmailState = "BLOG_EMAIL_PUBLISHED"
+	PublicEmailStateDraft                   PublicEmailState = "DRAFT"
+	PublicEmailStateDraftAb                 PublicEmailState = "DRAFT_AB"
+	PublicEmailStateDraftAbVariant          PublicEmailState = "DRAFT_AB_VARIANT"
+	PublicEmailStateError                   PublicEmailState = "ERROR"
+	PublicEmailStateLoserAbVariant          PublicEmailState = "LOSER_AB_VARIANT"
+	PublicEmailStatePageStub                PublicEmailState = "PAGE_STUB"
+	PublicEmailStatePreProcessing           PublicEmailState = "PRE_PROCESSING"
+	PublicEmailStateProcessing              PublicEmailState = "PROCESSING"
+	PublicEmailStatePublished               PublicEmailState = "PUBLISHED"
+	PublicEmailStatePublishedAb             PublicEmailState = "PUBLISHED_AB"
+	PublicEmailStatePublishedAbVariant      PublicEmailState = "PUBLISHED_AB_VARIANT"
+	PublicEmailStatePublishedOrScheduled    PublicEmailState = "PUBLISHED_OR_SCHEDULED"
+	PublicEmailStateRssToEmailDraft         PublicEmailState = "RSS_TO_EMAIL_DRAFT"
+	PublicEmailStateRssToEmailPublished     PublicEmailState = "RSS_TO_EMAIL_PUBLISHED"
+	PublicEmailStateScheduled               PublicEmailState = "SCHEDULED"
+	PublicEmailStateScheduledAb             PublicEmailState = "SCHEDULED_AB"
+	PublicEmailStateScheduledOrPublished    PublicEmailState = "SCHEDULED_OR_PUBLISHED"
+)
+
 // The email type, this is derived from other properties on the email such as
 // subcategory.
 type PublicEmailType string
 
 const (
 	PublicEmailTypeAbEmail                             PublicEmailType = "AB_EMAIL"
-	PublicEmailTypeBatchEmail                          PublicEmailType = "BATCH_EMAIL"
-	PublicEmailTypeLocaltimeEmail                      PublicEmailType = "LOCALTIME_EMAIL"
 	PublicEmailTypeAutomatedAbEmail                    PublicEmailType = "AUTOMATED_AB_EMAIL"
+	PublicEmailTypeAutomatedEmail                      PublicEmailType = "AUTOMATED_EMAIL"
+	PublicEmailTypeBatchEmail                          PublicEmailType = "BATCH_EMAIL"
 	PublicEmailTypeBlogEmail                           PublicEmailType = "BLOG_EMAIL"
 	PublicEmailTypeBlogEmailChild                      PublicEmailType = "BLOG_EMAIL_CHILD"
-	PublicEmailTypeRssEmail                            PublicEmailType = "RSS_EMAIL"
-	PublicEmailTypeRssEmailChild                       PublicEmailType = "RSS_EMAIL_CHILD"
-	PublicEmailTypeResubscribeEmail                    PublicEmailType = "RESUBSCRIBE_EMAIL"
-	PublicEmailTypeOptinEmail                          PublicEmailType = "OPTIN_EMAIL"
-	PublicEmailTypeOptinFollowupEmail                  PublicEmailType = "OPTIN_FOLLOWUP_EMAIL"
-	PublicEmailTypeAutomatedEmail                      PublicEmailType = "AUTOMATED_EMAIL"
 	PublicEmailTypeFeedbackCesEmail                    PublicEmailType = "FEEDBACK_CES_EMAIL"
 	PublicEmailTypeFeedbackCustomEmail                 PublicEmailType = "FEEDBACK_CUSTOM_EMAIL"
 	PublicEmailTypeFeedbackCustomSurveyEmail           PublicEmailType = "FEEDBACK_CUSTOM_SURVEY_EMAIL"
 	PublicEmailTypeFeedbackNpsEmail                    PublicEmailType = "FEEDBACK_NPS_EMAIL"
 	PublicEmailTypeFollowupEmail                       PublicEmailType = "FOLLOWUP_EMAIL"
 	PublicEmailTypeLeadflowEmail                       PublicEmailType = "LEADFLOW_EMAIL"
-	PublicEmailTypeSingleSendAPI                       PublicEmailType = "SINGLE_SEND_API"
+	PublicEmailTypeLocaltimeEmail                      PublicEmailType = "LOCALTIME_EMAIL"
 	PublicEmailTypeMarketingSingleSendAPI              PublicEmailType = "MARKETING_SINGLE_SEND_API"
+	PublicEmailTypeMembershipEmailVerificationEmail    PublicEmailType = "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL"
+	PublicEmailTypeMembershipFollowUpEmail             PublicEmailType = "MEMBERSHIP_FOLLOW_UP_EMAIL"
+	PublicEmailTypeMembershipOtpLoginEmail             PublicEmailType = "MEMBERSHIP_OTP_LOGIN_EMAIL"
+	PublicEmailTypeMembershipPasswordResetEmail        PublicEmailType = "MEMBERSHIP_PASSWORD_RESET_EMAIL"
+	PublicEmailTypeMembershipPasswordSavedEmail        PublicEmailType = "MEMBERSHIP_PASSWORD_SAVED_EMAIL"
+	PublicEmailTypeMembershipPasswordlessAuthEmail     PublicEmailType = "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL"
+	PublicEmailTypeMembershipRegistrationEmail         PublicEmailType = "MEMBERSHIP_REGISTRATION_EMAIL"
+	PublicEmailTypeMembershipRegistrationFollowUpEmail PublicEmailType = "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL"
+	PublicEmailTypeMembershipVerificationEmail         PublicEmailType = "MEMBERSHIP_VERIFICATION_EMAIL"
+	PublicEmailTypeOptinEmail                          PublicEmailType = "OPTIN_EMAIL"
+	PublicEmailTypeOptinFollowupEmail                  PublicEmailType = "OPTIN_FOLLOWUP_EMAIL"
+	PublicEmailTypeResubscribeEmail                    PublicEmailType = "RESUBSCRIBE_EMAIL"
+	PublicEmailTypeRssEmail                            PublicEmailType = "RSS_EMAIL"
+	PublicEmailTypeRssEmailChild                       PublicEmailType = "RSS_EMAIL_CHILD"
+	PublicEmailTypeSingleSendAPI                       PublicEmailType = "SINGLE_SEND_API"
 	PublicEmailTypeSmtpToken                           PublicEmailType = "SMTP_TOKEN"
 	PublicEmailTypeTicketEmail                         PublicEmailType = "TICKET_EMAIL"
-	PublicEmailTypeMembershipRegistrationEmail         PublicEmailType = "MEMBERSHIP_REGISTRATION_EMAIL"
-	PublicEmailTypeMembershipPasswordSavedEmail        PublicEmailType = "MEMBERSHIP_PASSWORD_SAVED_EMAIL"
-	PublicEmailTypeMembershipPasswordResetEmail        PublicEmailType = "MEMBERSHIP_PASSWORD_RESET_EMAIL"
-	PublicEmailTypeMembershipEmailVerificationEmail    PublicEmailType = "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL"
-	PublicEmailTypeMembershipPasswordlessAuthEmail     PublicEmailType = "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL"
-	PublicEmailTypeMembershipRegistrationFollowUpEmail PublicEmailType = "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL"
-	PublicEmailTypeMembershipOtpLoginEmail             PublicEmailType = "MEMBERSHIP_OTP_LOGIN_EMAIL"
-	PublicEmailTypeMembershipFollowUpEmail             PublicEmailType = "MEMBERSHIP_FOLLOW_UP_EMAIL"
-	PublicEmailTypeMembershipVerificationEmail         PublicEmailType = "MEMBERSHIP_VERIFICATION_EMAIL"
 )
 
 // Data structure representing the content of the email.
@@ -4230,23 +4227,23 @@ type PublicEmailTestingDetails struct {
 	// Version of the email that should be sent if there are too few recipients to
 	// conduct an AB test.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbSampleSizeDefault PublicEmailTestingDetailsAbSampleSizeDefault `json:"abSampleSizeDefault"`
 	// Version of the email that should be sent if the results are inconclusive after
 	// the test period, master or variant.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbSamplingDefault PublicEmailTestingDetailsAbSamplingDefault `json:"abSamplingDefault"`
 	// Status of the AB test.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus PublicEmailTestingDetailsAbStatus `json:"abStatus"`
 	// Metric to determine the version that will be sent to the remaining contacts.
 	//
-	// Any of "CLICKS_BY_OPENS", "CLICKS_BY_DELIVERED", "OPENS_BY_DELIVERED".
+	// Any of "CLICKS_BY_DELIVERED", "CLICKS_BY_OPENS", "OPENS_BY_DELIVERED".
 	AbSuccessMetric PublicEmailTestingDetailsAbSuccessMetric `json:"abSuccessMetric"`
 	// The size of your test group.
 	AbTestPercentage int64 `json:"abTestPercentage"`
@@ -4292,14 +4289,14 @@ func (r PublicEmailTestingDetails) ToParam() PublicEmailTestingDetailsParam {
 type PublicEmailTestingDetailsAbSampleSizeDefault string
 
 const (
-	PublicEmailTestingDetailsAbSampleSizeDefaultMaster                PublicEmailTestingDetailsAbSampleSizeDefault = "master"
-	PublicEmailTestingDetailsAbSampleSizeDefaultVariant               PublicEmailTestingDetailsAbSampleSizeDefault = "variant"
+	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedLoserVariant PublicEmailTestingDetailsAbSampleSizeDefault = "automated_loser_variant"
+	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedMaster       PublicEmailTestingDetailsAbSampleSizeDefault = "automated_master"
+	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedVariant      PublicEmailTestingDetailsAbSampleSizeDefault = "automated_variant"
 	PublicEmailTestingDetailsAbSampleSizeDefaultLoserVariant          PublicEmailTestingDetailsAbSampleSizeDefault = "loser_variant"
 	PublicEmailTestingDetailsAbSampleSizeDefaultMabMaster             PublicEmailTestingDetailsAbSampleSizeDefault = "mab_master"
 	PublicEmailTestingDetailsAbSampleSizeDefaultMabVariant            PublicEmailTestingDetailsAbSampleSizeDefault = "mab_variant"
-	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedMaster       PublicEmailTestingDetailsAbSampleSizeDefault = "automated_master"
-	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedVariant      PublicEmailTestingDetailsAbSampleSizeDefault = "automated_variant"
-	PublicEmailTestingDetailsAbSampleSizeDefaultAutomatedLoserVariant PublicEmailTestingDetailsAbSampleSizeDefault = "automated_loser_variant"
+	PublicEmailTestingDetailsAbSampleSizeDefaultMaster                PublicEmailTestingDetailsAbSampleSizeDefault = "master"
+	PublicEmailTestingDetailsAbSampleSizeDefaultVariant               PublicEmailTestingDetailsAbSampleSizeDefault = "variant"
 )
 
 // Version of the email that should be sent if the results are inconclusive after
@@ -4307,36 +4304,36 @@ const (
 type PublicEmailTestingDetailsAbSamplingDefault string
 
 const (
-	PublicEmailTestingDetailsAbSamplingDefaultMaster                PublicEmailTestingDetailsAbSamplingDefault = "master"
-	PublicEmailTestingDetailsAbSamplingDefaultVariant               PublicEmailTestingDetailsAbSamplingDefault = "variant"
+	PublicEmailTestingDetailsAbSamplingDefaultAutomatedLoserVariant PublicEmailTestingDetailsAbSamplingDefault = "automated_loser_variant"
+	PublicEmailTestingDetailsAbSamplingDefaultAutomatedMaster       PublicEmailTestingDetailsAbSamplingDefault = "automated_master"
+	PublicEmailTestingDetailsAbSamplingDefaultAutomatedVariant      PublicEmailTestingDetailsAbSamplingDefault = "automated_variant"
 	PublicEmailTestingDetailsAbSamplingDefaultLoserVariant          PublicEmailTestingDetailsAbSamplingDefault = "loser_variant"
 	PublicEmailTestingDetailsAbSamplingDefaultMabMaster             PublicEmailTestingDetailsAbSamplingDefault = "mab_master"
 	PublicEmailTestingDetailsAbSamplingDefaultMabVariant            PublicEmailTestingDetailsAbSamplingDefault = "mab_variant"
-	PublicEmailTestingDetailsAbSamplingDefaultAutomatedMaster       PublicEmailTestingDetailsAbSamplingDefault = "automated_master"
-	PublicEmailTestingDetailsAbSamplingDefaultAutomatedVariant      PublicEmailTestingDetailsAbSamplingDefault = "automated_variant"
-	PublicEmailTestingDetailsAbSamplingDefaultAutomatedLoserVariant PublicEmailTestingDetailsAbSamplingDefault = "automated_loser_variant"
+	PublicEmailTestingDetailsAbSamplingDefaultMaster                PublicEmailTestingDetailsAbSamplingDefault = "master"
+	PublicEmailTestingDetailsAbSamplingDefaultVariant               PublicEmailTestingDetailsAbSamplingDefault = "variant"
 )
 
 // Status of the AB test.
 type PublicEmailTestingDetailsAbStatus string
 
 const (
-	PublicEmailTestingDetailsAbStatusMaster                PublicEmailTestingDetailsAbStatus = "master"
-	PublicEmailTestingDetailsAbStatusVariant               PublicEmailTestingDetailsAbStatus = "variant"
+	PublicEmailTestingDetailsAbStatusAutomatedLoserVariant PublicEmailTestingDetailsAbStatus = "automated_loser_variant"
+	PublicEmailTestingDetailsAbStatusAutomatedMaster       PublicEmailTestingDetailsAbStatus = "automated_master"
+	PublicEmailTestingDetailsAbStatusAutomatedVariant      PublicEmailTestingDetailsAbStatus = "automated_variant"
 	PublicEmailTestingDetailsAbStatusLoserVariant          PublicEmailTestingDetailsAbStatus = "loser_variant"
 	PublicEmailTestingDetailsAbStatusMabMaster             PublicEmailTestingDetailsAbStatus = "mab_master"
 	PublicEmailTestingDetailsAbStatusMabVariant            PublicEmailTestingDetailsAbStatus = "mab_variant"
-	PublicEmailTestingDetailsAbStatusAutomatedMaster       PublicEmailTestingDetailsAbStatus = "automated_master"
-	PublicEmailTestingDetailsAbStatusAutomatedVariant      PublicEmailTestingDetailsAbStatus = "automated_variant"
-	PublicEmailTestingDetailsAbStatusAutomatedLoserVariant PublicEmailTestingDetailsAbStatus = "automated_loser_variant"
+	PublicEmailTestingDetailsAbStatusMaster                PublicEmailTestingDetailsAbStatus = "master"
+	PublicEmailTestingDetailsAbStatusVariant               PublicEmailTestingDetailsAbStatus = "variant"
 )
 
 // Metric to determine the version that will be sent to the remaining contacts.
 type PublicEmailTestingDetailsAbSuccessMetric string
 
 const (
-	PublicEmailTestingDetailsAbSuccessMetricClicksByOpens     PublicEmailTestingDetailsAbSuccessMetric = "CLICKS_BY_OPENS"
 	PublicEmailTestingDetailsAbSuccessMetricClicksByDelivered PublicEmailTestingDetailsAbSuccessMetric = "CLICKS_BY_DELIVERED"
+	PublicEmailTestingDetailsAbSuccessMetricClicksByOpens     PublicEmailTestingDetailsAbSuccessMetric = "CLICKS_BY_OPENS"
 	PublicEmailTestingDetailsAbSuccessMetricOpensByDelivered  PublicEmailTestingDetailsAbSuccessMetric = "OPENS_BY_DELIVERED"
 )
 
@@ -4353,23 +4350,23 @@ type PublicEmailTestingDetailsParam struct {
 	// Version of the email that should be sent if there are too few recipients to
 	// conduct an AB test.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbSampleSizeDefault PublicEmailTestingDetailsAbSampleSizeDefault `json:"abSampleSizeDefault,omitzero"`
 	// Version of the email that should be sent if the results are inconclusive after
 	// the test period, master or variant.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbSamplingDefault PublicEmailTestingDetailsAbSamplingDefault `json:"abSamplingDefault,omitzero"`
 	// Status of the AB test.
 	//
-	// Any of "master", "variant", "loser_variant", "mab_master", "mab_variant",
-	// "automated_master", "automated_variant", "automated_loser_variant".
+	// Any of "automated_loser_variant", "automated_master", "automated_variant",
+	// "loser_variant", "mab_master", "mab_variant", "master", "variant".
 	AbStatus PublicEmailTestingDetailsAbStatus `json:"abStatus,omitzero"`
 	// Metric to determine the version that will be sent to the remaining contacts.
 	//
-	// Any of "CLICKS_BY_OPENS", "CLICKS_BY_DELIVERED", "OPENS_BY_DELIVERED".
+	// Any of "CLICKS_BY_DELIVERED", "CLICKS_BY_OPENS", "OPENS_BY_DELIVERED".
 	AbSuccessMetric PublicEmailTestingDetailsAbSuccessMetric `json:"abSuccessMetric,omitzero"`
 	paramObj
 }
@@ -4715,7 +4712,10 @@ type EmailListParams struct {
 	// The maximum number of results to return. Default is 10.
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Include the names for any associated marketing campaigns.
-	MarketingCampaignNames param.Opt[bool] `query:"marketingCampaignNames,omitzero" json:"-"`
+	MarketingCampaignNames param.Opt[bool]      `query:"marketingCampaignNames,omitzero" json:"-"`
+	PublishedAfter         param.Opt[time.Time] `query:"publishedAfter,omitzero" format:"date-time" json:"-"`
+	PublishedAt            param.Opt[time.Time] `query:"publishedAt,omitzero" format:"date-time" json:"-"`
+	PublishedBefore        param.Opt[time.Time] `query:"publishedBefore,omitzero" format:"date-time" json:"-"`
 	// Only return emails last updated after the specified time.
 	UpdatedAfter param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
 	// Only return emails last updated at exactly the specified time.
@@ -4733,17 +4733,17 @@ type EmailListParams struct {
 	// Email types to be filtered by. Multiple types can be included. All emails will
 	// be returned if not present.
 	//
-	// Any of "AB_EMAIL", "BATCH_EMAIL", "LOCALTIME_EMAIL", "AUTOMATED_AB_EMAIL",
-	// "BLOG_EMAIL", "BLOG_EMAIL_CHILD", "RSS_EMAIL", "RSS_EMAIL_CHILD",
-	// "RESUBSCRIBE_EMAIL", "OPTIN_EMAIL", "OPTIN_FOLLOWUP_EMAIL", "AUTOMATED_EMAIL",
-	// "FEEDBACK_CES_EMAIL", "FEEDBACK_CUSTOM_EMAIL", "FEEDBACK_CUSTOM_SURVEY_EMAIL",
-	// "FEEDBACK_NPS_EMAIL", "FOLLOWUP_EMAIL", "LEADFLOW_EMAIL", "SINGLE_SEND_API",
-	// "MARKETING_SINGLE_SEND_API", "SMTP_TOKEN", "TICKET_EMAIL",
-	// "MEMBERSHIP_REGISTRATION_EMAIL", "MEMBERSHIP_PASSWORD_SAVED_EMAIL",
-	// "MEMBERSHIP_PASSWORD_RESET_EMAIL", "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL",
-	// "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL", "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL",
-	// "MEMBERSHIP_OTP_LOGIN_EMAIL", "MEMBERSHIP_FOLLOW_UP_EMAIL",
-	// "MEMBERSHIP_VERIFICATION_EMAIL".
+	// Any of "AB_EMAIL", "AUTOMATED_AB_EMAIL", "AUTOMATED_EMAIL", "BATCH_EMAIL",
+	// "BLOG_EMAIL", "BLOG_EMAIL_CHILD", "FEEDBACK_CES_EMAIL", "FEEDBACK_CUSTOM_EMAIL",
+	// "FEEDBACK_CUSTOM_SURVEY_EMAIL", "FEEDBACK_NPS_EMAIL", "FOLLOWUP_EMAIL",
+	// "LEADFLOW_EMAIL", "LOCALTIME_EMAIL", "MARKETING_SINGLE_SEND_API",
+	// "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL", "MEMBERSHIP_FOLLOW_UP_EMAIL",
+	// "MEMBERSHIP_OTP_LOGIN_EMAIL", "MEMBERSHIP_PASSWORD_RESET_EMAIL",
+	// "MEMBERSHIP_PASSWORD_SAVED_EMAIL", "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL",
+	// "MEMBERSHIP_REGISTRATION_EMAIL", "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL",
+	// "MEMBERSHIP_VERIFICATION_EMAIL", "OPTIN_EMAIL", "OPTIN_FOLLOWUP_EMAIL",
+	// "RESUBSCRIBE_EMAIL", "RSS_EMAIL", "RSS_EMAIL_CHILD", "SINGLE_SEND_API",
+	// "SMTP_TOKEN", "TICKET_EMAIL".
 	Type EmailListParamsType `query:"type,omitzero" json:"-"`
 	paramObj
 }
@@ -4762,36 +4762,36 @@ type EmailListParamsType string
 
 const (
 	EmailListParamsTypeAbEmail                             EmailListParamsType = "AB_EMAIL"
-	EmailListParamsTypeBatchEmail                          EmailListParamsType = "BATCH_EMAIL"
-	EmailListParamsTypeLocaltimeEmail                      EmailListParamsType = "LOCALTIME_EMAIL"
 	EmailListParamsTypeAutomatedAbEmail                    EmailListParamsType = "AUTOMATED_AB_EMAIL"
+	EmailListParamsTypeAutomatedEmail                      EmailListParamsType = "AUTOMATED_EMAIL"
+	EmailListParamsTypeBatchEmail                          EmailListParamsType = "BATCH_EMAIL"
 	EmailListParamsTypeBlogEmail                           EmailListParamsType = "BLOG_EMAIL"
 	EmailListParamsTypeBlogEmailChild                      EmailListParamsType = "BLOG_EMAIL_CHILD"
-	EmailListParamsTypeRssEmail                            EmailListParamsType = "RSS_EMAIL"
-	EmailListParamsTypeRssEmailChild                       EmailListParamsType = "RSS_EMAIL_CHILD"
-	EmailListParamsTypeResubscribeEmail                    EmailListParamsType = "RESUBSCRIBE_EMAIL"
-	EmailListParamsTypeOptinEmail                          EmailListParamsType = "OPTIN_EMAIL"
-	EmailListParamsTypeOptinFollowupEmail                  EmailListParamsType = "OPTIN_FOLLOWUP_EMAIL"
-	EmailListParamsTypeAutomatedEmail                      EmailListParamsType = "AUTOMATED_EMAIL"
 	EmailListParamsTypeFeedbackCesEmail                    EmailListParamsType = "FEEDBACK_CES_EMAIL"
 	EmailListParamsTypeFeedbackCustomEmail                 EmailListParamsType = "FEEDBACK_CUSTOM_EMAIL"
 	EmailListParamsTypeFeedbackCustomSurveyEmail           EmailListParamsType = "FEEDBACK_CUSTOM_SURVEY_EMAIL"
 	EmailListParamsTypeFeedbackNpsEmail                    EmailListParamsType = "FEEDBACK_NPS_EMAIL"
 	EmailListParamsTypeFollowupEmail                       EmailListParamsType = "FOLLOWUP_EMAIL"
 	EmailListParamsTypeLeadflowEmail                       EmailListParamsType = "LEADFLOW_EMAIL"
-	EmailListParamsTypeSingleSendAPI                       EmailListParamsType = "SINGLE_SEND_API"
+	EmailListParamsTypeLocaltimeEmail                      EmailListParamsType = "LOCALTIME_EMAIL"
 	EmailListParamsTypeMarketingSingleSendAPI              EmailListParamsType = "MARKETING_SINGLE_SEND_API"
+	EmailListParamsTypeMembershipEmailVerificationEmail    EmailListParamsType = "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL"
+	EmailListParamsTypeMembershipFollowUpEmail             EmailListParamsType = "MEMBERSHIP_FOLLOW_UP_EMAIL"
+	EmailListParamsTypeMembershipOtpLoginEmail             EmailListParamsType = "MEMBERSHIP_OTP_LOGIN_EMAIL"
+	EmailListParamsTypeMembershipPasswordResetEmail        EmailListParamsType = "MEMBERSHIP_PASSWORD_RESET_EMAIL"
+	EmailListParamsTypeMembershipPasswordSavedEmail        EmailListParamsType = "MEMBERSHIP_PASSWORD_SAVED_EMAIL"
+	EmailListParamsTypeMembershipPasswordlessAuthEmail     EmailListParamsType = "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL"
+	EmailListParamsTypeMembershipRegistrationEmail         EmailListParamsType = "MEMBERSHIP_REGISTRATION_EMAIL"
+	EmailListParamsTypeMembershipRegistrationFollowUpEmail EmailListParamsType = "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL"
+	EmailListParamsTypeMembershipVerificationEmail         EmailListParamsType = "MEMBERSHIP_VERIFICATION_EMAIL"
+	EmailListParamsTypeOptinEmail                          EmailListParamsType = "OPTIN_EMAIL"
+	EmailListParamsTypeOptinFollowupEmail                  EmailListParamsType = "OPTIN_FOLLOWUP_EMAIL"
+	EmailListParamsTypeResubscribeEmail                    EmailListParamsType = "RESUBSCRIBE_EMAIL"
+	EmailListParamsTypeRssEmail                            EmailListParamsType = "RSS_EMAIL"
+	EmailListParamsTypeRssEmailChild                       EmailListParamsType = "RSS_EMAIL_CHILD"
+	EmailListParamsTypeSingleSendAPI                       EmailListParamsType = "SINGLE_SEND_API"
 	EmailListParamsTypeSmtpToken                           EmailListParamsType = "SMTP_TOKEN"
 	EmailListParamsTypeTicketEmail                         EmailListParamsType = "TICKET_EMAIL"
-	EmailListParamsTypeMembershipRegistrationEmail         EmailListParamsType = "MEMBERSHIP_REGISTRATION_EMAIL"
-	EmailListParamsTypeMembershipPasswordSavedEmail        EmailListParamsType = "MEMBERSHIP_PASSWORD_SAVED_EMAIL"
-	EmailListParamsTypeMembershipPasswordResetEmail        EmailListParamsType = "MEMBERSHIP_PASSWORD_RESET_EMAIL"
-	EmailListParamsTypeMembershipEmailVerificationEmail    EmailListParamsType = "MEMBERSHIP_EMAIL_VERIFICATION_EMAIL"
-	EmailListParamsTypeMembershipPasswordlessAuthEmail     EmailListParamsType = "MEMBERSHIP_PASSWORDLESS_AUTH_EMAIL"
-	EmailListParamsTypeMembershipRegistrationFollowUpEmail EmailListParamsType = "MEMBERSHIP_REGISTRATION_FOLLOW_UP_EMAIL"
-	EmailListParamsTypeMembershipOtpLoginEmail             EmailListParamsType = "MEMBERSHIP_OTP_LOGIN_EMAIL"
-	EmailListParamsTypeMembershipFollowUpEmail             EmailListParamsType = "MEMBERSHIP_FOLLOW_UP_EMAIL"
-	EmailListParamsTypeMembershipVerificationEmail         EmailListParamsType = "MEMBERSHIP_VERIFICATION_EMAIL"
 )
 
 type EmailDeleteParams struct {
@@ -4850,6 +4850,29 @@ type EmailGetParams struct {
 
 // URLQuery serializes [EmailGetParams]'s query parameters as `url.Values`.
 func (r EmailGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type EmailGetAbTestVariationParams struct {
+	// Boolean variable to request archived email
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// Boolean variable to request stats to be returned in response
+	IncludeStats param.Opt[bool] `query:"includeStats,omitzero" json:"-"`
+	// Boolean variable to request name of the campaign in response
+	MarketingCampaignNames param.Opt[bool] `query:"marketingCampaignNames,omitzero" json:"-"`
+	// Boolean variable to request name of the associated workflows in response
+	WorkflowNames param.Opt[bool] `query:"workflowNames,omitzero" json:"-"`
+	// List of properties to be returned in the API response
+	IncludedProperties []string `query:"includedProperties,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [EmailGetAbTestVariationParams]'s query parameters as
+// `url.Values`.
+func (r EmailGetAbTestVariationParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,

@@ -28,7 +28,7 @@ func TestObjectSchemaNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Schemas.New(context.TODO(), crm.ObjectSchemaNewParams{
+	_, err := client.Crm.Objects.Schemas.New(context.TODO(), crm.ObjectSchemaNewParams{
 		ObjectSchemaEgg: crm.ObjectSchemaEggParam{
 			AssociatedObjects: []string{"CONTACT"},
 			Labels: shared.ObjectTypeDefinitionLabelsParam{
@@ -47,7 +47,7 @@ func TestObjectSchemaNewWithOptionalParams(t *testing.T) {
 				GroupName:         hubspotsdk.String("my_object_information"),
 				HasUniqueValue:    hubspotsdk.Bool(false),
 				Hidden:            hubspotsdk.Bool(true),
-				NumberDisplayHint: crm.ObjectTypePropertyCreateNumberDisplayHintUnformatted,
+				NumberDisplayHint: crm.ObjectTypePropertyCreateNumberDisplayHintCurrency,
 				Options: []shared.OptionInputParam{{
 					DisplayOrder: 1,
 					Hidden:       true,
@@ -61,11 +61,11 @@ func TestObjectSchemaNewWithOptionalParams(t *testing.T) {
 					Value:        "B",
 					Description:  hubspotsdk.String("Choice number two"),
 				}},
-				OptionSortStrategy:       crm.ObjectTypePropertyCreateOptionSortStrategyDisplayOrder,
+				OptionSortStrategy:       crm.ObjectTypePropertyCreateOptionSortStrategyAlphabetical,
 				ReferencedObjectType:     hubspotsdk.String("referencedObjectType"),
 				SearchableInGlobalSearch: hubspotsdk.Bool(true),
 				ShowCurrencySymbol:       hubspotsdk.Bool(true),
-				TextDisplayHint:          crm.ObjectTypePropertyCreateTextDisplayHintUnformattedSingleLine,
+				TextDisplayHint:          crm.ObjectTypePropertyCreateTextDisplayHintDomainName,
 			}},
 			RequiredProperties:         []string{"my_object_property"},
 			Description:                hubspotsdk.String("description"),
@@ -96,7 +96,7 @@ func TestObjectSchemaUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Schemas.Update(
+	_, err := client.Crm.Objects.Schemas.Update(
 		context.TODO(),
 		"objectType",
 		crm.ObjectSchemaUpdateParams{
@@ -137,7 +137,7 @@ func TestObjectSchemaListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Schemas.List(context.TODO(), crm.ObjectSchemaListParams{
+	_, err := client.Crm.Objects.Schemas.List(context.TODO(), crm.ObjectSchemaListParams{
 		Archived: hubspotsdk.Bool(true),
 	})
 	if err != nil {
@@ -162,7 +162,7 @@ func TestObjectSchemaDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Schemas.Delete(
+	err := client.Crm.Objects.Schemas.Delete(
 		context.TODO(),
 		"objectType",
 		crm.ObjectSchemaDeleteParams{
@@ -191,7 +191,7 @@ func TestObjectSchemaNewAssociationWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Schemas.NewAssociation(
+	_, err := client.Crm.Objects.Schemas.NewAssociation(
 		context.TODO(),
 		"objectType",
 		crm.ObjectSchemaNewAssociationParams{
@@ -224,7 +224,7 @@ func TestObjectSchemaDeleteAssociation(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Schemas.DeleteAssociation(
+	err := client.Crm.Objects.Schemas.DeleteAssociation(
 		context.TODO(),
 		"associationIdentifier",
 		crm.ObjectSchemaDeleteAssociationParams{
@@ -253,7 +253,7 @@ func TestObjectSchemaGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Schemas.Get(context.TODO(), "objectType")
+	_, err := client.Crm.Objects.Schemas.Get(context.TODO(), "objectType")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

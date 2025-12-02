@@ -7,7 +7,7 @@ import (
 )
 
 // ObjectService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -42,6 +42,7 @@ type ObjectService struct {
 	PartnerServices     ObjectPartnerServiceService
 	PostalMail          ObjectPostalMailService
 	Products            ObjectProductService
+	Projects            ObjectProjectService
 	Quotes              ObjectQuoteService
 	Schemas             ObjectSchemaService
 	Services            ObjectServiceService
@@ -84,6 +85,7 @@ func NewObjectService(opts ...option.RequestOption) (r ObjectService) {
 	r.PartnerServices = NewObjectPartnerServiceService(opts...)
 	r.PostalMail = NewObjectPostalMailService(opts...)
 	r.Products = NewObjectProductService(opts...)
+	r.Projects = NewObjectProjectService(opts...)
 	r.Quotes = NewObjectQuoteService(opts...)
 	r.Schemas = NewObjectSchemaService(opts...)
 	r.Services = NewObjectServiceService(opts...)

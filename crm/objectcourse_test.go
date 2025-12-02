@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectCourseNewWithOptionalParams(t *testing.T) {
+func TestObjectCourseNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,11 +28,8 @@ func TestObjectCourseNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Courses.New(context.TODO(), crm.ObjectCourseNewParams{
+	_, err := client.Crm.Objects.Courses.New(context.TODO(), crm.ObjectCourseNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Properties: map[string]string{
-				"foo": "string",
-			},
 			Associations: []crm.PublicAssociationsForObjectParam{{
 				To: shared.PublicObjectIDParam{
 					ID: "37295",
@@ -42,6 +39,9 @@ func TestObjectCourseNewWithOptionalParams(t *testing.T) {
 					AssociationTypeID:   0,
 				}},
 			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
 		},
 	})
 	if err != nil {
@@ -66,19 +66,13 @@ func TestObjectCourseUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Courses.Update(
+	_, err := client.Crm.Objects.Courses.Update(
 		context.TODO(),
 		"courseId",
 		crm.ObjectCourseUpdateParams{
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -106,7 +100,7 @@ func TestObjectCourseListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Courses.List(context.TODO(), crm.ObjectCourseListParams{
+	_, err := client.Crm.Objects.Courses.List(context.TODO(), crm.ObjectCourseListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -136,7 +130,7 @@ func TestObjectCourseDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Courses.Delete(context.TODO(), "courseId")
+	err := client.Crm.Objects.Courses.Delete(context.TODO(), "courseId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -159,7 +153,7 @@ func TestObjectCourseGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Courses.Get(
+	_, err := client.Crm.Objects.Courses.Get(
 		context.TODO(),
 		"courseId",
 		crm.ObjectCourseGetParams{
@@ -192,22 +186,22 @@ func TestObjectCourseSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Courses.Search(context.TODO(), crm.ObjectCourseSearchParams{
+	_, err := client.Crm.Objects.Courses.Search(context.TODO(), crm.ObjectCourseSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

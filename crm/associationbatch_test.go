@@ -28,7 +28,7 @@ func TestAssociationBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.Batch.New(
+	_, err := client.Crm.Associations.Batch.New(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationBatchNewParams{
@@ -68,7 +68,7 @@ func TestAssociationBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Associations.Batch.Delete(
+	err := client.Crm.Associations.Batch.Delete(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationBatchDeleteParams{
@@ -108,7 +108,7 @@ func TestAssociationBatchGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.Batch.Get(
+	_, err := client.Crm.Associations.Batch.Get(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationBatchGetParams{

@@ -8,16 +8,19 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // ActorService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,29 +38,28 @@ func NewActorService(opts ...option.RequestOption) (r ActorService) {
 	return
 }
 
-// Resolve a set of `ActorId`s to the underlying actors/participants.
-func (r *ActorService) BatchRead(ctx context.Context, body ActorBatchReadParams, opts ...option.RequestOption) (res *BatchResponsePublicActor, err error) {
+func (r *ActorService) BatchRead(ctx context.Context, params ActorBatchReadParams, opts ...option.RequestOption) (res *BatchResponsePublicActor, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "conversations/v3/conversations/actors/batch/read"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
-// Retrieve details of a single actor using the actor ID.
-func (r *ActorService) Get(ctx context.Context, actorID string, opts ...option.RequestOption) (res *PublicActorUnion, err error) {
+func (r *ActorService) Get(ctx context.Context, actorID string, query ActorGetParams, opts ...option.RequestOption) (res *PublicActorUnion, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if actorID == "" {
 		err = errors.New("missing required actorId parameter")
 		return
 	}
 	path := fmt.Sprintf("conversations/v3/conversations/actors/%s", actorID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
 type ActorBatchReadParams struct {
 	// Wrapper for providing an array of strings as inputs.
 	BatchInputString shared.BatchInputStringParam
+	Property         param.Opt[string] `query:"property,omitzero" json:"-"`
 	paramObj
 }
 
@@ -66,4 +68,25 @@ func (r ActorBatchReadParams) MarshalJSON() (data []byte, err error) {
 }
 func (r *ActorBatchReadParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.BatchInputString)
+}
+
+// URLQuery serializes [ActorBatchReadParams]'s query parameters as `url.Values`.
+func (r ActorBatchReadParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type ActorGetParams struct {
+	Property param.Opt[string] `query:"property,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [ActorGetParams]'s query parameters as `url.Values`.
+func (r ActorGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

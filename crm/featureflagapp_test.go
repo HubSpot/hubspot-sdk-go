@@ -27,13 +27,15 @@ func TestFeatureFlagAppUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Apps.Update(
+	_, err := client.Crm.FeatureFlags.Apps.Update(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagAppUpdateParams{
-			AppID:         0,
-			DefaultState:  crm.FeatureFlagAppUpdateParamsDefaultStateOff,
-			OverrideState: crm.FeatureFlagAppUpdateParamsOverrideStateOff,
+			AppID: 0,
+			FlagPutRequest: crm.FlagPutRequestParam{
+				DefaultState:  crm.FlagPutRequestDefaultStateAbsent,
+				OverrideState: crm.FlagPutRequestOverrideStateAbsent,
+			},
 		},
 	)
 	if err != nil {
@@ -58,7 +60,7 @@ func TestFeatureFlagAppDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Apps.Delete(
+	_, err := client.Crm.FeatureFlags.Apps.Delete(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagAppDeleteParams{
@@ -87,7 +89,7 @@ func TestFeatureFlagAppGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Apps.Get(
+	_, err := client.Crm.FeatureFlags.Apps.Get(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagAppGetParams{
@@ -116,7 +118,7 @@ func TestFeatureFlagAppListPortalsWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Apps.ListPortals(
+	_, err := client.Crm.FeatureFlags.Apps.ListPortals(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagAppListPortalsParams{

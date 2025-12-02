@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectPostalMailService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -40,9 +40,8 @@ func NewObjectPostalMailService(opts ...option.RequestOption) (r ObjectPostalMai
 	return
 }
 
-// Create a postal mail with the given properties and return a copy of the object,
-// including the ID. Documentation and examples for creating standard postal mail
-// is provided.
+// Create a postal mail object with the given properties and return a copy of the
+// object, including the ID.
 func (r *ObjectPostalMailService) New(ctx context.Context, body ObjectPostalMailNewParams, opts ...option.RequestOption) (res *CreatedResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/postal_mail"
@@ -50,13 +49,6 @@ func (r *ObjectPostalMailService) New(ctx context.Context, body ObjectPostalMail
 	return
 }
 
-// Perform a partial update of an Object identified by `{postalMailId}`or
-// optionally a unique property value as specified by the `idProperty` query param.
-// `{postalMailId}` refers to the internal object ID by default, and the
-// `idProperty` query param refers to a property whose values are unique for the
-// object. Provided property values will be overwritten. Read-only and non-existent
-// properties will result in an error. Properties values can be cleared by passing
-// an empty string.
 func (r *ObjectPostalMailService) Update(ctx context.Context, postalMailID string, params ObjectPostalMailUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if postalMailID == "" {
@@ -68,8 +60,6 @@ func (r *ObjectPostalMailService) Update(ctx context.Context, postalMailID strin
 	return
 }
 
-// Read a page of postal mail. Control what is returned via the `properties` query
-// param.
 func (r *ObjectPostalMailService) List(ctx context.Context, query ObjectPostalMailListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -87,13 +77,11 @@ func (r *ObjectPostalMailService) List(ctx context.Context, query ObjectPostalMa
 	return res, nil
 }
 
-// Read a page of postal mail. Control what is returned via the `properties` query
-// param.
 func (r *ObjectPostalMailService) ListAutoPaging(ctx context.Context, query ObjectPostalMailListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Move an Object identified by `{postalMailId}` to the recycling bin.
+// Move the postal mail object with the ID `{postalMailId}` to the recycling bin.
 func (r *ObjectPostalMailService) Delete(ctx context.Context, postalMailID string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -106,10 +94,6 @@ func (r *ObjectPostalMailService) Delete(ctx context.Context, postalMailID strin
 	return
 }
 
-// Read an Object identified by `{postalMailId}`. `{postalMailId}` refers to the
-// internal object ID by default, or optionally any unique property value as
-// specified by the `idProperty` query param. Control what is returned via the
-// `properties` query param.
 func (r *ObjectPostalMailService) Get(ctx context.Context, postalMailID string, query ObjectPostalMailGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if postalMailID == "" {
@@ -121,6 +105,7 @@ func (r *ObjectPostalMailService) Get(ctx context.Context, postalMailID string, 
 	return
 }
 
+// Search for postal mail objects using specific criteria in the request.
 func (r *ObjectPostalMailService) Search(ctx context.Context, body ObjectPostalMailSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/postal_mail/search"
@@ -147,8 +132,7 @@ type ObjectPostalMailUpdateParams struct {
 	// Represents the input required to create or update a CRM object, containing an
 	// object with property names and their corresponding values.
 	SimplePublicObjectInput SimplePublicObjectInputParam
-	// The name of a property whose values are unique for this object
-	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	IDProperty              param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
 
@@ -169,26 +153,12 @@ func (r ObjectPostalMailUpdateParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectPostalMailListParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	// A comma separated list of object types to retrieve associated IDs for. If any of
-	// the specified associations do not exist, they will be ignored.
-	Associations []string `query:"associations,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned in the response. If any
-	// of the specified properties are not present on the requested object(s), they
-	// will be ignored.
-	Properties []string `query:"properties,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned along with their history
-	// of previous values. If any of the specified properties are not present on the
-	// requested object(s), they will be ignored. Usage of this parameter will reduce
-	// the maximum number of postal mail that can be read by a single request.
-	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	After                 param.Opt[string] `query:"after,omitzero" json:"-"`
+	Archived              param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	Limit                 param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	Associations          []string          `query:"associations,omitzero" json:"-"`
+	Properties            []string          `query:"properties,omitzero" json:"-"`
+	PropertiesWithHistory []string          `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
 
@@ -202,21 +172,11 @@ func (r ObjectPostalMailListParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectPostalMailGetParams struct {
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// The name of a property whose values are unique for this object
-	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
-	// A comma separated list of object types to retrieve associated IDs for. If any of
-	// the specified associations do not exist, they will be ignored.
-	Associations []string `query:"associations,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned in the response. If any
-	// of the specified properties are not present on the requested object(s), they
-	// will be ignored.
-	Properties []string `query:"properties,omitzero" json:"-"`
-	// A comma separated list of the properties to be returned along with their history
-	// of previous values. If any of the specified properties are not present on the
-	// requested object(s), they will be ignored.
-	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
+	Archived              param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	IDProperty            param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	Associations          []string          `query:"associations,omitzero" json:"-"`
+	Properties            []string          `query:"properties,omitzero" json:"-"`
+	PropertiesWithHistory []string          `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
 

@@ -12,10 +12,9 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestAssociationV4New(t *testing.T) {
+func TestAssociationSchemaV4DefinitionNewLabelWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,12 +27,45 @@ func TestAssociationV4New(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.New(
+	_, err := client.Crm.Associations.Schema.V4.Definitions.NewLabel(
 		context.TODO(),
-		"toObjectId",
-		crm.AssociationV4NewParams{
+		"toObjectType",
+		crm.AssociationSchemaV4DefinitionNewLabelParams{
 			FromObjectType: "fromObjectType",
-			FromObjectID:   "fromObjectId",
+			PublicAssociationDefinitionCreateRequest: crm.PublicAssociationDefinitionCreateRequestParam{
+				Label:        "label",
+				Name:         "name",
+				InverseLabel: hubspotsdk.String("inverseLabel"),
+			},
+		},
+	)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestAssociationSchemaV4DefinitionDeleteLabel(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	err := client.Crm.Associations.Schema.V4.Definitions.DeleteLabel(
+		context.TODO(),
+		0,
+		crm.AssociationSchemaV4DefinitionDeleteLabelParams{
+			FromObjectType: "fromObjectType",
 			ToObjectType:   "toObjectType",
 		},
 	)
@@ -46,7 +78,7 @@ func TestAssociationV4New(t *testing.T) {
 	}
 }
 
-func TestAssociationV4Update(t *testing.T) {
+func TestAssociationSchemaV4DefinitionListLabels(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -59,49 +91,11 @@ func TestAssociationV4Update(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.V4.Update(
-		context.TODO(),
-		"toObjectId",
-		crm.AssociationV4UpdateParams{
-			ObjectType:   "objectType",
-			ObjectID:     "objectId",
-			ToObjectType: "toObjectType",
-			Body: []shared.AssociationSpecParam{{
-				AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-				AssociationTypeID:   0,
-			}},
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestAssociationV4ListWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	_, err := client.CRM.Associations.V4.List(
+	_, err := client.Crm.Associations.Schema.V4.Definitions.ListLabels(
 		context.TODO(),
 		"toObjectType",
-		crm.AssociationV4ListParams{
-			ObjectType: "objectType",
-			ObjectID:   "objectId",
-			After:      hubspotsdk.String("after"),
-			Limit:      hubspotsdk.Int(0),
+		crm.AssociationSchemaV4DefinitionListLabelsParams{
+			FromObjectType: "fromObjectType",
 		},
 	)
 	if err != nil {
@@ -113,7 +107,7 @@ func TestAssociationV4ListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestAssociationV4Delete(t *testing.T) {
+func TestAssociationSchemaV4DefinitionUpdateLabelWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -126,13 +120,16 @@ func TestAssociationV4Delete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Associations.V4.Delete(
+	err := client.Crm.Associations.Schema.V4.Definitions.UpdateLabel(
 		context.TODO(),
-		"toObjectId",
-		crm.AssociationV4DeleteParams{
-			ObjectType:   "objectType",
-			ObjectID:     "objectId",
-			ToObjectType: "toObjectType",
+		"toObjectType",
+		crm.AssociationSchemaV4DefinitionUpdateLabelParams{
+			FromObjectType: "fromObjectType",
+			PublicAssociationDefinitionUpdateRequest: crm.PublicAssociationDefinitionUpdateRequestParam{
+				AssociationTypeID: 0,
+				Label:             "label",
+				InverseLabel:      hubspotsdk.String("inverseLabel"),
+			},
 		},
 	)
 	if err != nil {

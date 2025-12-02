@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectListingService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -121,6 +121,8 @@ func (r *ObjectListingService) Get(ctx context.Context, listingID string, query 
 	return
 }
 
+// Execute a search query to find listings based on specified filters and
+// properties.
 func (r *ObjectListingService) Search(ctx context.Context, body ObjectListingSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-420/search"

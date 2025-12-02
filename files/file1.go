@@ -25,7 +25,7 @@ import (
 )
 
 // FileService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -231,7 +231,7 @@ type FileGetSignedURLParams struct {
 	// For image files. This will resize the image to the desired size before sharing.
 	// Does not affect the original file, just the file served by this signed URL.
 	//
-	// Any of "thumb", "icon", "medium", "preview".
+	// Any of "icon", "medium", "preview", "thumb".
 	Size FileGetSignedURLParamsSize `query:"size,omitzero" json:"-"`
 	paramObj
 }
@@ -249,10 +249,10 @@ func (r FileGetSignedURLParams) URLQuery() (v url.Values, err error) {
 type FileGetSignedURLParamsSize string
 
 const (
-	FileGetSignedURLParamsSizeThumb   FileGetSignedURLParamsSize = "thumb"
 	FileGetSignedURLParamsSizeIcon    FileGetSignedURLParamsSize = "icon"
 	FileGetSignedURLParamsSizeMedium  FileGetSignedURLParamsSize = "medium"
 	FileGetSignedURLParamsSizePreview FileGetSignedURLParamsSize = "preview"
+	FileGetSignedURLParamsSizeThumb   FileGetSignedURLParamsSize = "thumb"
 )
 
 type FileImportFromURLAsyncParams struct {

@@ -43,14 +43,24 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go"
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func main() {
 	client := hubspotsdk.NewClient(
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	result, err := client.CRM.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
+	result, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -265,7 +275,7 @@ client := hubspotsdk.NewClient(
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
 
-client.CRM.Objects.Contacts.New(context.TODO(), ...,
+client.Crm.Objects.Contacts.New(context.TODO(), ...,
 	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
 	// Add an undocumented field to the request body, using sjson syntax
@@ -284,7 +294,7 @@ This library provides some conveniences for working with paginated list endpoint
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
 ```go
-iter := client.CRM.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
+iter := client.Crm.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
 	Limit: hubspotsdk.Int(100),
 })
 // Automatically fetches more pages as needed.
@@ -301,7 +311,7 @@ Or you can use simple `.List()` methods to fetch a single page and receive a sta
 with additional helper methods like `.GetNextPage()`, e.g.:
 
 ```go
-page, err := client.CRM.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
+page, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
 	Limit: hubspotsdk.Int(100),
 })
 for page != nil {
@@ -325,8 +335,17 @@ When the API returns a non-success status code, we return an error with type
 To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
-_, err := client.CRM.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
+_, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
 	SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+		Associations: []crm.PublicAssociationsForObjectParam{{
+			To: shared.PublicObjectIDParam{
+				ID: "37295",
+			},
+			Types: []shared.AssociationSpecParam{{
+				AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+				AssociationTypeID:   0,
+			}},
+		}},
 		Properties: map[string]string{
 			"foo": "string",
 		},
@@ -356,10 +375,19 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 // This sets the timeout for the request, including all the retries.
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
-client.CRM.Objects.Contacts.New(
+client.Crm.Objects.Contacts.New(
 	ctx,
 	crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -416,10 +444,19 @@ client := hubspotsdk.NewClient(
 )
 
 // Override per-request:
-client.CRM.Objects.Contacts.New(
+client.Crm.Objects.Contacts.New(
 	context.TODO(),
 	crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -437,10 +474,19 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-createdResponseSimplePublicObject, err := client.CRM.Objects.Contacts.New(
+createdResponseSimplePublicObject, err := client.Crm.Objects.Contacts.New(
 	context.TODO(),
 	crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},

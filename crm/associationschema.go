@@ -16,7 +16,7 @@ import (
 )
 
 // AssociationSchemaService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -36,7 +36,6 @@ func NewAssociationSchemaService(opts ...option.RequestOption) (r AssociationSch
 	return
 }
 
-// List all the valid association types available between two object types
 func (r *AssociationSchemaService) List(ctx context.Context, toObjectType string, query AssociationSchemaListParams, opts ...option.RequestOption) (res *CollectionResponsePublicAssociationDefinitionNoPaging, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if query.FromObjectType == "" {

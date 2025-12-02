@@ -27,7 +27,40 @@ func TestPropertyValidationList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.PropertyValidations.List(context.TODO(), "objectTypeId")
+	_, err := client.Crm.PropertyValidations.List(context.TODO(), "objectTypeId")
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestPropertyValidationCrmV3PropertyValidationsObjectTypeIDPropertyNameRuleTypeRuleType(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	err := client.Crm.PropertyValidations.CrmV3PropertyValidationsObjectTypeIDPropertyNameRuleTypeRuleType(
+		context.TODO(),
+		crm.PropertyValidationCrmV3PropertyValidationsObjectTypeIDPropertyNameRuleTypeRuleTypeParamsRuleTypeAfterDatetimeDuration,
+		crm.PropertyValidationCrmV3PropertyValidationsObjectTypeIDPropertyNameRuleTypeRuleTypeParams{
+			ObjectTypeID: "objectTypeId",
+			PropertyName: "propertyName",
+			PublicPropertyValidationRuleUpdate: crm.PublicPropertyValidationRuleUpdateParam{
+				RuleArguments: []string{"string"},
+			},
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -50,7 +83,7 @@ func TestPropertyValidationGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.PropertyValidations.Get(
+	_, err := client.Crm.PropertyValidations.Get(
 		context.TODO(),
 		"propertyName",
 		crm.PropertyValidationGetParams{

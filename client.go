@@ -11,7 +11,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/auth"
 	"github.com/stainless-sdks/hubspot-sdk-go/automation"
-	"github.com/stainless-sdks/hubspot-sdk-go/businessUnits"
+	"github.com/stainless-sdks/hubspot-sdk-go/business_units"
 	"github.com/stainless-sdks/hubspot-sdk-go/cms"
 	"github.com/stainless-sdks/hubspot-sdk-go/conversations"
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
@@ -26,17 +26,17 @@ import (
 )
 
 // Client creates a struct with services and top level methods that help with
-// interacting with the Hubspot API. You should not instantiate this client
+// interacting with the hubspot API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
 	Options       []option.RequestOption
 	Account       account.AccountService
 	Auth          auth.AuthService
 	Automation    automation.AutomationService
-	BusinessUnits businessUnits.BusinessUnitService
+	BusinessUnits business_units.BusinessUnitService
 	Cms           cms.CmService
 	Conversations conversations.ConversationService
-	CRM           crm.CRMService
+	Crm           crm.CrmService
 	Events        events.EventService
 	Files         files.FileService
 	Marketing     marketing.MarketingService
@@ -67,10 +67,10 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Account = account.NewAccountService(opts...)
 	r.Auth = auth.NewAuthService(opts...)
 	r.Automation = automation.NewAutomationService(opts...)
-	r.BusinessUnits = businessUnits.NewBusinessUnitService(opts...)
+	r.BusinessUnits = business_units.NewBusinessUnitService(opts...)
 	r.Cms = cms.NewCmService(opts...)
 	r.Conversations = conversations.NewConversationService(opts...)
-	r.CRM = crm.NewCRMService(opts...)
+	r.Crm = crm.NewCrmService(opts...)
 	r.Events = events.NewEventService(opts...)
 	r.Files = files.NewFileService(opts...)
 	r.Marketing = marketing.NewMarketingService(opts...)

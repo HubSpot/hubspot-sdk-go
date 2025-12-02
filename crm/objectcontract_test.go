@@ -15,7 +15,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
-func TestObjectContractNewWithOptionalParams(t *testing.T) {
+func TestObjectContractNew(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -28,11 +28,8 @@ func TestObjectContractNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contracts.New(context.TODO(), crm.ObjectContractNewParams{
+	_, err := client.Crm.Objects.Contracts.New(context.TODO(), crm.ObjectContractNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Properties: map[string]string{
-				"foo": "string",
-			},
 			Associations: []crm.PublicAssociationsForObjectParam{{
 				To: shared.PublicObjectIDParam{
 					ID: "37295",
@@ -42,6 +39,9 @@ func TestObjectContractNewWithOptionalParams(t *testing.T) {
 					AssociationTypeID:   0,
 				}},
 			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
 		},
 	})
 	if err != nil {
@@ -66,19 +66,13 @@ func TestObjectContractUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contracts.Update(
+	_, err := client.Crm.Objects.Contracts.Update(
 		context.TODO(),
 		"contractId",
 		crm.ObjectContractUpdateParams{
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -106,7 +100,7 @@ func TestObjectContractListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contracts.List(context.TODO(), crm.ObjectContractListParams{
+	_, err := client.Crm.Objects.Contracts.List(context.TODO(), crm.ObjectContractListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -136,7 +130,7 @@ func TestObjectContractDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Contracts.Delete(context.TODO(), "contractId")
+	err := client.Crm.Objects.Contracts.Delete(context.TODO(), "contractId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -159,7 +153,7 @@ func TestObjectContractGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contracts.Get(
+	_, err := client.Crm.Objects.Contracts.Get(
 		context.TODO(),
 		"contractId",
 		crm.ObjectContractGetParams{
@@ -192,22 +186,22 @@ func TestObjectContractSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Contracts.Search(context.TODO(), crm.ObjectContractSearchParams{
+	_, err := client.Crm.Objects.Contracts.Search(context.TODO(), crm.ObjectContractSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

@@ -58,7 +58,7 @@ func TestEmailStatisticGetHistogramWithOptionalParams(t *testing.T) {
 	_, err := client.Marketing.Emails.Statistics.GetHistogram(context.TODO(), marketing.EmailStatisticGetHistogramParams{
 		EmailIDs:       []int64{0},
 		EndTimestamp:   hubspotsdk.String("endTimestamp"),
-		Interval:       marketing.EmailStatisticGetHistogramParamsIntervalYear,
+		Interval:       marketing.EmailStatisticGetHistogramParamsIntervalDay,
 		StartTimestamp: hubspotsdk.String("startTimestamp"),
 	})
 	if err != nil {

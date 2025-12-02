@@ -27,7 +27,7 @@ func TestExtensionVideoConferencingSettingUpdateWithOptionalParams(t *testing.T)
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.VideoConferencing.Settings.Update(
+	_, err := client.Crm.Extensions.VideoConferencing.Settings.Update(
 		context.TODO(),
 		0,
 		crm.ExtensionVideoConferencingSettingUpdateParams{
@@ -62,7 +62,7 @@ func TestExtensionVideoConferencingSettingDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Extensions.VideoConferencing.Settings.Delete(context.TODO(), 0)
+	err := client.Crm.Extensions.VideoConferencing.Settings.Delete(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -85,7 +85,7 @@ func TestExtensionVideoConferencingSettingGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Extensions.VideoConferencing.Settings.Get(context.TODO(), 0)
+	_, err := client.Crm.Extensions.VideoConferencing.Settings.Get(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

@@ -20,7 +20,7 @@ import (
 )
 
 // ExtensionCardService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -222,10 +222,10 @@ func (r *CardActionsParam) UnmarshalJSON(data []byte) error {
 }
 
 type CardAuditResponse struct {
-	// Any of "CREATE", "UPDATE", "DELETE".
+	// Any of "CREATE", "DELETE", "UPDATE".
 	ActionType    CardAuditResponseActionType `json:"actionType,required"`
 	ApplicationID int64                       `json:"applicationId,required"`
-	// Any of "INTERNAL", "APP", "EXTERNAL".
+	// Any of "APP", "EXTERNAL", "INTERNAL".
 	AuthSource       CardAuditResponseAuthSource `json:"authSource,required"`
 	ChangedAt        int64                       `json:"changedAt,required"`
 	InitiatingUserID int64                       `json:"initiatingUserId,required"`
@@ -253,16 +253,16 @@ type CardAuditResponseActionType string
 
 const (
 	CardAuditResponseActionTypeCreate CardAuditResponseActionType = "CREATE"
-	CardAuditResponseActionTypeUpdate CardAuditResponseActionType = "UPDATE"
 	CardAuditResponseActionTypeDelete CardAuditResponseActionType = "DELETE"
+	CardAuditResponseActionTypeUpdate CardAuditResponseActionType = "UPDATE"
 )
 
 type CardAuditResponseAuthSource string
 
 const (
-	CardAuditResponseAuthSourceInternal CardAuditResponseAuthSource = "INTERNAL"
 	CardAuditResponseAuthSourceApp      CardAuditResponseAuthSource = "APP"
 	CardAuditResponseAuthSourceExternal CardAuditResponseAuthSource = "EXTERNAL"
+	CardAuditResponseAuthSourceInternal CardAuditResponseAuthSource = "INTERNAL"
 )
 
 // State of card definition to be created
@@ -339,7 +339,7 @@ type CardDisplayProperty struct {
 	// Type of data represented by this property.
 	//
 	// Any of "BOOLEAN", "CURRENCY", "DATE", "DATETIME", "EMAIL", "LINK", "NUMERIC",
-	// "STRING", "STATUS".
+	// "STATUS", "STRING".
 	DataType CardDisplayPropertyDataType `json:"dataType,required"`
 	// The label for this property as you'd like it displayed to users.
 	Label string `json:"label,required"`
@@ -385,8 +385,8 @@ const (
 	CardDisplayPropertyDataTypeEmail    CardDisplayPropertyDataType = "EMAIL"
 	CardDisplayPropertyDataTypeLink     CardDisplayPropertyDataType = "LINK"
 	CardDisplayPropertyDataTypeNumeric  CardDisplayPropertyDataType = "NUMERIC"
-	CardDisplayPropertyDataTypeString   CardDisplayPropertyDataType = "STRING"
 	CardDisplayPropertyDataTypeStatus   CardDisplayPropertyDataType = "STATUS"
+	CardDisplayPropertyDataTypeString   CardDisplayPropertyDataType = "STRING"
 )
 
 // Definition for a card display property.
@@ -396,7 +396,7 @@ type CardDisplayPropertyParam struct {
 	// Type of data represented by this property.
 	//
 	// Any of "BOOLEAN", "CURRENCY", "DATE", "DATETIME", "EMAIL", "LINK", "NUMERIC",
-	// "STRING", "STATUS".
+	// "STATUS", "STRING".
 	DataType CardDisplayPropertyDataType `json:"dataType,omitzero,required"`
 	// The label for this property as you'd like it displayed to users.
 	Label string `json:"label,required"`
@@ -485,7 +485,7 @@ const (
 type CardObjectTypeBody struct {
 	// A CRM object type where this card should be displayed.
 	//
-	// Any of "contacts", "deals", "companies", "tickets", "marketing_events".
+	// Any of "companies", "contacts", "deals", "marketing_events", "tickets".
 	Name CardObjectTypeBodyName `json:"name,required"`
 	// An array of properties that should be sent to this card's target URL when the
 	// data fetch request is made. Must be valid properties for the corresponding CRM
@@ -519,18 +519,18 @@ func (r CardObjectTypeBody) ToParam() CardObjectTypeBodyParam {
 type CardObjectTypeBodyName string
 
 const (
+	CardObjectTypeBodyNameCompanies       CardObjectTypeBodyName = "companies"
 	CardObjectTypeBodyNameContacts        CardObjectTypeBodyName = "contacts"
 	CardObjectTypeBodyNameDeals           CardObjectTypeBodyName = "deals"
-	CardObjectTypeBodyNameCompanies       CardObjectTypeBodyName = "companies"
-	CardObjectTypeBodyNameTickets         CardObjectTypeBodyName = "tickets"
 	CardObjectTypeBodyNameMarketingEvents CardObjectTypeBodyName = "marketing_events"
+	CardObjectTypeBodyNameTickets         CardObjectTypeBodyName = "tickets"
 )
 
 // The properties Name, PropertiesToSend are required.
 type CardObjectTypeBodyParam struct {
 	// A CRM object type where this card should be displayed.
 	//
-	// Any of "contacts", "deals", "companies", "tickets", "marketing_events".
+	// Any of "companies", "contacts", "deals", "marketing_events", "tickets".
 	Name CardObjectTypeBodyName `json:"name,omitzero,required"`
 	// An array of properties that should be sent to this card's target URL when the
 	// data fetch request is made. Must be valid properties for the corresponding CRM
@@ -576,7 +576,7 @@ type DisplayOption struct {
 	Name string `json:"name,required"`
 	// The type of status.
 	//
-	// Any of "DEFAULT", "SUCCESS", "WARNING", "DANGER", "INFO".
+	// Any of "DANGER", "DEFAULT", "INFO", "SUCCESS", "WARNING".
 	Type DisplayOptionType `json:"type,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -607,11 +607,11 @@ func (r DisplayOption) ToParam() DisplayOptionParam {
 type DisplayOptionType string
 
 const (
+	DisplayOptionTypeDanger  DisplayOptionType = "DANGER"
 	DisplayOptionTypeDefault DisplayOptionType = "DEFAULT"
+	DisplayOptionTypeInfo    DisplayOptionType = "INFO"
 	DisplayOptionTypeSuccess DisplayOptionType = "SUCCESS"
 	DisplayOptionTypeWarning DisplayOptionType = "WARNING"
-	DisplayOptionTypeDanger  DisplayOptionType = "DANGER"
-	DisplayOptionTypeInfo    DisplayOptionType = "INFO"
 )
 
 // Option definition for STATUS dataTypes.
@@ -624,7 +624,7 @@ type DisplayOptionParam struct {
 	Name string `json:"name,required"`
 	// The type of status.
 	//
-	// Any of "DEFAULT", "SUCCESS", "WARNING", "DANGER", "INFO".
+	// Any of "DANGER", "DEFAULT", "INFO", "SUCCESS", "WARNING".
 	Type DisplayOptionType `json:"type,omitzero,required"`
 	paramObj
 }
@@ -787,7 +787,7 @@ func (r *IntegratorObjectResultActionUnion) UnmarshalJSON(data []byte) error {
 type ObjectToken struct {
 	Value string `json:"value,required"`
 	// Any of "BOOLEAN", "CURRENCY", "DATE", "DATETIME", "EMAIL", "LINK", "NUMERIC",
-	// "STRING", "STATUS".
+	// "STATUS", "STRING".
 	DataType ObjectTokenDataType `json:"dataType"`
 	Label    string              `json:"label"`
 	Name     string              `json:"name"`
@@ -818,8 +818,8 @@ const (
 	ObjectTokenDataTypeEmail    ObjectTokenDataType = "EMAIL"
 	ObjectTokenDataTypeLink     ObjectTokenDataType = "LINK"
 	ObjectTokenDataTypeNumeric  ObjectTokenDataType = "NUMERIC"
-	ObjectTokenDataTypeString   ObjectTokenDataType = "STRING"
 	ObjectTokenDataTypeStatus   ObjectTokenDataType = "STATUS"
+	ObjectTokenDataTypeString   ObjectTokenDataType = "STRING"
 )
 
 type PublicCardFetchBody struct {

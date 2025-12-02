@@ -28,9 +28,11 @@ func TestVisitorIdentificationGenerateTokenWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Conversations.VisitorIdentification.GenerateToken(context.TODO(), conversations.VisitorIdentificationGenerateTokenParams{
-		Email:     "visitor-email@example.com",
-		FirstName: hubspotsdk.String("Gob"),
-		LastName:  hubspotsdk.String("Bluth"),
+		IdentificationTokenGenerationRequest: conversations.IdentificationTokenGenerationRequestParam{
+			Email:     "visitor-email@example.com",
+			FirstName: hubspotsdk.String("Gob"),
+			LastName:  hubspotsdk.String("Bluth"),
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

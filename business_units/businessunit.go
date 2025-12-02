@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package businessUnits
+package business_units
 
 import (
 	"context"
@@ -19,7 +19,7 @@ import (
 )
 
 // BusinessUnitService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -38,7 +38,7 @@ func NewBusinessUnitService(opts ...option.RequestOption) (r BusinessUnitService
 }
 
 // Get Business Units identified by `userId`. The `userId` refers to the user’s ID.
-func (r *BusinessUnitService) GetByUserID(ctx context.Context, userID string, query BusinessUnitGetByUserIDParams, opts ...option.RequestOption) (res *BusinessUnitGetByUserIDResponse, err error) {
+func (r *BusinessUnitService) GetByUserID(ctx context.Context, userID string, query BusinessUnitGetByUserIDParams, opts ...option.RequestOption) (res *CollectionResponsePublicBusinessUnitNoPaging, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if userID == "" {
 		err = errors.New("missing required userId parameter")
@@ -50,7 +50,7 @@ func (r *BusinessUnitService) GetByUserID(ctx context.Context, userID string, qu
 }
 
 // A response object containing a collection of Business Units
-type BusinessUnitGetByUserIDResponse struct {
+type CollectionResponsePublicBusinessUnitNoPaging struct {
 	// The collection of Business Units
 	Results []marketing.PublicBusinessUnit `json:"results,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -62,8 +62,8 @@ type BusinessUnitGetByUserIDResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BusinessUnitGetByUserIDResponse) RawJSON() string { return r.JSON.raw }
-func (r *BusinessUnitGetByUserIDResponse) UnmarshalJSON(data []byte) error {
+func (r CollectionResponsePublicBusinessUnitNoPaging) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponsePublicBusinessUnitNoPaging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 

@@ -24,7 +24,7 @@ import (
 )
 
 // FormService contains methods and other services that help with interacting with
-// the Hubspot API.
+// the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -947,10 +947,10 @@ func (u DependentFieldDependentFieldUnionParam) GetOptions() []EnumeratedFieldOp
 
 // A condition based on customer input
 type DependentFieldFilter struct {
-	// Any of "eq", "neq", "contains", "doesnt_contain", "str_starts_with",
-	// "str_ends_with", "lt", "lte", "gt", "gte", "between", "not_between",
-	// "within_time_reverse", "within_time", "set_any", "set_not_any", "set_all",
-	// "set_not_all", "set_eq", "set_neq", "is_not_empty".
+	// Any of "between", "contains", "doesnt_contain", "eq", "gt", "gte",
+	// "is_not_empty", "lt", "lte", "neq", "not_between", "set_all", "set_any",
+	// "set_eq", "set_neq", "set_not_all", "set_not_any", "str_ends_with",
+	// "str_starts_with", "within_time", "within_time_reverse".
 	Operator   DependentFieldFilterOperator `json:"operator,required"`
 	RangeEnd   string                       `json:"rangeEnd,required"`
 	RangeStart string                       `json:"rangeStart,required"`
@@ -986,37 +986,37 @@ func (r DependentFieldFilter) ToParam() DependentFieldFilterParam {
 type DependentFieldFilterOperator string
 
 const (
-	DependentFieldFilterOperatorEq                DependentFieldFilterOperator = "eq"
-	DependentFieldFilterOperatorNeq               DependentFieldFilterOperator = "neq"
+	DependentFieldFilterOperatorBetween           DependentFieldFilterOperator = "between"
 	DependentFieldFilterOperatorContains          DependentFieldFilterOperator = "contains"
 	DependentFieldFilterOperatorDoesntContain     DependentFieldFilterOperator = "doesnt_contain"
-	DependentFieldFilterOperatorStrStartsWith     DependentFieldFilterOperator = "str_starts_with"
-	DependentFieldFilterOperatorStrEndsWith       DependentFieldFilterOperator = "str_ends_with"
-	DependentFieldFilterOperatorLt                DependentFieldFilterOperator = "lt"
-	DependentFieldFilterOperatorLte               DependentFieldFilterOperator = "lte"
+	DependentFieldFilterOperatorEq                DependentFieldFilterOperator = "eq"
 	DependentFieldFilterOperatorGt                DependentFieldFilterOperator = "gt"
 	DependentFieldFilterOperatorGte               DependentFieldFilterOperator = "gte"
-	DependentFieldFilterOperatorBetween           DependentFieldFilterOperator = "between"
+	DependentFieldFilterOperatorIsNotEmpty        DependentFieldFilterOperator = "is_not_empty"
+	DependentFieldFilterOperatorLt                DependentFieldFilterOperator = "lt"
+	DependentFieldFilterOperatorLte               DependentFieldFilterOperator = "lte"
+	DependentFieldFilterOperatorNeq               DependentFieldFilterOperator = "neq"
 	DependentFieldFilterOperatorNotBetween        DependentFieldFilterOperator = "not_between"
-	DependentFieldFilterOperatorWithinTimeReverse DependentFieldFilterOperator = "within_time_reverse"
-	DependentFieldFilterOperatorWithinTime        DependentFieldFilterOperator = "within_time"
-	DependentFieldFilterOperatorSetAny            DependentFieldFilterOperator = "set_any"
-	DependentFieldFilterOperatorSetNotAny         DependentFieldFilterOperator = "set_not_any"
 	DependentFieldFilterOperatorSetAll            DependentFieldFilterOperator = "set_all"
-	DependentFieldFilterOperatorSetNotAll         DependentFieldFilterOperator = "set_not_all"
+	DependentFieldFilterOperatorSetAny            DependentFieldFilterOperator = "set_any"
 	DependentFieldFilterOperatorSetEq             DependentFieldFilterOperator = "set_eq"
 	DependentFieldFilterOperatorSetNeq            DependentFieldFilterOperator = "set_neq"
-	DependentFieldFilterOperatorIsNotEmpty        DependentFieldFilterOperator = "is_not_empty"
+	DependentFieldFilterOperatorSetNotAll         DependentFieldFilterOperator = "set_not_all"
+	DependentFieldFilterOperatorSetNotAny         DependentFieldFilterOperator = "set_not_any"
+	DependentFieldFilterOperatorStrEndsWith       DependentFieldFilterOperator = "str_ends_with"
+	DependentFieldFilterOperatorStrStartsWith     DependentFieldFilterOperator = "str_starts_with"
+	DependentFieldFilterOperatorWithinTime        DependentFieldFilterOperator = "within_time"
+	DependentFieldFilterOperatorWithinTimeReverse DependentFieldFilterOperator = "within_time_reverse"
 )
 
 // A condition based on customer input
 //
 // The properties Operator, RangeEnd, RangeStart, Value, Values are required.
 type DependentFieldFilterParam struct {
-	// Any of "eq", "neq", "contains", "doesnt_contain", "str_starts_with",
-	// "str_ends_with", "lt", "lte", "gt", "gte", "between", "not_between",
-	// "within_time_reverse", "within_time", "set_any", "set_not_any", "set_all",
-	// "set_not_all", "set_eq", "set_neq", "is_not_empty".
+	// Any of "between", "contains", "doesnt_contain", "eq", "gt", "gte",
+	// "is_not_empty", "lt", "lte", "neq", "not_between", "set_all", "set_any",
+	// "set_eq", "set_neq", "set_not_all", "set_not_any", "str_ends_with",
+	// "str_starts_with", "within_time", "within_time_reverse".
 	Operator   DependentFieldFilterOperator `json:"operator,omitzero,required"`
 	RangeEnd   string                       `json:"rangeEnd,required"`
 	RangeStart string                       `json:"rangeStart,required"`
@@ -1380,7 +1380,7 @@ type FieldGroup struct {
 	GroupType FieldGroupGroupType `json:"groupType,required"`
 	// The type of rich text included. The default value is text.
 	//
-	// Any of "text", "image".
+	// Any of "image", "text".
 	RichTextType FieldGroupRichTextType `json:"richTextType,required"`
 	// A block of rich text or an image. Those can be used to add extra information for
 	// the customers filling in the form. If the field group includes fields, the rich
@@ -1569,8 +1569,8 @@ const (
 type FieldGroupRichTextType string
 
 const (
-	FieldGroupRichTextTypeText  FieldGroupRichTextType = "text"
 	FieldGroupRichTextTypeImage FieldGroupRichTextType = "image"
+	FieldGroupRichTextTypeText  FieldGroupRichTextType = "text"
 )
 
 // A collection of up to three form fields usually displayed in a row.
@@ -1583,7 +1583,7 @@ type FieldGroupParam struct {
 	GroupType FieldGroupGroupType `json:"groupType,omitzero,required"`
 	// The type of rich text included. The default value is text.
 	//
-	// Any of "text", "image".
+	// Any of "image", "text".
 	RichTextType FieldGroupRichTextType `json:"richTextType,omitzero,required"`
 	// A block of rich text or an image. Those can be used to add extra information for
 	// the customers filling in the form. If the field group includes fields, the rich
@@ -2479,7 +2479,7 @@ type FormDisplayOptions struct {
 	// The theme used for styling the input fields. This will not apply if the form is
 	// added to a HubSpot CMS page.
 	//
-	// Any of "default_style", "canvas", "linear", "round", "sharp", "legacy".
+	// Any of "canvas", "default_style", "legacy", "linear", "round", "sharp".
 	Theme    FormDisplayOptionsTheme `json:"theme,required"`
 	CssClass string                  `json:"cssClass"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2514,12 +2514,12 @@ func (r FormDisplayOptions) ToParam() FormDisplayOptionsParam {
 type FormDisplayOptionsTheme string
 
 const (
-	FormDisplayOptionsThemeDefaultStyle FormDisplayOptionsTheme = "default_style"
 	FormDisplayOptionsThemeCanvas       FormDisplayOptionsTheme = "canvas"
+	FormDisplayOptionsThemeDefaultStyle FormDisplayOptionsTheme = "default_style"
+	FormDisplayOptionsThemeLegacy       FormDisplayOptionsTheme = "legacy"
 	FormDisplayOptionsThemeLinear       FormDisplayOptionsTheme = "linear"
 	FormDisplayOptionsThemeRound        FormDisplayOptionsTheme = "round"
 	FormDisplayOptionsThemeSharp        FormDisplayOptionsTheme = "sharp"
-	FormDisplayOptionsThemeLegacy       FormDisplayOptionsTheme = "legacy"
 )
 
 // Options for styling the form.
@@ -2535,7 +2535,7 @@ type FormDisplayOptionsParam struct {
 	// The theme used for styling the input fields. This will not apply if the form is
 	// added to a HubSpot CMS page.
 	//
-	// Any of "default_style", "canvas", "linear", "round", "sharp", "legacy".
+	// Any of "canvas", "default_style", "legacy", "linear", "round", "sharp".
 	Theme    FormDisplayOptionsTheme `json:"theme,omitzero,required"`
 	CssClass param.Opt[string]       `json:"cssClass,omitzero"`
 	paramObj
@@ -2554,7 +2554,7 @@ type FormPostSubmitAction struct {
 	// The action to take after submit. The default action is displaying a thank you
 	// message.
 	//
-	// Any of "thank_you", "redirect_url".
+	// Any of "redirect_url", "thank_you".
 	Type FormPostSubmitActionType `json:"type,required"`
 	// The thank you text or the page to redirect to.
 	Value string `json:"value,required"`
@@ -2587,8 +2587,8 @@ func (r FormPostSubmitAction) ToParam() FormPostSubmitActionParam {
 type FormPostSubmitActionType string
 
 const (
-	FormPostSubmitActionTypeThankYou    FormPostSubmitActionType = "thank_you"
 	FormPostSubmitActionTypeRedirectURL FormPostSubmitActionType = "redirect_url"
+	FormPostSubmitActionTypeThankYou    FormPostSubmitActionType = "thank_you"
 )
 
 // What should happen after the customer submits the form.
@@ -2598,7 +2598,7 @@ type FormPostSubmitActionParam struct {
 	// The action to take after submit. The default action is displaying a thank you
 	// message.
 	//
-	// Any of "thank_you", "redirect_url".
+	// Any of "redirect_url", "thank_you".
 	Type FormPostSubmitActionType `json:"type,omitzero,required"`
 	// The thank you text or the page to redirect to.
 	Value string `json:"value,required"`
@@ -2623,7 +2623,7 @@ type FormStyle struct {
 	LabelTextSize         string `json:"labelTextSize,required"`
 	LegalConsentTextColor string `json:"legalConsentTextColor,required"`
 	LegalConsentTextSize  string `json:"legalConsentTextSize,required"`
-	// Any of "left", "right", "center".
+	// Any of "center", "left", "right".
 	SubmitAlignment FormStyleSubmitAlignment `json:"submitAlignment,required"`
 	SubmitColor     string                   `json:"submitColor,required"`
 	SubmitFontColor string                   `json:"submitFontColor,required"`
@@ -2665,9 +2665,9 @@ func (r FormStyle) ToParam() FormStyleParam {
 type FormStyleSubmitAlignment string
 
 const (
+	FormStyleSubmitAlignmentCenter FormStyleSubmitAlignment = "center"
 	FormStyleSubmitAlignmentLeft   FormStyleSubmitAlignment = "left"
 	FormStyleSubmitAlignmentRight  FormStyleSubmitAlignment = "right"
-	FormStyleSubmitAlignmentCenter FormStyleSubmitAlignment = "center"
 )
 
 // Styling options for the form
@@ -2684,7 +2684,7 @@ type FormStyleParam struct {
 	LabelTextSize         string `json:"labelTextSize,required"`
 	LegalConsentTextColor string `json:"legalConsentTextColor,required"`
 	LegalConsentTextSize  string `json:"legalConsentTextSize,required"`
-	// Any of "left", "right", "center".
+	// Any of "center", "left", "right".
 	SubmitAlignment FormStyleSubmitAlignment `json:"submitAlignment,omitzero,required"`
 	SubmitColor     string                   `json:"submitColor,required"`
 	SubmitFontColor string                   `json:"submitFontColor,required"`
@@ -3446,7 +3446,7 @@ func (r *LegalConsentOptionsImplicitConsentToProcessParam) UnmarshalJSON(data []
 }
 
 type LegalConsentOptionsLegitimateInterest struct {
-	// Any of "lead", "client", "other".
+	// Any of "client", "lead", "other".
 	LawfulBasis         LegalConsentOptionsLegitimateInterestLawfulBasis `json:"lawfulBasis,required"`
 	PrivacyText         string                                           `json:"privacyText,required"`
 	SubscriptionTypeIDs []int64                                          `json:"subscriptionTypeIds,required"`
@@ -3482,8 +3482,8 @@ func (r LegalConsentOptionsLegitimateInterest) ToParam() LegalConsentOptionsLegi
 type LegalConsentOptionsLegitimateInterestLawfulBasis string
 
 const (
-	LegalConsentOptionsLegitimateInterestLawfulBasisLead   LegalConsentOptionsLegitimateInterestLawfulBasis = "lead"
 	LegalConsentOptionsLegitimateInterestLawfulBasisClient LegalConsentOptionsLegitimateInterestLawfulBasis = "client"
+	LegalConsentOptionsLegitimateInterestLawfulBasisLead   LegalConsentOptionsLegitimateInterestLawfulBasis = "lead"
 	LegalConsentOptionsLegitimateInterestLawfulBasisOther  LegalConsentOptionsLegitimateInterestLawfulBasis = "other"
 )
 
@@ -3495,7 +3495,7 @@ const (
 
 // The properties LawfulBasis, PrivacyText, SubscriptionTypeIDs, Type are required.
 type LegalConsentOptionsLegitimateInterestParam struct {
-	// Any of "lead", "client", "other".
+	// Any of "client", "lead", "other".
 	LawfulBasis         LegalConsentOptionsLegitimateInterestLawfulBasis `json:"lawfulBasis,omitzero,required"`
 	PrivacyText         string                                           `json:"privacyText,required"`
 	SubscriptionTypeIDs []int64                                          `json:"subscriptionTypeIds,omitzero,required"`

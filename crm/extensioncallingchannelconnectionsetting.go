@@ -15,7 +15,7 @@ import (
 )
 
 // ExtensionCallingChannelConnectionSettingService contains methods and other
-// services that help with interacting with the Hubspot API.
+// services that help with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -34,9 +34,6 @@ func NewExtensionCallingChannelConnectionSettingService(opts ...option.RequestOp
 	return
 }
 
-// Configure
-// [channel connection settings](https://developers.hubspot.com/docs/guides/api/crm/extensions/third-party-calling#create-channel-connection-settings)
-// for the app.
 func (r *ExtensionCallingChannelConnectionSettingService) New(ctx context.Context, appID int64, body ExtensionCallingChannelConnectionSettingNewParams, opts ...option.RequestOption) (res *ChannelConnectionSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/channel-connection", appID)
@@ -44,9 +41,6 @@ func (r *ExtensionCallingChannelConnectionSettingService) New(ctx context.Contex
 	return
 }
 
-// Update existing
-// [channel connection settings](https://developers.hubspot.com/docs/guides/api/crm/extensions/third-party-calling#manage-the-webhook-settings-for-channel-connection)
-// for your app.
 func (r *ExtensionCallingChannelConnectionSettingService) Update(ctx context.Context, appID int64, body ExtensionCallingChannelConnectionSettingUpdateParams, opts ...option.RequestOption) (res *ChannelConnectionSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/channel-connection", appID)
@@ -54,9 +48,6 @@ func (r *ExtensionCallingChannelConnectionSettingService) Update(ctx context.Con
 	return
 }
 
-// Delete the
-// [channel connection settings](https://developers.hubspot.com/docs/guides/api/crm/extensions/third-party-calling#delete-existing-channel-connection-settings)
-// for the app.
 func (r *ExtensionCallingChannelConnectionSettingService) Delete(ctx context.Context, appID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -65,8 +56,6 @@ func (r *ExtensionCallingChannelConnectionSettingService) Delete(ctx context.Con
 	return
 }
 
-// Retrieve the settings related to the app's
-// [channel connection](https://developers.hubspot.com/docs/guides/api/crm/extensions/third-party-calling#fetch-existing-channel-connection-settings).
 func (r *ExtensionCallingChannelConnectionSettingService) Get(ctx context.Context, appID int64, opts ...option.RequestOption) (res *ChannelConnectionSettingsResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("crm/v3/extensions/calling/%v/settings/channel-connection", appID)

@@ -14,6 +14,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 type closureTransport struct {
@@ -39,8 +40,17 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.CRM.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+	client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -69,8 +79,17 @@ func TestRetryAfter(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.CRM.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -110,8 +129,17 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeaderDel("X-Stainless-Retry-Count"),
 	)
-	_, err := client.CRM.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -146,8 +174,17 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeader("X-Stainless-Retry-Count", "42"),
 	)
-	_, err := client.CRM.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -181,8 +218,17 @@ func TestRetryAfterMs(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.CRM.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -210,8 +256,17 @@ func TestContextCancel(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	cancel()
-	_, err := client.CRM.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -236,8 +291,17 @@ func TestContextCancelDelay(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
 	defer cancel()
-	_, err := client.CRM.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
+	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},
@@ -268,8 +332,17 @@ func TestContextDeadline(t *testing.T) {
 				},
 			}),
 		)
-		_, err := client.CRM.Objects.Contacts.New(deadlineCtx, crm.ObjectContactNewParams{
+		_, err := client.Crm.Objects.Contacts.New(deadlineCtx, crm.ObjectContactNewParams{
 			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+				Associations: []crm.PublicAssociationsForObjectParam{{
+					To: shared.PublicObjectIDParam{
+						ID: "37295",
+					},
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+						AssociationTypeID:   0,
+					}},
+				}},
 				Properties: map[string]string{
 					"foo": "string",
 				},

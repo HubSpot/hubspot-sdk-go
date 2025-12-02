@@ -28,15 +28,12 @@ func TestObjectCustomBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Batch.New(
+	_, err := client.Crm.Objects.Custom.Batch.New(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomBatchNewParams{
 			BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 				Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-					Properties: map[string]string{
-						"foo": "string",
-					},
 					Associations: []crm.PublicAssociationsForObjectParam{{
 						To: shared.PublicObjectIDParam{
 							ID: "37295",
@@ -46,6 +43,9 @@ func TestObjectCustomBatchNew(t *testing.T) {
 							AssociationTypeID:   0,
 						}},
 					}},
+					Properties: map[string]string{
+						"foo": "string",
+					},
 					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 				}},
 			},
@@ -73,7 +73,7 @@ func TestObjectCustomBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Batch.Update(
+	_, err := client.Crm.Objects.Custom.Batch.Update(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomBatchUpdateParams{
@@ -111,7 +111,7 @@ func TestObjectCustomBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Objects.Custom.Batch.Delete(
+	err := client.Crm.Objects.Custom.Batch.Delete(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomBatchDeleteParams{
@@ -144,7 +144,7 @@ func TestObjectCustomBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Batch.Get(
+	_, err := client.Crm.Objects.Custom.Batch.Get(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomBatchGetParams{
@@ -181,7 +181,7 @@ func TestObjectCustomBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.Custom.Batch.Upsert(
+	_, err := client.Crm.Objects.Custom.Batch.Upsert(
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomBatchUpsertParams{

@@ -17,7 +17,7 @@ import (
 )
 
 // ObjectPostalMailBatchService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -35,7 +35,7 @@ func NewObjectPostalMailBatchService(opts ...option.RequestOption) (r ObjectPost
 	return
 }
 
-// Create a batch of postal mail
+// Create a batch of postal mail objects.
 func (r *ObjectPostalMailBatchService) New(ctx context.Context, body ObjectPostalMailBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/postal_mail/batch/create"
@@ -43,7 +43,7 @@ func (r *ObjectPostalMailBatchService) New(ctx context.Context, body ObjectPosta
 	return
 }
 
-// Update a batch of postal mail by internal ID, or unique property values
+// Update multiple postal mail objects in a single request.
 func (r *ObjectPostalMailBatchService) Update(ctx context.Context, body ObjectPostalMailBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/postal_mail/batch/update"
@@ -51,7 +51,7 @@ func (r *ObjectPostalMailBatchService) Update(ctx context.Context, body ObjectPo
 	return
 }
 
-// Archive a batch of postal mail by ID
+// Archive a batch of postal mail objects using their IDs.
 func (r *ObjectPostalMailBatchService) Delete(ctx context.Context, body ObjectPostalMailBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -60,8 +60,8 @@ func (r *ObjectPostalMailBatchService) Delete(ctx context.Context, body ObjectPo
 	return
 }
 
-// Retrieve records by record ID or include the `idProperty` parameter to retrieve
-// records by a custom unique value property.
+// Retrieve multiple postal mail objects using their internal IDs or unique
+// property values.
 func (r *ObjectPostalMailBatchService) Get(ctx context.Context, params ObjectPostalMailBatchGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/postal_mail/batch/read"
@@ -69,8 +69,8 @@ func (r *ObjectPostalMailBatchService) Get(ctx context.Context, params ObjectPos
 	return
 }
 
-// Create or update records identified by a unique property value as specified by
-// the `idProperty` query param. `idProperty` query param refers to a property
+// Create or update postal mails identified by a unique property value as specified
+// by the `idProperty` query param. `idProperty` query param refers to a property
 // whose values are unique for the object.
 func (r *ObjectPostalMailBatchService) Upsert(ctx context.Context, body ObjectPostalMailBatchUpsertParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicUpsertObject, err error) {
 	opts = slices.Concat(r.Options, opts)
@@ -120,8 +120,7 @@ type ObjectPostalMailBatchGetParams struct {
 	// object IDs, requested property names (with optional history), and an optional
 	// unique identifying property.
 	BatchReadInputSimplePublicObjectID BatchReadInputSimplePublicObjectIDParam
-	// Whether to return only results that have been archived.
-	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	Archived                           param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 

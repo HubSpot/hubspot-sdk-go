@@ -33,16 +33,16 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 			OfAPIContactFlowCreateRequest: &automation.APIContactFlowCreateRequestParam{
 				Actions: []automation.APIContactFlowCreateRequestActionUnionParam{{
 					OfStaticBranch: &automation.APIStaticBranchActionParam{
-						ActionID: "1",
+						ActionID: "actionId",
 						InputValue: automation.APIStaticBranchActionInputValueUnionParam{
 							OfFieldData: &automation.APIActionDataValueParam{
-								ActionID: "1",
-								DataKey:  "hs_execution_state",
+								ActionID: "actionId",
+								DataKey:  "dataKey",
 								Type:     automation.APIActionDataValueTypeFieldData,
 							},
 						},
 						StaticBranches: []automation.APIStaticBranchParam{{
-							BranchValue: "some_value",
+							BranchValue: "branchValue",
 							Connection: automation.APIConnectionParam{
 								EdgeType:     "edgeType",
 								NextActionID: "nextActionId",
@@ -53,12 +53,12 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 							EdgeType:     "edgeType",
 							NextActionID: "nextActionId",
 						},
-						DefaultBranchName: hubspotsdk.String("Other"),
+						DefaultBranchName: hubspotsdk.String("defaultBranchName"),
 					},
 				}},
 				BlockedDates: []automation.APIBlockedDateParam{{
 					DayOfMonth: 0,
-					Month:      automation.APIBlockedDateMonthJanuary,
+					Month:      automation.APIBlockedDateMonthApril,
 					Year:       hubspotsdk.Int(0),
 				}},
 				CanEnrollFromSalesforce: true,
@@ -84,7 +84,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 				ObjectTypeID:       "objectTypeId",
 				SuppressionListIDs: []int64{0},
 				TimeWindows: []automation.APITimeWindowParam{{
-					Day: automation.APITimeWindowDayMonday,
+					Day: automation.APITimeWindowDayFriday,
 					EndTime: automation.APITimeOfDayParam{
 						Hour:   0,
 						Minute: 0,
@@ -316,9 +316,9 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 								}},
 							},
 						}},
-						ShouldReEnroll:                    false,
+						ShouldReEnroll:                    true,
 						Type:                              automation.APIListBasedEnrollmentCriteriaTypeListBased,
-						UnEnrollObjectsNotMeetingCriteria: false,
+						UnEnrollObjectsNotMeetingCriteria: true,
 					},
 				},
 				EnrollmentSchedule: automation.APIContactFlowCreateRequestEnrollmentScheduleUnionParam{
@@ -332,7 +332,7 @@ func TestWorkflowNewWithOptionalParams(t *testing.T) {
 				},
 				EventAnchor: automation.APIContactFlowCreateRequestEventAnchorUnionParam{
 					OfContactPropertyAnchor: &automation.APIContactPropertyAnchorParam{
-						ContactProperty: "example_date_property",
+						ContactProperty: "contactProperty",
 						Type:            automation.APIContactPropertyAnchorTypeContactPropertyAnchor,
 					},
 				},
@@ -397,16 +397,16 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 				OfAPIContactFlowPutRequest: &automation.APIContactFlowPutRequestParam{
 					Actions: []automation.APIContactFlowPutRequestActionUnionParam{{
 						OfStaticBranch: &automation.APIStaticBranchActionParam{
-							ActionID: "1",
+							ActionID: "actionId",
 							InputValue: automation.APIStaticBranchActionInputValueUnionParam{
 								OfFieldData: &automation.APIActionDataValueParam{
-									ActionID: "1",
-									DataKey:  "hs_execution_state",
+									ActionID: "actionId",
+									DataKey:  "dataKey",
 									Type:     automation.APIActionDataValueTypeFieldData,
 								},
 							},
 							StaticBranches: []automation.APIStaticBranchParam{{
-								BranchValue: "some_value",
+								BranchValue: "branchValue",
 								Connection: automation.APIConnectionParam{
 									EdgeType:     "edgeType",
 									NextActionID: "nextActionId",
@@ -417,12 +417,12 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 								EdgeType:     "edgeType",
 								NextActionID: "nextActionId",
 							},
-							DefaultBranchName: hubspotsdk.String("Other"),
+							DefaultBranchName: hubspotsdk.String("defaultBranchName"),
 						},
 					}},
 					BlockedDates: []automation.APIBlockedDateParam{{
 						DayOfMonth: 0,
-						Month:      automation.APIBlockedDateMonthJanuary,
+						Month:      automation.APIBlockedDateMonthApril,
 						Year:       hubspotsdk.Int(0),
 					}},
 					CanEnrollFromSalesforce: true,
@@ -433,7 +433,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 					RevisionID:         "revisionId",
 					SuppressionListIDs: []int64{0},
 					TimeWindows: []automation.APITimeWindowParam{{
-						Day: automation.APITimeWindowDayMonday,
+						Day: automation.APITimeWindowDayFriday,
 						EndTime: automation.APITimeOfDayParam{
 							Hour:   0,
 							Minute: 0,
@@ -665,9 +665,9 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 									}},
 								},
 							}},
-							ShouldReEnroll:                    false,
+							ShouldReEnroll:                    true,
 							Type:                              automation.APIListBasedEnrollmentCriteriaTypeListBased,
-							UnEnrollObjectsNotMeetingCriteria: false,
+							UnEnrollObjectsNotMeetingCriteria: true,
 						},
 					},
 					EnrollmentSchedule: automation.APIContactFlowPutRequestEnrollmentScheduleUnionParam{
@@ -681,7 +681,7 @@ func TestWorkflowUpdateWithOptionalParams(t *testing.T) {
 					},
 					EventAnchor: automation.APIContactFlowPutRequestEventAnchorUnionParam{
 						OfContactPropertyAnchor: &automation.APIContactPropertyAnchorParam{
-							ContactProperty: "example_date_property",
+							ContactProperty: "contactProperty",
 							Type:            automation.APIContactPropertyAnchorTypeContactPropertyAnchor,
 						},
 					},
@@ -822,7 +822,7 @@ func TestWorkflowBatchGetIDMappings(t *testing.T) {
 		APIFlowBatchMigrationInput: automation.APIFlowBatchMigrationInputParam{
 			Inputs: []automation.APIFlowBatchMigrationInputInputUnionParam{{
 				OfFlowID: &automation.APIFlowBatchFetchMigrationFlowIDCoordinateParam{
-					FlowMigrationStatuses: "12345",
+					FlowMigrationStatuses: "flowMigrationStatuses",
 					Type:                  automation.APIFlowBatchFetchMigrationFlowIDCoordinateTypeFlowID,
 				},
 			}},

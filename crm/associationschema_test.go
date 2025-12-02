@@ -27,7 +27,7 @@ func TestAssociationSchemaList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Associations.Schema.List(
+	_, err := client.Crm.Associations.Schema.List(
 		context.TODO(),
 		"toObjectType",
 		crm.AssociationSchemaListParams{

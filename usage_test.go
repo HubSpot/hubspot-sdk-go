@@ -11,6 +11,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestUsage(t *testing.T) {
@@ -25,8 +26,17 @@ func TestUsage(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	result, err := client.CRM.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
+	result, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "37295",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
 			Properties: map[string]string{
 				"foo": "string",
 			},

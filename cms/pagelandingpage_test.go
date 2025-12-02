@@ -32,7 +32,7 @@ func TestPageLandingPageNew(t *testing.T) {
 	err := client.Cms.Pages.LandingPages.New(context.TODO(), cms.PageLandingPageNewParams{
 		Page: cms.PageParam{
 			ID:                  "id",
-			AbStatus:            cms.PageAbStatusMaster,
+			AbStatus:            cms.PageAbStatusAutomatedLoserVariant,
 			AbTestID:            "abTestId",
 			ArchivedAt:          time.Now(),
 			ArchivedInDashboard: true,
@@ -188,7 +188,7 @@ func TestPageLandingPageNew(t *testing.T) {
 				"foo": map[string]any{},
 			},
 			TranslatedFromID: "translatedFromId",
-			Translations: map[string]cms.ContentLanguageVariationParam{
+			Translations: map[string]cms.PagesContentLanguageVariationParam{
 				"foo": {
 					ID:                       0,
 					ArchivedInDashboard:      true,
@@ -246,7 +246,7 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 		cms.PageLandingPageUpdateParams{
 			Page: cms.PageParam{
 				ID:                  "id",
-				AbStatus:            cms.PageAbStatusMaster,
+				AbStatus:            cms.PageAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
@@ -402,7 +402,7 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,
@@ -610,7 +610,7 @@ func TestPageLandingPageNewBatch(t *testing.T) {
 		BatchInputPage: cms.BatchInputPageParam{
 			Inputs: []cms.PageParam{{
 				ID:                  "id",
-				AbStatus:            cms.PageAbStatusMaster,
+				AbStatus:            cms.PageAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
@@ -766,7 +766,7 @@ func TestPageLandingPageNewBatch(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,
@@ -1598,7 +1598,7 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 		cms.PageLandingPageUpdateDraftParams{
 			Page: cms.PageParam{
 				ID:                  "id",
-				AbStatus:            cms.PageAbStatusMaster,
+				AbStatus:            cms.PageAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
@@ -1754,7 +1754,7 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 					"foo": map[string]any{},
 				},
 				TranslatedFromID: "translatedFromId",
-				Translations: map[string]cms.ContentLanguageVariationParam{
+				Translations: map[string]cms.PagesContentLanguageVariationParam{
 					"foo": {
 						ID:                       0,
 						ArchivedInDashboard:      true,

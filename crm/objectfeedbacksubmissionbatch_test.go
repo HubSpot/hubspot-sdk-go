@@ -27,7 +27,7 @@ func TestObjectFeedbackSubmissionBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.FeedbackSubmissions.Batch.Get(context.TODO(), crm.ObjectFeedbackSubmissionBatchGetParams{
+	_, err := client.Crm.Objects.FeedbackSubmissions.Batch.Get(context.TODO(), crm.ObjectFeedbackSubmissionBatchGetParams{
 		BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
 			Inputs: []crm.SimplePublicObjectIDParam{{
 				ID: "id",

@@ -9,11 +9,12 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
+	"github.com/stainless-sdks/hubspot-sdk-go/conversations"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
-func TestChannelList(t *testing.T) {
+func TestChannelListWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,7 +27,12 @@ func TestChannelList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Channels.List(context.TODO())
+	_, err := client.Conversations.Channels.List(context.TODO(), conversations.ChannelListParams{
+		After:             hubspotsdk.String("after"),
+		DefaultPageLength: hubspotsdk.Int(0),
+		Limit:             hubspotsdk.Int(0),
+		Sort:              []string{"string"},
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -49,7 +55,7 @@ func TestChannelGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Conversations.Channels.Get(context.TODO(), "channelId")
+	_, err := client.Conversations.Channels.Get(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

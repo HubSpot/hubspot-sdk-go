@@ -12,7 +12,7 @@ import (
 )
 
 // ExtensionCallingService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -39,10 +39,8 @@ func NewExtensionCallingService(opts ...option.RequestOption) (r ExtensionCallin
 }
 
 type ChannelConnectionSettingsPatchRequestParam struct {
-	// If true, this app will be considered to support channel connection
-	IsReady param.Opt[bool] `json:"isReady,omitzero"`
-	// The URL to fetch phone numbers available for channel connection
-	URL param.Opt[string] `json:"url,omitzero"`
+	IsReady param.Opt[bool]   `json:"isReady,omitzero"`
+	URL     param.Opt[string] `json:"url,omitzero"`
 	paramObj
 }
 
@@ -56,10 +54,8 @@ func (r *ChannelConnectionSettingsPatchRequestParam) UnmarshalJSON(data []byte) 
 
 // The properties IsReady, URL are required.
 type ChannelConnectionSettingsRequestParam struct {
-	// If true, this app will be considered to support channel connection
-	IsReady bool `json:"isReady,required"`
-	// The URL to fetch phone numbers available for channel connection
-	URL string `json:"url,required"`
+	IsReady bool   `json:"isReady,required"`
+	URL     string `json:"url,required"`
 	paramObj
 }
 
@@ -72,14 +68,10 @@ func (r *ChannelConnectionSettingsRequestParam) UnmarshalJSON(data []byte) error
 }
 
 type ChannelConnectionSettingsResponse struct {
-	// The timestamp this setting was created
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
-	// If true, this app will be considered to support channel connection
-	IsReady bool `json:"isReady,required"`
-	// The timestamp this setting was last updated
+	IsReady   bool      `json:"isReady,required"`
 	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
-	// The URL to fetch phone numbers available for channel connection
-	URL string `json:"url,required"`
+	URL       string    `json:"url,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CreatedAt   respjson.Field
@@ -139,6 +131,7 @@ func (r *RecordingSettingsRequestParam) UnmarshalJSON(data []byte) error {
 }
 
 type RecordingSettingsResponse struct {
+	// The URL used to retrieve authenticated call recordings.
 	URLToRetrieveAuthedRecording string `json:"urlToRetrieveAuthedRecording,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -155,29 +148,15 @@ func (r *RecordingSettingsResponse) UnmarshalJSON(data []byte) error {
 }
 
 type SettingsPatchRequestParam struct {
-	// The target height of the iframe that will contain your phone/calling UI.
-	Height param.Opt[int64] `json:"height,omitzero"`
-	// When true, this indicates that your calling app is ready for production. Users
-	// will be able to select your calling app as their provider and can then click to
-	// dial within HubSpot.
-	IsReady param.Opt[bool] `json:"isReady,omitzero"`
-	// The name of your calling service to display to users.
-	Name param.Opt[string] `json:"name,omitzero"`
-	// When true, users will be able to click to dial from custom objects.
-	SupportsCustomObjects param.Opt[bool] `json:"supportsCustomObjects,omitzero"`
-	// When true, this indicates that your calling app supports inbound calling within
-	// HubSpot.
-	SupportsInboundCalling param.Opt[bool] `json:"supportsInboundCalling,omitzero"`
-	// The URL to your phone/calling UI, built with the [Calling SDK](#).
-	URL param.Opt[string] `json:"url,omitzero"`
-	// When false, this indicates that your calling app does not require the use of the
-	// separate calling window to hold the call connection.
-	UsesCallingWindow param.Opt[bool] `json:"usesCallingWindow,omitzero"`
-	// When false, this indicates that your calling app does not use the anchored
-	// calling remote within the HubSpot app.
-	UsesRemote param.Opt[bool] `json:"usesRemote,omitzero"`
-	// The target width of the iframe that will contain your phone/calling UI.
-	Width param.Opt[int64] `json:"width,omitzero"`
+	Height                 param.Opt[int64]  `json:"height,omitzero"`
+	IsReady                param.Opt[bool]   `json:"isReady,omitzero"`
+	Name                   param.Opt[string] `json:"name,omitzero"`
+	SupportsCustomObjects  param.Opt[bool]   `json:"supportsCustomObjects,omitzero"`
+	SupportsInboundCalling param.Opt[bool]   `json:"supportsInboundCalling,omitzero"`
+	URL                    param.Opt[string] `json:"url,omitzero"`
+	UsesCallingWindow      param.Opt[bool]   `json:"usesCallingWindow,omitzero"`
+	UsesRemote             param.Opt[bool]   `json:"usesRemote,omitzero"`
+	Width                  param.Opt[int64]  `json:"width,omitzero"`
 	paramObj
 }
 
@@ -189,31 +168,18 @@ func (r *SettingsPatchRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties Name, URL are required.
+// The properties Height, IsReady, Name, SupportsCustomObjects,
+// SupportsInboundCalling, URL, UsesCallingWindow, UsesRemote, Width are required.
 type SettingsRequestParam struct {
-	// The name of your calling service to display to users.
-	Name string `json:"name,required"`
-	// The URL to your phone/calling UI, built with the [Calling SDK](#).
-	URL string `json:"url,required"`
-	// The target height of the iframe that will contain your phone/calling UI.
-	Height param.Opt[int64] `json:"height,omitzero"`
-	// When true, this indicates that your calling app is ready for production. Users
-	// will be able to select your calling app as their provider and can then click to
-	// dial within HubSpot.
-	IsReady param.Opt[bool] `json:"isReady,omitzero"`
-	// When true, users will be able to click to dial from custom objects.
-	SupportsCustomObjects param.Opt[bool] `json:"supportsCustomObjects,omitzero"`
-	// When true, this indicates that your calling app supports inbound calling within
-	// HubSpot.
-	SupportsInboundCalling param.Opt[bool] `json:"supportsInboundCalling,omitzero"`
-	// When false, this indicates that your calling app does not require the use of the
-	// separate calling window to hold the call connection.
-	UsesCallingWindow param.Opt[bool] `json:"usesCallingWindow,omitzero"`
-	// When false, this indicates that your calling app does not use the anchored
-	// calling remote within the HubSpot app.
-	UsesRemote param.Opt[bool] `json:"usesRemote,omitzero"`
-	// The target width of the iframe that will contain your phone/calling UI.
-	Width param.Opt[int64] `json:"width,omitzero"`
+	Height                 int64  `json:"height,required"`
+	IsReady                bool   `json:"isReady,required"`
+	Name                   string `json:"name,required"`
+	SupportsCustomObjects  bool   `json:"supportsCustomObjects,required"`
+	SupportsInboundCalling bool   `json:"supportsInboundCalling,required"`
+	URL                    string `json:"url,required"`
+	UsesCallingWindow      bool   `json:"usesCallingWindow,required"`
+	UsesRemote             bool   `json:"usesRemote,required"`
+	Width                  int64  `json:"width,required"`
 	paramObj
 }
 

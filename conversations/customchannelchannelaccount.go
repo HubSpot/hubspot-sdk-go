@@ -4,19 +4,22 @@ package conversations
 
 import (
 	"context"
-	"errors"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 )
 
 // CustomChannelChannelAccountService contains methods and other services that help
-// with interacting with the Hubspot API.
+// with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -36,96 +39,112 @@ func NewCustomChannelChannelAccountService(opts ...option.RequestOption) (r Cust
 
 // Create a new account for a channel. Multiple accounts can communicate over a
 // single channel using different delivery identifiers.
-func (r *CustomChannelChannelAccountService) New(ctx context.Context, channelID string, body CustomChannelChannelAccountNewParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
+func (r *CustomChannelChannelAccountService) New(ctx context.Context, channelID int64, body CustomChannelChannelAccountNewParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if channelID == "" {
-		err = errors.New("missing required channelId parameter")
-		return
-	}
-	path := fmt.Sprintf("conversations/v3/custom-channels/%s/channel-accounts", channelID)
+	path := fmt.Sprintf("conversations/v3/custom-channels/%v/channel-accounts", channelID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
 // This API is used to update the name of the channel account and it's isAuthorized
 // status. Setting to isAuthorized flag to False disables the channel account.
-func (r *CustomChannelChannelAccountService) Update(ctx context.Context, channelAccountID string, params CustomChannelChannelAccountUpdateParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
+func (r *CustomChannelChannelAccountService) Update(ctx context.Context, channelAccountID int64, params CustomChannelChannelAccountUpdateParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if params.ChannelID == "" {
-		err = errors.New("missing required channelId parameter")
-		return
-	}
-	if channelAccountID == "" {
-		err = errors.New("missing required channelAccountId parameter")
-		return
-	}
-	path := fmt.Sprintf("conversations/v3/custom-channels/%s/channel-accounts/%s", params.ChannelID, channelAccountID)
+	path := fmt.Sprintf("conversations/v3/custom-channels/%v/channel-accounts/%v", params.ChannelID, channelAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
 	return
 }
 
 // Retrieve a list of accounts for a custom channel.
-func (r *CustomChannelChannelAccountService) List(ctx context.Context, channelID string, opts ...option.RequestOption) (res *CollectionResponseWithTotalPublicChannelAccountForwardPaging, err error) {
+func (r *CustomChannelChannelAccountService) List(ctx context.Context, channelID int64, query CustomChannelChannelAccountListParams, opts ...option.RequestOption) (res *pagination.Page[PublicChannelAccount], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
-	if channelID == "" {
-		err = errors.New("missing required channelId parameter")
-		return
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	path := fmt.Sprintf("conversations/v3/custom-channels/%v/channel-accounts", channelID)
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
 	}
-	path := fmt.Sprintf("conversations/v3/custom-channels/%s/channel-accounts", channelID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve a list of accounts for a custom channel.
+func (r *CustomChannelChannelAccountService) ListAutoPaging(ctx context.Context, channelID int64, query CustomChannelChannelAccountListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicChannelAccount] {
+	return pagination.NewPageAutoPager(r.List(ctx, channelID, query, opts...))
 }
 
 // Retrieve the details for a specific channel account. This contains all the
 // metadata about your channel account, including its channel, associated inbox id,
 // and delivery identifier information.
-func (r *CustomChannelChannelAccountService) Get(ctx context.Context, channelAccountID string, query CustomChannelChannelAccountGetParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
+func (r *CustomChannelChannelAccountService) Get(ctx context.Context, channelAccountID int64, params CustomChannelChannelAccountGetParams, opts ...option.RequestOption) (res *PublicChannelAccount, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if query.ChannelID == "" {
-		err = errors.New("missing required channelId parameter")
-		return
-	}
-	if channelAccountID == "" {
-		err = errors.New("missing required channelAccountId parameter")
-		return
-	}
-	path := fmt.Sprintf("conversations/v3/custom-channels/%s/channel-accounts/%s", query.ChannelID, channelAccountID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	path := fmt.Sprintf("conversations/v3/custom-channels/%v/channel-accounts/%v", params.ChannelID, channelAccountID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return
 }
 
 type CustomChannelChannelAccountNewParams struct {
-	Authorized         bool                          `json:"authorized,required"`
-	InboxID            string                        `json:"inboxId,required"`
-	Name               string                        `json:"name,required"`
-	DeliveryIdentifier PublicDeliveryIdentifierParam `json:"deliveryIdentifier,omitzero"`
+	PublicChannelAccountEgg PublicChannelAccountEggParam
 	paramObj
 }
 
 func (r CustomChannelChannelAccountNewParams) MarshalJSON() (data []byte, err error) {
-	type shadow CustomChannelChannelAccountNewParams
-	return param.MarshalObject(r, (*shadow)(&r))
+	return shimjson.Marshal(r.PublicChannelAccountEgg)
 }
 func (r *CustomChannelChannelAccountNewParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return json.Unmarshal(data, &r.PublicChannelAccountEgg)
 }
 
 type CustomChannelChannelAccountUpdateParams struct {
-	ChannelID  string            `path:"channelId,required" json:"-"`
-	Authorized param.Opt[bool]   `json:"authorized,omitzero"`
-	Name       param.Opt[string] `json:"name,omitzero"`
+	ChannelID                         int64 `path:"channelId,required" json:"-"`
+	PublicChannelAccountUpdateRequest PublicChannelAccountUpdateRequestParam
 	paramObj
 }
 
 func (r CustomChannelChannelAccountUpdateParams) MarshalJSON() (data []byte, err error) {
-	type shadow CustomChannelChannelAccountUpdateParams
-	return param.MarshalObject(r, (*shadow)(&r))
+	return shimjson.Marshal(r.PublicChannelAccountUpdateRequest)
 }
 func (r *CustomChannelChannelAccountUpdateParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+	return json.Unmarshal(data, &r.PublicChannelAccountUpdateRequest)
+}
+
+type CustomChannelChannelAccountListParams struct {
+	After                   param.Opt[string] `query:"after,omitzero" json:"-"`
+	Archived                param.Opt[bool]   `query:"archived,omitzero" json:"-"`
+	DefaultPageLength       param.Opt[int64]  `query:"defaultPageLength,omitzero" json:"-"`
+	Limit                   param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	DeliveryIdentifierType  []string          `query:"deliveryIdentifierType,omitzero" json:"-"`
+	DeliveryIdentifierValue []string          `query:"deliveryIdentifierValue,omitzero" json:"-"`
+	Sort                    []string          `query:"sort,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [CustomChannelChannelAccountListParams]'s query parameters
+// as `url.Values`.
+func (r CustomChannelChannelAccountListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type CustomChannelChannelAccountGetParams struct {
-	ChannelID string `path:"channelId,required" json:"-"`
+	ChannelID int64 `path:"channelId,required" json:"-"`
+	// Filter results to include only archived or non-archived channel accounts.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
+}
+
+// URLQuery serializes [CustomChannelChannelAccountGetParams]'s query parameters as
+// `url.Values`.
+func (r CustomChannelChannelAccountGetParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

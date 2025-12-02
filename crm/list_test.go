@@ -28,7 +28,7 @@ func TestListNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.New(context.TODO(), crm.ListNewParams{
+	_, err := client.Crm.Lists.New(context.TODO(), crm.ListNewParams{
 		ListCreateRequest: crm.ListCreateRequestParam{
 			Name:           "Dynamic Association List Example",
 			ObjectTypeID:   "0-1",
@@ -266,7 +266,7 @@ func TestListListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.List(context.TODO(), crm.ListListParams{
+	_, err := client.Crm.Lists.List(context.TODO(), crm.ListListParams{
 		IncludeFilters: hubspotsdk.Bool(true),
 		ListIDs:        []string{"string"},
 	})
@@ -292,7 +292,7 @@ func TestListDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Delete(context.TODO(), "listId")
+	err := client.Crm.Lists.Delete(context.TODO(), "listId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -315,7 +315,7 @@ func TestListDeleteScheduleConversion(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.DeleteScheduleConversion(context.TODO(), "listId")
+	err := client.Crm.Lists.DeleteScheduleConversion(context.TODO(), "listId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -338,7 +338,7 @@ func TestListGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Get(
+	_, err := client.Crm.Lists.Get(
 		context.TODO(),
 		"listId",
 		crm.ListGetParams{
@@ -367,7 +367,7 @@ func TestListGetByObjectTypeIDAndNameWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.GetByObjectTypeIDAndName(
+	_, err := client.Crm.Lists.GetByObjectTypeIDAndName(
 		context.TODO(),
 		"listName",
 		crm.ListGetByObjectTypeIDAndNameParams{
@@ -397,7 +397,7 @@ func TestListGetScheduleConversion(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.GetScheduleConversion(context.TODO(), "listId")
+	_, err := client.Crm.Lists.GetScheduleConversion(context.TODO(), "listId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -420,7 +420,7 @@ func TestListRestore(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Lists.Restore(context.TODO(), "listId")
+	err := client.Crm.Lists.Restore(context.TODO(), "listId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -443,7 +443,7 @@ func TestListScheduleConversion(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.ScheduleConversion(
+	_, err := client.Crm.Lists.ScheduleConversion(
 		context.TODO(),
 		"listId",
 		crm.ListScheduleConversionParams{
@@ -479,12 +479,12 @@ func TestListSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.Search(context.TODO(), crm.ListSearchParams{
+	_, err := client.Crm.Lists.Search(context.TODO(), crm.ListSearchParams{
 		ListSearchRequest: crm.ListSearchRequestParam{
 			AdditionalProperties: []string{"hs_list_size_week_delta"},
+			Offset:               0,
 			Count:                hubspotsdk.Int(100),
 			ListIDs:              []string{"string"},
-			Offset:               hubspotsdk.Int(0),
 			ProcessingTypes:      []string{"string"},
 			Query:                hubspotsdk.String("Test"),
 			Sort:                 hubspotsdk.String("sort"),
@@ -512,7 +512,7 @@ func TestListUpdateFiltersWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.UpdateFilters(
+	_, err := client.Crm.Lists.UpdateFilters(
 		context.TODO(),
 		"listId",
 		crm.ListUpdateFiltersParams{
@@ -760,7 +760,7 @@ func TestListUpdateNameWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Lists.UpdateName(
+	_, err := client.Crm.Lists.UpdateName(
 		context.TODO(),
 		"listId",
 		crm.ListUpdateNameParams{

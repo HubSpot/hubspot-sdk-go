@@ -27,19 +27,13 @@ func TestObjectPartnerClientUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.Update(
+	_, err := client.Crm.Objects.PartnerClients.Update(
 		context.TODO(),
 		"partnerClientId",
 		crm.ObjectPartnerClientUpdateParams{
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
-					"property_checkbox":            "false",
-					"property_date":                "1572480000000",
-					"property_dropdown":            "choice_b",
-					"property_multiple_checkboxes": "chocolate;strawberry",
-					"property_number":              "17",
-					"property_radio":               "option_1",
-					"property_string":              "value",
+					"foo": "string",
 				},
 			},
 			IDProperty: hubspotsdk.String("idProperty"),
@@ -67,7 +61,7 @@ func TestObjectPartnerClientListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.List(context.TODO(), crm.ObjectPartnerClientListParams{
+	_, err := client.Crm.Objects.PartnerClients.List(context.TODO(), crm.ObjectPartnerClientListParams{
 		After:                 hubspotsdk.String("after"),
 		Archived:              hubspotsdk.Bool(true),
 		Associations:          []string{"string"},
@@ -97,7 +91,7 @@ func TestObjectPartnerClientGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.Get(
+	_, err := client.Crm.Objects.PartnerClients.Get(
 		context.TODO(),
 		"partnerClientId",
 		crm.ObjectPartnerClientGetParams{
@@ -130,22 +124,22 @@ func TestObjectPartnerClientSearchWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Objects.PartnerClients.Search(context.TODO(), crm.ObjectPartnerClientSearchParams{
+	_, err := client.Crm.Objects.PartnerClients.Search(context.TODO(), crm.ObjectPartnerClientSearchParams{
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-			After: hubspotsdk.String("after"),
+			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
 				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorEq,
-					PropertyName: "",
-					HighValue:    hubspotsdk.String(""),
-					Value:        hubspotsdk.String(""),
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
 					Values:       []string{"string"},
 				}},
 			}},
-			Limit:      hubspotsdk.Int(0),
+			Limit:      0,
 			Properties: []string{"string"},
-			Query:      hubspotsdk.String("query"),
 			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
 	})
 	if err != nil {

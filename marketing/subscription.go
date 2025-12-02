@@ -20,7 +20,7 @@ import (
 )
 
 // SubscriptionService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -90,19 +90,19 @@ type PublicSubscriptionStatus struct {
 	// Where the status is determined from e.g. PORTAL_WIDE_STATUS if the contact opted
 	// out from the portal.
 	//
-	// Any of "PORTAL_WIDE_STATUS", "BRAND_WIDE_STATUS", "SUBSCRIPTION_STATUS".
+	// Any of "BRAND_WIDE_STATUS", "PORTAL_WIDE_STATUS", "SUBSCRIPTION_STATUS".
 	SourceOfStatus PublicSubscriptionStatusSourceOfStatus `json:"sourceOfStatus,required"`
 	// Whether the contact is subscribed.
 	//
-	// Any of "SUBSCRIBED", "NOT_SUBSCRIBED".
+	// Any of "NOT_SUBSCRIBED", "SUBSCRIBED".
 	Status PublicSubscriptionStatusStatus `json:"status,required"`
 	// The ID of the brand that the subscription is associated with, if there is one.
 	BrandID int64 `json:"brandId"`
 	// The legal reason for the current status of the subscription.
 	//
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegalBasis PublicSubscriptionStatusLegalBasis `json:"legalBasis"`
 	// A more detailed explanation to go with the legal basis.
 	LegalBasisExplanation string `json:"legalBasisExplanation"`
@@ -135,8 +135,8 @@ func (r *PublicSubscriptionStatus) UnmarshalJSON(data []byte) error {
 type PublicSubscriptionStatusSourceOfStatus string
 
 const (
-	PublicSubscriptionStatusSourceOfStatusPortalWideStatus   PublicSubscriptionStatusSourceOfStatus = "PORTAL_WIDE_STATUS"
 	PublicSubscriptionStatusSourceOfStatusBrandWideStatus    PublicSubscriptionStatusSourceOfStatus = "BRAND_WIDE_STATUS"
+	PublicSubscriptionStatusSourceOfStatusPortalWideStatus   PublicSubscriptionStatusSourceOfStatus = "PORTAL_WIDE_STATUS"
 	PublicSubscriptionStatusSourceOfStatusSubscriptionStatus PublicSubscriptionStatusSourceOfStatus = "SUBSCRIPTION_STATUS"
 )
 
@@ -144,21 +144,21 @@ const (
 type PublicSubscriptionStatusStatus string
 
 const (
-	PublicSubscriptionStatusStatusSubscribed    PublicSubscriptionStatusStatus = "SUBSCRIBED"
 	PublicSubscriptionStatusStatusNotSubscribed PublicSubscriptionStatusStatus = "NOT_SUBSCRIBED"
+	PublicSubscriptionStatusStatusSubscribed    PublicSubscriptionStatusStatus = "SUBSCRIBED"
 )
 
 // The legal reason for the current status of the subscription.
 type PublicSubscriptionStatusLegalBasis string
 
 const (
-	PublicSubscriptionStatusLegalBasisLegitimateInterestPql    PublicSubscriptionStatusLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	PublicSubscriptionStatusLegalBasisLegitimateInterestClient PublicSubscriptionStatusLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	PublicSubscriptionStatusLegalBasisPerformanceOfContract    PublicSubscriptionStatusLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	PublicSubscriptionStatusLegalBasisConsentWithNotice        PublicSubscriptionStatusLegalBasis = "CONSENT_WITH_NOTICE"
-	PublicSubscriptionStatusLegalBasisNonGdpr                  PublicSubscriptionStatusLegalBasis = "NON_GDPR"
-	PublicSubscriptionStatusLegalBasisProcessAndStore          PublicSubscriptionStatusLegalBasis = "PROCESS_AND_STORE"
+	PublicSubscriptionStatusLegalBasisLegitimateInterestClient PublicSubscriptionStatusLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	PublicSubscriptionStatusLegalBasisLegitimateInterestOther  PublicSubscriptionStatusLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	PublicSubscriptionStatusLegalBasisLegitimateInterestPql    PublicSubscriptionStatusLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	PublicSubscriptionStatusLegalBasisNonGdpr                  PublicSubscriptionStatusLegalBasis = "NON_GDPR"
+	PublicSubscriptionStatusLegalBasisPerformanceOfContract    PublicSubscriptionStatusLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	PublicSubscriptionStatusLegalBasisProcessAndStore          PublicSubscriptionStatusLegalBasis = "PROCESS_AND_STORE"
 )
 
 type PublicSubscriptionStatusesResponse struct {
@@ -193,9 +193,9 @@ type PublicUpdateSubscriptionStatusRequestParam struct {
 	// Legal basis for updating the contact's status (required for GDPR enabled
 	// portals).
 	//
-	// Any of "LEGITIMATE_INTEREST_PQL", "LEGITIMATE_INTEREST_CLIENT",
-	// "PERFORMANCE_OF_CONTRACT", "CONSENT_WITH_NOTICE", "NON_GDPR",
-	// "PROCESS_AND_STORE", "LEGITIMATE_INTEREST_OTHER".
+	// Any of "CONSENT_WITH_NOTICE", "LEGITIMATE_INTEREST_CLIENT",
+	// "LEGITIMATE_INTEREST_OTHER", "LEGITIMATE_INTEREST_PQL", "NON_GDPR",
+	// "PERFORMANCE_OF_CONTRACT", "PROCESS_AND_STORE".
 	LegalBasis PublicUpdateSubscriptionStatusRequestLegalBasis `json:"legalBasis,omitzero"`
 	paramObj
 }
@@ -213,13 +213,13 @@ func (r *PublicUpdateSubscriptionStatusRequestParam) UnmarshalJSON(data []byte) 
 type PublicUpdateSubscriptionStatusRequestLegalBasis string
 
 const (
-	PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestPql    PublicUpdateSubscriptionStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
-	PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestClient PublicUpdateSubscriptionStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
-	PublicUpdateSubscriptionStatusRequestLegalBasisPerformanceOfContract    PublicUpdateSubscriptionStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
 	PublicUpdateSubscriptionStatusRequestLegalBasisConsentWithNotice        PublicUpdateSubscriptionStatusRequestLegalBasis = "CONSENT_WITH_NOTICE"
-	PublicUpdateSubscriptionStatusRequestLegalBasisNonGdpr                  PublicUpdateSubscriptionStatusRequestLegalBasis = "NON_GDPR"
-	PublicUpdateSubscriptionStatusRequestLegalBasisProcessAndStore          PublicUpdateSubscriptionStatusRequestLegalBasis = "PROCESS_AND_STORE"
+	PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestClient PublicUpdateSubscriptionStatusRequestLegalBasis = "LEGITIMATE_INTEREST_CLIENT"
 	PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestOther  PublicUpdateSubscriptionStatusRequestLegalBasis = "LEGITIMATE_INTEREST_OTHER"
+	PublicUpdateSubscriptionStatusRequestLegalBasisLegitimateInterestPql    PublicUpdateSubscriptionStatusRequestLegalBasis = "LEGITIMATE_INTEREST_PQL"
+	PublicUpdateSubscriptionStatusRequestLegalBasisNonGdpr                  PublicUpdateSubscriptionStatusRequestLegalBasis = "NON_GDPR"
+	PublicUpdateSubscriptionStatusRequestLegalBasisPerformanceOfContract    PublicUpdateSubscriptionStatusRequestLegalBasis = "PERFORMANCE_OF_CONTRACT"
+	PublicUpdateSubscriptionStatusRequestLegalBasisProcessAndStore          PublicUpdateSubscriptionStatusRequestLegalBasis = "PROCESS_AND_STORE"
 )
 
 type SubscriptionDefinition struct {

@@ -8,20 +8,23 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // CurrencyService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -112,11 +115,26 @@ func (r *CurrencyService) ListCurrentExchangeRates(ctx context.Context, opts ...
 }
 
 // Get a list of exchange rates
-func (r *CurrencyService) ListExchangeRates(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseExchangeRateForwardPaging, err error) {
+func (r *CurrencyService) ListExchangeRates(ctx context.Context, query CurrencyListExchangeRatesParams, opts ...option.RequestOption) (res *pagination.Page[ExchangeRate], err error) {
+	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "settings/v3/currencies/exchange-rates"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Get a list of exchange rates
+func (r *CurrencyService) ListExchangeRatesAutoPaging(ctx context.Context, query CurrencyListExchangeRatesParams, opts ...option.RequestOption) *pagination.PageAutoPager[ExchangeRate] {
+	return pagination.NewPageAutoPager(r.ListExchangeRates(ctx, query, opts...))
 }
 
 // Set or update the primary company currency.
@@ -181,7 +199,7 @@ type BatchResponseExchangeRate struct {
 	CompletedAt time.Time      `json:"completedAt,required" format:"date-time"`
 	Results     []ExchangeRate `json:"results,required"`
 	StartedAt   time.Time      `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status      BatchResponseExchangeRateStatus `json:"status,required"`
 	Links       map[string]string               `json:"links"`
 	RequestedAt time.Time                       `json:"requestedAt" format:"date-time"`
@@ -207,13 +225,14 @@ func (r *BatchResponseExchangeRate) UnmarshalJSON(data []byte) error {
 type BatchResponseExchangeRateStatus string
 
 const (
-	BatchResponseExchangeRateStatusPending    BatchResponseExchangeRateStatus = "PENDING"
-	BatchResponseExchangeRateStatusProcessing BatchResponseExchangeRateStatus = "PROCESSING"
 	BatchResponseExchangeRateStatusCanceled   BatchResponseExchangeRateStatus = "CANCELED"
 	BatchResponseExchangeRateStatusComplete   BatchResponseExchangeRateStatus = "COMPLETE"
+	BatchResponseExchangeRateStatusPending    BatchResponseExchangeRateStatus = "PENDING"
+	BatchResponseExchangeRateStatusProcessing BatchResponseExchangeRateStatus = "PROCESSING"
 )
 
 type CentralExchangeRatesInformation struct {
+	// Indicates if central exchange rates is enabled for the portal or not.
 	CentralExchangeRatesEnabled bool `json:"centralExchangeRatesEnabled,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -280,7 +299,9 @@ func (r *CollectionResponseExchangeRateNoPaging) UnmarshalJSON(data []byte) erro
 }
 
 type CompanyCurrency struct {
-	ID        string    `json:"id,required"`
+	// The currency code for the company currency
+	ID string `json:"id,required"`
+	// The date the company currency was created.
 	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -299,6 +320,8 @@ func (r *CompanyCurrency) UnmarshalJSON(data []byte) error {
 
 // The property CurrencyCode is required.
 type CompanyCurrencyUpdateRequestParam struct {
+	// The three-letter code representing a specific currency (ex. USD).
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -328,6 +351,7 @@ func (r *CompanyCurrencyUpdateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The three-letter code representing a specific currency (ex. USD).
 type CompanyCurrencyUpdateRequestCurrencyCode string
 
 const (
@@ -510,7 +534,9 @@ const (
 )
 
 type CurrencyCodeInfo struct {
+	// The three-letter code representing a specific currency (ex. USD).
 	CurrencyCode string `json:"currencyCode,required"`
+	// The full name of the currency (ex. US Dollar).
 	CurrencyName string `json:"currencyName,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -529,6 +555,9 @@ func (r *CurrencyCodeInfo) UnmarshalJSON(data []byte) error {
 
 // The property CurrencyCode is required.
 type CurrencyCreateRequestParam struct {
+	// The currency code being added to the HubSpot portal for use with central
+	// exchange rates.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -558,6 +587,8 @@ func (r *CurrencyCreateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The currency code being added to the HubSpot portal for use with central
+// exchange rates.
 type CurrencyCreateRequestCurrencyCode string
 
 const (
@@ -741,6 +772,9 @@ const (
 
 // The properties FromCurrencyCode, ToCurrencyCode, VisibleInUi are required.
 type CurrencyPairUpdateParam struct {
+	// This represents the three-letter currency code (such as USD for US Dollar) of
+	// the currency you want to convert from.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -759,6 +793,9 @@ type CurrencyPairUpdateParam struct {
 	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
 	// "ZWL".
 	FromCurrencyCode CurrencyPairUpdateFromCurrencyCode `json:"fromCurrencyCode,omitzero,required"`
+	// This represents the three-letter currency code (such as USD for US Dollar) of
+	// the currency you want to convert to.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -777,7 +814,9 @@ type CurrencyPairUpdateParam struct {
 	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
 	// "ZWL".
 	ToCurrencyCode CurrencyPairUpdateToCurrencyCode `json:"toCurrencyCode,omitzero,required"`
-	VisibleInUi    bool                             `json:"visibleInUI,required"`
+	// This indicates if the currency pair is shown in the MultiCurrency settings page.
+	// Setting this to false will remove the currency pair from the settings page.
+	VisibleInUi bool `json:"visibleInUI,required"`
 	paramObj
 }
 
@@ -789,6 +828,8 @@ func (r *CurrencyPairUpdateParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// This represents the three-letter currency code (such as USD for US Dollar) of
+// the currency you want to convert from.
 type CurrencyPairUpdateFromCurrencyCode string
 
 const (
@@ -970,6 +1011,8 @@ const (
 	CurrencyPairUpdateFromCurrencyCodeZwl CurrencyPairUpdateFromCurrencyCode = "ZWL"
 )
 
+// This represents the three-letter currency code (such as USD for US Dollar) of
+// the currency you want to convert to.
 type CurrencyPairUpdateToCurrencyCode string
 
 const (
@@ -1152,10 +1195,17 @@ const (
 )
 
 type ExchangeRate struct {
-	ID             string    `json:"id,required"`
-	ConversionRate float64   `json:"conversionRate,required"`
-	CreatedAt      time.Time `json:"createdAt,required" format:"date-time"`
-	EffectiveAt    time.Time `json:"effectiveAt,required" format:"date-time"`
+	// A unique identifier for the exchange rate
+	ID string `json:"id,required"`
+	// The conversion rate between the to and from currency code of this exchange rate.
+	ConversionRate float64 `json:"conversionRate,required"`
+	// The date the exchange rate was created.
+	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
+	// The date the exchange rate is in effect.
+	EffectiveAt time.Time `json:"effectiveAt,required" format:"date-time"`
+	// This represents the three-letter currency code (such as USD for US Dollar) of
+	// the currency you are converting from.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -1174,6 +1224,9 @@ type ExchangeRate struct {
 	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
 	// "ZWL".
 	FromCurrencyCode ExchangeRateFromCurrencyCode `json:"fromCurrencyCode,required"`
+	// This represents the three-letter currency code (such as USD for US Dollar) of
+	// the currency you are converting to.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -1192,8 +1245,10 @@ type ExchangeRate struct {
 	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
 	// "ZWL".
 	ToCurrencyCode ExchangeRateToCurrencyCode `json:"toCurrencyCode,required"`
-	UpdatedAt      time.Time                  `json:"updatedAt,required" format:"date-time"`
-	VisibleInUi    bool                       `json:"visibleInUI,required"`
+	// The date the exchange rate was last updated.
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
+	// This indicates if the exchange rate is shown in the MultiCurrency settings page.
+	VisibleInUi bool `json:"visibleInUI,required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID               respjson.Field
@@ -1215,6 +1270,8 @@ func (r *ExchangeRate) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// This represents the three-letter currency code (such as USD for US Dollar) of
+// the currency you are converting from.
 type ExchangeRateFromCurrencyCode string
 
 const (
@@ -1396,6 +1453,8 @@ const (
 	ExchangeRateFromCurrencyCodeZwl ExchangeRateFromCurrencyCode = "ZWL"
 )
 
+// This represents the three-letter currency code (such as USD for US Dollar) of
+// the currency you are converting to.
 type ExchangeRateToCurrencyCode string
 
 const (
@@ -1579,7 +1638,11 @@ const (
 
 // The properties ConversionRate, FromCurrencyCode are required.
 type ExchangeRateCreateRequestParam struct {
+	// The conversion rate between the to and from currency code of this exchange rate.
 	ConversionRate float64 `json:"conversionRate,required"`
+	// This represents the three-letter currency code (such as USD for US Dollar) of
+	// the currency you want to convert from.
+	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
 	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
@@ -1598,7 +1661,8 @@ type ExchangeRateCreateRequestParam struct {
 	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
 	// "ZWL".
 	FromCurrencyCode ExchangeRateCreateRequestFromCurrencyCode `json:"fromCurrencyCode,omitzero,required"`
-	EffectiveAt      param.Opt[time.Time]                      `json:"effectiveAt,omitzero" format:"date-time"`
+	// The date the exchange rate is in effect.
+	EffectiveAt param.Opt[time.Time] `json:"effectiveAt,omitzero" format:"date-time"`
 	paramObj
 }
 
@@ -1610,6 +1674,8 @@ func (r *ExchangeRateCreateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// This represents the three-letter currency code (such as USD for US Dollar) of
+// the currency you want to convert from.
 type ExchangeRateCreateRequestFromCurrencyCode string
 
 const (
@@ -1793,8 +1859,11 @@ const (
 
 // The property ConversionRate is required.
 type ExchangeRateMultiplierParam struct {
-	ConversionRate float64              `json:"conversionRate,required"`
-	EffectiveAt    param.Opt[time.Time] `json:"effectiveAt,omitzero" format:"date-time"`
+	// The updated conversion rate between the to and from currency code of this
+	// exchange rate.
+	ConversionRate float64 `json:"conversionRate,required"`
+	// The date the exchange rate is in effect.
+	EffectiveAt param.Opt[time.Time] `json:"effectiveAt,omitzero" format:"date-time"`
 	paramObj
 }
 
@@ -1808,9 +1877,13 @@ func (r *ExchangeRateMultiplierParam) UnmarshalJSON(data []byte) error {
 
 // The properties ID, ConversionRate are required.
 type ExchangeRateUpdateRequestParam struct {
-	ID             string               `json:"id,required"`
-	ConversionRate float64              `json:"conversionRate,required"`
-	EffectiveAt    param.Opt[time.Time] `json:"effectiveAt,omitzero" format:"date-time"`
+	// A unique identifier for the exchange rate being updated
+	ID string `json:"id,required"`
+	// The updated conversion rate between the to and from currency code of this
+	// exchange rate.
+	ConversionRate float64 `json:"conversionRate,required"`
+	// The date the exchange rate will be in effect.
+	EffectiveAt param.Opt[time.Time] `json:"effectiveAt,omitzero" format:"date-time"`
 	paramObj
 }
 
@@ -1869,6 +1942,433 @@ func (r CurrencyNewExchangeRateParams) MarshalJSON() (data []byte, err error) {
 func (r *CurrencyNewExchangeRateParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.ExchangeRateCreateRequest)
 }
+
+type CurrencyListExchangeRatesParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// The maximum number of results to display per page.
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// Filters the response to only include exchange rates set from the specified
+	// currency.
+	//
+	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
+	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
+	// "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK",
+	// "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS",
+	// "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR",
+	// "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR",
+	// "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL",
+	// "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR",
+	// "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD",
+	// "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD",
+	// "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS",
+	// "SRD", "SSP", "STN", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP",
+	// "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS",
+	// "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD",
+	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
+	// "ZWL".
+	FromCurrencyCode CurrencyListExchangeRatesParamsFromCurrencyCode `query:"fromCurrencyCode,omitzero" json:"-"`
+	// Filters the response to only include exchange rates set to the specified
+	// currency.
+	//
+	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
+	// "BSD", "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHE", "CHF", "CHW", "CLF",
+	// "CLP", "CNY", "COP", "COU", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF", "DKK",
+	// "DOP", "DZD", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GHS",
+	// "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR",
+	// "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY", "KES", "KGS", "KHR",
+	// "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL",
+	// "LYD", "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR",
+	// "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD",
+	// "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD",
+	// "RUB", "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS",
+	// "SRD", "SSP", "STN", "SVC", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP",
+	// "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "USN", "UYI", "UYU", "UZS",
+	// "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC", "XBD",
+	// "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "XSU", "XUA", "YER", "ZAR", "ZMW",
+	// "ZWL".
+	ToCurrencyCode CurrencyListExchangeRatesParamsToCurrencyCode `query:"toCurrencyCode,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [CurrencyListExchangeRatesParams]'s query parameters as
+// `url.Values`.
+func (r CurrencyListExchangeRatesParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Filters the response to only include exchange rates set from the specified
+// currency.
+type CurrencyListExchangeRatesParamsFromCurrencyCode string
+
+const (
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAed CurrencyListExchangeRatesParamsFromCurrencyCode = "AED"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAfn CurrencyListExchangeRatesParamsFromCurrencyCode = "AFN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAll CurrencyListExchangeRatesParamsFromCurrencyCode = "ALL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAmd CurrencyListExchangeRatesParamsFromCurrencyCode = "AMD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAng CurrencyListExchangeRatesParamsFromCurrencyCode = "ANG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAoa CurrencyListExchangeRatesParamsFromCurrencyCode = "AOA"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeArs CurrencyListExchangeRatesParamsFromCurrencyCode = "ARS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAud CurrencyListExchangeRatesParamsFromCurrencyCode = "AUD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAwg CurrencyListExchangeRatesParamsFromCurrencyCode = "AWG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeAzn CurrencyListExchangeRatesParamsFromCurrencyCode = "AZN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBam CurrencyListExchangeRatesParamsFromCurrencyCode = "BAM"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBbd CurrencyListExchangeRatesParamsFromCurrencyCode = "BBD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBdt CurrencyListExchangeRatesParamsFromCurrencyCode = "BDT"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBgn CurrencyListExchangeRatesParamsFromCurrencyCode = "BGN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBhd CurrencyListExchangeRatesParamsFromCurrencyCode = "BHD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBif CurrencyListExchangeRatesParamsFromCurrencyCode = "BIF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBmd CurrencyListExchangeRatesParamsFromCurrencyCode = "BMD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBnd CurrencyListExchangeRatesParamsFromCurrencyCode = "BND"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBob CurrencyListExchangeRatesParamsFromCurrencyCode = "BOB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBov CurrencyListExchangeRatesParamsFromCurrencyCode = "BOV"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBrl CurrencyListExchangeRatesParamsFromCurrencyCode = "BRL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBsd CurrencyListExchangeRatesParamsFromCurrencyCode = "BSD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBtn CurrencyListExchangeRatesParamsFromCurrencyCode = "BTN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBwp CurrencyListExchangeRatesParamsFromCurrencyCode = "BWP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeByn CurrencyListExchangeRatesParamsFromCurrencyCode = "BYN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeBzd CurrencyListExchangeRatesParamsFromCurrencyCode = "BZD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCad CurrencyListExchangeRatesParamsFromCurrencyCode = "CAD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCdf CurrencyListExchangeRatesParamsFromCurrencyCode = "CDF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeChe CurrencyListExchangeRatesParamsFromCurrencyCode = "CHE"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeChf CurrencyListExchangeRatesParamsFromCurrencyCode = "CHF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeChw CurrencyListExchangeRatesParamsFromCurrencyCode = "CHW"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeClf CurrencyListExchangeRatesParamsFromCurrencyCode = "CLF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeClp CurrencyListExchangeRatesParamsFromCurrencyCode = "CLP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCny CurrencyListExchangeRatesParamsFromCurrencyCode = "CNY"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCop CurrencyListExchangeRatesParamsFromCurrencyCode = "COP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCou CurrencyListExchangeRatesParamsFromCurrencyCode = "COU"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCrc CurrencyListExchangeRatesParamsFromCurrencyCode = "CRC"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCuc CurrencyListExchangeRatesParamsFromCurrencyCode = "CUC"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCup CurrencyListExchangeRatesParamsFromCurrencyCode = "CUP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCve CurrencyListExchangeRatesParamsFromCurrencyCode = "CVE"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeCzk CurrencyListExchangeRatesParamsFromCurrencyCode = "CZK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeDjf CurrencyListExchangeRatesParamsFromCurrencyCode = "DJF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeDkk CurrencyListExchangeRatesParamsFromCurrencyCode = "DKK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeDop CurrencyListExchangeRatesParamsFromCurrencyCode = "DOP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeDzd CurrencyListExchangeRatesParamsFromCurrencyCode = "DZD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeEgp CurrencyListExchangeRatesParamsFromCurrencyCode = "EGP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeErn CurrencyListExchangeRatesParamsFromCurrencyCode = "ERN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeEtb CurrencyListExchangeRatesParamsFromCurrencyCode = "ETB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeEur CurrencyListExchangeRatesParamsFromCurrencyCode = "EUR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeFjd CurrencyListExchangeRatesParamsFromCurrencyCode = "FJD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeFkp CurrencyListExchangeRatesParamsFromCurrencyCode = "FKP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGbp CurrencyListExchangeRatesParamsFromCurrencyCode = "GBP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGel CurrencyListExchangeRatesParamsFromCurrencyCode = "GEL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGhs CurrencyListExchangeRatesParamsFromCurrencyCode = "GHS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGip CurrencyListExchangeRatesParamsFromCurrencyCode = "GIP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGmd CurrencyListExchangeRatesParamsFromCurrencyCode = "GMD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGnf CurrencyListExchangeRatesParamsFromCurrencyCode = "GNF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGtq CurrencyListExchangeRatesParamsFromCurrencyCode = "GTQ"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeGyd CurrencyListExchangeRatesParamsFromCurrencyCode = "GYD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeHkd CurrencyListExchangeRatesParamsFromCurrencyCode = "HKD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeHnl CurrencyListExchangeRatesParamsFromCurrencyCode = "HNL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeHrk CurrencyListExchangeRatesParamsFromCurrencyCode = "HRK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeHtg CurrencyListExchangeRatesParamsFromCurrencyCode = "HTG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeHuf CurrencyListExchangeRatesParamsFromCurrencyCode = "HUF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeIdr CurrencyListExchangeRatesParamsFromCurrencyCode = "IDR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeIls CurrencyListExchangeRatesParamsFromCurrencyCode = "ILS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeInr CurrencyListExchangeRatesParamsFromCurrencyCode = "INR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeIqd CurrencyListExchangeRatesParamsFromCurrencyCode = "IQD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeIrr CurrencyListExchangeRatesParamsFromCurrencyCode = "IRR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeIsk CurrencyListExchangeRatesParamsFromCurrencyCode = "ISK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeJmd CurrencyListExchangeRatesParamsFromCurrencyCode = "JMD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeJod CurrencyListExchangeRatesParamsFromCurrencyCode = "JOD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeJpy CurrencyListExchangeRatesParamsFromCurrencyCode = "JPY"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKes CurrencyListExchangeRatesParamsFromCurrencyCode = "KES"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKgs CurrencyListExchangeRatesParamsFromCurrencyCode = "KGS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKhr CurrencyListExchangeRatesParamsFromCurrencyCode = "KHR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKmf CurrencyListExchangeRatesParamsFromCurrencyCode = "KMF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKpw CurrencyListExchangeRatesParamsFromCurrencyCode = "KPW"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKrw CurrencyListExchangeRatesParamsFromCurrencyCode = "KRW"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKwd CurrencyListExchangeRatesParamsFromCurrencyCode = "KWD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKyd CurrencyListExchangeRatesParamsFromCurrencyCode = "KYD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeKzt CurrencyListExchangeRatesParamsFromCurrencyCode = "KZT"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLak CurrencyListExchangeRatesParamsFromCurrencyCode = "LAK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLbp CurrencyListExchangeRatesParamsFromCurrencyCode = "LBP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLkr CurrencyListExchangeRatesParamsFromCurrencyCode = "LKR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLrd CurrencyListExchangeRatesParamsFromCurrencyCode = "LRD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLsl CurrencyListExchangeRatesParamsFromCurrencyCode = "LSL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeLyd CurrencyListExchangeRatesParamsFromCurrencyCode = "LYD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMad CurrencyListExchangeRatesParamsFromCurrencyCode = "MAD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMdl CurrencyListExchangeRatesParamsFromCurrencyCode = "MDL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMga CurrencyListExchangeRatesParamsFromCurrencyCode = "MGA"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMkd CurrencyListExchangeRatesParamsFromCurrencyCode = "MKD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMmk CurrencyListExchangeRatesParamsFromCurrencyCode = "MMK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMnt CurrencyListExchangeRatesParamsFromCurrencyCode = "MNT"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMop CurrencyListExchangeRatesParamsFromCurrencyCode = "MOP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMru CurrencyListExchangeRatesParamsFromCurrencyCode = "MRU"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMur CurrencyListExchangeRatesParamsFromCurrencyCode = "MUR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMvr CurrencyListExchangeRatesParamsFromCurrencyCode = "MVR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMwk CurrencyListExchangeRatesParamsFromCurrencyCode = "MWK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMxn CurrencyListExchangeRatesParamsFromCurrencyCode = "MXN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMxv CurrencyListExchangeRatesParamsFromCurrencyCode = "MXV"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMyr CurrencyListExchangeRatesParamsFromCurrencyCode = "MYR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeMzn CurrencyListExchangeRatesParamsFromCurrencyCode = "MZN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNad CurrencyListExchangeRatesParamsFromCurrencyCode = "NAD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNgn CurrencyListExchangeRatesParamsFromCurrencyCode = "NGN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNio CurrencyListExchangeRatesParamsFromCurrencyCode = "NIO"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNok CurrencyListExchangeRatesParamsFromCurrencyCode = "NOK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNpr CurrencyListExchangeRatesParamsFromCurrencyCode = "NPR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeNzd CurrencyListExchangeRatesParamsFromCurrencyCode = "NZD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeOmr CurrencyListExchangeRatesParamsFromCurrencyCode = "OMR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePab CurrencyListExchangeRatesParamsFromCurrencyCode = "PAB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePen CurrencyListExchangeRatesParamsFromCurrencyCode = "PEN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePgk CurrencyListExchangeRatesParamsFromCurrencyCode = "PGK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePhp CurrencyListExchangeRatesParamsFromCurrencyCode = "PHP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePkr CurrencyListExchangeRatesParamsFromCurrencyCode = "PKR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePln CurrencyListExchangeRatesParamsFromCurrencyCode = "PLN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodePyg CurrencyListExchangeRatesParamsFromCurrencyCode = "PYG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeQar CurrencyListExchangeRatesParamsFromCurrencyCode = "QAR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeRon CurrencyListExchangeRatesParamsFromCurrencyCode = "RON"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeRsd CurrencyListExchangeRatesParamsFromCurrencyCode = "RSD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeRub CurrencyListExchangeRatesParamsFromCurrencyCode = "RUB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeRwf CurrencyListExchangeRatesParamsFromCurrencyCode = "RWF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSar CurrencyListExchangeRatesParamsFromCurrencyCode = "SAR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSbd CurrencyListExchangeRatesParamsFromCurrencyCode = "SBD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeScr CurrencyListExchangeRatesParamsFromCurrencyCode = "SCR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSdg CurrencyListExchangeRatesParamsFromCurrencyCode = "SDG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSek CurrencyListExchangeRatesParamsFromCurrencyCode = "SEK"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSgd CurrencyListExchangeRatesParamsFromCurrencyCode = "SGD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeShp CurrencyListExchangeRatesParamsFromCurrencyCode = "SHP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSll CurrencyListExchangeRatesParamsFromCurrencyCode = "SLL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSos CurrencyListExchangeRatesParamsFromCurrencyCode = "SOS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSrd CurrencyListExchangeRatesParamsFromCurrencyCode = "SRD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSsp CurrencyListExchangeRatesParamsFromCurrencyCode = "SSP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeStn CurrencyListExchangeRatesParamsFromCurrencyCode = "STN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSvc CurrencyListExchangeRatesParamsFromCurrencyCode = "SVC"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSyp CurrencyListExchangeRatesParamsFromCurrencyCode = "SYP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeSzl CurrencyListExchangeRatesParamsFromCurrencyCode = "SZL"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeThb CurrencyListExchangeRatesParamsFromCurrencyCode = "THB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTjs CurrencyListExchangeRatesParamsFromCurrencyCode = "TJS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTmt CurrencyListExchangeRatesParamsFromCurrencyCode = "TMT"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTnd CurrencyListExchangeRatesParamsFromCurrencyCode = "TND"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTop CurrencyListExchangeRatesParamsFromCurrencyCode = "TOP"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTry CurrencyListExchangeRatesParamsFromCurrencyCode = "TRY"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTtd CurrencyListExchangeRatesParamsFromCurrencyCode = "TTD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTwd CurrencyListExchangeRatesParamsFromCurrencyCode = "TWD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeTzs CurrencyListExchangeRatesParamsFromCurrencyCode = "TZS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUah CurrencyListExchangeRatesParamsFromCurrencyCode = "UAH"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUgx CurrencyListExchangeRatesParamsFromCurrencyCode = "UGX"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUsd CurrencyListExchangeRatesParamsFromCurrencyCode = "USD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUsn CurrencyListExchangeRatesParamsFromCurrencyCode = "USN"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUyi CurrencyListExchangeRatesParamsFromCurrencyCode = "UYI"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUyu CurrencyListExchangeRatesParamsFromCurrencyCode = "UYU"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeUzs CurrencyListExchangeRatesParamsFromCurrencyCode = "UZS"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeVef CurrencyListExchangeRatesParamsFromCurrencyCode = "VEF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeVnd CurrencyListExchangeRatesParamsFromCurrencyCode = "VND"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeVuv CurrencyListExchangeRatesParamsFromCurrencyCode = "VUV"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeWst CurrencyListExchangeRatesParamsFromCurrencyCode = "WST"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXaf CurrencyListExchangeRatesParamsFromCurrencyCode = "XAF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXag CurrencyListExchangeRatesParamsFromCurrencyCode = "XAG"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXau CurrencyListExchangeRatesParamsFromCurrencyCode = "XAU"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXba CurrencyListExchangeRatesParamsFromCurrencyCode = "XBA"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXbb CurrencyListExchangeRatesParamsFromCurrencyCode = "XBB"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXbc CurrencyListExchangeRatesParamsFromCurrencyCode = "XBC"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXbd CurrencyListExchangeRatesParamsFromCurrencyCode = "XBD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXcd CurrencyListExchangeRatesParamsFromCurrencyCode = "XCD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXdr CurrencyListExchangeRatesParamsFromCurrencyCode = "XDR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXof CurrencyListExchangeRatesParamsFromCurrencyCode = "XOF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXpd CurrencyListExchangeRatesParamsFromCurrencyCode = "XPD"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXpf CurrencyListExchangeRatesParamsFromCurrencyCode = "XPF"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXpt CurrencyListExchangeRatesParamsFromCurrencyCode = "XPT"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXsu CurrencyListExchangeRatesParamsFromCurrencyCode = "XSU"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeXua CurrencyListExchangeRatesParamsFromCurrencyCode = "XUA"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeYer CurrencyListExchangeRatesParamsFromCurrencyCode = "YER"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeZar CurrencyListExchangeRatesParamsFromCurrencyCode = "ZAR"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeZmw CurrencyListExchangeRatesParamsFromCurrencyCode = "ZMW"
+	CurrencyListExchangeRatesParamsFromCurrencyCodeZwl CurrencyListExchangeRatesParamsFromCurrencyCode = "ZWL"
+)
+
+// Filters the response to only include exchange rates set to the specified
+// currency.
+type CurrencyListExchangeRatesParamsToCurrencyCode string
+
+const (
+	CurrencyListExchangeRatesParamsToCurrencyCodeAed CurrencyListExchangeRatesParamsToCurrencyCode = "AED"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAfn CurrencyListExchangeRatesParamsToCurrencyCode = "AFN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAll CurrencyListExchangeRatesParamsToCurrencyCode = "ALL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAmd CurrencyListExchangeRatesParamsToCurrencyCode = "AMD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAng CurrencyListExchangeRatesParamsToCurrencyCode = "ANG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAoa CurrencyListExchangeRatesParamsToCurrencyCode = "AOA"
+	CurrencyListExchangeRatesParamsToCurrencyCodeArs CurrencyListExchangeRatesParamsToCurrencyCode = "ARS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAud CurrencyListExchangeRatesParamsToCurrencyCode = "AUD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAwg CurrencyListExchangeRatesParamsToCurrencyCode = "AWG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeAzn CurrencyListExchangeRatesParamsToCurrencyCode = "AZN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBam CurrencyListExchangeRatesParamsToCurrencyCode = "BAM"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBbd CurrencyListExchangeRatesParamsToCurrencyCode = "BBD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBdt CurrencyListExchangeRatesParamsToCurrencyCode = "BDT"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBgn CurrencyListExchangeRatesParamsToCurrencyCode = "BGN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBhd CurrencyListExchangeRatesParamsToCurrencyCode = "BHD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBif CurrencyListExchangeRatesParamsToCurrencyCode = "BIF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBmd CurrencyListExchangeRatesParamsToCurrencyCode = "BMD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBnd CurrencyListExchangeRatesParamsToCurrencyCode = "BND"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBob CurrencyListExchangeRatesParamsToCurrencyCode = "BOB"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBov CurrencyListExchangeRatesParamsToCurrencyCode = "BOV"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBrl CurrencyListExchangeRatesParamsToCurrencyCode = "BRL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBsd CurrencyListExchangeRatesParamsToCurrencyCode = "BSD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBtn CurrencyListExchangeRatesParamsToCurrencyCode = "BTN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBwp CurrencyListExchangeRatesParamsToCurrencyCode = "BWP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeByn CurrencyListExchangeRatesParamsToCurrencyCode = "BYN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeBzd CurrencyListExchangeRatesParamsToCurrencyCode = "BZD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCad CurrencyListExchangeRatesParamsToCurrencyCode = "CAD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCdf CurrencyListExchangeRatesParamsToCurrencyCode = "CDF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeChe CurrencyListExchangeRatesParamsToCurrencyCode = "CHE"
+	CurrencyListExchangeRatesParamsToCurrencyCodeChf CurrencyListExchangeRatesParamsToCurrencyCode = "CHF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeChw CurrencyListExchangeRatesParamsToCurrencyCode = "CHW"
+	CurrencyListExchangeRatesParamsToCurrencyCodeClf CurrencyListExchangeRatesParamsToCurrencyCode = "CLF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeClp CurrencyListExchangeRatesParamsToCurrencyCode = "CLP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCny CurrencyListExchangeRatesParamsToCurrencyCode = "CNY"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCop CurrencyListExchangeRatesParamsToCurrencyCode = "COP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCou CurrencyListExchangeRatesParamsToCurrencyCode = "COU"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCrc CurrencyListExchangeRatesParamsToCurrencyCode = "CRC"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCuc CurrencyListExchangeRatesParamsToCurrencyCode = "CUC"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCup CurrencyListExchangeRatesParamsToCurrencyCode = "CUP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCve CurrencyListExchangeRatesParamsToCurrencyCode = "CVE"
+	CurrencyListExchangeRatesParamsToCurrencyCodeCzk CurrencyListExchangeRatesParamsToCurrencyCode = "CZK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeDjf CurrencyListExchangeRatesParamsToCurrencyCode = "DJF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeDkk CurrencyListExchangeRatesParamsToCurrencyCode = "DKK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeDop CurrencyListExchangeRatesParamsToCurrencyCode = "DOP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeDzd CurrencyListExchangeRatesParamsToCurrencyCode = "DZD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeEgp CurrencyListExchangeRatesParamsToCurrencyCode = "EGP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeErn CurrencyListExchangeRatesParamsToCurrencyCode = "ERN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeEtb CurrencyListExchangeRatesParamsToCurrencyCode = "ETB"
+	CurrencyListExchangeRatesParamsToCurrencyCodeEur CurrencyListExchangeRatesParamsToCurrencyCode = "EUR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeFjd CurrencyListExchangeRatesParamsToCurrencyCode = "FJD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeFkp CurrencyListExchangeRatesParamsToCurrencyCode = "FKP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGbp CurrencyListExchangeRatesParamsToCurrencyCode = "GBP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGel CurrencyListExchangeRatesParamsToCurrencyCode = "GEL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGhs CurrencyListExchangeRatesParamsToCurrencyCode = "GHS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGip CurrencyListExchangeRatesParamsToCurrencyCode = "GIP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGmd CurrencyListExchangeRatesParamsToCurrencyCode = "GMD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGnf CurrencyListExchangeRatesParamsToCurrencyCode = "GNF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGtq CurrencyListExchangeRatesParamsToCurrencyCode = "GTQ"
+	CurrencyListExchangeRatesParamsToCurrencyCodeGyd CurrencyListExchangeRatesParamsToCurrencyCode = "GYD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeHkd CurrencyListExchangeRatesParamsToCurrencyCode = "HKD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeHnl CurrencyListExchangeRatesParamsToCurrencyCode = "HNL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeHrk CurrencyListExchangeRatesParamsToCurrencyCode = "HRK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeHtg CurrencyListExchangeRatesParamsToCurrencyCode = "HTG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeHuf CurrencyListExchangeRatesParamsToCurrencyCode = "HUF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeIdr CurrencyListExchangeRatesParamsToCurrencyCode = "IDR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeIls CurrencyListExchangeRatesParamsToCurrencyCode = "ILS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeInr CurrencyListExchangeRatesParamsToCurrencyCode = "INR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeIqd CurrencyListExchangeRatesParamsToCurrencyCode = "IQD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeIrr CurrencyListExchangeRatesParamsToCurrencyCode = "IRR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeIsk CurrencyListExchangeRatesParamsToCurrencyCode = "ISK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeJmd CurrencyListExchangeRatesParamsToCurrencyCode = "JMD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeJod CurrencyListExchangeRatesParamsToCurrencyCode = "JOD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeJpy CurrencyListExchangeRatesParamsToCurrencyCode = "JPY"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKes CurrencyListExchangeRatesParamsToCurrencyCode = "KES"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKgs CurrencyListExchangeRatesParamsToCurrencyCode = "KGS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKhr CurrencyListExchangeRatesParamsToCurrencyCode = "KHR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKmf CurrencyListExchangeRatesParamsToCurrencyCode = "KMF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKpw CurrencyListExchangeRatesParamsToCurrencyCode = "KPW"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKrw CurrencyListExchangeRatesParamsToCurrencyCode = "KRW"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKwd CurrencyListExchangeRatesParamsToCurrencyCode = "KWD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKyd CurrencyListExchangeRatesParamsToCurrencyCode = "KYD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeKzt CurrencyListExchangeRatesParamsToCurrencyCode = "KZT"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLak CurrencyListExchangeRatesParamsToCurrencyCode = "LAK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLbp CurrencyListExchangeRatesParamsToCurrencyCode = "LBP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLkr CurrencyListExchangeRatesParamsToCurrencyCode = "LKR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLrd CurrencyListExchangeRatesParamsToCurrencyCode = "LRD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLsl CurrencyListExchangeRatesParamsToCurrencyCode = "LSL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeLyd CurrencyListExchangeRatesParamsToCurrencyCode = "LYD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMad CurrencyListExchangeRatesParamsToCurrencyCode = "MAD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMdl CurrencyListExchangeRatesParamsToCurrencyCode = "MDL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMga CurrencyListExchangeRatesParamsToCurrencyCode = "MGA"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMkd CurrencyListExchangeRatesParamsToCurrencyCode = "MKD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMmk CurrencyListExchangeRatesParamsToCurrencyCode = "MMK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMnt CurrencyListExchangeRatesParamsToCurrencyCode = "MNT"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMop CurrencyListExchangeRatesParamsToCurrencyCode = "MOP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMru CurrencyListExchangeRatesParamsToCurrencyCode = "MRU"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMur CurrencyListExchangeRatesParamsToCurrencyCode = "MUR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMvr CurrencyListExchangeRatesParamsToCurrencyCode = "MVR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMwk CurrencyListExchangeRatesParamsToCurrencyCode = "MWK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMxn CurrencyListExchangeRatesParamsToCurrencyCode = "MXN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMxv CurrencyListExchangeRatesParamsToCurrencyCode = "MXV"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMyr CurrencyListExchangeRatesParamsToCurrencyCode = "MYR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeMzn CurrencyListExchangeRatesParamsToCurrencyCode = "MZN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNad CurrencyListExchangeRatesParamsToCurrencyCode = "NAD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNgn CurrencyListExchangeRatesParamsToCurrencyCode = "NGN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNio CurrencyListExchangeRatesParamsToCurrencyCode = "NIO"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNok CurrencyListExchangeRatesParamsToCurrencyCode = "NOK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNpr CurrencyListExchangeRatesParamsToCurrencyCode = "NPR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeNzd CurrencyListExchangeRatesParamsToCurrencyCode = "NZD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeOmr CurrencyListExchangeRatesParamsToCurrencyCode = "OMR"
+	CurrencyListExchangeRatesParamsToCurrencyCodePab CurrencyListExchangeRatesParamsToCurrencyCode = "PAB"
+	CurrencyListExchangeRatesParamsToCurrencyCodePen CurrencyListExchangeRatesParamsToCurrencyCode = "PEN"
+	CurrencyListExchangeRatesParamsToCurrencyCodePgk CurrencyListExchangeRatesParamsToCurrencyCode = "PGK"
+	CurrencyListExchangeRatesParamsToCurrencyCodePhp CurrencyListExchangeRatesParamsToCurrencyCode = "PHP"
+	CurrencyListExchangeRatesParamsToCurrencyCodePkr CurrencyListExchangeRatesParamsToCurrencyCode = "PKR"
+	CurrencyListExchangeRatesParamsToCurrencyCodePln CurrencyListExchangeRatesParamsToCurrencyCode = "PLN"
+	CurrencyListExchangeRatesParamsToCurrencyCodePyg CurrencyListExchangeRatesParamsToCurrencyCode = "PYG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeQar CurrencyListExchangeRatesParamsToCurrencyCode = "QAR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeRon CurrencyListExchangeRatesParamsToCurrencyCode = "RON"
+	CurrencyListExchangeRatesParamsToCurrencyCodeRsd CurrencyListExchangeRatesParamsToCurrencyCode = "RSD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeRub CurrencyListExchangeRatesParamsToCurrencyCode = "RUB"
+	CurrencyListExchangeRatesParamsToCurrencyCodeRwf CurrencyListExchangeRatesParamsToCurrencyCode = "RWF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSar CurrencyListExchangeRatesParamsToCurrencyCode = "SAR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSbd CurrencyListExchangeRatesParamsToCurrencyCode = "SBD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeScr CurrencyListExchangeRatesParamsToCurrencyCode = "SCR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSdg CurrencyListExchangeRatesParamsToCurrencyCode = "SDG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSek CurrencyListExchangeRatesParamsToCurrencyCode = "SEK"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSgd CurrencyListExchangeRatesParamsToCurrencyCode = "SGD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeShp CurrencyListExchangeRatesParamsToCurrencyCode = "SHP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSll CurrencyListExchangeRatesParamsToCurrencyCode = "SLL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSos CurrencyListExchangeRatesParamsToCurrencyCode = "SOS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSrd CurrencyListExchangeRatesParamsToCurrencyCode = "SRD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSsp CurrencyListExchangeRatesParamsToCurrencyCode = "SSP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeStn CurrencyListExchangeRatesParamsToCurrencyCode = "STN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSvc CurrencyListExchangeRatesParamsToCurrencyCode = "SVC"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSyp CurrencyListExchangeRatesParamsToCurrencyCode = "SYP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeSzl CurrencyListExchangeRatesParamsToCurrencyCode = "SZL"
+	CurrencyListExchangeRatesParamsToCurrencyCodeThb CurrencyListExchangeRatesParamsToCurrencyCode = "THB"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTjs CurrencyListExchangeRatesParamsToCurrencyCode = "TJS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTmt CurrencyListExchangeRatesParamsToCurrencyCode = "TMT"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTnd CurrencyListExchangeRatesParamsToCurrencyCode = "TND"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTop CurrencyListExchangeRatesParamsToCurrencyCode = "TOP"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTry CurrencyListExchangeRatesParamsToCurrencyCode = "TRY"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTtd CurrencyListExchangeRatesParamsToCurrencyCode = "TTD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTwd CurrencyListExchangeRatesParamsToCurrencyCode = "TWD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeTzs CurrencyListExchangeRatesParamsToCurrencyCode = "TZS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUah CurrencyListExchangeRatesParamsToCurrencyCode = "UAH"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUgx CurrencyListExchangeRatesParamsToCurrencyCode = "UGX"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUsd CurrencyListExchangeRatesParamsToCurrencyCode = "USD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUsn CurrencyListExchangeRatesParamsToCurrencyCode = "USN"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUyi CurrencyListExchangeRatesParamsToCurrencyCode = "UYI"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUyu CurrencyListExchangeRatesParamsToCurrencyCode = "UYU"
+	CurrencyListExchangeRatesParamsToCurrencyCodeUzs CurrencyListExchangeRatesParamsToCurrencyCode = "UZS"
+	CurrencyListExchangeRatesParamsToCurrencyCodeVef CurrencyListExchangeRatesParamsToCurrencyCode = "VEF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeVnd CurrencyListExchangeRatesParamsToCurrencyCode = "VND"
+	CurrencyListExchangeRatesParamsToCurrencyCodeVuv CurrencyListExchangeRatesParamsToCurrencyCode = "VUV"
+	CurrencyListExchangeRatesParamsToCurrencyCodeWst CurrencyListExchangeRatesParamsToCurrencyCode = "WST"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXaf CurrencyListExchangeRatesParamsToCurrencyCode = "XAF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXag CurrencyListExchangeRatesParamsToCurrencyCode = "XAG"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXau CurrencyListExchangeRatesParamsToCurrencyCode = "XAU"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXba CurrencyListExchangeRatesParamsToCurrencyCode = "XBA"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXbb CurrencyListExchangeRatesParamsToCurrencyCode = "XBB"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXbc CurrencyListExchangeRatesParamsToCurrencyCode = "XBC"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXbd CurrencyListExchangeRatesParamsToCurrencyCode = "XBD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXcd CurrencyListExchangeRatesParamsToCurrencyCode = "XCD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXdr CurrencyListExchangeRatesParamsToCurrencyCode = "XDR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXof CurrencyListExchangeRatesParamsToCurrencyCode = "XOF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXpd CurrencyListExchangeRatesParamsToCurrencyCode = "XPD"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXpf CurrencyListExchangeRatesParamsToCurrencyCode = "XPF"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXpt CurrencyListExchangeRatesParamsToCurrencyCode = "XPT"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXsu CurrencyListExchangeRatesParamsToCurrencyCode = "XSU"
+	CurrencyListExchangeRatesParamsToCurrencyCodeXua CurrencyListExchangeRatesParamsToCurrencyCode = "XUA"
+	CurrencyListExchangeRatesParamsToCurrencyCodeYer CurrencyListExchangeRatesParamsToCurrencyCode = "YER"
+	CurrencyListExchangeRatesParamsToCurrencyCodeZar CurrencyListExchangeRatesParamsToCurrencyCode = "ZAR"
+	CurrencyListExchangeRatesParamsToCurrencyCodeZmw CurrencyListExchangeRatesParamsToCurrencyCode = "ZMW"
+	CurrencyListExchangeRatesParamsToCurrencyCodeZwl CurrencyListExchangeRatesParamsToCurrencyCode = "ZWL"
+)
 
 type CurrencyUpdateCompanyCurrencyParams struct {
 	CompanyCurrencyUpdateRequest CompanyCurrencyUpdateRequestParam

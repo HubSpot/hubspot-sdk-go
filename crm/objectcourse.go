@@ -20,7 +20,7 @@ import (
 )
 
 // ObjectCourseService contains methods and other services that help with
-// interacting with the Hubspot API.
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -120,6 +120,7 @@ func (r *ObjectCourseService) Get(ctx context.Context, courseID string, query Ob
 	return
 }
 
+// Fetch objects using a search query
 func (r *ObjectCourseService) Search(ctx context.Context, body ObjectCourseSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/objects/0-410/search"

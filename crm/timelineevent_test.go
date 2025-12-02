@@ -28,7 +28,7 @@ func TestTimelineEventNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Events.New(context.TODO(), crm.TimelineEventNewParams{
+	_, err := client.Crm.Timeline.Events.New(context.TODO(), crm.TimelineEventNewParams{
 		TimelineEvent: crm.TimelineEventParam{
 			EventTemplateID: "1001298",
 			Tokens: map[string]string{
@@ -85,7 +85,7 @@ func TestTimelineEventBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.CRM.Timeline.Events.BatchNew(context.TODO(), crm.TimelineEventBatchNewParams{
+	err := client.Crm.Timeline.Events.BatchNew(context.TODO(), crm.TimelineEventBatchNewParams{
 		BatchInputTimelineEvent: crm.BatchInputTimelineEventParam{
 			Inputs: []crm.TimelineEventParam{{
 				EventTemplateID: "1001298",
@@ -176,7 +176,7 @@ func TestTimelineEventGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Events.Get(
+	_, err := client.Crm.Timeline.Events.Get(
 		context.TODO(),
 		"eventId",
 		crm.TimelineEventGetParams{
@@ -205,7 +205,7 @@ func TestTimelineEventGetDetail(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.Timeline.Events.GetDetail(
+	_, err := client.Crm.Timeline.Events.GetDetail(
 		context.TODO(),
 		"eventId",
 		crm.TimelineEventGetDetailParams{

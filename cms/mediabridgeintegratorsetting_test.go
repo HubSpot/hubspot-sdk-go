@@ -29,9 +29,11 @@ func TestMediaBridgeIntegratorSettingNewObjectDefinition(t *testing.T) {
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.NewObjectDefinition(
 		context.TODO(),
-		"appId",
+		0,
 		cms.MediaBridgeIntegratorSettingNewObjectDefinitionParams{
-			MediaTypes: []string{"VIDEO"},
+			IntegratorObjectCreationRequest: cms.IntegratorObjectCreationRequestParam{
+				MediaTypes: []string{"VIDEO"},
+			},
 		},
 	)
 	if err != nil {
@@ -58,14 +60,16 @@ func TestMediaBridgeIntegratorSettingNewOembedDomainWithOptionalParams(t *testin
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.NewOembedDomain(
 		context.TODO(),
-		"appId",
+		0,
 		cms.MediaBridgeIntegratorSettingNewOembedDomainParams{
-			Endpoints: cms.MediaBridgeIntegratorSettingNewOembedDomainParamsEndpoints{
-				Discovery: true,
-				Schemes:   []string{"string"},
-				URL:       "url",
+			IntegratorOEmbedDomainRequest: cms.IntegratorOEmbedDomainRequestParam{
+				Endpoints: cms.EndpointsParam{
+					Discovery: true,
+					Schemes:   []string{"string"},
+					URL:       "url",
+				},
+				PortalID: hubspotsdk.Int(0),
 			},
-			PortalID: hubspotsdk.Int(0),
 		},
 	)
 	if err != nil {
@@ -77,7 +81,7 @@ func TestMediaBridgeIntegratorSettingNewOembedDomainWithOptionalParams(t *testin
 	}
 }
 
-func TestMediaBridgeIntegratorSettingDeleteOembedDomain(t *testing.T) {
+func TestMediaBridgeIntegratorSettingDeleteOembedDomainWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -90,7 +94,14 @@ func TestMediaBridgeIntegratorSettingDeleteOembedDomain(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	err := client.Cms.MediaBridge.IntegratorSettings.DeleteOembedDomain(context.TODO(), "appId")
+	err := client.Cms.MediaBridge.IntegratorSettings.DeleteOembedDomain(
+		context.TODO(),
+		0,
+		cms.MediaBridgeIntegratorSettingDeleteOembedDomainParams{
+			ID:             hubspotsdk.Int(0),
+			DomainPortalID: hubspotsdk.Int(0),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -113,7 +124,7 @@ func TestMediaBridgeIntegratorSettingGetEventVisibilitySettings(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Cms.MediaBridge.IntegratorSettings.GetEventVisibilitySettings(context.TODO(), "appId")
+	_, err := client.Cms.MediaBridge.IntegratorSettings.GetEventVisibilitySettings(context.TODO(), 0)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -123,7 +134,7 @@ func TestMediaBridgeIntegratorSettingGetEventVisibilitySettings(t *testing.T) {
 	}
 }
 
-func TestMediaBridgeIntegratorSettingGetObjectDefinitionsByMediaType(t *testing.T) {
+func TestMediaBridgeIntegratorSettingGetObjectDefinitionsByMediaTypeWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -138,9 +149,10 @@ func TestMediaBridgeIntegratorSettingGetObjectDefinitionsByMediaType(t *testing.
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.GetObjectDefinitionsByMediaType(
 		context.TODO(),
-		"mediaType",
+		cms.MediaBridgeIntegratorSettingGetObjectDefinitionsByMediaTypeParamsMediaTypeAudio,
 		cms.MediaBridgeIntegratorSettingGetObjectDefinitionsByMediaTypeParams{
-			AppID: "appId",
+			AppID:                 0,
+			IncludeFullDefinition: hubspotsdk.Bool(true),
 		},
 	)
 	if err != nil {
@@ -169,7 +181,7 @@ func TestMediaBridgeIntegratorSettingGetOembedDomain(t *testing.T) {
 		context.TODO(),
 		"oEmbedDomainId",
 		cms.MediaBridgeIntegratorSettingGetOembedDomainParams{
-			AppID: "appId",
+			AppID: 0,
 		},
 	)
 	if err != nil {
@@ -181,7 +193,7 @@ func TestMediaBridgeIntegratorSettingGetOembedDomain(t *testing.T) {
 	}
 }
 
-func TestMediaBridgeIntegratorSettingListOembedDomains(t *testing.T) {
+func TestMediaBridgeIntegratorSettingListOembedDomainsWithOptionalParams(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -194,7 +206,13 @@ func TestMediaBridgeIntegratorSettingListOembedDomains(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Cms.MediaBridge.IntegratorSettings.ListOembedDomains(context.TODO(), "appId")
+	_, err := client.Cms.MediaBridge.IntegratorSettings.ListOembedDomains(
+		context.TODO(),
+		0,
+		cms.MediaBridgeIntegratorSettingListOembedDomainsParams{
+			DomainPortalID: hubspotsdk.Int(0),
+		},
+	)
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -219,10 +237,12 @@ func TestMediaBridgeIntegratorSettingRegisterAppNameWithOptionalParams(t *testin
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.RegisterAppName(
 		context.TODO(),
-		"appId",
+		0,
 		cms.MediaBridgeIntegratorSettingRegisterAppNameParams{
-			UpdatedAt: 0,
-			Name:      hubspotsdk.String("name"),
+			MediaBridgeProviderPartial: cms.MediaBridgeProviderPartialParam{
+				UpdatedAt: 0,
+				Name:      hubspotsdk.String("name"),
+			},
 		},
 	)
 	if err != nil {
@@ -249,10 +269,12 @@ func TestMediaBridgeIntegratorSettingUpdateAppNameWithOptionalParams(t *testing.
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.UpdateAppName(
 		context.TODO(),
-		"appId",
+		0,
 		cms.MediaBridgeIntegratorSettingUpdateAppNameParams{
-			UpdatedAt: 0,
-			Name:      hubspotsdk.String("name"),
+			MediaBridgeProviderPartial: cms.MediaBridgeProviderPartialParam{
+				UpdatedAt: 0,
+				Name:      hubspotsdk.String("name"),
+			},
 		},
 	)
 	if err != nil {
@@ -279,13 +301,15 @@ func TestMediaBridgeIntegratorSettingUpdateEventVisibilitySettingsWithOptionalPa
 	)
 	_, err := client.Cms.MediaBridge.IntegratorSettings.UpdateEventVisibilitySettings(
 		context.TODO(),
-		"appId",
+		0,
 		cms.MediaBridgeIntegratorSettingUpdateEventVisibilitySettingsParams{
-			EventType:       cms.MediaBridgeIntegratorSettingUpdateEventVisibilitySettingsParamsEventTypeAll,
-			UpdatedAt:       0,
-			ShowInReporting: hubspotsdk.Bool(true),
-			ShowInTimeline:  hubspotsdk.Bool(true),
-			ShowInWorkflows: hubspotsdk.Bool(true),
+			EventVisibilityChange: cms.EventVisibilityChangeParam{
+				EventType:       cms.EventVisibilityChangeEventTypeAll,
+				UpdatedAt:       0,
+				ShowInReporting: hubspotsdk.Bool(true),
+				ShowInTimeline:  hubspotsdk.Bool(true),
+				ShowInWorkflows: hubspotsdk.Bool(true),
+			},
 		},
 	)
 	if err != nil {
@@ -314,13 +338,15 @@ func TestMediaBridgeIntegratorSettingUpdateOembedDomainWithOptionalParams(t *tes
 		context.TODO(),
 		"oEmbedDomainId",
 		cms.MediaBridgeIntegratorSettingUpdateOembedDomainParams{
-			AppID: "appId",
-			Endpoints: cms.MediaBridgeIntegratorSettingUpdateOembedDomainParamsEndpoints{
-				Discovery: true,
-				Schemes:   []string{"string"},
-				URL:       "url",
+			AppID: 0,
+			IntegratorOEmbedDomainRequest: cms.IntegratorOEmbedDomainRequestParam{
+				Endpoints: cms.EndpointsParam{
+					Discovery: true,
+					Schemes:   []string{"string"},
+					URL:       "url",
+				},
+				PortalID: hubspotsdk.Int(0),
 			},
-			PortalID: hubspotsdk.Int(0),
 		},
 	)
 	if err != nil {

@@ -27,13 +27,15 @@ func TestFeatureFlagPortalUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Portals.Update(
+	_, err := client.Crm.FeatureFlags.Portals.Update(
 		context.TODO(),
 		0,
 		crm.FeatureFlagPortalUpdateParams{
-			AppID:     0,
-			FlagName:  "flagName",
-			FlagState: crm.FeatureFlagPortalUpdateParamsFlagStateOff,
+			AppID:    0,
+			FlagName: "flagName",
+			PortalFlagStatePutRequest: crm.PortalFlagStatePutRequestParam{
+				FlagState: crm.PortalFlagStatePutRequestFlagStateAbsent,
+			},
 		},
 	)
 	if err != nil {
@@ -58,7 +60,7 @@ func TestFeatureFlagPortalDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Portals.Delete(
+	_, err := client.Crm.FeatureFlags.Portals.Delete(
 		context.TODO(),
 		0,
 		crm.FeatureFlagPortalDeleteParams{
@@ -88,12 +90,14 @@ func TestFeatureFlagPortalBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Portals.BatchDelete(
+	_, err := client.Crm.FeatureFlags.Portals.BatchDelete(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagPortalBatchDeleteParams{
-			AppID:     0,
-			PortalIDs: []int64{0},
+			AppID: 0,
+			PortalFlagStateBatchDeleteRequest: crm.PortalFlagStateBatchDeleteRequestParam{
+				PortalIDs: []int64{0},
+			},
 		},
 	)
 	if err != nil {
@@ -118,15 +122,17 @@ func TestFeatureFlagPortalBatchUpsert(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Portals.BatchUpsert(
+	_, err := client.Crm.FeatureFlags.Portals.BatchUpsert(
 		context.TODO(),
 		"flagName",
 		crm.FeatureFlagPortalBatchUpsertParams{
 			AppID: 0,
-			PortalStates: []crm.FeatureFlagPortalBatchUpsertParamsPortalState{{
-				FlagState: "OFF",
-				PortalID:  0,
-			}},
+			PortalFlagStateBatchPutRequest: crm.PortalFlagStateBatchPutRequestParam{
+				PortalStates: []crm.BatchPortalEntryParam{{
+					FlagState: crm.BatchPortalEntryFlagStateAbsent,
+					PortalID:  0,
+				}},
+			},
 		},
 	)
 	if err != nil {
@@ -151,7 +157,7 @@ func TestFeatureFlagPortalGet(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.CRM.FeatureFlags.Portals.Get(
+	_, err := client.Crm.FeatureFlags.Portals.Get(
 		context.TODO(),
 		0,
 		crm.FeatureFlagPortalGetParams{

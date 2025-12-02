@@ -29,23 +29,25 @@ func TestEventDefinitionNewWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Events.EventDefinitions.New(context.TODO(), events.EventDefinitionNewParams{
-		Label: "label",
-		PropertyDefinitions: []events.EventDefinitionNewParamsPropertyDefinition{{
-			Label:       "label",
-			Type:        "type",
-			Description: hubspotsdk.String("description"),
-			Name:        hubspotsdk.String("name"),
-			Options: []shared.OptionInputParam{{
-				DisplayOrder: 0,
-				Hidden:       true,
-				Label:        "label",
-				Value:        "value",
-				Description:  hubspotsdk.String("description"),
+		ExternalBehavioralEventTypeDefinitionEgg: events.ExternalBehavioralEventTypeDefinitionEggParam{
+			Label: "label",
+			PropertyDefinitions: []events.ExternalBehavioralEventPropertyCreateParam{{
+				Label:       "label",
+				Type:        "type",
+				Description: hubspotsdk.String("description"),
+				Name:        hubspotsdk.String("name"),
+				Options: []shared.OptionInputParam{{
+					DisplayOrder: 0,
+					Hidden:       true,
+					Label:        "label",
+					Value:        "value",
+					Description:  hubspotsdk.String("description"),
+				}},
 			}},
-		}},
-		Description:   hubspotsdk.String("description"),
-		Name:          hubspotsdk.String("name"),
-		PrimaryObject: hubspotsdk.String("primaryObject"),
+			Description:   hubspotsdk.String("description"),
+			Name:          hubspotsdk.String("name"),
+			PrimaryObject: hubspotsdk.String("primaryObject"),
+		},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -73,8 +75,10 @@ func TestEventDefinitionUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"eventName",
 		events.EventDefinitionUpdateParams{
-			Description: hubspotsdk.String("description"),
-			Label:       hubspotsdk.String("label"),
+			ExternalBehavioralEventTypeDefinitionPatch: events.ExternalBehavioralEventTypeDefinitionPatchParam{
+				Description: hubspotsdk.String("description"),
+				Label:       hubspotsdk.String("label"),
+			},
 		},
 	)
 	if err != nil {
@@ -155,17 +159,19 @@ func TestEventDefinitionNewPropertyWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"eventName",
 		events.EventDefinitionNewPropertyParams{
-			Label:       "label",
-			Type:        "type",
-			Description: hubspotsdk.String("description"),
-			Name:        hubspotsdk.String("name"),
-			Options: []shared.OptionInputParam{{
-				DisplayOrder: 0,
-				Hidden:       true,
-				Label:        "label",
-				Value:        "value",
-				Description:  hubspotsdk.String("description"),
-			}},
+			ExternalBehavioralEventPropertyCreate: events.ExternalBehavioralEventPropertyCreateParam{
+				Label:       "label",
+				Type:        "type",
+				Description: hubspotsdk.String("description"),
+				Name:        hubspotsdk.String("name"),
+				Options: []shared.OptionInputParam{{
+					DisplayOrder: 0,
+					Hidden:       true,
+					Label:        "label",
+					Value:        "value",
+					Description:  hubspotsdk.String("description"),
+				}},
+			},
 		},
 	)
 	if err != nil {
@@ -246,16 +252,18 @@ func TestEventDefinitionUpdatePropertyWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"propertyName",
 		events.EventDefinitionUpdatePropertyParams{
-			EventName:   "eventName",
-			Description: hubspotsdk.String("description"),
-			Label:       hubspotsdk.String("label"),
-			Options: []shared.OptionInputParam{{
-				DisplayOrder: 0,
-				Hidden:       true,
-				Label:        "label",
-				Value:        "value",
-				Description:  hubspotsdk.String("description"),
-			}},
+			EventName: "eventName",
+			ExternalBehavioralEventPropertyDefinitionPatch: events.ExternalBehavioralEventPropertyDefinitionPatchParam{
+				Description: hubspotsdk.String("description"),
+				Label:       hubspotsdk.String("label"),
+				Options: []shared.OptionInputParam{{
+					DisplayOrder: 0,
+					Hidden:       true,
+					Label:        "label",
+					Value:        "value",
+					Description:  hubspotsdk.String("description"),
+				}},
+			},
 		},
 	)
 	if err != nil {

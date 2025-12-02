@@ -30,6 +30,7 @@ func TestMeetingCalendarNew(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Scheduler.Meetings.Calendar.New(context.TODO(), scheduler.MeetingCalendarNewParams{
+		OrganizerUserID: "organizerUserId",
 		ExternalCalendarMeetingEventCreateRequest: scheduler.ExternalCalendarMeetingEventCreateRequestParam{
 			Associations: []scheduler.ExternalAssociationCreateRequestParam{{
 				To: shared.PublicObjectIDParam{
@@ -53,6 +54,7 @@ func TestMeetingCalendarNew(t *testing.T) {
 				HsMeetingStartTime:     time.Now(),
 				HsMeetingTitle:         "hs_meeting_title",
 				HsTimestamp:            time.Now(),
+				HubspotOwnerID:         "hubspot_owner_id",
 				HsActivityType:         hubspotsdk.String("hs_activity_type"),
 				HsAttachmentIDs:        []string{"string"},
 				HsAttendeeOwnerIDs:     []string{"string"},
@@ -60,7 +62,6 @@ func TestMeetingCalendarNew(t *testing.T) {
 				HsMeetingBody:          hubspotsdk.String("hs_meeting_body"),
 				HsMeetingLocation:      hubspotsdk.String("hs_meeting_location"),
 				HsMeetingLocationType:  hubspotsdk.String("hs_meeting_location_type"),
-				HubspotOwnerID:         hubspotsdk.String("hubspot_owner_id"),
 			},
 			Timezone: "timezone",
 		},

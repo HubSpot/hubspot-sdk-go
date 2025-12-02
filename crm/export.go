@@ -20,7 +20,7 @@ import (
 )
 
 // ExportService contains methods and other services that help with interacting
-// with the Hubspot API.
+// with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -39,10 +39,19 @@ func NewExportService(opts ...option.RequestOption) (r ExportService) {
 }
 
 // Begins exporting CRM data for the portal as specified in the request body
-func (r *ExportService) New(ctx context.Context, body ExportNewParams, opts ...option.RequestOption) (res *shared.TaskLocator, err error) {
+func (r *ExportService) NewAsync(ctx context.Context, body ExportNewAsyncParams, opts ...option.RequestOption) (res *shared.TaskLocator, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm/v3/exports/export/async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// Retrieve detailed information about a specific CRM export, including its current
+// state and properties.
+func (r *ExportService) Get(ctx context.Context, exportID int64, opts ...option.RequestOption) (res *PublicExportResponse, err error) {
+	opts = slices.Concat(r.Options, opts)
+	path := fmt.Sprintf("crm/v3/exports/export/%v", exportID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
@@ -56,15 +65,24 @@ func (r *ExportService) GetStatus(ctx context.Context, taskID int64, opts ...opt
 }
 
 type ActionResponseWithSingleResultUri struct {
+	// The timestamp when the export was completed, in ISO 8601 format.
 	CompletedAt time.Time `json:"completedAt,required" format:"date-time"`
-	StartedAt   time.Time `json:"startedAt,required" format:"date-time"`
-	// Any of "PENDING", "PROCESSING", "CANCELED", "COMPLETE".
-	Status      ActionResponseWithSingleResultUriStatus `json:"status,required"`
-	Errors      []shared.StandardError                  `json:"errors"`
-	Links       map[string]string                       `json:"links"`
-	NumErrors   int64                                   `json:"numErrors"`
-	RequestedAt time.Time                               `json:"requestedAt" format:"date-time"`
-	Result      string                                  `json:"result"`
+	// The timestamp when the export process started, in ISO 8601 format.
+	StartedAt time.Time `json:"startedAt,required" format:"date-time"`
+	// The current status of the export, which can be PENDING, PROCESSING, COMPLETE or
+	// CANCELED.
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status ActionResponseWithSingleResultUriStatus `json:"status,required"`
+	Errors []shared.StandardError                  `json:"errors"`
+	// A collection of related links associated with the export.
+	Links map[string]string `json:"links"`
+	// The number of errors encountered during the export process.
+	NumErrors int64 `json:"numErrors"`
+	// The timestamp when the export request was made, in ISO 8601 format.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
+	// The URL of the resulting file if the export status is COMPLETE.
+	Result string `json:"result"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		CompletedAt respjson.Field
@@ -86,42 +104,52 @@ func (r *ActionResponseWithSingleResultUri) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the export, which can be PENDING, PROCESSING, COMPLETE or
+// CANCELED.
 type ActionResponseWithSingleResultUriStatus string
 
 const (
-	ActionResponseWithSingleResultUriStatusPending    ActionResponseWithSingleResultUriStatus = "PENDING"
-	ActionResponseWithSingleResultUriStatusProcessing ActionResponseWithSingleResultUriStatus = "PROCESSING"
 	ActionResponseWithSingleResultUriStatusCanceled   ActionResponseWithSingleResultUriStatus = "CANCELED"
 	ActionResponseWithSingleResultUriStatusComplete   ActionResponseWithSingleResultUriStatus = "COMPLETE"
+	ActionResponseWithSingleResultUriStatusPending    ActionResponseWithSingleResultUriStatus = "PENDING"
+	ActionResponseWithSingleResultUriStatusProcessing ActionResponseWithSingleResultUriStatus = "PROCESSING"
 )
 
-// The properties Filters, Query, Sorts are required.
-type PublicCRMSearchRequestParam struct {
-	Filters []FilterParam `json:"filters,omitzero,required"`
-	Query   string        `json:"query,required"`
-	Sorts   []string      `json:"sorts,omitzero,required"`
+// The properties FilterGroups, Filters, Sorts are required.
+type PublicCrmSearchRequestParam struct {
+	FilterGroups []FilterGroupParam `json:"filterGroups,omitzero,required"`
+	Filters      []FilterParam      `json:"filters,omitzero,required"`
+	// Defines the order in which the CRM records should be returned.
+	Sorts []string `json:"sorts,omitzero,required"`
+	// The search query string, to filter CRM records.
+	Query param.Opt[string] `json:"query,omitzero"`
 	paramObj
 }
 
-func (r PublicCRMSearchRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicCRMSearchRequestParam
+func (r PublicCrmSearchRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicCrmSearchRequestParam
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *PublicCRMSearchRequestParam) UnmarshalJSON(data []byte) error {
+func (r *PublicCrmSearchRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties ExportInternalValuesOptions, ExportName, ExportType, Format,
-// Language, ListID, ObjectProperties, ObjectType,
-// OverrideAssociatedObjectsPerDefinitionPerRowLimit are required.
+// The properties AssociatedObjectType, ExportInternalValuesOptions, ExportName,
+// ExportType, Format, IncludeLabeledAssociations,
+// IncludePrimaryDisplayPropertyForAssociatedObjects, Language, ListID,
+// ObjectProperties, ObjectType, OverrideAssociatedObjectsPerDefinitionPerRowLimit
+// are required.
 type PublicExportListRequestParam struct {
+	AssociatedObjectType []string `json:"associatedObjectType,omitzero,required"`
 	// Any of "NAMES", "VALUES".
 	ExportInternalValuesOptions []string `json:"exportInternalValuesOptions,omitzero,required"`
 	ExportName                  string   `json:"exportName,required"`
 	// Any of "LIST".
 	ExportType PublicExportListRequestExportType `json:"exportType,omitzero,required"`
 	// Any of "XLS", "XLSX", "CSV".
-	Format PublicExportListRequestFormat `json:"format,omitzero,required"`
+	Format                                            PublicExportListRequestFormat `json:"format,omitzero,required"`
+	IncludeLabeledAssociations                        bool                          `json:"includeLabeledAssociations,required"`
+	IncludePrimaryDisplayPropertyForAssociatedObjects bool                          `json:"includePrimaryDisplayPropertyForAssociatedObjects,required"`
 	// Any of "EN", "DE", "ES", "FR", "JA", "NL", "PT_BR", "IT", "PL", "SV", "FI",
 	// "ZH_TW", "DA_DK", "NO".
 	Language                                          PublicExportListRequestLanguage `json:"language,omitzero,required"`
@@ -129,7 +157,6 @@ type PublicExportListRequestParam struct {
 	ObjectProperties                                  []string                        `json:"objectProperties,omitzero,required"`
 	ObjectType                                        string                          `json:"objectType,required"`
 	OverrideAssociatedObjectsPerDefinitionPerRowLimit bool                            `json:"overrideAssociatedObjectsPerDefinitionPerRowLimit,required"`
-	AssociatedObjectType                              param.Opt[string]               `json:"associatedObjectType,omitzero"`
 	paramObj
 }
 
@@ -200,9 +227,9 @@ func (u *PublicExportRequestUnionParam) asAny() any {
 }
 
 // Returns a pointer to the underlying variant's property, if present.
-func (u PublicExportRequestUnionParam) GetPublicCRMSearchRequest() *PublicCRMSearchRequestParam {
+func (u PublicExportRequestUnionParam) GetPublicCrmSearchRequest() *PublicCrmSearchRequestParam {
 	if vt := u.OfPublicExportViewRequest; vt != nil {
-		return &vt.PublicCRMSearchRequest
+		return &vt.PublicCrmSearchRequest
 	}
 	return nil
 }
@@ -246,6 +273,26 @@ func (u PublicExportRequestUnionParam) GetFormat() *string {
 }
 
 // Returns a pointer to the underlying variant's property, if present.
+func (u PublicExportRequestUnionParam) GetIncludeLabeledAssociations() *bool {
+	if vt := u.OfPublicExportViewRequest; vt != nil {
+		return (*bool)(&vt.IncludeLabeledAssociations)
+	} else if vt := u.OfPublicExportListRequest; vt != nil {
+		return (*bool)(&vt.IncludeLabeledAssociations)
+	}
+	return nil
+}
+
+// Returns a pointer to the underlying variant's property, if present.
+func (u PublicExportRequestUnionParam) GetIncludePrimaryDisplayPropertyForAssociatedObjects() *bool {
+	if vt := u.OfPublicExportViewRequest; vt != nil {
+		return (*bool)(&vt.IncludePrimaryDisplayPropertyForAssociatedObjects)
+	} else if vt := u.OfPublicExportListRequest; vt != nil {
+		return (*bool)(&vt.IncludePrimaryDisplayPropertyForAssociatedObjects)
+	}
+	return nil
+}
+
+// Returns a pointer to the underlying variant's property, if present.
 func (u PublicExportRequestUnionParam) GetLanguage() *string {
 	if vt := u.OfPublicExportViewRequest; vt != nil {
 		return (*string)(&vt.Language)
@@ -275,12 +322,13 @@ func (u PublicExportRequestUnionParam) GetOverrideAssociatedObjectsPerDefinition
 	return nil
 }
 
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicExportRequestUnionParam) GetAssociatedObjectType() *string {
-	if vt := u.OfPublicExportViewRequest; vt != nil && vt.AssociatedObjectType.Valid() {
-		return &vt.AssociatedObjectType.Value
-	} else if vt := u.OfPublicExportListRequest; vt != nil && vt.AssociatedObjectType.Valid() {
-		return &vt.AssociatedObjectType.Value
+// Returns a pointer to the underlying variant's AssociatedObjectType property, if
+// present.
+func (u PublicExportRequestUnionParam) GetAssociatedObjectType() []string {
+	if vt := u.OfPublicExportViewRequest; vt != nil {
+		return vt.AssociatedObjectType
+	} else if vt := u.OfPublicExportListRequest; vt != nil {
+		return vt.AssociatedObjectType
 	}
 	return nil
 }
@@ -307,25 +355,97 @@ func (u PublicExportRequestUnionParam) GetObjectProperties() []string {
 	return nil
 }
 
-// The properties ExportInternalValuesOptions, ExportName, ExportType, Format,
-// Language, ObjectProperties, ObjectType,
-// OverrideAssociatedObjectsPerDefinitionPerRowLimit are required.
+type PublicExportResponse struct {
+	// The unique ID of the export.
+	ID string `json:"id,required"`
+	// The timestamp when the export was created, in ISO 8601 format.
+	CreatedAt time.Time `json:"createdAt,required" format:"date-time"`
+	// The current state of the export process.
+	//
+	// Any of "CANCELED", "CONFLICT", "DEFERRED", "DELETED", "DONE", "ENQUEUED",
+	// "FAILED", "PENDING_APPROVAL", "PROCESSING".
+	ExportState PublicExportResponseExportState `json:"exportState,required"`
+	// The type of export, which can be either VIEW or LIST.
+	//
+	// Any of "LIST", "VIEW".
+	ExportType PublicExportResponseExportType `json:"exportType,required"`
+	// The list of properties exported for the associated object.
+	ObjectProperties []string `json:"objectProperties,required"`
+	// The associated CRM object being exported.
+	ObjectType string `json:"objectType,required"`
+	// The timestamp when the export was last updated, in ISO 8601 format.
+	UpdatedAt time.Time `json:"updatedAt,required" format:"date-time"`
+	// The name assigned to the export.
+	ExportName string `json:"exportName"`
+	// The total number of records included in the export.
+	RecordCount int64 `json:"recordCount"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID               respjson.Field
+		CreatedAt        respjson.Field
+		ExportState      respjson.Field
+		ExportType       respjson.Field
+		ObjectProperties respjson.Field
+		ObjectType       respjson.Field
+		UpdatedAt        respjson.Field
+		ExportName       respjson.Field
+		RecordCount      respjson.Field
+		ExtraFields      map[string]respjson.Field
+		raw              string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicExportResponse) RawJSON() string { return r.JSON.raw }
+func (r *PublicExportResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The current state of the export process.
+type PublicExportResponseExportState string
+
+const (
+	PublicExportResponseExportStateCanceled        PublicExportResponseExportState = "CANCELED"
+	PublicExportResponseExportStateConflict        PublicExportResponseExportState = "CONFLICT"
+	PublicExportResponseExportStateDeferred        PublicExportResponseExportState = "DEFERRED"
+	PublicExportResponseExportStateDeleted         PublicExportResponseExportState = "DELETED"
+	PublicExportResponseExportStateDone            PublicExportResponseExportState = "DONE"
+	PublicExportResponseExportStateEnqueued        PublicExportResponseExportState = "ENQUEUED"
+	PublicExportResponseExportStateFailed          PublicExportResponseExportState = "FAILED"
+	PublicExportResponseExportStatePendingApproval PublicExportResponseExportState = "PENDING_APPROVAL"
+	PublicExportResponseExportStateProcessing      PublicExportResponseExportState = "PROCESSING"
+)
+
+// The type of export, which can be either VIEW or LIST.
+type PublicExportResponseExportType string
+
+const (
+	PublicExportResponseExportTypeList PublicExportResponseExportType = "LIST"
+	PublicExportResponseExportTypeView PublicExportResponseExportType = "VIEW"
+)
+
+// The properties AssociatedObjectType, ExportInternalValuesOptions, ExportName,
+// ExportType, Format, IncludeLabeledAssociations,
+// IncludePrimaryDisplayPropertyForAssociatedObjects, Language, ObjectProperties,
+// ObjectType, OverrideAssociatedObjectsPerDefinitionPerRowLimit are required.
 type PublicExportViewRequestParam struct {
+	AssociatedObjectType []string `json:"associatedObjectType,omitzero,required"`
 	// Any of "NAMES", "VALUES".
 	ExportInternalValuesOptions []string `json:"exportInternalValuesOptions,omitzero,required"`
 	ExportName                  string   `json:"exportName,required"`
 	// Any of "VIEW".
 	ExportType PublicExportViewRequestExportType `json:"exportType,omitzero,required"`
 	// Any of "XLS", "XLSX", "CSV".
-	Format PublicExportViewRequestFormat `json:"format,omitzero,required"`
+	Format                                            PublicExportViewRequestFormat `json:"format,omitzero,required"`
+	IncludeLabeledAssociations                        bool                          `json:"includeLabeledAssociations,required"`
+	IncludePrimaryDisplayPropertyForAssociatedObjects bool                          `json:"includePrimaryDisplayPropertyForAssociatedObjects,required"`
 	// Any of "EN", "DE", "ES", "FR", "JA", "NL", "PT_BR", "IT", "PL", "SV", "FI",
 	// "ZH_TW", "DA_DK", "NO".
 	Language                                          PublicExportViewRequestLanguage `json:"language,omitzero,required"`
 	ObjectProperties                                  []string                        `json:"objectProperties,omitzero,required"`
 	ObjectType                                        string                          `json:"objectType,required"`
 	OverrideAssociatedObjectsPerDefinitionPerRowLimit bool                            `json:"overrideAssociatedObjectsPerDefinitionPerRowLimit,required"`
-	AssociatedObjectType                              param.Opt[string]               `json:"associatedObjectType,omitzero"`
-	PublicCRMSearchRequest                            PublicCRMSearchRequestParam     `json:"publicCrmSearchRequest,omitzero"`
+	PublicCrmSearchRequest                            PublicCrmSearchRequestParam     `json:"publicCrmSearchRequest,omitzero"`
 	paramObj
 }
 
@@ -370,14 +490,14 @@ const (
 	PublicExportViewRequestLanguageNo   PublicExportViewRequestLanguage = "NO"
 )
 
-type ExportNewParams struct {
+type ExportNewAsyncParams struct {
 	PublicExportRequest PublicExportRequestUnionParam
 	paramObj
 }
 
-func (r ExportNewParams) MarshalJSON() (data []byte, err error) {
+func (r ExportNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicExportRequest)
 }
-func (r *ExportNewParams) UnmarshalJSON(data []byte) error {
+func (r *ExportNewAsyncParams) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(data, &r.PublicExportRequest)
 }
