@@ -144,7 +144,7 @@ func TestFileOperationGetByPathWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Files.FileOperations.GetByPath(
 		context.TODO(),
-		"path",
+		"file_path",
 		files.FileOperationGetByPathParams{
 			Properties: []string{"string"},
 		},

@@ -49,34 +49,34 @@ func NewSourceCodeService(opts ...option.RequestOption) (r SourceCodeService) {
 // the specified path.
 //
 // Deprecated: deprecated
-func (r *SourceCodeService) New(ctx context.Context, path string, params SourceCodeNewParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
+func (r *SourceCodeService) New(ctx context.Context, filePath string, params SourceCodeNewParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", params.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", params.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Deletes the file at the specified path in the specified environment.
-func (r *SourceCodeService) Delete(ctx context.Context, path string, body SourceCodeDeleteParams, opts ...option.RequestOption) (err error) {
+func (r *SourceCodeService) Delete(ctx context.Context, filePath string, body SourceCodeDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", body.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", body.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
@@ -92,18 +92,18 @@ func (r *SourceCodeService) ExtractAsync(ctx context.Context, body SourceCodeExt
 
 // Downloads the byte contents of the file at the specified path in the specified
 // environment.
-func (r *SourceCodeService) Get(ctx context.Context, path string, query SourceCodeGetParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *SourceCodeService) Get(ctx context.Context, filePath string, query SourceCodeGetParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "application/octet-stream")}, opts...)
 	if query.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", query.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", query.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
@@ -119,52 +119,52 @@ func (r *SourceCodeService) GetExtractionStatus(ctx context.Context, taskID int6
 
 // Gets the metadata object for the file at the specified path in the specified
 // environment.
-func (r *SourceCodeService) GetMetadata(ctx context.Context, path string, params SourceCodeGetMetadataParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
+func (r *SourceCodeService) GetMetadata(ctx context.Context, filePath string, params SourceCodeGetMetadataParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/metadata/%s", params.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/metadata/%s", params.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return
 }
 
 // Upserts a file at the specified path in the specified environment. Accepts
 // multipart/form-data content type.
-func (r *SourceCodeService) Upsert(ctx context.Context, path string, params SourceCodeUpsertParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
+func (r *SourceCodeService) Upsert(ctx context.Context, filePath string, params SourceCodeUpsertParams, opts ...option.RequestOption) (res *AssetFileMetadata, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", params.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/content/%s", params.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
 	return
 }
 
 // Validates the file contents passed to the endpoint given a specified path and
 // environment. Accepts multipart/form-data content type.
-func (r *SourceCodeService) Validate(ctx context.Context, path string, params SourceCodeValidateParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *SourceCodeService) Validate(ctx context.Context, filePath string, params SourceCodeValidateParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if params.Environment == "" {
 		err = errors.New("missing required environment parameter")
 		return
 	}
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("cms/v3/source-code/%s/validate/%s", params.Environment, path)
+	path := fmt.Sprintf("cms/v3/source-code/%s/validate/%s", params.Environment, filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }

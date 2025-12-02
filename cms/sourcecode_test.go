@@ -33,7 +33,7 @@ func TestSourceCodeNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.SourceCode.New(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeNewParams{
 			Environment: "environment",
 			File:        io.Reader(bytes.NewBuffer([]byte("some file contents"))),
@@ -63,7 +63,7 @@ func TestSourceCodeDelete(t *testing.T) {
 	)
 	err := client.Cms.SourceCode.Delete(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeDeleteParams{
 			Environment: "environment",
 		},
@@ -117,7 +117,7 @@ func TestSourceCodeGet(t *testing.T) {
 	)
 	resp, err := client.Cms.SourceCode.Get(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeGetParams{
 			Environment: "environment",
 		},
@@ -182,7 +182,7 @@ func TestSourceCodeGetMetadataWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.SourceCode.GetMetadata(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeGetMetadataParams{
 			Environment: "environment",
 			Properties:  hubspotsdk.String("properties"),
@@ -212,7 +212,7 @@ func TestSourceCodeUpsertWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Cms.SourceCode.Upsert(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeUpsertParams{
 			Environment: "environment",
 			File:        io.Reader(bytes.NewBuffer([]byte("some file contents"))),
@@ -240,7 +240,7 @@ func TestSourceCodeValidateWithOptionalParams(t *testing.T) {
 	)
 	resp, err := client.Cms.SourceCode.Validate(
 		context.TODO(),
-		"path",
+		"file_path",
 		cms.SourceCodeValidateParams{
 			Environment: "environment",
 			File:        io.Reader(bytes.NewBuffer([]byte("some file contents"))),
