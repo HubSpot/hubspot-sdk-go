@@ -440,6 +440,10 @@ func (r *LayoutSectionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type Margin = any
+
+type Padding = any
+
 type PublicAccessRule = any
 
 // A color defined by RGB values.

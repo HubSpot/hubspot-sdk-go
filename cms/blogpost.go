@@ -1816,10 +1816,6 @@ func (r *CollectionResponseWithTotalVersionBlogPost) UnmarshalJSON(data []byte) 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type Margin = any
-
-type Padding = any
-
 // Model definition of a version of a blog post.
 type VersionBlogPost struct {
 	// The id of the version.
