@@ -94,13 +94,13 @@ func (r *FileOperationService) Get(ctx context.Context, fileID string, query Fil
 }
 
 // Retrieve a file by its path.
-func (r *FileOperationService) GetByPath(ctx context.Context, path string, query FileOperationGetByPathParams, opts ...option.RequestOption) (res *FileStat, err error) {
+func (r *FileOperationService) GetByPath(ctx context.Context, filePath string, query FileOperationGetByPathParams, opts ...option.RequestOption) (res *FileStat, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if path == "" {
-		err = errors.New("missing required path parameter")
+	if filePath == "" {
+		err = errors.New("missing required file_path parameter")
 		return
 	}
-	path := fmt.Sprintf("files/v3/files/stat/%s", path)
+	path := fmt.Sprintf("files/v3/files/stat/%s", filePath)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
