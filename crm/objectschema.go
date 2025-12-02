@@ -60,7 +60,7 @@ func (r *ObjectSchemaService) Update(ctx context.Context, objectType string, bod
 	return
 }
 
-func (r *ObjectSchemaService) List(ctx context.Context, query ObjectSchemaListParams, opts ...option.RequestOption) (res *shared.CollectionResponseObjectSchemaNoPaging, err error) {
+func (r *ObjectSchemaService) List(ctx context.Context, query ObjectSchemaListParams, opts ...option.RequestOption) (res *ObjectSchemaListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "crm-object-schemas/v3/schemas"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -412,6 +412,22 @@ type ObjectsSchemasObjectTypeDefinition struct {
 // Returns the unmodified JSON received from the API
 func (r ObjectsSchemasObjectTypeDefinition) RawJSON() string { return r.JSON.raw }
 func (r *ObjectsSchemasObjectTypeDefinition) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ObjectSchemaListResponse struct {
+	Results []ObjectSchema `json:"results,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ObjectSchemaListResponse) RawJSON() string { return r.JSON.raw }
+func (r *ObjectSchemaListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 

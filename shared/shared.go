@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
@@ -270,22 +269,6 @@ const (
 	BatchResponsePropertyStatusPending    BatchResponsePropertyStatus = "PENDING"
 	BatchResponsePropertyStatusProcessing BatchResponsePropertyStatus = "PROCESSING"
 )
-
-type CollectionResponseObjectSchemaNoPaging struct {
-	Results []crm.ObjectSchema `json:"results,required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Results     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CollectionResponseObjectSchemaNoPaging) RawJSON() string { return r.JSON.raw }
-func (r *CollectionResponseObjectSchemaNoPaging) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type Error struct {
 	// The error category.

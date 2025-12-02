@@ -13,11 +13,13 @@ import (
 
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/events"
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
@@ -53,7 +55,7 @@ func (r *MediaBridgeSchemaService) Update(ctx context.Context, objectType string
 }
 
 // Get the schemas for all object types.
-func (r *MediaBridgeSchemaService) List(ctx context.Context, appID int64, query MediaBridgeSchemaListParams, opts ...option.RequestOption) (res *shared.CollectionResponseObjectSchemaNoPaging, err error) {
+func (r *MediaBridgeSchemaService) List(ctx context.Context, appID int64, query MediaBridgeSchemaListParams, opts ...option.RequestOption) (res *MediaBridgeSchemaListResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := fmt.Sprintf("media-bridge/v1/%v/schemas", appID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -99,6 +101,22 @@ func (r *MediaBridgeSchemaService) Get(ctx context.Context, objectType string, q
 	path := fmt.Sprintf("media-bridge/v1/%v/schemas/%s", query.AppID, objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
+}
+
+type MediaBridgeSchemaListResponse struct {
+	Results []crm.ObjectSchema `json:"results,required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r MediaBridgeSchemaListResponse) RawJSON() string { return r.JSON.raw }
+func (r *MediaBridgeSchemaListResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type MediaBridgeSchemaUpdateParams struct {
