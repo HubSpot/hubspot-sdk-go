@@ -26,6 +26,7 @@ func TestUsage(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
+	t.Skip("Prism tests are disabled")
 	result, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
 		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
 			Associations: []crm.PublicAssociationsForObjectParam{{
