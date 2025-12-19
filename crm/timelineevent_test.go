@@ -40,7 +40,7 @@ func TestTimelineEventNewWithOptionalParams(t *testing.T) {
 			Domain: hubspotsdk.String("domain"),
 			Email:  hubspotsdk.String("art3mis-pup@petspot.com"),
 			ExtraData: map[string]any{
-				"questions": []undefined{
+				"questions": []any{
 					map[string]any{
 						"answer":   "Bark!",
 						"question": "Who's a good girl?",
@@ -98,7 +98,7 @@ func TestTimelineEventBatchNew(t *testing.T) {
 				Domain: hubspotsdk.String("domain"),
 				Email:  hubspotsdk.String("art3mis-pup@petspot.com"),
 				ExtraData: map[string]any{
-					"questions": []undefined{
+					"questions": []any{
 						map[string]any{
 							"answer":   "Bark!",
 							"question": "Who's a good girl?",
@@ -130,7 +130,7 @@ func TestTimelineEventBatchNew(t *testing.T) {
 				Domain: hubspotsdk.String("domain"),
 				Email:  hubspotsdk.String("pocket-tiger@petspot.com"),
 				ExtraData: map[string]any{
-					"questions": []undefined{
+					"questions": []any{
 						map[string]any{
 							"answer":   "Purr...",
 							"question": "Who's a good kitty?",
