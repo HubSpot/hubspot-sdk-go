@@ -8,12 +8,13 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
+	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
 func TestAutoPagination(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -25,13 +26,11 @@ func TestAutoPagination(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	iter := client.Crm.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
-		Limit: hubspotsdk.Int(100),
-	})
-	// Prism mock isn't going to give us real pagination
+	iter := client.Account.Activity.ListAuditLogsAutoPaging(context.TODO(), account.ActivityListAuditLogsParams{})
+	// The mock server isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
-		contact := iter.Current()
-		t.Logf("%+v\n", contact.ID)
+		activity := iter.Current()
+		t.Logf("%+v\n", activity.ID)
 	}
 	if err := iter.Err(); err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())

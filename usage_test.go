@@ -8,13 +8,13 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
+	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestUsage(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -26,25 +26,9 @@ func TestUsage(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	t.Skip("Prism tests are disabled")
-	result, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	t.Logf("%+v\n", result.CreatedResourceID)
+	t.Logf("%+v\n", page)
 }

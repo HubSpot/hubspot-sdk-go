@@ -16,7 +16,7 @@ import (
 )
 
 func TestActivityListAuditLogsWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -29,12 +29,13 @@ func TestActivityListAuditLogsWithOptionalParams(t *testing.T) {
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
 	_, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{
-		ActingUserID:   []int64{0},
-		After:          hubspotsdk.String("after"),
-		Limit:          hubspotsdk.Int(0),
-		OccurredAfter:  hubspotsdk.Time(time.Now()),
-		OccurredBefore: hubspotsdk.Time(time.Now()),
-		Sort:           []string{"string"},
+		ActingUserID:       []int64{0},
+		After:              hubspotsdk.String("after"),
+		FillFinalTimestamp: hubspotsdk.Bool(true),
+		Limit:              hubspotsdk.Int(0),
+		OccurredAfter:      hubspotsdk.Time(time.Now()),
+		OccurredBefore:     hubspotsdk.Time(time.Now()),
+		Sort:               []string{"string"},
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -46,7 +47,7 @@ func TestActivityListAuditLogsWithOptionalParams(t *testing.T) {
 }
 
 func TestActivityListLoginActivitiesWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -73,7 +74,7 @@ func TestActivityListLoginActivitiesWithOptionalParams(t *testing.T) {
 }
 
 func TestActivityListSecurityActivitiesWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL

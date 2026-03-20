@@ -41,35 +41,19 @@ import (
 	"fmt"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
+	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func main() {
 	client := hubspotsdk.NewClient(
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	result, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", result.CreatedResourceID)
+	fmt.Printf("%+v\n", page)
 }
 
 ```
@@ -275,7 +259,7 @@ client := hubspotsdk.NewClient(
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
 
-client.Crm.Objects.Contacts.New(context.TODO(), ...,
+client.Account.Activity.ListAuditLogs(context.TODO(), ...,
 	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
 	// Add an undocumented field to the request body, using sjson syntax
@@ -294,13 +278,11 @@ This library provides some conveniences for working with paginated list endpoint
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
 ```go
-iter := client.Crm.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
-	Limit: hubspotsdk.Int(100),
-})
+iter := client.Account.Activity.ListAuditLogsAutoPaging(context.TODO(), account.ActivityListAuditLogsParams{})
 // Automatically fetches more pages as needed.
 for iter.Next() {
-	simplePublicObjectWithAssociations := iter.Current()
-	fmt.Printf("%+v\n", simplePublicObjectWithAssociations)
+	publicAPIUserActionEvent := iter.Current()
+	fmt.Printf("%+v\n", publicAPIUserActionEvent)
 }
 if err := iter.Err(); err != nil {
 	panic(err.Error())
@@ -311,12 +293,10 @@ Or you can use simple `.List()` methods to fetch a single page and receive a sta
 with additional helper methods like `.GetNextPage()`, e.g.:
 
 ```go
-page, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
-	Limit: hubspotsdk.Int(100),
-})
+page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
 for page != nil {
-	for _, contact := range page.Results {
-		fmt.Printf("%+v\n", contact)
+	for _, activity := range page.Results {
+		fmt.Printf("%+v\n", activity)
 	}
 	page, err = page.GetNextPage()
 }
@@ -335,29 +315,14 @@ When the API returns a non-success status code, we return an error with type
 To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
-_, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
-	SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-		Associations: []crm.PublicAssociationsForObjectParam{{
-			To: shared.PublicObjectIDParam{
-				ID: "37295",
-			},
-			Types: []shared.AssociationSpecParam{{
-				AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-				AssociationTypeID:   0,
-			}},
-		}},
-		Properties: map[string]string{
-			"foo": "string",
-		},
-	},
-})
+_, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
 if err != nil {
 	var apierr *hubspotsdk.Error
 	if errors.As(err, &apierr) {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
 	}
-	panic(err.Error()) // GET "/crm/v3/objects/contacts": 400 Bad Request { ... }
+	panic(err.Error()) // GET "/account-info/2026-03/activity/audit-logs": 400 Bad Request { ... }
 }
 ```
 
@@ -375,24 +340,9 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 // This sets the timeout for the request, including all the retries.
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
-client.Crm.Objects.Contacts.New(
+client.Account.Activity.ListAuditLogs(
 	ctx,
-	crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	},
+	account.ActivityListAuditLogsParams{},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
 )
@@ -411,24 +361,6 @@ file returned by `os.Open` will be sent with the file name on disk.
 We also provide a helper `hubspotsdk.File(reader io.Reader, filename string, contentType string)`
 which can be used to wrap any `io.Reader` with the appropriate file name and content type.
 
-```go
-// A file from the file system
-file, err := os.Open("/path/to/file")
-cms.HubdbTableImportDraftParams{
-	File: file,
-}
-
-// A file from a string
-cms.HubdbTableImportDraftParams{
-	File: strings.NewReader("my file contents"),
-}
-
-// With a custom filename and contentType
-cms.HubdbTableImportDraftParams{
-	File: hubspotsdk.File(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
-}
-```
-
 ### Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
@@ -444,24 +376,9 @@ client := hubspotsdk.NewClient(
 )
 
 // Override per-request:
-client.Crm.Objects.Contacts.New(
+client.Account.Activity.ListAuditLogs(
 	context.TODO(),
-	crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	},
+	account.ActivityListAuditLogsParams{},
 	option.WithMaxRetries(5),
 )
 ```
@@ -474,30 +391,15 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-createdResponseSimplePublicObject, err := client.Crm.Objects.Contacts.New(
+page, err := client.Account.Activity.ListAuditLogs(
 	context.TODO(),
-	crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	},
+	account.ActivityListAuditLogsParams{},
 	option.WithResponseInto(&response),
 )
 if err != nil {
 	// handle error
 }
-fmt.Printf("%+v\n", createdResponseSimplePublicObject)
+fmt.Printf("%+v\n", page)
 
 fmt.Printf("Status Code: %d\n", response.StatusCode)
 fmt.Printf("Headers: %+#v\n", response.Header)
