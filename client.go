@@ -9,40 +9,18 @@ import (
 	"slices"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/account"
-	"github.com/stainless-sdks/hubspot-sdk-go/auth"
-	"github.com/stainless-sdks/hubspot-sdk-go/automation"
-	"github.com/stainless-sdks/hubspot-sdk-go/business_units"
-	"github.com/stainless-sdks/hubspot-sdk-go/cms"
-	"github.com/stainless-sdks/hubspot-sdk-go/conversations"
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
-	"github.com/stainless-sdks/hubspot-sdk-go/events"
-	"github.com/stainless-sdks/hubspot-sdk-go/files"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/scheduler"
-	"github.com/stainless-sdks/hubspot-sdk-go/settings"
-	"github.com/stainless-sdks/hubspot-sdk-go/webhooks"
 )
 
 // Client creates a struct with services and top level methods that help with
 // interacting with the hubspot API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options       []option.RequestOption
-	Account       account.AccountService
-	Auth          auth.AuthService
-	Automation    automation.AutomationService
-	BusinessUnits business_units.BusinessUnitService
-	Cms           cms.CmService
-	Conversations conversations.ConversationService
-	Crm           crm.CrmService
-	Events        events.EventService
-	Files         files.FileService
-	Marketing     marketing.MarketingService
-	Scheduler     scheduler.SchedulerService
-	Settings      settings.SettingService
-	Webhooks      webhooks.WebhookService
+	Options []option.RequestOption
+	Account account.AccountService
+	Crm     crm.CrmService
 }
 
 // DefaultClientOptions read from the environment (HUBSPOT_BASE_URL). This should
@@ -65,18 +43,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r = Client{Options: opts}
 
 	r.Account = account.NewAccountService(opts...)
-	r.Auth = auth.NewAuthService(opts...)
-	r.Automation = automation.NewAutomationService(opts...)
-	r.BusinessUnits = business_units.NewBusinessUnitService(opts...)
-	r.Cms = cms.NewCmService(opts...)
-	r.Conversations = conversations.NewConversationService(opts...)
 	r.Crm = crm.NewCrmService(opts...)
-	r.Events = events.NewEventService(opts...)
-	r.Files = files.NewFileService(opts...)
-	r.Marketing = marketing.NewMarketingService(opts...)
-	r.Scheduler = scheduler.NewSchedulerService(opts...)
-	r.Settings = settings.NewSettingService(opts...)
-	r.Webhooks = webhooks.NewWebhookService(opts...)
 
 	return
 }

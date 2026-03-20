@@ -12,11 +12,10 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestObjectCustomNew(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -32,19 +31,22 @@ func TestObjectCustomNew(t *testing.T) {
 		context.TODO(),
 		"objectType",
 		crm.ObjectCustomNewParams{
-			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-				Associations: []crm.PublicAssociationsForObjectParam{{
-					To: shared.PublicObjectIDParam{
-						ID: "37295",
-					},
-					Types: []shared.AssociationSpecParam{{
-						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-						AssociationTypeID:   0,
+			BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
+				Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
+					Associations: []crm.PublicAssociationsForObjectParam{{
+						To: crm.PublicObjectIDParam{
+							ID: "id",
+						},
+						Types: []crm.AssociationSpecParam{{
+							AssociationCategory: crm.AssociationSpecAssociationCategoryHubspotDefined,
+							AssociationTypeID:   0,
+						}},
 					}},
+					Properties: map[string]string{
+						"foo": "string",
+					},
+					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
 				}},
-				Properties: map[string]string{
-					"foo": "string",
-				},
 			},
 		},
 	)
@@ -57,8 +59,8 @@ func TestObjectCustomNew(t *testing.T) {
 	}
 }
 
-func TestObjectCustomUpdateWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+func TestObjectCustomUpdate(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -72,15 +74,18 @@ func TestObjectCustomUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Crm.Objects.Custom.Update(
 		context.TODO(),
-		"objectId",
+		"objectType",
 		crm.ObjectCustomUpdateParams{
-			ObjectType: "objectType",
-			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
-				Properties: map[string]string{
-					"foo": "string",
-				},
+			BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
+				Inputs: []crm.SimplePublicObjectBatchInputParam{{
+					ID: "id",
+					Properties: map[string]string{
+						"foo": "string",
+					},
+					IDProperty:         hubspotsdk.String("my_unique_property_name"),
+					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
+				}},
 			},
-			IDProperty: hubspotsdk.String("idProperty"),
 		},
 	)
 	if err != nil {
@@ -93,7 +98,7 @@ func TestObjectCustomUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestObjectCustomListWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -127,7 +132,7 @@ func TestObjectCustomListWithOptionalParams(t *testing.T) {
 }
 
 func TestObjectCustomDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -141,9 +146,13 @@ func TestObjectCustomDelete(t *testing.T) {
 	)
 	err := client.Crm.Objects.Custom.Delete(
 		context.TODO(),
-		"objectId",
+		"objectType",
 		crm.ObjectCustomDeleteParams{
-			ObjectType: "objectType",
+			BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
+				Inputs: []crm.SimplePublicObjectIDParam{{
+					ID: "430001",
+				}},
+			},
 		},
 	)
 	if err != nil {
@@ -156,7 +165,7 @@ func TestObjectCustomDelete(t *testing.T) {
 }
 
 func TestObjectCustomGetWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -170,14 +179,17 @@ func TestObjectCustomGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Crm.Objects.Custom.Get(
 		context.TODO(),
-		"objectId",
+		"objectType",
 		crm.ObjectCustomGetParams{
-			ObjectType:            "objectType",
-			Archived:              hubspotsdk.Bool(true),
-			Associations:          []string{"string"},
-			IDProperty:            hubspotsdk.String("idProperty"),
-			Properties:            []string{"string"},
-			PropertiesWithHistory: []string{"string"},
+			BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
+				Inputs: []crm.SimplePublicObjectIDParam{{
+					ID: "430001",
+				}},
+				Properties:            []string{"string"},
+				PropertiesWithHistory: []string{"string"},
+				IDProperty:            hubspotsdk.String("idProperty"),
+			},
+			Archived: hubspotsdk.Bool(true),
 		},
 	)
 	if err != nil {
@@ -190,7 +202,7 @@ func TestObjectCustomGetWithOptionalParams(t *testing.T) {
 }
 
 func TestObjectCustomMerge(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -222,7 +234,7 @@ func TestObjectCustomMerge(t *testing.T) {
 }
 
 func TestObjectCustomSearchWithOptionalParams(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -253,6 +265,44 @@ func TestObjectCustomSearchWithOptionalParams(t *testing.T) {
 				Properties: []string{"string"},
 				Sorts:      []string{"string"},
 				Query:      hubspotsdk.String("query"),
+			},
+		},
+	)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestObjectCustomUpsert(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	_, err := client.Crm.Objects.Custom.Upsert(
+		context.TODO(),
+		"objectType",
+		crm.ObjectCustomUpsertParams{
+			BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
+				Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
+					ID: "id",
+					Properties: map[string]string{
+						"foo": "string",
+					},
+					IDProperty:         hubspotsdk.String("idProperty"),
+					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
+				}},
 			},
 		},
 	)

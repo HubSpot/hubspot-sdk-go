@@ -5,6 +5,8 @@ package crm
 import (
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"slices"
@@ -35,48 +37,73 @@ func NewObjectTaskBatchService(opts ...option.RequestOption) (r ObjectTaskBatchS
 	return
 }
 
-// Create a batch of tasks
-func (r *ObjectTaskBatchService) New(ctx context.Context, body ObjectTaskBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
+// Create multiple tasks in a single request by providing a batch of task
+// properties and associations. This endpoint allows for efficient task creation by
+// processing multiple tasks together.
+func (r *ObjectTaskBatchService) New(ctx context.Context, objectType string, body ObjectTaskBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/tasks/batch/create"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/create", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
-// Update a batch of tasks by internal ID, or unique property values
-func (r *ObjectTaskBatchService) Update(ctx context.Context, body ObjectTaskBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
+// Update multiple tasks in a single request using their internal IDs or unique
+// property values. This operation allows you to modify the properties of each task
+// in the batch, ensuring efficient management of task data.
+func (r *ObjectTaskBatchService) Update(ctx context.Context, objectType string, body ObjectTaskBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/tasks/batch/update"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/update", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
-// Archive a batch of tasks by ID
-func (r *ObjectTaskBatchService) Delete(ctx context.Context, body ObjectTaskBatchDeleteParams, opts ...option.RequestOption) (err error) {
+// Archive a batch of tasks by their IDs, moving them to the recycling bin. This
+// operation requires a list of task IDs to be provided in the request body.
+func (r *ObjectTaskBatchService) Delete(ctx context.Context, objectType string, body ObjectTaskBatchDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "crm/v3/objects/tasks/batch/archive"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/archive", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
-	return
+	return err
 }
 
 // Retrieve records by record ID or include the `idProperty` parameter to retrieve
 // records by a custom unique value property.
-func (r *ObjectTaskBatchService) Get(ctx context.Context, params ObjectTaskBatchGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
+func (r *ObjectTaskBatchService) Get(ctx context.Context, objectType string, params ObjectTaskBatchGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/tasks/batch/read"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/read", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
-	return
+	return res, err
 }
 
 // Create or update records identified by a unique property value as specified by
 // the `idProperty` query param. `idProperty` query param refers to a property
 // whose values are unique for the object.
-func (r *ObjectTaskBatchService) Upsert(ctx context.Context, body ObjectTaskBatchUpsertParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicUpsertObject, err error) {
+func (r *ObjectTaskBatchService) Upsert(ctx context.Context, objectType string, body ObjectTaskBatchUpsertParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicUpsertObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/tasks/batch/upsert"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/upsert", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ObjectTaskBatchNewParams struct {

@@ -27,7 +27,6 @@ import (
 // the [NewObjectContactService] method instead.
 type ObjectContactService struct {
 	Options []option.RequestOption
-	Batch   ObjectContactBatchService
 }
 
 // NewObjectContactService generates a new service that applies the given options
@@ -36,47 +35,54 @@ type ObjectContactService struct {
 func NewObjectContactService(opts ...option.RequestOption) (r ObjectContactService) {
 	r = ObjectContactService{}
 	r.Options = opts
-	r.Batch = NewObjectContactBatchService(opts...)
 	return
 }
 
-// Create a single contact. Include a `properties` object to define
-// [property values](https://developers.hubspot.com/docs/guides/api/crm/properties)
-// for the contact, along with an `associations` array to define
-// [associations](https://developers.hubspot.com/docs/guides/api/crm/associations/associations-v4)
-// with other CRM records.
-func (r *ObjectContactService) New(ctx context.Context, body ObjectContactNewParams, opts ...option.RequestOption) (res *CreatedResponseSimplePublicObject, err error) {
+// Create a task with the given properties and return a copy of the object,
+// including the ID. Documentation and examples for creating standard tasks is
+// provided.
+func (r *ObjectContactService) New(ctx context.Context, objectType string, body ObjectContactNewParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/contacts"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
-// Update an existing contact, identified by ID or email/unique property value. To
-// identify a contact by ID, include the ID in the request URL path. To identify a
-// contact by their email or other unique property, include the email/property
-// value in the request URL path, and add the `idProperty` query parameter
-// (`/crm/v3/objects/contacts/jon@website.com?idProperty=email`). Provided property
+// Perform a partial update of an Object identified by `{taskId}`or optionally a
+// unique property value as specified by the `idProperty` query param. `{taskId}`
+// refers to the internal object ID by default, and the `idProperty` query param
+// refers to a property whose values are unique for the object. Provided property
 // values will be overwritten. Read-only and non-existent properties will result in
 // an error. Properties values can be cleared by passing an empty string.
-func (r *ObjectContactService) Update(ctx context.Context, contactID string, params ObjectContactUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+func (r *ObjectContactService) Update(ctx context.Context, objectID string, params ObjectContactUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	if contactID == "" {
-		err = errors.New("missing required contactId parameter")
-		return
+	if params.ObjectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
 	}
-	path := fmt.Sprintf("crm/v3/objects/contacts/%s", contactID)
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", params.ObjectType, objectID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
-	return
+	return res, err
 }
 
-// Retrieve all contacts, using query parameters to specify the information that
-// gets returned.
-func (r *ObjectContactService) List(ctx context.Context, query ObjectContactListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
+// Read a page of tasks. Control what is returned via the `properties` query param.
+func (r *ObjectContactService) List(ctx context.Context, objectType string, query ObjectContactListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := "crm/v3/objects/contacts"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s", objectType)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -89,73 +95,82 @@ func (r *ObjectContactService) List(ctx context.Context, query ObjectContactList
 	return res, nil
 }
 
-// Retrieve all contacts, using query parameters to specify the information that
-// gets returned.
-func (r *ObjectContactService) ListAutoPaging(ctx context.Context, query ObjectContactListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
-	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+// Read a page of tasks. Control what is returned via the `properties` query param.
+func (r *ObjectContactService) ListAutoPaging(ctx context.Context, objectType string, query ObjectContactListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
+	return pagination.NewPageAutoPager(r.List(ctx, objectType, query, opts...))
 }
 
-// Delete a contact by ID. Deleted contacts can be restored within 90 days of
-// deletion. Learn more about the
-// [data impacted by contact deletions](https://knowledge.hubspot.com/privacy-and-consent/understand-restorable-and-permanent-contact-deletions)
-// and how to
-// [restore archived records](https://knowledge.hubspot.com/records/restore-deleted-records).
-func (r *ObjectContactService) Delete(ctx context.Context, contactID string, opts ...option.RequestOption) (err error) {
+// Move an Object identified by `{taskId}` to the recycling bin.
+func (r *ObjectContactService) Delete(ctx context.Context, objectID string, body ObjectContactDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if contactID == "" {
-		err = errors.New("missing required contactId parameter")
-		return
+	if body.ObjectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return err
 	}
-	path := fmt.Sprintf("crm/v3/objects/contacts/%s", contactID)
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", body.ObjectType, objectID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
-// Permanently delete a contact and all associated content to follow GDPR. Use
-// optional property `idProperty` set to `email` to identify contact by email
-// address. If email address is not found, the email address will be added to a
-// blocklist and prevent it from being used in the future. Learn more about
-// [permanently deleting contacts](https://knowledge.hubspot.com/privacy-and-consent/how-do-i-perform-a-gdpr-delete-in-hubspot).
-func (r *ObjectContactService) GdprDelete(ctx context.Context, body ObjectContactGdprDeleteParams, opts ...option.RequestOption) (err error) {
+func (r *ObjectContactService) GdprDelete(ctx context.Context, objectType string, body ObjectContactGdprDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "crm/v3/objects/contacts/gdpr-delete"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
-	return
-}
-
-// Retrieve a contact by its ID (`contactId`) or by a unique property
-// (`idProperty`). You can specify what is returned using the `properties` query
-// parameter.
-func (r *ObjectContactService) Get(ctx context.Context, contactID string, query ObjectContactGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if contactID == "" {
-		err = errors.New("missing required contactId parameter")
-		return
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return err
 	}
-	path := fmt.Sprintf("crm/v3/objects/contacts/%s", contactID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	path := fmt.Sprintf("crm/objects/2026-03/%s/gdpr-delete", objectType)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
+	return err
 }
 
-// Merge two contact records. Learn more about
-// [merging records](https://knowledge.hubspot.com/records/merge-records).
-func (r *ObjectContactService) Merge(ctx context.Context, body ObjectContactMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+// Read an Object identified by `{taskId}`. `{taskId}` refers to the internal
+// object ID by default, or optionally any unique property value as specified by
+// the `idProperty` query param. Control what is returned via the `properties`
+// query param.
+func (r *ObjectContactService) Get(ctx context.Context, objectID string, params ObjectContactGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/contacts/merge"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	if params.ObjectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", params.ObjectType, objectID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
+	return res, err
 }
 
-// Search for contacts by filtering on properties, searching through associations,
-// and sorting results. Learn more about
-// [CRM search](https://developers.hubspot.com/docs/guides/api/crm/search#make-a-search-request).
-func (r *ObjectContactService) Search(ctx context.Context, body ObjectContactSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
+func (r *ObjectContactService) Merge(ctx context.Context, objectType string, body ObjectContactMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
-	path := "crm/v3/objects/contacts/search"
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/merge", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
+}
+
+// Execute a search for tasks based on the provided criteria, including filters,
+// properties, and sorting options. This allows for retrieving tasks that match
+// specific conditions or property values.
+func (r *ObjectContactService) Search(ctx context.Context, objectType string, body ObjectContactSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
+	opts = slices.Concat(r.Options, opts)
+	if objectType == "" {
+		err = errors.New("missing required objectType parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/search", objectType)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return res, err
 }
 
 type ObjectContactNewParams struct {
@@ -174,10 +189,11 @@ func (r *ObjectContactNewParams) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectContactUpdateParams struct {
+	ObjectType string `path:"objectType" api:"required" json:"-"`
 	// Represents the input required to create or update a CRM object, containing an
 	// object with property names and their corresponding values.
 	SimplePublicObjectInput SimplePublicObjectInputParam
-	// The name of a property whose values are unique for this object.
+	// The name of a property whose values are unique for this object
 	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
@@ -217,7 +233,7 @@ type ObjectContactListParams struct {
 	// A comma separated list of the properties to be returned along with their history
 	// of previous values. If any of the specified properties are not present on the
 	// requested object(s), they will be ignored. Usage of this parameter will reduce
-	// the maximum number of contacts that can be read by a single request.
+	// the maximum number of tasks that can be read by a single request.
 	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
@@ -231,7 +247,14 @@ func (r ObjectContactListParams) URLQuery() (v url.Values, err error) {
 	})
 }
 
+type ObjectContactDeleteParams struct {
+	ObjectType string `path:"objectType" api:"required" json:"-"`
+	paramObj
+}
+
 type ObjectContactGdprDeleteParams struct {
+	// An input that contains the information required to process a public GDPR data
+	// deletion request.
 	PublicGdprDeleteInput PublicGdprDeleteInputParam
 	paramObj
 }
@@ -244,6 +267,7 @@ func (r *ObjectContactGdprDeleteParams) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectContactGetParams struct {
+	ObjectType string `path:"objectType" api:"required" json:"-"`
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	// The name of a property whose values are unique for this object
@@ -271,6 +295,7 @@ func (r ObjectContactGetParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectContactMergeParams struct {
+	// Input data for merging two records.
 	PublicMergeInput PublicMergeInputParam
 	paramObj
 }

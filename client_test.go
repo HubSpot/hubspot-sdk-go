@@ -11,10 +11,9 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
+	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 type closureTransport struct {
@@ -40,22 +39,7 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, _ = client.Account.Activity.ListAuditLogs(context.Background(), account.ActivityListAuditLogsParams{})
 	if userAgent != fmt.Sprintf("Hubspot/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
 	}
@@ -79,22 +63,7 @@ func TestRetryAfter(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(context.Background(), account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -129,22 +98,7 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeaderDel("X-Stainless-Retry-Count"),
 	)
-	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(context.Background(), account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -174,22 +128,7 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeader("X-Stainless-Retry-Count", "42"),
 	)
-	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(context.Background(), account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -218,22 +157,7 @@ func TestRetryAfterMs(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(context.Background(), account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -256,22 +180,7 @@ func TestContextCancel(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	cancel()
-	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(cancelCtx, account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -291,22 +200,7 @@ func TestContextCancelDelay(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
 	defer cancel()
-	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
-		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-			Associations: []crm.PublicAssociationsForObjectParam{{
-				To: shared.PublicObjectIDParam{
-					ID: "37295",
-				},
-				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-					AssociationTypeID:   0,
-				}},
-			}},
-			Properties: map[string]string{
-				"foo": "string",
-			},
-		},
-	})
+	_, err := client.Account.Activity.ListAuditLogs(cancelCtx, account.ActivityListAuditLogsParams{})
 	if err == nil {
 		t.Error("expected there to be a cancel error")
 	}
@@ -332,22 +226,7 @@ func TestContextDeadline(t *testing.T) {
 				},
 			}),
 		)
-		_, err := client.Crm.Objects.Contacts.New(deadlineCtx, crm.ObjectContactNewParams{
-			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-				Associations: []crm.PublicAssociationsForObjectParam{{
-					To: shared.PublicObjectIDParam{
-						ID: "37295",
-					},
-					Types: []shared.AssociationSpecParam{{
-						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-						AssociationTypeID:   0,
-					}},
-				}},
-				Properties: map[string]string{
-					"foo": "string",
-				},
-			},
-		})
+		_, err := client.Account.Activity.ListAuditLogs(deadlineCtx, account.ActivityListAuditLogsParams{})
 		if err == nil {
 			t.Error("expected there to be a deadline error")
 		}
