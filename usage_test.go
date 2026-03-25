@@ -8,7 +8,6 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
@@ -26,9 +25,9 @@ func TestUsage(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
+	portalInformationResponse, err := client.Account.Get(context.TODO())
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	t.Logf("%+v\n", page)
+	t.Logf("%+v\n", portalInformationResponse.AccountType)
 }

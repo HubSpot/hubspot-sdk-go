@@ -1,5 +1,16 @@
 # Account
 
+Response Types:
+
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account">account</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#APIUsage">APIUsage</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account">account</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#CollectionResponseAPIUsageNoPaging">CollectionResponseAPIUsageNoPaging</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account">account</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#PortalInformationResponse">PortalInformationResponse</a>
+
+Methods:
+
+- <code title="get /account-info/2026-03/details">client.Account.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#AccountService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (\*<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account">account</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#PortalInformationResponse">PortalInformationResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /account-info/2026-03/api-usage/daily/private-apps">client.Account.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#AccountService.GetDailyPrivateAppsUsage">GetDailyPrivateAppsUsage</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (\*<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account">account</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/account#CollectionResponseAPIUsageNoPaging">CollectionResponseAPIUsageNoPaging</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
 ## Activity
 
 Response Types:

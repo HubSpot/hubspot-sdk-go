@@ -41,7 +41,6 @@ import (
 	"fmt"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/account"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
 
@@ -49,11 +48,11 @@ func main() {
 	client := hubspotsdk.NewClient(
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
+	portalInformationResponse, err := client.Account.Get(context.TODO())
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", page)
+	fmt.Printf("%+v\n", portalInformationResponse.AccountType)
 }
 
 ```
@@ -259,7 +258,7 @@ client := hubspotsdk.NewClient(
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
 
-client.Account.Activity.ListAuditLogs(context.TODO(), ...,
+client.Account.Get(context.TODO(), ...,
 	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
 	// Add an undocumented field to the request body, using sjson syntax
@@ -315,14 +314,14 @@ When the API returns a non-success status code, we return an error with type
 To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
-_, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
+_, err := client.Account.Get(context.TODO())
 if err != nil {
 	var apierr *hubspotsdk.Error
 	if errors.As(err, &apierr) {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
 	}
-	panic(err.Error()) // GET "/account-info/2026-03/activity/audit-logs": 400 Bad Request { ... }
+	panic(err.Error()) // GET "/account-info/2026-03/details": 400 Bad Request { ... }
 }
 ```
 
@@ -340,9 +339,8 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 // This sets the timeout for the request, including all the retries.
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
-client.Account.Activity.ListAuditLogs(
+client.Account.Get(
 	ctx,
-	account.ActivityListAuditLogsParams{},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
 )
@@ -376,11 +374,7 @@ client := hubspotsdk.NewClient(
 )
 
 // Override per-request:
-client.Account.Activity.ListAuditLogs(
-	context.TODO(),
-	account.ActivityListAuditLogsParams{},
-	option.WithMaxRetries(5),
-)
+client.Account.Get(context.TODO(), option.WithMaxRetries(5))
 ```
 
 ### Accessing raw response data (e.g. response headers)
@@ -391,15 +385,11 @@ you need to examine response headers, status codes, or other details.
 ```go
 // Create a variable to store the HTTP response
 var response *http.Response
-page, err := client.Account.Activity.ListAuditLogs(
-	context.TODO(),
-	account.ActivityListAuditLogsParams{},
-	option.WithResponseInto(&response),
-)
+portalInformationResponse, err := client.Account.Get(context.TODO(), option.WithResponseInto(&response))
 if err != nil {
 	// handle error
 }
-fmt.Printf("%+v\n", page)
+fmt.Printf("%+v\n", portalInformationResponse)
 
 fmt.Printf("Status Code: %d\n", response.StatusCode)
 fmt.Printf("Headers: %+#v\n", response.Header)

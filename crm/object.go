@@ -22,7 +22,6 @@ type ObjectService struct {
 	Options  []option.RequestOption
 	Contacts ObjectContactService
 	Custom   ObjectCustomService
-	Tasks    ObjectTaskService
 }
 
 // NewObjectService generates a new service that applies the given options to each
@@ -33,7 +32,6 @@ func NewObjectService(opts ...option.RequestOption) (r ObjectService) {
 	r.Options = opts
 	r.Contacts = NewObjectContactService(opts...)
 	r.Custom = NewObjectCustomService(opts...)
-	r.Tasks = NewObjectTaskService(opts...)
 	return
 }
 
@@ -41,7 +39,7 @@ func NewObjectService(opts ...option.RequestOption) (r ObjectService) {
 type AssociatedID struct {
 	// The ID for the association type.
 	ID string `json:"id" api:"required"`
-	// The type of association.
+	// The type of associations.
 	Type string `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -57,38 +55,6 @@ func (r AssociatedID) RawJSON() string { return r.JSON.raw }
 func (r *AssociatedID) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// Defines the type, direction, and details of the relationship between two CRM
-// objects.
-//
-// The properties AssociationCategory, AssociationTypeID are required.
-type AssociationSpecParam struct {
-	// The category of the association, such as "HUBSPOT_DEFINED".
-	//
-	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED", "WORK".
-	AssociationCategory AssociationSpecAssociationCategory `json:"associationCategory,omitzero" api:"required"`
-	// The ID representing the specific type of association.
-	AssociationTypeID int64 `json:"associationTypeId" api:"required"`
-	paramObj
-}
-
-func (r AssociationSpecParam) MarshalJSON() (data []byte, err error) {
-	type shadow AssociationSpecParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AssociationSpecParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The category of the association, such as "HUBSPOT_DEFINED".
-type AssociationSpecAssociationCategory string
-
-const (
-	AssociationSpecAssociationCategoryHubspotDefined    AssociationSpecAssociationCategory = "HUBSPOT_DEFINED"
-	AssociationSpecAssociationCategoryIntegratorDefined AssociationSpecAssociationCategory = "INTEGRATOR_DEFINED"
-	AssociationSpecAssociationCategoryUserDefined       AssociationSpecAssociationCategory = "USER_DEFINED"
-	AssociationSpecAssociationCategoryWork              AssociationSpecAssociationCategory = "WORK"
-)
 
 // The property Inputs is required.
 type BatchInputSimplePublicObjectBatchInputParam struct {
@@ -182,7 +148,7 @@ type BatchResponseSimplePublicObject struct {
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseSimplePublicObjectStatus `json:"status" api:"required"`
-	Errors []StandardError                       `json:"errors"`
+	Errors []shared.StandardError                `json:"errors"`
 	// An object containing relevant links related to the batch request.
 	Links map[string]string `json:"links"`
 	// The total number of errors that occurred during the batch operation.
@@ -233,7 +199,7 @@ type BatchResponseSimplePublicUpsertObject struct {
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseSimplePublicUpsertObjectStatus `json:"status" api:"required"`
-	Errors []StandardError                             `json:"errors"`
+	Errors []shared.StandardError                      `json:"errors"`
 	// An object containing relevant links related to the batch request.
 	Links map[string]string `json:"links"`
 	// The total number of errors that occurred during the operation.
@@ -274,7 +240,7 @@ const (
 
 type CollectionResponseAssociatedID struct {
 	Results []AssociatedID `json:"results" api:"required"`
-	Paging  Paging         `json:"paging"`
+	Paging  shared.Paging  `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -315,8 +281,8 @@ func (r *CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) Unma
 type CollectionResponseWithTotalSimplePublicObject struct {
 	Results []SimplePublicObject `json:"results" api:"required"`
 	// The number of available results
-	Total  int64  `json:"total" api:"required"`
-	Paging Paging `json:"paging"`
+	Total  int64         `json:"total" api:"required"`
+	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -396,55 +362,11 @@ func (r *FilterGroupParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type Paging struct {
-	// Specifies the paging information needed to retrieve the next set of results in a
-	// paginated API response
-	Next shared.NextPage `json:"next"`
-	// specifies the paging information needed to retrieve the previous set of results
-	// in a paginated API response
-	Prev PreviousPage `json:"prev"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Next        respjson.Field
-		Prev        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r Paging) RawJSON() string { return r.JSON.raw }
-func (r *Paging) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// specifies the paging information needed to retrieve the previous set of results
-// in a paginated API response
-type PreviousPage struct {
-	// A paging cursor token for retrieving previous pages.
-	Before string `json:"before" api:"required"`
-	// A URL that can be used to retrieve the previous pages' results.
-	Link string `json:"link"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Before      respjson.Field
-		Link        respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PreviousPage) RawJSON() string { return r.JSON.raw }
-func (r *PreviousPage) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // The properties To, Types are required.
 type PublicAssociationsForObjectParam struct {
 	// Contains the Id of a Public Object
-	To    PublicObjectIDParam    `json:"to,omitzero" api:"required"`
-	Types []AssociationSpecParam `json:"types,omitzero" api:"required"`
+	To    shared.PublicObjectIDParam    `json:"to,omitzero" api:"required"`
+	Types []shared.AssociationSpecParam `json:"types,omitzero" api:"required"`
 	paramObj
 }
 
@@ -453,27 +375,6 @@ func (r PublicAssociationsForObjectParam) MarshalJSON() (data []byte, err error)
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *PublicAssociationsForObjectParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// An input that contains the information required to process a public GDPR data
-// deletion request.
-//
-// The property ObjectID is required.
-type PublicGdprDeleteInputParam struct {
-	// The ID of the contact to permanently delete.
-	ObjectID string `json:"objectId" api:"required"`
-	// The name of a property whose values are unique for this object. An alternative
-	// to identifying a contact by ID.
-	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
-	paramObj
-}
-
-func (r PublicGdprDeleteInputParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicGdprDeleteInputParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicGdprDeleteInputParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -495,23 +396,6 @@ func (r PublicMergeInputParam) MarshalJSON() (data []byte, err error) {
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *PublicMergeInputParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Contains the Id of a Public Object
-//
-// The property ID is required.
-type PublicObjectIDParam struct {
-	// The unique ID of the object.
-	ID string `json:"id" api:"required"`
-	paramObj
-}
-
-func (r PublicObjectIDParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicObjectIDParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicObjectIDParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -802,45 +686,6 @@ type SimplePublicUpsertObject struct {
 // Returns the unmodified JSON received from the API
 func (r SimplePublicUpsertObject) RawJSON() string { return r.JSON.raw }
 func (r *SimplePublicUpsertObject) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Ye olde error
-type StandardError struct {
-	// The main category of the error.
-	Category string `json:"category" api:"required"`
-	// Additional context-specific information related to the error.
-	Context map[string][]string `json:"context" api:"required"`
-	// The detailed error objects.
-	Errors []shared.ErrorDetail `json:"errors" api:"required"`
-	// URLs linking to documentation or resources associated with the error.
-	Links map[string]string `json:"links" api:"required"`
-	// A human-readable string describing the error and possible remediation steps.
-	Message string `json:"message" api:"required"`
-	// The HTTP status code associated with the error.
-	Status string `json:"status" api:"required"`
-	// A unique ID for the error instance.
-	ID string `json:"id"`
-	// A more specific error category within each main category.
-	SubCategory any `json:"subCategory"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Category    respjson.Field
-		Context     respjson.Field
-		Errors      respjson.Field
-		Links       respjson.Field
-		Message     respjson.Field
-		Status      respjson.Field
-		ID          respjson.Field
-		SubCategory respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r StandardError) RawJSON() string { return r.JSON.raw }
-func (r *StandardError) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 

@@ -12,6 +12,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestObjectCustomNew(t *testing.T) {
@@ -34,11 +35,11 @@ func TestObjectCustomNew(t *testing.T) {
 			BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
 				Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
 					Associations: []crm.PublicAssociationsForObjectParam{{
-						To: crm.PublicObjectIDParam{
+						To: shared.PublicObjectIDParam{
 							ID: "id",
 						},
-						Types: []crm.AssociationSpecParam{{
-							AssociationCategory: crm.AssociationSpecAssociationCategoryHubspotDefined,
+						Types: []shared.AssociationSpecParam{{
+							AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
 							AssociationTypeID:   0,
 						}},
 					}},
