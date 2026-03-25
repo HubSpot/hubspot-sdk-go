@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -38,8 +39,8 @@ func NewObjectContactService(opts ...option.RequestOption) (r ObjectContactServi
 	return
 }
 
-// Create a task with the given properties and return a copy of the object,
-// including the ID. Documentation and examples for creating standard tasks is
+// Create a CRM object with the given properties and return a copy of the object,
+// including the ID. Documentation and examples for creating standard objects is
 // provided.
 func (r *ObjectContactService) New(ctx context.Context, objectType string, body ObjectContactNewParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
@@ -52,8 +53,8 @@ func (r *ObjectContactService) New(ctx context.Context, objectType string, body 
 	return res, err
 }
 
-// Perform a partial update of an Object identified by `{taskId}`or optionally a
-// unique property value as specified by the `idProperty` query param. `{taskId}`
+// Perform a partial update of an Object identified by `{objectId}`or optionally a
+// unique property value as specified by the `idProperty` query param. `{objectId}`
 // refers to the internal object ID by default, and the `idProperty` query param
 // refers to a property whose values are unique for the object. Provided property
 // values will be overwritten. Read-only and non-existent properties will result in
@@ -73,7 +74,8 @@ func (r *ObjectContactService) Update(ctx context.Context, objectID string, para
 	return res, err
 }
 
-// Read a page of tasks. Control what is returned via the `properties` query param.
+// Read a page of objects. Control what is returned via the `properties` query
+// param.
 func (r *ObjectContactService) List(ctx context.Context, objectType string, query ObjectContactListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -95,12 +97,13 @@ func (r *ObjectContactService) List(ctx context.Context, objectType string, quer
 	return res, nil
 }
 
-// Read a page of tasks. Control what is returned via the `properties` query param.
+// Read a page of objects. Control what is returned via the `properties` query
+// param.
 func (r *ObjectContactService) ListAutoPaging(ctx context.Context, objectType string, query ObjectContactListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
 	return pagination.NewPageAutoPager(r.List(ctx, objectType, query, opts...))
 }
 
-// Move an Object identified by `{taskId}` to the recycling bin.
+// Move an Object identified by `{objectId}` to the recycling bin.
 func (r *ObjectContactService) Delete(ctx context.Context, objectID string, body ObjectContactDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -117,6 +120,11 @@ func (r *ObjectContactService) Delete(ctx context.Context, objectID string, body
 	return err
 }
 
+// Permanently delete a contact and all associated content to follow GDPR. Use
+// optional property `idProperty` set to `email` to identify contact by email
+// address. If email address is not found, the email address will be added to a
+// blocklist and prevent it from being used in the future. Learn more about
+// [permanently deleting contacts](https://knowledge.hubspot.com/privacy-and-consent/how-do-i-perform-a-gdpr-delete-in-hubspot).
 func (r *ObjectContactService) GdprDelete(ctx context.Context, objectType string, body ObjectContactGdprDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -129,7 +137,7 @@ func (r *ObjectContactService) GdprDelete(ctx context.Context, objectType string
 	return err
 }
 
-// Read an Object identified by `{taskId}`. `{taskId}` refers to the internal
+// Read an Object identified by `{objectId}`. `{objectId}` refers to the internal
 // object ID by default, or optionally any unique property value as specified by
 // the `idProperty` query param. Control what is returned via the `properties`
 // query param.
@@ -148,6 +156,8 @@ func (r *ObjectContactService) Get(ctx context.Context, objectID string, params 
 	return res, err
 }
 
+// Merge two CRM objects of the same type by specifying one as the primary object
+// and the other as the object to be merged into it.
 func (r *ObjectContactService) Merge(ctx context.Context, objectType string, body ObjectContactMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -159,9 +169,9 @@ func (r *ObjectContactService) Merge(ctx context.Context, objectType string, bod
 	return res, err
 }
 
-// Execute a search for tasks based on the provided criteria, including filters,
-// properties, and sorting options. This allows for retrieving tasks that match
-// specific conditions or property values.
+// Execute a search query to find CRM objects of a given type, using specified
+// filters and properties. The search can be customized with filters, sorting, and
+// pagination options.
 func (r *ObjectContactService) Search(ctx context.Context, objectType string, body ObjectContactSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -171,6 +181,27 @@ func (r *ObjectContactService) Search(ctx context.Context, objectType string, bo
 	path := fmt.Sprintf("crm/objects/2026-03/%s/search", objectType)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
+}
+
+// An input that contains the information required to process a public GDPR data
+// deletion request.
+//
+// The property ObjectID is required.
+type PublicGdprDeleteInputParam struct {
+	// The ID of the contact to permanently delete.
+	ObjectID string `json:"objectId" api:"required"`
+	// The name of a property whose values are unique for this object. An alternative
+	// to identifying a contact by ID.
+	IDProperty param.Opt[string] `json:"idProperty,omitzero"`
+	paramObj
+}
+
+func (r PublicGdprDeleteInputParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicGdprDeleteInputParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicGdprDeleteInputParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectContactNewParams struct {
@@ -193,7 +224,7 @@ type ObjectContactUpdateParams struct {
 	// Represents the input required to create or update a CRM object, containing an
 	// object with property names and their corresponding values.
 	SimplePublicObjectInput SimplePublicObjectInputParam
-	// The name of a property whose values are unique for this object
+	// The name of a property whose values are unique for this object type
 	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
@@ -233,7 +264,7 @@ type ObjectContactListParams struct {
 	// A comma separated list of the properties to be returned along with their history
 	// of previous values. If any of the specified properties are not present on the
 	// requested object(s), they will be ignored. Usage of this parameter will reduce
-	// the maximum number of tasks that can be read by a single request.
+	// the maximum number of objects that can be read by a single request.
 	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }
@@ -270,7 +301,7 @@ type ObjectContactGetParams struct {
 	ObjectType string `path:"objectType" api:"required" json:"-"`
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
-	// The name of a property whose values are unique for this object
+	// The name of a property whose values are unique for this object type
 	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	// A comma separated list of object types to retrieve associated IDs for. If any of
 	// the specified associations do not exist, they will be ignored.

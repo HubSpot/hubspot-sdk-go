@@ -1,20 +1,21 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package crm_test
+package settings_test
 
 import (
 	"context"
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/settings"
 )
 
-func TestObjectTaskBatchNew(t *testing.T) {
+func TestCurrencyExchangeRateNewExchangeRateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -27,26 +28,116 @@ func TestObjectTaskBatchNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Crm.Objects.Tasks.Batch.New(
+	_, err := client.Settings.Currencies.ExchangeRates.NewExchangeRate(context.TODO(), settings.CurrencyExchangeRateNewExchangeRateParams{
+		ExchangeRateCreateRequest: settings.ExchangeRateCreateRequestParam{
+			ConversionRate:   0,
+			FromCurrencyCode: settings.ExchangeRateCreateRequestFromCurrencyCodeAed,
+			EffectiveAt:      hubspotsdk.Time(time.Now()),
+		},
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestCurrencyExchangeRateGetExchangeRateByID(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	_, err := client.Settings.Currencies.ExchangeRates.GetExchangeRateByID(context.TODO(), "exchangeRateId")
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestCurrencyExchangeRateListCurrentExchangeRates(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	_, err := client.Settings.Currencies.ExchangeRates.ListCurrentExchangeRates(context.TODO())
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestCurrencyExchangeRateListExchangeRatesWithOptionalParams(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	_, err := client.Settings.Currencies.ExchangeRates.ListExchangeRates(context.TODO(), settings.CurrencyExchangeRateListExchangeRatesParams{
+		After:            hubspotsdk.String("after"),
+		FromCurrencyCode: settings.CurrencyExchangeRateListExchangeRatesParamsFromCurrencyCodeAed,
+		Limit:            hubspotsdk.Int(0),
+		ToCurrencyCode:   settings.CurrencyExchangeRateListExchangeRatesParamsToCurrencyCodeAed,
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestCurrencyExchangeRateUpdateExchangeRateWithOptionalParams(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+	)
+	_, err := client.Settings.Currencies.ExchangeRates.UpdateExchangeRate(
 		context.TODO(),
-		"objectType",
-		crm.ObjectTaskBatchNewParams{
-			BatchInputSimplePublicObjectBatchInputForCreate: crm.BatchInputSimplePublicObjectBatchInputForCreateParam{
-				Inputs: []crm.SimplePublicObjectBatchInputForCreateParam{{
-					Associations: []crm.PublicAssociationsForObjectParam{{
-						To: crm.PublicObjectIDParam{
-							ID: "id",
-						},
-						Types: []crm.AssociationSpecParam{{
-							AssociationCategory: crm.AssociationSpecAssociationCategoryHubspotDefined,
-							AssociationTypeID:   0,
-						}},
-					}},
-					Properties: map[string]string{
-						"foo": "string",
-					},
-					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
-				}},
+		"exchangeRateId",
+		settings.CurrencyExchangeRateUpdateExchangeRateParams{
+			ExchangeRateMultiplier: settings.ExchangeRateMultiplierParam{
+				ConversionRate: 0,
+				EffectiveAt:    hubspotsdk.Time(time.Now()),
 			},
 		},
 	)
@@ -59,7 +150,7 @@ func TestObjectTaskBatchNew(t *testing.T) {
 	}
 }
 
-func TestObjectTaskBatchUpdate(t *testing.T) {
+func TestCurrencyExchangeRateUpdateVisibility(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -72,130 +163,13 @@ func TestObjectTaskBatchUpdate(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
 	)
-	_, err := client.Crm.Objects.Tasks.Batch.Update(
-		context.TODO(),
-		"objectType",
-		crm.ObjectTaskBatchUpdateParams{
-			BatchInputSimplePublicObjectBatchInput: crm.BatchInputSimplePublicObjectBatchInputParam{
-				Inputs: []crm.SimplePublicObjectBatchInputParam{{
-					ID: "id",
-					Properties: map[string]string{
-						"foo": "string",
-					},
-					IDProperty:         hubspotsdk.String("my_unique_property_name"),
-					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
-				}},
-			},
+	err := client.Settings.Currencies.ExchangeRates.UpdateVisibility(context.TODO(), settings.CurrencyExchangeRateUpdateVisibilityParams{
+		CurrencyPairUpdate: settings.CurrencyPairUpdateParam{
+			FromCurrencyCode: settings.CurrencyPairUpdateFromCurrencyCodeAed,
+			ToCurrencyCode:   settings.CurrencyPairUpdateToCurrencyCodeAed,
+			VisibleInUi:      true,
 		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestObjectTaskBatchDelete(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	err := client.Crm.Objects.Tasks.Batch.Delete(
-		context.TODO(),
-		"objectType",
-		crm.ObjectTaskBatchDeleteParams{
-			BatchInputSimplePublicObjectID: crm.BatchInputSimplePublicObjectIDParam{
-				Inputs: []crm.SimplePublicObjectIDParam{{
-					ID: "430001",
-				}},
-			},
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestObjectTaskBatchGetWithOptionalParams(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	_, err := client.Crm.Objects.Tasks.Batch.Get(
-		context.TODO(),
-		"objectType",
-		crm.ObjectTaskBatchGetParams{
-			BatchReadInputSimplePublicObjectID: crm.BatchReadInputSimplePublicObjectIDParam{
-				Inputs: []crm.SimplePublicObjectIDParam{{
-					ID: "430001",
-				}},
-				Properties:            []string{"string"},
-				PropertiesWithHistory: []string{"string"},
-				IDProperty:            hubspotsdk.String("idProperty"),
-			},
-			Archived: hubspotsdk.Bool(true),
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestObjectTaskBatchUpsert(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	_, err := client.Crm.Objects.Tasks.Batch.Upsert(
-		context.TODO(),
-		"objectType",
-		crm.ObjectTaskBatchUpsertParams{
-			BatchInputSimplePublicObjectBatchInputUpsert: crm.BatchInputSimplePublicObjectBatchInputUpsertParam{
-				Inputs: []crm.SimplePublicObjectBatchInputUpsertParam{{
-					ID: "id",
-					Properties: map[string]string{
-						"foo": "string",
-					},
-					IDProperty:         hubspotsdk.String("idProperty"),
-					ObjectWriteTraceID: hubspotsdk.String("objectWriteTraceId"),
-				}},
-			},
-		},
-	)
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

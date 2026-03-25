@@ -9,18 +9,36 @@ import (
 	"slices"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/account"
+	"github.com/stainless-sdks/hubspot-sdk-go/automation"
+	"github.com/stainless-sdks/hubspot-sdk-go/cms"
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
+	"github.com/stainless-sdks/hubspot-sdk-go/data_studio"
+	"github.com/stainless-sdks/hubspot-sdk-go/events"
+	"github.com/stainless-sdks/hubspot-sdk-go/files"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
+	"github.com/stainless-sdks/hubspot-sdk-go/meta"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/scheduler"
+	"github.com/stainless-sdks/hubspot-sdk-go/settings"
 )
 
 // Client creates a struct with services and top level methods that help with
 // interacting with the hubspot API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options []option.RequestOption
-	Account account.AccountService
-	Crm     crm.CrmService
+	Options    []option.RequestOption
+	Account    account.AccountService
+	Automation automation.AutomationService
+	Cms        cms.CmService
+	Crm        crm.CrmService
+	DataStudio data_studio.DataStudioService
+	Events     events.EventService
+	Files      files.FileService
+	Marketing  marketing.MarketingService
+	Meta       meta.MetaService
+	Scheduler  scheduler.SchedulerService
+	Settings   settings.SettingService
 }
 
 // DefaultClientOptions read from the environment (HUBSPOT_BASE_URL). This should
@@ -43,7 +61,16 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r = Client{Options: opts}
 
 	r.Account = account.NewAccountService(opts...)
+	r.Automation = automation.NewAutomationService(opts...)
+	r.Cms = cms.NewCmService(opts...)
 	r.Crm = crm.NewCrmService(opts...)
+	r.DataStudio = data_studio.NewDataStudioService(opts...)
+	r.Events = events.NewEventService(opts...)
+	r.Files = files.NewFileService(opts...)
+	r.Marketing = marketing.NewMarketingService(opts...)
+	r.Meta = meta.NewMetaService(opts...)
+	r.Scheduler = scheduler.NewSchedulerService(opts...)
+	r.Settings = settings.NewSettingService(opts...)
 
 	return
 }

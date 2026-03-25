@@ -38,9 +38,8 @@ func NewObjectCustomService(opts ...option.RequestOption) (r ObjectCustomService
 	return
 }
 
-// Create multiple tasks in a single request by providing a batch of task
-// properties and associations. This endpoint allows for efficient task creation by
-// processing multiple tasks together.
+// Create multiple CRM objects in a single request by specifying the object type
+// and providing the necessary properties and associations for each object.
 func (r *ObjectCustomService) New(ctx context.Context, objectType string, body ObjectCustomNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -52,9 +51,8 @@ func (r *ObjectCustomService) New(ctx context.Context, objectType string, body O
 	return res, err
 }
 
-// Update multiple tasks in a single request using their internal IDs or unique
-// property values. This operation allows you to modify the properties of each task
-// in the batch, ensuring efficient management of task data.
+// Update a batch of CRM objects by their internal IDs or unique property values,
+// allowing for efficient modifications of multiple records in a single request.
 func (r *ObjectCustomService) Update(ctx context.Context, objectType string, body ObjectCustomUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -66,7 +64,8 @@ func (r *ObjectCustomService) Update(ctx context.Context, objectType string, bod
 	return res, err
 }
 
-// Read a page of tasks. Control what is returned via the `properties` query param.
+// Read a page of objects. Control what is returned via the `properties` query
+// param.
 func (r *ObjectCustomService) List(ctx context.Context, objectType string, query ObjectCustomListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
@@ -88,13 +87,14 @@ func (r *ObjectCustomService) List(ctx context.Context, objectType string, query
 	return res, nil
 }
 
-// Read a page of tasks. Control what is returned via the `properties` query param.
+// Read a page of objects. Control what is returned via the `properties` query
+// param.
 func (r *ObjectCustomService) ListAutoPaging(ctx context.Context, objectType string, query ObjectCustomListParams, opts ...option.RequestOption) *pagination.PageAutoPager[SimplePublicObjectWithAssociations] {
 	return pagination.NewPageAutoPager(r.List(ctx, objectType, query, opts...))
 }
 
-// Archive a batch of tasks by their IDs, moving them to the recycling bin. This
-// operation requires a list of task IDs to be provided in the request body.
+// Archive a batch of objects by their unique IDs. This operation moves the
+// specified objects to the recycling bin, effectively marking them as archived.
 func (r *ObjectCustomService) Delete(ctx context.Context, objectType string, body ObjectCustomDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -120,6 +120,8 @@ func (r *ObjectCustomService) Get(ctx context.Context, objectType string, params
 	return res, err
 }
 
+// Merge two CRM objects of the same type by specifying one as the primary object
+// and the other as the object to be merged into it.
 func (r *ObjectCustomService) Merge(ctx context.Context, objectType string, body ObjectCustomMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -131,9 +133,9 @@ func (r *ObjectCustomService) Merge(ctx context.Context, objectType string, body
 	return res, err
 }
 
-// Execute a search for tasks based on the provided criteria, including filters,
-// properties, and sorting options. This allows for retrieving tasks that match
-// specific conditions or property values.
+// Execute a search query to find CRM objects of a given type, using specified
+// filters and properties. The search can be customized with filters, sorting, and
+// pagination options.
 func (r *ObjectCustomService) Search(ctx context.Context, objectType string, body ObjectCustomSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if objectType == "" {
@@ -202,7 +204,7 @@ type ObjectCustomListParams struct {
 	// A comma separated list of the properties to be returned along with their history
 	// of previous values. If any of the specified properties are not present on the
 	// requested object(s), they will be ignored. Usage of this parameter will reduce
-	// the maximum number of tasks that can be read by a single request.
+	// the maximum number of objects that can be read by a single request.
 	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
 }

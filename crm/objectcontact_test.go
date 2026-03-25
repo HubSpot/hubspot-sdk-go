@@ -12,6 +12,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestObjectContactNew(t *testing.T) {
@@ -33,11 +34,11 @@ func TestObjectContactNew(t *testing.T) {
 		crm.ObjectContactNewParams{
 			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
 				Associations: []crm.PublicAssociationsForObjectParam{{
-					To: crm.PublicObjectIDParam{
+					To: shared.PublicObjectIDParam{
 						ID: "id",
 					},
-					Types: []crm.AssociationSpecParam{{
-						AssociationCategory: crm.AssociationSpecAssociationCategoryHubspotDefined,
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
 						AssociationTypeID:   0,
 					}},
 				}},
