@@ -4,13 +4,13 @@ package crm
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -170,7 +170,7 @@ func (r ObjectCustomNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputForCreate)
 }
 func (r *ObjectCustomNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputSimplePublicObjectBatchInputForCreate)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomUpdateParams struct {
@@ -182,7 +182,7 @@ func (r ObjectCustomUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInput)
 }
 func (r *ObjectCustomUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputSimplePublicObjectBatchInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomListParams struct {
@@ -226,7 +226,7 @@ func (r ObjectCustomDeleteParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputSimplePublicObjectID)
 }
 func (r *ObjectCustomDeleteParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputSimplePublicObjectID)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomGetParams struct {
@@ -243,7 +243,7 @@ func (r ObjectCustomGetParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchReadInputSimplePublicObjectID)
 }
 func (r *ObjectCustomGetParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchReadInputSimplePublicObjectID)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [ObjectCustomGetParams]'s query parameters as `url.Values`.
@@ -264,7 +264,7 @@ func (r ObjectCustomMergeParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicMergeInput)
 }
 func (r *ObjectCustomMergeParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicMergeInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomSearchParams struct {
@@ -277,7 +277,7 @@ func (r ObjectCustomSearchParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicObjectSearchRequest)
 }
 func (r *ObjectCustomSearchParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicObjectSearchRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomUpsertParams struct {
@@ -289,5 +289,5 @@ func (r ObjectCustomUpsertParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputUpsert)
 }
 func (r *ObjectCustomUpsertParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputSimplePublicObjectBatchInputUpsert)
+	return apijson.UnmarshalRoot(data, r)
 }

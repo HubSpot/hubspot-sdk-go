@@ -4,7 +4,6 @@ package files
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -93,7 +93,7 @@ func (r FileImportFromURLAsyncParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ImportFromURLInput)
 }
 func (r *FileImportFromURLAsyncParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ImportFromURLInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type FileSearchParams struct {

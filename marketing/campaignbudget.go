@@ -4,12 +4,12 @@ package marketing
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
@@ -116,7 +116,7 @@ func (r CampaignBudgetNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicBudgetItemInput)
 }
 func (r *CampaignBudgetNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicBudgetItemInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignBudgetUpdateParams struct {
@@ -129,7 +129,7 @@ func (r CampaignBudgetUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicBudgetItemInput)
 }
 func (r *CampaignBudgetUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicBudgetItemInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignBudgetDeleteParams struct {

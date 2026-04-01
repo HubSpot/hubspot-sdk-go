@@ -4,13 +4,13 @@ package settings
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -114,7 +114,7 @@ func (r CurrencyExchangeRateNewExchangeRateParams) MarshalJSON() (data []byte, e
 	return shimjson.Marshal(r.ExchangeRateCreateRequest)
 }
 func (r *CurrencyExchangeRateNewExchangeRateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExchangeRateCreateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CurrencyExchangeRateListExchangeRatesParams struct {
@@ -543,7 +543,7 @@ func (r CurrencyExchangeRateUpdateExchangeRateParams) MarshalJSON() (data []byte
 	return shimjson.Marshal(r.ExchangeRateMultiplier)
 }
 func (r *CurrencyExchangeRateUpdateExchangeRateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExchangeRateMultiplier)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CurrencyExchangeRateUpdateVisibilityParams struct {
@@ -555,5 +555,5 @@ func (r CurrencyExchangeRateUpdateVisibilityParams) MarshalJSON() (data []byte, 
 	return shimjson.Marshal(r.CurrencyPairUpdate)
 }
 func (r *CurrencyExchangeRateUpdateVisibilityParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.CurrencyPairUpdate)
+	return apijson.UnmarshalRoot(data, r)
 }

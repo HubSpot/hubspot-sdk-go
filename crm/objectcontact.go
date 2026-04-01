@@ -4,7 +4,6 @@ package crm
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -216,7 +215,7 @@ func (r ObjectContactNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.SimplePublicObjectInputForCreate)
 }
 func (r *ObjectContactNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.SimplePublicObjectInputForCreate)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectContactUpdateParams struct {
@@ -233,7 +232,7 @@ func (r ObjectContactUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.SimplePublicObjectInput)
 }
 func (r *ObjectContactUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.SimplePublicObjectInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [ObjectContactUpdateParams]'s query parameters as
@@ -294,7 +293,7 @@ func (r ObjectContactGdprDeleteParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicGdprDeleteInput)
 }
 func (r *ObjectContactGdprDeleteParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicGdprDeleteInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectContactGetParams struct {
@@ -335,7 +334,7 @@ func (r ObjectContactMergeParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicMergeInput)
 }
 func (r *ObjectContactMergeParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicMergeInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectContactSearchParams struct {
@@ -348,5 +347,5 @@ func (r ObjectContactSearchParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicObjectSearchRequest)
 }
 func (r *ObjectContactSearchParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicObjectSearchRequest)
+	return apijson.UnmarshalRoot(data, r)
 }

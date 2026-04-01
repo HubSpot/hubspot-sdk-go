@@ -4,11 +4,11 @@ package scheduler
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -62,7 +62,7 @@ func (r MeetingAdvancedNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ExternalCalendarMeetingEventCreateRequest)
 }
 func (r *MeetingAdvancedNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalCalendarMeetingEventCreateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [MeetingAdvancedNewParams]'s query parameters as
@@ -83,5 +83,5 @@ func (r MeetingAdvancedBookParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ExternalMeetingBooking)
 }
 func (r *MeetingAdvancedBookParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalMeetingBooking)
+	return apijson.UnmarshalRoot(data, r)
 }

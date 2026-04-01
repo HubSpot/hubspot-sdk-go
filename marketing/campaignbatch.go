@@ -4,11 +4,11 @@ package marketing
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -85,7 +85,7 @@ func (r CampaignBatchNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputPublicCampaignInput)
 }
 func (r *CampaignBatchNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputPublicCampaignInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignBatchUpdateParams struct {
@@ -97,7 +97,7 @@ func (r CampaignBatchUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputPublicCampaignBatchUpdateItem)
 }
 func (r *CampaignBatchUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputPublicCampaignBatchUpdateItem)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignBatchDeleteParams struct {
@@ -109,7 +109,7 @@ func (r CampaignBatchDeleteParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputPublicCampaignDeleteInput)
 }
 func (r *CampaignBatchDeleteParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputPublicCampaignDeleteInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignBatchGetParams struct {
@@ -127,7 +127,7 @@ func (r CampaignBatchGetParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputPublicCampaignReadInput)
 }
 func (r *CampaignBatchGetParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputPublicCampaignReadInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [CampaignBatchGetParams]'s query parameters as `url.Values`.
