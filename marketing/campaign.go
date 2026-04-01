@@ -4,7 +4,6 @@ package marketing
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -1132,7 +1131,7 @@ func (r CampaignUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicCampaignInput)
 }
 func (r *CampaignUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicCampaignInput)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CampaignGetParams struct {

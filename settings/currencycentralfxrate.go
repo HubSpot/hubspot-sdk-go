@@ -4,10 +4,10 @@ package settings
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
@@ -62,5 +62,5 @@ func (r CurrencyCentralFxRateNewCurrencyParams) MarshalJSON() (data []byte, err 
 	return shimjson.Marshal(r.CurrencyCreateRequest)
 }
 func (r *CurrencyCentralFxRateNewCurrencyParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.CurrencyCreateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }

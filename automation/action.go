@@ -2853,7 +2853,7 @@ func (r ActionNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicActionDefinitionEgg)
 }
 func (r *ActionNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicActionDefinitionEgg)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionUpdateParams struct {
@@ -2866,7 +2866,7 @@ func (r ActionUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicActionDefinitionPatch)
 }
 func (r *ActionUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicActionDefinitionPatch)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionListParams struct {
@@ -2915,7 +2915,7 @@ func (r ActionCompleteParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.CallbackCompletionRequest)
 }
 func (r *ActionCompleteParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.CallbackCompletionRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionCompleteBatchParams struct {
@@ -2927,7 +2927,7 @@ func (r ActionCompleteBatchParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputCallbackCompletionBatchRequest)
 }
 func (r *ActionCompleteBatchParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputCallbackCompletionBatchRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionNewOrReplaceParams struct {
@@ -2944,7 +2944,7 @@ func (r ActionNewOrReplaceParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.Body)
 }
 func (r *ActionNewOrReplaceParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.Body)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionNewOrReplaceParamsFunctionType string
@@ -2967,7 +2967,7 @@ func (r ActionNewOrReplaceByFunctionTypeParams) MarshalJSON() (data []byte, err 
 	return shimjson.Marshal(r.Body)
 }
 func (r *ActionNewOrReplaceByFunctionTypeParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.Body)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionNewOrReplaceByFunctionTypeParamsFunctionType string
@@ -2989,7 +2989,7 @@ func (r ActionNewRequiresObjectParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicActionDefinitionRequiresObjectRequest)
 }
 func (r *ActionNewRequiresObjectParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.PublicActionDefinitionRequiresObjectRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type ActionDeleteByFunctionTypeParams struct {

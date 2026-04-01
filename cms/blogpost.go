@@ -4,7 +4,6 @@ package cms
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -1954,7 +1953,7 @@ func (r BlogPostNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BlogPost)
 }
 func (r *BlogPostNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BlogPost)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostUpdateParams struct {
@@ -1968,7 +1967,7 @@ func (r BlogPostUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BlogPost)
 }
 func (r *BlogPostUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BlogPost)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [BlogPostUpdateParams]'s query parameters as `url.Values`.
@@ -2030,7 +2029,7 @@ func (r BlogPostAttachToLangGroupParams) MarshalJSON() (data []byte, err error) 
 	return shimjson.Marshal(r.AttachToLangPrimaryRequestVNext)
 }
 func (r *BlogPostAttachToLangGroupParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.AttachToLangPrimaryRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostCloneParams struct {
@@ -2042,7 +2041,7 @@ func (r BlogPostCloneParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentCloneRequestVNext)
 }
 func (r *BlogPostCloneParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ContentCloneRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostNewLangVariationParams struct {
@@ -2054,7 +2053,7 @@ func (r BlogPostNewLangVariationParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BlogPostLanguageCloneRequestVNext)
 }
 func (r *BlogPostNewLangVariationParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BlogPostLanguageCloneRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostDetachFromLangGroupParams struct {
@@ -2066,7 +2065,7 @@ func (r BlogPostDetachFromLangGroupParams) MarshalJSON() (data []byte, err error
 	return shimjson.Marshal(r.DetachFromLangGroupRequestVNext)
 }
 func (r *BlogPostDetachFromLangGroupParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.DetachFromLangGroupRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostGetParams struct {
@@ -2128,7 +2127,7 @@ func (r BlogPostScheduleParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentScheduleRequestVNext)
 }
 func (r *BlogPostScheduleParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ContentScheduleRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostSetLangPrimaryParams struct {
@@ -2140,7 +2139,7 @@ func (r BlogPostSetLangPrimaryParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.SetNewLanguagePrimaryRequestVNext)
 }
 func (r *BlogPostSetLangPrimaryParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.SetNewLanguagePrimaryRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostUpdateDraftParams struct {
@@ -2152,7 +2151,7 @@ func (r BlogPostUpdateDraftParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BlogPost)
 }
 func (r *BlogPostUpdateDraftParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BlogPost)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostUpdateLangsParams struct {
@@ -2164,5 +2163,5 @@ func (r BlogPostUpdateLangsParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.UpdateLanguagesRequestVNext)
 }
 func (r *BlogPostUpdateLangsParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.UpdateLanguagesRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }

@@ -4,10 +4,10 @@ package settings
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
@@ -62,7 +62,7 @@ func (r CurrencyExchangeRateBatchNewParams) MarshalJSON() (data []byte, err erro
 	return shimjson.Marshal(r.BatchInputExchangeRateCreateRequest)
 }
 func (r *CurrencyExchangeRateBatchNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputExchangeRateCreateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CurrencyExchangeRateBatchUpdateParams struct {
@@ -74,7 +74,7 @@ func (r CurrencyExchangeRateBatchUpdateParams) MarshalJSON() (data []byte, err e
 	return shimjson.Marshal(r.BatchInputExchangeRateUpdateRequest)
 }
 func (r *CurrencyExchangeRateBatchUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputExchangeRateUpdateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type CurrencyExchangeRateBatchGetParams struct {
@@ -86,5 +86,5 @@ func (r CurrencyExchangeRateBatchGetParams) MarshalJSON() (data []byte, err erro
 	return shimjson.Marshal(r.BatchInputPublicObjectID)
 }
 func (r *CurrencyExchangeRateBatchGetParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputPublicObjectID)
+	return apijson.UnmarshalRoot(data, r)
 }

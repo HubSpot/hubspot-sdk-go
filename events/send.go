@@ -4237,7 +4237,7 @@ func (r SendNewEventDefinitionParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ExternalBehavioralEventTypeDefinitionEgg)
 }
 func (r *SendNewEventDefinitionParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalBehavioralEventTypeDefinitionEgg)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type SendNewEventDefinitionPropertyParams struct {
@@ -4249,7 +4249,7 @@ func (r SendNewEventDefinitionPropertyParams) MarshalJSON() (data []byte, err er
 	return shimjson.Marshal(r.ExternalBehavioralEventPropertyCreate)
 }
 func (r *SendNewEventDefinitionPropertyParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalBehavioralEventPropertyCreate)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type SendDeleteEventDefinitionPropertyParams struct {
@@ -4288,7 +4288,7 @@ func (r SendSendEventParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BehavioralEventHTTPCompletionRequest)
 }
 func (r *SendSendEventParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BehavioralEventHTTPCompletionRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type SendSendEventBatchParams struct {
@@ -4300,7 +4300,7 @@ func (r SendSendEventBatchParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchedBehavioralEventHTTPCompletionRequest)
 }
 func (r *SendSendEventBatchParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchedBehavioralEventHTTPCompletionRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type SendUpdateEventDefinitionParams struct {
@@ -4312,7 +4312,7 @@ func (r SendUpdateEventDefinitionParams) MarshalJSON() (data []byte, err error) 
 	return shimjson.Marshal(r.ExternalBehavioralEventTypeDefinitionPatch)
 }
 func (r *SendUpdateEventDefinitionParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalBehavioralEventTypeDefinitionPatch)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type SendUpdateEventDefinitionPropertyParams struct {
@@ -4325,5 +4325,5 @@ func (r SendUpdateEventDefinitionPropertyParams) MarshalJSON() (data []byte, err
 	return shimjson.Marshal(r.ExternalBehavioralEventPropertyDefinitionPatch)
 }
 func (r *SendUpdateEventDefinitionPropertyParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.ExternalBehavioralEventPropertyDefinitionPatch)
+	return apijson.UnmarshalRoot(data, r)
 }

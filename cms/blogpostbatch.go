@@ -4,11 +4,11 @@ package cms
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/url"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -76,7 +76,7 @@ func (r BlogPostBatchNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputBlogPost)
 }
 func (r *BlogPostBatchNewParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputBlogPost)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostBatchUpdateParams struct {
@@ -90,7 +90,7 @@ func (r BlogPostBatchUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputJsonNode)
 }
 func (r *BlogPostBatchUpdateParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputJsonNode)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [BlogPostBatchUpdateParams]'s query parameters as
@@ -111,7 +111,7 @@ func (r BlogPostBatchDeleteParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputString)
 }
 func (r *BlogPostBatchDeleteParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputString)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogPostBatchGetParams struct {
@@ -125,7 +125,7 @@ func (r BlogPostBatchGetParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputString)
 }
 func (r *BlogPostBatchGetParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BatchInputString)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [BlogPostBatchGetParams]'s query parameters as `url.Values`.

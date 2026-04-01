@@ -4,7 +4,6 @@ package files
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -12,6 +11,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
@@ -137,7 +137,7 @@ func (r FolderUpdateAsyncByIDParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.FolderUpdateInputWithID)
 }
 func (r *FolderUpdateAsyncByIDParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.FolderUpdateInputWithID)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type FolderUpdateByIDParams struct {
@@ -149,5 +149,5 @@ func (r FolderUpdateByIDParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.FolderUpdateInput)
 }
 func (r *FolderUpdateByIDParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.FolderUpdateInput)
+	return apijson.UnmarshalRoot(data, r)
 }

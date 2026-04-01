@@ -4,10 +4,10 @@ package cms
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"slices"
 
+	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
@@ -80,7 +80,7 @@ func (r BlogSettingMultiLanguageAttachToLangGroupParams) MarshalJSON() (data []b
 	return shimjson.Marshal(r.AttachToLangPrimaryRequestVNext)
 }
 func (r *BlogSettingMultiLanguageAttachToLangGroupParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.AttachToLangPrimaryRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogSettingMultiLanguageNewLanguageVariationParams struct {
@@ -92,7 +92,7 @@ func (r BlogSettingMultiLanguageNewLanguageVariationParams) MarshalJSON() (data 
 	return shimjson.Marshal(r.BlogLanguageCloneRequestVNext)
 }
 func (r *BlogSettingMultiLanguageNewLanguageVariationParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.BlogLanguageCloneRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogSettingMultiLanguageDetachFromLangGroupParams struct {
@@ -104,7 +104,7 @@ func (r BlogSettingMultiLanguageDetachFromLangGroupParams) MarshalJSON() (data [
 	return shimjson.Marshal(r.DetachFromLangGroupRequestVNext)
 }
 func (r *BlogSettingMultiLanguageDetachFromLangGroupParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.DetachFromLangGroupRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogSettingMultiLanguageSetNewLangPrimaryParams struct {
@@ -116,7 +116,7 @@ func (r BlogSettingMultiLanguageSetNewLangPrimaryParams) MarshalJSON() (data []b
 	return shimjson.Marshal(r.SetNewLanguagePrimaryRequestVNext)
 }
 func (r *BlogSettingMultiLanguageSetNewLangPrimaryParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.SetNewLanguagePrimaryRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type BlogSettingMultiLanguageUpdateLanguagesParams struct {
@@ -128,5 +128,5 @@ func (r BlogSettingMultiLanguageUpdateLanguagesParams) MarshalJSON() (data []byt
 	return shimjson.Marshal(r.UpdateLanguagesRequestVNext)
 }
 func (r *BlogSettingMultiLanguageUpdateLanguagesParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.UpdateLanguagesRequestVNext)
+	return apijson.UnmarshalRoot(data, r)
 }

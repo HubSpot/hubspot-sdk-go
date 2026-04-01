@@ -4,7 +4,6 @@ package settings
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"slices"
 	"time"
@@ -1824,5 +1823,5 @@ func (r CurrencyUpdateCompanyCurrencyParams) MarshalJSON() (data []byte, err err
 	return shimjson.Marshal(r.CompanyCurrencyUpdateRequest)
 }
 func (r *CurrencyUpdateCompanyCurrencyParams) UnmarshalJSON(data []byte) error {
-	return json.Unmarshal(data, &r.CompanyCurrencyUpdateRequest)
+	return apijson.UnmarshalRoot(data, r)
 }
