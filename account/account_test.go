@@ -24,7 +24,7 @@ func TestAccountGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Account.Get(context.TODO())
 	if err != nil {
@@ -47,7 +47,7 @@ func TestAccountGetDailyPrivateAppsUsage(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Account.GetDailyPrivateAppsUsage(context.TODO())
 	if err != nil {

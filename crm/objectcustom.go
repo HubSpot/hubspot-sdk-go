@@ -26,7 +26,8 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewObjectCustomService] method instead.
 type ObjectCustomService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
+	Batch   ObjectCustomBatchService
 }
 
 // NewObjectCustomService generates a new service that applies the given options to
@@ -34,33 +35,43 @@ type ObjectCustomService struct {
 // there is one), and before any request-specific options.
 func NewObjectCustomService(opts ...option.RequestOption) (r ObjectCustomService) {
 	r = ObjectCustomService{}
-	r.Options = opts
+	r.options = opts
+	r.Batch = NewObjectCustomBatchService(opts...)
 	return
 }
 
-// Create multiple CRM objects in a single request by specifying the object type
-// and providing the necessary properties and associations for each object.
-func (r *ObjectCustomService) New(ctx context.Context, objectType string, body ObjectCustomNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
-	opts = slices.Concat(r.Options, opts)
+// Create a CRM object with the given properties and return a copy of the object,
+// including the ID. Documentation and examples for creating standard objects is
+// provided.
+func (r *ObjectCustomService) New(ctx context.Context, objectType string, body ObjectCustomNewParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/create", objectType)
+	path := fmt.Sprintf("crm/objects/2026-03/%s", url.PathEscape(objectType))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-// Update a batch of CRM objects by their internal IDs or unique property values,
-// allowing for efficient modifications of multiple records in a single request.
-func (r *ObjectCustomService) Update(ctx context.Context, objectType string, body ObjectCustomUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if objectType == "" {
+// Perform a partial update of an Object identified by `{objectId}`or optionally a
+// unique property value as specified by the `idProperty` query param. `{objectId}`
+// refers to the internal object ID by default, and the `idProperty` query param
+// refers to a property whose values are unique for the object. Provided property
+// values will be overwritten. Read-only and non-existent properties will result in
+// an error. Properties values can be cleared by passing an empty string.
+func (r *ObjectCustomService) Update(ctx context.Context, objectID string, params ObjectCustomUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
+	opts = slices.Concat(r.options, opts)
+	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/update", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", url.PathEscape(params.ObjectType), url.PathEscape(objectID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
 	return res, err
 }
 
@@ -68,13 +79,13 @@ func (r *ObjectCustomService) Update(ctx context.Context, objectType string, bod
 // param.
 func (r *ObjectCustomService) List(ctx context.Context, objectType string, query ObjectCustomListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s", objectType)
+	path := fmt.Sprintf("crm/objects/2026-03/%s", url.PathEscape(objectType))
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -93,96 +104,105 @@ func (r *ObjectCustomService) ListAutoPaging(ctx context.Context, objectType str
 	return pagination.NewPageAutoPager(r.List(ctx, objectType, query, opts...))
 }
 
-// Archive a batch of objects by their unique IDs. This operation moves the
-// specified objects to the recycling bin, effectively marking them as archived.
-func (r *ObjectCustomService) Delete(ctx context.Context, objectType string, body ObjectCustomDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+// Move an Object identified by `{objectId}` to the recycling bin.
+func (r *ObjectCustomService) Delete(ctx context.Context, objectID string, body ObjectCustomDeleteParams, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectType == "" {
+	if body.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/archive", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", url.PathEscape(body.ObjectType), url.PathEscape(objectID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return err
 }
 
-// Retrieve records by record ID or include the `idProperty` parameter to retrieve
-// records by a custom unique value property.
-func (r *ObjectCustomService) Get(ctx context.Context, objectType string, params ObjectCustomGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if objectType == "" {
+// Read an Object identified by `{objectId}`. `{objectId}` refers to the internal
+// object ID by default, or optionally any unique property value as specified by
+// the `idProperty` query param. Control what is returned via the `properties`
+// query param.
+func (r *ObjectCustomService) Get(ctx context.Context, objectID string, params ObjectCustomGetParams, opts ...option.RequestOption) (res *SimplePublicObjectWithAssociations, err error) {
+	opts = slices.Concat(r.options, opts)
+	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/read", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	if objectID == "" {
+		err = errors.New("missing required objectId parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("crm/objects/2026-03/%s/%s", url.PathEscape(params.ObjectType), url.PathEscape(objectID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return res, err
 }
 
 // Merge two CRM objects of the same type by specifying one as the primary object
 // and the other as the object to be merged into it.
 func (r *ObjectCustomService) Merge(ctx context.Context, objectType string, body ObjectCustomMergeParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/merge", objectType)
+	path := fmt.Sprintf("crm/objects/2026-03/%s/merge", url.PathEscape(objectType))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-// Execute a search query to find CRM objects of a given type, using specified
-// filters and properties. The search can be customized with filters, sorting, and
-// pagination options.
 func (r *ObjectCustomService) Search(ctx context.Context, objectType string, body ObjectCustomSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/search", objectType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-// Create or update records identified by a unique property value as specified by
-// the `idProperty` query param. `idProperty` query param refers to a property
-// whose values are unique for the object.
-func (r *ObjectCustomService) Upsert(ctx context.Context, objectType string, body ObjectCustomUpsertParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicUpsertObject, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if objectType == "" {
-		err = errors.New("missing required objectType parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/batch/upsert", objectType)
+	path := fmt.Sprintf("crm/objects/2026-03/%s/search", url.PathEscape(objectType))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
 type ObjectCustomNewParams struct {
-	BatchInputSimplePublicObjectBatchInputForCreate BatchInputSimplePublicObjectBatchInputForCreateParam
+	// Is the input object used to create a new CRM object, containing the properties
+	// to be set and optional associations to link the new record with other CRM
+	// objects.
+	SimplePublicObjectInputForCreate SimplePublicObjectInputForCreateParam
 	paramObj
 }
 
 func (r ObjectCustomNewParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputForCreate)
+	return shimjson.Marshal(r.SimplePublicObjectInputForCreate)
 }
 func (r *ObjectCustomNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomUpdateParams struct {
-	BatchInputSimplePublicObjectBatchInput BatchInputSimplePublicObjectBatchInputParam
+	ObjectType string `path:"objectType" api:"required" json:"-"`
+	// Represents the input required to create or update a CRM object, containing an
+	// object with property names and their corresponding values.
+	SimplePublicObjectInput SimplePublicObjectInputParam
+	// The name of a property whose values are unique for this object type
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
 	paramObj
 }
 
 func (r ObjectCustomUpdateParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInput)
+	return shimjson.Marshal(r.SimplePublicObjectInput)
 }
 func (r *ObjectCustomUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+// URLQuery serializes [ObjectCustomUpdateParams]'s query parameters as
+// `url.Values`.
+func (r ObjectCustomUpdateParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ObjectCustomListParams struct {
@@ -218,32 +238,28 @@ func (r ObjectCustomListParams) URLQuery() (v url.Values, err error) {
 }
 
 type ObjectCustomDeleteParams struct {
-	BatchInputSimplePublicObjectID BatchInputSimplePublicObjectIDParam
+	ObjectType string `path:"objectType" api:"required" json:"-"`
 	paramObj
-}
-
-func (r ObjectCustomDeleteParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectID)
-}
-func (r *ObjectCustomDeleteParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectCustomGetParams struct {
-	// Specifies the input for reading a batch of CRM objects, including arrays of
-	// object IDs, requested property names (with optional history), and an optional
-	// unique identifying property.
-	BatchReadInputSimplePublicObjectID BatchReadInputSimplePublicObjectIDParam
+	ObjectType string `path:"objectType" api:"required" json:"-"`
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	// The name of a property whose values are unique for this object type
+	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
+	// A comma separated list of object types to retrieve associated IDs for. If any of
+	// the specified associations do not exist, they will be ignored.
+	Associations []string `query:"associations,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned in the response. If any
+	// of the specified properties are not present on the requested object(s), they
+	// will be ignored.
+	Properties []string `query:"properties,omitzero" json:"-"`
+	// A comma separated list of the properties to be returned along with their history
+	// of previous values. If any of the specified properties are not present on the
+	// requested object(s), they will be ignored.
+	PropertiesWithHistory []string `query:"propertiesWithHistory,omitzero" json:"-"`
 	paramObj
-}
-
-func (r ObjectCustomGetParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchReadInputSimplePublicObjectID)
-}
-func (r *ObjectCustomGetParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 // URLQuery serializes [ObjectCustomGetParams]'s query parameters as `url.Values`.
@@ -277,17 +293,5 @@ func (r ObjectCustomSearchParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PublicObjectSearchRequest)
 }
 func (r *ObjectCustomSearchParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ObjectCustomUpsertParams struct {
-	BatchInputSimplePublicObjectBatchInputUpsert BatchInputSimplePublicObjectBatchInputUpsertParam
-	paramObj
-}
-
-func (r ObjectCustomUpsertParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputUpsert)
-}
-func (r *ObjectCustomUpsertParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

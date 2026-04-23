@@ -19,9 +19,9 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewFileService] method instead.
 type FileService struct {
-	Options []option.RequestOption
-	Files   FileService
-	Folders FolderService
+	options    []option.RequestOption
+	FileAssets FileAssetService
+	Folders    FolderService
 }
 
 // NewFileService generates a new service that applies the given options to each
@@ -29,8 +29,8 @@ type FileService struct {
 // is one), and before any request-specific options.
 func NewFileService(opts ...option.RequestOption) (r FileService) {
 	r = FileService{}
-	r.Options = opts
-	r.Files = NewFileService(opts...)
+	r.options = opts
+	r.FileAssets = NewFileAssetService(opts...)
 	r.Folders = NewFolderService(opts...)
 	return
 }
@@ -230,6 +230,55 @@ const (
 	FileActionResponseStatusProcessing FileActionResponseStatus = "PROCESSING"
 )
 
+// The property ClearExpires is required.
+type FileUpdateInputParam struct {
+	ClearExpires bool                 `json:"clearExpires" api:"required"`
+	ExpiresAt    param.Opt[time.Time] `json:"expiresAt,omitzero" format:"date-time"`
+	// Mark whether the file should be used in new content or not.
+	IsUsableInContent param.Opt[bool] `json:"isUsableInContent,omitzero"`
+	// New name for the file.
+	Name param.Opt[string] `json:"name,omitzero"`
+	// FolderId where the file should be moved to. folderId and folderPath parameters
+	// cannot be set at the same time.
+	ParentFolderID param.Opt[string] `json:"parentFolderId,omitzero"`
+	// Folder path where the file should be moved to. folderId and folderPath
+	// parameters cannot be set at the same time.
+	ParentFolderPath param.Opt[string] `json:"parentFolderPath,omitzero"`
+	// NONE: Do not run any duplicate validation. REJECT: Reject the upload if a
+	// duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload
+	// a new file and return the found duplicate instead.
+	//
+	// Any of "HIDDEN_INDEXABLE", "HIDDEN_NOT_INDEXABLE", "HIDDEN_PRIVATE",
+	// "HIDDEN_SENSITIVE", "PRIVATE", "PUBLIC_INDEXABLE", "PUBLIC_NOT_INDEXABLE",
+	// "SENSITIVE".
+	Access FileUpdateInputAccess `json:"access,omitzero"`
+	paramObj
+}
+
+func (r FileUpdateInputParam) MarshalJSON() (data []byte, err error) {
+	type shadow FileUpdateInputParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *FileUpdateInputParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// NONE: Do not run any duplicate validation. REJECT: Reject the upload if a
+// duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload
+// a new file and return the found duplicate instead.
+type FileUpdateInputAccess string
+
+const (
+	FileUpdateInputAccessHiddenIndexable    FileUpdateInputAccess = "HIDDEN_INDEXABLE"
+	FileUpdateInputAccessHiddenNotIndexable FileUpdateInputAccess = "HIDDEN_NOT_INDEXABLE"
+	FileUpdateInputAccessHiddenPrivate      FileUpdateInputAccess = "HIDDEN_PRIVATE"
+	FileUpdateInputAccessHiddenSensitive    FileUpdateInputAccess = "HIDDEN_SENSITIVE"
+	FileUpdateInputAccessPrivate            FileUpdateInputAccess = "PRIVATE"
+	FileUpdateInputAccessPublicIndexable    FileUpdateInputAccess = "PUBLIC_INDEXABLE"
+	FileUpdateInputAccessPublicNotIndexable FileUpdateInputAccess = "PUBLIC_NOT_INDEXABLE"
+	FileUpdateInputAccessSensitive          FileUpdateInputAccess = "SENSITIVE"
+)
+
 type Folder struct {
 	// ID of the folder.
 	ID string `json:"id" api:"required"`
@@ -320,6 +369,29 @@ const (
 	FolderActionResponseStatusProcessing FolderActionResponseStatus = "PROCESSING"
 )
 
+// The property Name is required.
+type FolderInputParam struct {
+	// Desired name for the folder.
+	Name string `json:"name" api:"required"`
+	// FolderId of the parent of the created folder. If not specified, the folder will
+	// be created at the root level. parentFolderId and parentFolderPath cannot be set
+	// at the same time.
+	ParentFolderID param.Opt[string] `json:"parentFolderId,omitzero"`
+	// Path of the parent of the created folder. If not specified the folder will be
+	// created at the root level. parentFolderPath and parentFolderId cannot be set at
+	// the same time.
+	ParentPath param.Opt[string] `json:"parentPath,omitzero"`
+	paramObj
+}
+
+func (r FolderInputParam) MarshalJSON() (data []byte, err error) {
+	type shadow FolderInputParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *FolderInputParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type FolderUpdateInputParam struct {
 	// New name. If specified the folder's name and fullPath will change. All children
 	// of the folder will be updated accordingly.
@@ -343,11 +415,12 @@ func (r *FolderUpdateInputParam) UnmarshalJSON(data []byte) error {
 type FolderUpdateInputWithIDParam struct {
 	// The unique identifier of the folder to be updated.
 	ID string `json:"id" api:"required"`
-	// The new name for the folder, which will also update the fullPath and all
-	// children of the folder.
+	// New name. If specified the folder's name and fullPath will change. All children
+	// of the folder will be updated accordingly.
 	Name param.Opt[string] `json:"name,omitzero"`
-	// The ID of the new parent folder, which will move the folder and its children
-	// into the specified folder.
+	// New parent folderId. If changed, the folder and all it's children will be moved
+	// into the specified folder. parentFolderId and parentFolderPath cannot be
+	// specified at the same time.
 	ParentFolderID param.Opt[int64] `json:"parentFolderId,omitzero"`
 	paramObj
 }
@@ -494,5 +567,44 @@ type ImportFromURLTaskLocator struct {
 // Returns the unmodified JSON received from the API
 func (r ImportFromURLTaskLocator) RawJSON() string { return r.JSON.raw }
 func (r *ImportFromURLTaskLocator) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type SignedURL struct {
+	// Timestamp of when the URL will no longer grant access to the file.
+	ExpiresAt time.Time `json:"expiresAt" api:"required" format:"date-time"`
+	// Signed URL with access to the specified file. Anyone with this URL will be able
+	// to access the file until it expires.
+	URL string `json:"url" api:"required"`
+	// Extension of the requested file.
+	Extension string `json:"extension"`
+	// For image and video files. The height of the file.
+	Height int64 `json:"height"`
+	// Name of the requested file.
+	Name string `json:"name"`
+	// Size in bytes of the requested file.
+	Size int64 `json:"size"`
+	// Type of the file. Can be IMG, DOCUMENT, AUDIO, MOVIE, or OTHER.
+	Type string `json:"type"`
+	// For image and video files. The width of the file.
+	Width int64 `json:"width"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ExpiresAt   respjson.Field
+		URL         respjson.Field
+		Extension   respjson.Field
+		Height      respjson.Field
+		Name        respjson.Field
+		Size        respjson.Field
+		Type        respjson.Field
+		Width       respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r SignedURL) RawJSON() string { return r.JSON.raw }
+func (r *SignedURL) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

@@ -20,7 +20,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewBlogSettingMultiLanguageService] method instead.
 type BlogSettingMultiLanguageService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewBlogSettingMultiLanguageService generates a new service that applies the
@@ -28,43 +28,48 @@ type BlogSettingMultiLanguageService struct {
 // client's options (if there is one), and before any request-specific options.
 func NewBlogSettingMultiLanguageService(opts ...option.RequestOption) (r BlogSettingMultiLanguageService) {
 	r = BlogSettingMultiLanguageService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
+// Attach a blog to a multi-language group.
 func (r *BlogSettingMultiLanguageService) AttachToLangGroup(ctx context.Context, body BlogSettingMultiLanguageAttachToLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blog-settings/2026-03/settings/multi-language/attach-to-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Create a new language variation from an existing blog.
 func (r *BlogSettingMultiLanguageService) NewLanguageVariation(ctx context.Context, body BlogSettingMultiLanguageNewLanguageVariationParams, opts ...option.RequestOption) (res *Blog, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "cms/blog-settings/2026-03/settings/multi-language/create-language-variation"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Detaches a blog from a multi-language group.
 func (r *BlogSettingMultiLanguageService) DetachFromLangGroup(ctx context.Context, body BlogSettingMultiLanguageDetachFromLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blog-settings/2026-03/settings/multi-language/detach-from-lang-group"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Set a blog as the primary language of a multi-language group.
 func (r *BlogSettingMultiLanguageService) SetNewLangPrimary(ctx context.Context, body BlogSettingMultiLanguageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blog-settings/2026-03/settings/multi-language/set-new-lang-primary"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
 	return err
 }
 
+// Explicitly set new languages for each blog in a multi-language group.
 func (r *BlogSettingMultiLanguageService) UpdateLanguages(ctx context.Context, body BlogSettingMultiLanguageUpdateLanguagesParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blog-settings/2026-03/settings/multi-language/update-languages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)

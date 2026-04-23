@@ -27,7 +27,7 @@ func TestMeetingAdvancedNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Scheduler.Meetings.Advanced.New(context.TODO(), scheduler.MeetingAdvancedNewParams{
 		OrganizerUserID: "organizerUserId",
@@ -37,7 +37,7 @@ func TestMeetingAdvancedNew(t *testing.T) {
 					ID: "id",
 				},
 				Types: []shared.AssociationSpecParam{{
-					AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
 					AssociationTypeID:   0,
 				}},
 			}},
@@ -54,7 +54,7 @@ func TestMeetingAdvancedNew(t *testing.T) {
 				HsMeetingStartTime:     time.Now(),
 				HsMeetingTitle:         "hs_meeting_title",
 				HsTimestamp:            time.Now(),
-				HubspotOwnerID:         "hubspot_owner_id",
+				HubSpotOwnerID:         "hubspot_owner_id",
 				HsActivityType:         hubspotsdk.String("hs_activity_type"),
 				HsAttachmentIDs:        []string{"string"},
 				HsAttendeeOwnerIDs:     []string{"string"},
@@ -86,7 +86,7 @@ func TestMeetingAdvancedBookWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Scheduler.Meetings.Advanced.Book(context.TODO(), scheduler.MeetingAdvancedBookParams{
 		ExternalMeetingBooking: scheduler.ExternalMeetingBookingParam{

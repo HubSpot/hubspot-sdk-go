@@ -27,7 +27,7 @@ func TestBlogSettingMultiLanguageAttachToLangGroupWithOptionalParams(t *testing.
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Settings.MultiLanguage.AttachToLangGroup(context.TODO(), cms.BlogSettingMultiLanguageAttachToLangGroupParams{
 		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
@@ -70,7 +70,7 @@ func TestBlogSettingMultiLanguageNewLanguageVariationWithOptionalParams(t *testi
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Blogs.Settings.MultiLanguage.NewLanguageVariation(context.TODO(), cms.BlogSettingMultiLanguageNewLanguageVariationParams{
 		BlogLanguageCloneRequestVNext: cms.BlogLanguageCloneRequestVNextParam{
@@ -98,7 +98,7 @@ func TestBlogSettingMultiLanguageDetachFromLangGroup(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Settings.MultiLanguage.DetachFromLangGroup(context.TODO(), cms.BlogSettingMultiLanguageDetachFromLangGroupParams{
 		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
@@ -138,7 +138,7 @@ func TestBlogSettingMultiLanguageSetNewLangPrimary(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Settings.MultiLanguage.SetNewLangPrimary(context.TODO(), cms.BlogSettingMultiLanguageSetNewLangPrimaryParams{
 		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
@@ -163,7 +163,7 @@ func TestBlogSettingMultiLanguageUpdateLanguages(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Settings.MultiLanguage.UpdateLanguages(context.TODO(), cms.BlogSettingMultiLanguageUpdateLanguagesParams{
 		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{

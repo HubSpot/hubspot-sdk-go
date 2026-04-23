@@ -11,8 +11,10 @@ import (
 	"time"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
+	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 type closureTransport struct {
@@ -26,7 +28,7 @@ func (t *closureTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 func TestUserAgentHeader(t *testing.T) {
 	var userAgent string
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -38,8 +40,23 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	_, _ = client.Account.Get(context.Background())
-	if userAgent != fmt.Sprintf("Hubspot/Go %s", internal.PackageVersion) {
+	_, _ = client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
+	if userAgent != fmt.Sprintf("HubSpot/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
 	}
 }
@@ -47,7 +64,7 @@ func TestUserAgentHeader(t *testing.T) {
 func TestRetryAfter(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -62,7 +79,22 @@ func TestRetryAfter(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Account.Get(context.Background())
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -81,7 +113,7 @@ func TestRetryAfter(t *testing.T) {
 func TestDeleteRetryCountHeader(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -97,7 +129,22 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeaderDel("X-Stainless-Retry-Count"),
 	)
-	_, err := client.Account.Get(context.Background())
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -111,7 +158,7 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 func TestOverwriteRetryCountHeader(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -127,7 +174,22 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeader("X-Stainless-Retry-Count", "42"),
 	)
-	_, err := client.Account.Get(context.Background())
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -141,7 +203,7 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 func TestRetryAfterMs(t *testing.T) {
 	attempts := 0
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -156,7 +218,22 @@ func TestRetryAfterMs(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Account.Get(context.Background())
+	_, err := client.Crm.Objects.Contacts.New(context.Background(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -167,7 +244,7 @@ func TestRetryAfterMs(t *testing.T) {
 
 func TestContextCancel(t *testing.T) {
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -179,7 +256,22 @@ func TestContextCancel(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	cancel()
-	_, err := client.Account.Get(cancelCtx)
+	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
 	}
@@ -187,7 +279,7 @@ func TestContextCancel(t *testing.T) {
 
 func TestContextCancelDelay(t *testing.T) {
 	client := hubspotsdk.NewClient(
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -199,7 +291,22 @@ func TestContextCancelDelay(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
 	defer cancel()
-	_, err := client.Account.Get(cancelCtx)
+	_, err := client.Crm.Objects.Contacts.New(cancelCtx, crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
+				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
+			},
+		},
+	})
 	if err == nil {
 		t.Error("expected there to be a cancel error")
 	}
@@ -215,7 +322,7 @@ func TestContextDeadline(t *testing.T) {
 
 	go func() {
 		client := hubspotsdk.NewClient(
-			option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+			option.WithAccessToken("My Access Token"),
 			option.WithHTTPClient(&http.Client{
 				Transport: &closureTransport{
 					fn: func(req *http.Request) (*http.Response, error) {
@@ -225,7 +332,22 @@ func TestContextDeadline(t *testing.T) {
 				},
 			}),
 		)
-		_, err := client.Account.Get(deadlineCtx)
+		_, err := client.Crm.Objects.Contacts.New(deadlineCtx, crm.ObjectContactNewParams{
+			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+				Associations: []crm.PublicAssociationsForObjectParam{{
+					To: shared.PublicObjectIDParam{
+						ID: "id",
+					},
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+						AssociationTypeID:   0,
+					}},
+				}},
+				Properties: map[string]string{
+					"foo": "string",
+				},
+			},
+		})
 		if err == nil {
 			t.Error("expected there to be a deadline error")
 		}

@@ -25,7 +25,7 @@ func TestMeetingBasicListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Scheduler.Meetings.Basic.List(context.TODO(), scheduler.MeetingBasicListParams{
 		After:           hubspotsdk.String("after"),
@@ -54,7 +54,7 @@ func TestMeetingBasicGetAvailabilityBySlugWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Scheduler.Meetings.Basic.GetAvailabilityBySlug(
 		context.TODO(),
@@ -84,7 +84,7 @@ func TestMeetingBasicGetBookingInfoBySlug(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Scheduler.Meetings.Basic.GetBookingInfoBySlug(
 		context.TODO(),

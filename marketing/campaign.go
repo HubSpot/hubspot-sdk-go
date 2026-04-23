@@ -16,6 +16,7 @@ import (
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
@@ -28,7 +29,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCampaignService] method instead.
 type CampaignService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 	Assets  CampaignAssetService
 	Batch   CampaignBatchService
 	Budget  CampaignBudgetService
@@ -41,7 +42,7 @@ type CampaignService struct {
 // there is one), and before any request-specific options.
 func NewCampaignService(opts ...option.RequestOption) (r CampaignService) {
 	r = CampaignService{}
-	r.Options = opts
+	r.options = opts
 	r.Assets = NewCampaignAssetService(opts...)
 	r.Batch = NewCampaignBatchService(opts...)
 	r.Budget = NewCampaignBudgetService(opts...)
@@ -50,46 +51,85 @@ func NewCampaignService(opts ...option.RequestOption) (r CampaignService) {
 	return
 }
 
-// Perform a partial update of a campaign identified by the specified ID. Provided
-// property values will be overwritten. Read-only and non-existent properties will
-// be ignored. Properties values can be cleared by passing an empty string. Note:
-// The 'hs_goal' property is deprecated and will be ignored if provided.
+// Create a campaign with the specified properties and receive a copy of the
+// campaign object, including its ID. Note that the 'hs_goal' property is
+// deprecated and will be ignored if provided.
+func (r *CampaignService) New(ctx context.Context, body CampaignNewParams, opts ...option.RequestOption) (res *PublicCampaign, err error) {
+	opts = slices.Concat(r.options, opts)
+	path := "marketing/campaigns/2026-03"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return res, err
+}
+
+// Perform a partial update of a campaign identified by the specified campaignGuid.
+// Provided property values will be overwritten. Read-only and non-existent
+// properties will cause 400 error. If an empty string is passed for any property
+// in the Batch Update, it will reset that property's value.
 func (r *CampaignService) Update(ctx context.Context, campaignGuid string, body CampaignUpdateParams, opts ...option.RequestOption) (res *PublicCampaign, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return res, err
 }
 
-// Delete a specified campaign from the system. This operation removes the campaign
-// identified by the provided campaignGuid from your HubSpot account.
+// Retrieve a paginated list of campaigns from your HubSpot account. This endpoint
+// allows you to specify sorting, pagination, and filtering options to tailor the
+// results to your needs.
+func (r *CampaignService) List(ctx context.Context, query CampaignListParams, opts ...option.RequestOption) (res *pagination.Page[PublicCampaign], err error) {
+	var raw *http.Response
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	path := "marketing/campaigns/2026-03"
+	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+	if err != nil {
+		return nil, err
+	}
+	err = cfg.Execute()
+	if err != nil {
+		return nil, err
+	}
+	res.SetPageConfig(cfg, raw)
+	return res, nil
+}
+
+// Retrieve a paginated list of campaigns from your HubSpot account. This endpoint
+// allows you to specify sorting, pagination, and filtering options to tailor the
+// results to your needs.
+func (r *CampaignService) ListAutoPaging(ctx context.Context, query CampaignListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicCampaign] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+}
+
+// Delete a specified campaign from the system. This call will return a 204 No
+// Content response regardless of whether the campaignGuid provided corresponds to
+// an existing campaign or not.
 func (r *CampaignService) Delete(ctx context.Context, campaignGuid string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return err
 }
 
-// Read a campaign identified by a specified internal ID. This endpoint allows you
-// to retrieve detailed information about a specific marketing campaign using its
-// unique identifier. It supports filtering the response by specific properties and
-// date ranges.
+// Get a campaign identified by a specific campaignGuid with the given properties.
+// Along with the campaign information, it also returns information about assets.
+// Depending on the query parameters used, this can also be used to return
+// information about the corresponding assets' metrics. Metrics are available only
+// if startDate and endDate are provided.
 func (r *CampaignService) Get(ctx context.Context, campaignGuid string, query CampaignGetParams, opts ...option.RequestOption) (res *PublicCampaignWithAssets, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
@@ -159,26 +199,24 @@ func (r *BatchInputPublicCampaignReadInputParam) UnmarshalJSON(data []byte) erro
 }
 
 type BatchResponsePublicCampaign struct {
-	// The date and time when the batch operation was completed, in ISO 8601 format.
+	// The date and time when the batch operation was completed, formatted as a
+	// date-time string.
 	CompletedAt time.Time `json:"completedAt" api:"required" format:"date-time"`
 	// An array of results from the batch operation, each item representing a public
 	// campaign.
 	Results []PublicCampaign `json:"results" api:"required"`
-	// The date and time when the batch operation started, in ISO 8601 format.
+	// The date and time when the batch operation started, formatted as a date-time
+	// string.
 	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
-	// The current status of the batch operation. Valid values include 'PENDING',
-	// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+	// The current status of the batch operation, with possible values: CANCELED,
+	// COMPLETE, PENDING, PROCESSING.
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicCampaignStatus `json:"status" api:"required"`
-	// An array of errors that occurred during the batch operation, each item detailing
-	// a specific error.
-	Errors []shared.StandardError `json:"errors"`
-	// A map of link names to associated URIs related to the batch operation.
+	// A map of related links associated with the batch operation.
 	Links map[string]string `json:"links"`
-	// The number of errors that occurred during the batch operation.
-	NumErrors int64 `json:"numErrors"`
-	// The date and time when the batch operation was requested, in ISO 8601 format.
+	// The date and time when the batch operation was requested, formatted as a
+	// date-time string.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -186,9 +224,7 @@ type BatchResponsePublicCampaign struct {
 		Results     respjson.Field
 		StartedAt   respjson.Field
 		Status      respjson.Field
-		Errors      respjson.Field
 		Links       respjson.Field
-		NumErrors   respjson.Field
 		RequestedAt respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
@@ -201,8 +237,8 @@ func (r *BatchResponsePublicCampaign) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The current status of the batch operation. Valid values include 'PENDING',
-// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+// The current status of the batch operation, with possible values: CANCELED,
+// COMPLETE, PENDING, PROCESSING.
 type BatchResponsePublicCampaignStatus string
 
 const (
@@ -213,27 +249,21 @@ const (
 )
 
 type BatchResponsePublicCampaignWithAssets struct {
-	// The date and time when the batch operation was completed, in ISO 8601 format.
+	// The timestamp when the batch request processing was completed.
 	CompletedAt time.Time `json:"completedAt" api:"required" format:"date-time"`
 	// An array of results from the batch operation, each representing a public
 	// campaign with assets.
 	Results []PublicCampaignWithAssets `json:"results" api:"required"`
-	// The date and time when the batch operation started, in ISO 8601 format.
+	// The timestamp when the processing of the batch request began.
 	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
-	// The current status of the batch operation. Valid values include 'PENDING',
-	// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+	// The current processing status of the batch operation, with possible values:
+	// CANCELED, COMPLETE, PENDING, PROCESSING.
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicCampaignWithAssetsStatus `json:"status" api:"required"`
-	// An array of errors encountered during the batch operation, each described by a
-	// StandardError object.
-	Errors []shared.StandardError `json:"errors"`
-	// A map of link names to associated URIs that provide additional information about
-	// the batch operation.
+	// A collection of URLs linking to related resources or documentation.
 	Links map[string]string `json:"links"`
-	// The number of errors encountered during the batch operation.
-	NumErrors int64 `json:"numErrors"`
-	// The date and time when the batch operation was requested, in ISO 8601 format.
+	// The timestamp when the batch request was initially made.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -241,9 +271,7 @@ type BatchResponsePublicCampaignWithAssets struct {
 		Results     respjson.Field
 		StartedAt   respjson.Field
 		Status      respjson.Field
-		Errors      respjson.Field
 		Links       respjson.Field
-		NumErrors   respjson.Field
 		RequestedAt respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
@@ -256,8 +284,8 @@ func (r *BatchResponsePublicCampaignWithAssets) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The current status of the batch operation. Valid values include 'PENDING',
-// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+// The current processing status of the batch operation, with possible values:
+// CANCELED, COMPLETE, PENDING, PROCESSING.
 type BatchResponsePublicCampaignWithAssetsStatus string
 
 const (
@@ -323,6 +351,29 @@ type CollectionResponsePublicCampaignAssetForwardPaging struct {
 // Returns the unmodified JSON received from the API
 func (r CollectionResponsePublicCampaignAssetForwardPaging) RawJSON() string { return r.JSON.raw }
 func (r *CollectionResponsePublicCampaignAssetForwardPaging) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type CollectionResponseWithTotalPublicCampaign struct {
+	// An array of PublicCampaign objects, each representing a campaign with its
+	// associated properties.
+	Results []PublicCampaign `json:"results" api:"required"`
+	// An integer representing the total number of public campaigns available.
+	Total  int64         `json:"total" api:"required"`
+	Paging shared.Paging `json:"paging"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		Total       respjson.Field
+		Paging      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CollectionResponseWithTotalPublicCampaign) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponseWithTotalPublicCampaign) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -429,8 +480,8 @@ type PublicBudgetTotals struct {
 	// An array of budget items associated with the campaign. Each item is represented
 	// by a PublicBudgetItem object.
 	BudgetItems []PublicBudgetItem `json:"budgetItems" api:"required"`
-	// The currency code used for budget and spending amounts. Valid values include
-	// standard currency codes such as 'USD', 'EUR', 'JPY', etc.
+	// The currency code used for the budget and spend amounts, following ISO 4217
+	// standards.
 	//
 	// Any of "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
 	// "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BOV", "BRL",
@@ -453,11 +504,12 @@ type PublicBudgetTotals struct {
 	// An array of spend items associated with the campaign. Each item is represented
 	// by a PublicSpendItem object.
 	SpendItems []PublicSpendItem `json:"spendItems" api:"required"`
-	// The total budget amount for the campaign, represented as a number.
+	// The total budget allocated for the campaign.
 	BudgetTotal float64 `json:"budgetTotal"`
-	// The remaining budget for the campaign after spending, represented as a number.
+	// The remaining budget available for the campaign after accounting for all spend
+	// items.
 	RemainingBudget float64 `json:"remainingBudget"`
-	// The total amount spent for the campaign, represented as a number.
+	// The total amount spent across all spend items in the campaign.
 	SpendTotal float64 `json:"spendTotal"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -478,8 +530,8 @@ func (r *PublicBudgetTotals) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The currency code used for budget and spending amounts. Valid values include
-// standard currency codes such as 'USD', 'EUR', 'JPY', etc.
+// The currency code used for the budget and spend amounts, following ISO 4217
+// standards.
 type PublicBudgetTotalsCurrencyCode string
 
 const (
@@ -737,10 +789,10 @@ func (r *PublicCampaignAsset) UnmarshalJSON(data []byte) error {
 
 // The properties ID, Properties are required.
 type PublicCampaignBatchUpdateItemParam struct {
-	// The unique identifier for the campaign to be updated. It is a string.
+	// The unique identifier for the campaign to be updated.
 	ID string `json:"id" api:"required"`
-	// A map of property names to their new values for the campaign. Each property name
-	// is a string, and its value is also a string.
+	// A set of key-value pairs representing the properties to be updated for the
+	// campaign.
 	Properties map[string]string `json:"properties,omitzero" api:"required"`
 	paramObj
 }
@@ -787,7 +839,7 @@ func (r *PublicCampaignInputParam) UnmarshalJSON(data []byte) error {
 
 // The property ID is required.
 type PublicCampaignReadInputParam struct {
-	// The unique identifier for the campaign, represented as a string.
+	// The unique identifier for a campaign.
 	ID string `json:"id" api:"required"`
 	paramObj
 }
@@ -803,17 +855,19 @@ func (r *PublicCampaignReadInputParam) UnmarshalJSON(data []byte) error {
 type PublicCampaignWithAssets struct {
 	// The unique identifier for the campaign.
 	ID string `json:"id" api:"required"`
-	// A map of asset types to their corresponding collection of campaign assets,
-	// represented by CollectionResponsePublicCampaignAsset objects.
+	// Contains the assets associated with the campaign, each represented as a
+	// collection of campaign assets.
 	Assets map[string]CollectionResponsePublicCampaignAsset `json:"assets" api:"required"`
 	// An array of business units associated with the campaign, each represented by a
 	// PublicBusinessUnit object.
 	BusinessUnits []PublicBusinessUnit `json:"businessUnits" api:"required"`
-	// The date and time when the campaign was created, in ISO 8601 format.
+	// The date and time when the campaign was created, formatted as a date-time
+	// string.
 	CreatedAt time.Time `json:"createdAt" api:"required" format:"date-time"`
-	// A map of custom property names to their values for the campaign.
+	// A map of key-value pairs representing the properties of the campaign.
 	Properties map[string]string `json:"properties" api:"required"`
-	// The date and time when the campaign was last updated, in ISO 8601 format.
+	// The date and time when the campaign was last updated, formatted as a date-time
+	// string.
 	UpdatedAt time.Time `json:"updatedAt" api:"required" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -835,20 +889,19 @@ func (r *PublicCampaignWithAssets) UnmarshalJSON(data []byte) error {
 }
 
 type PublicSpendItem struct {
-	// The unique identifier for the spend item, represented as a string.
+	// Unique identifier for the spend item.
 	ID string `json:"id" api:"required"`
-	// The monetary amount of the spend item, represented as a number.
+	// The monetary value associated with the spend item.
 	Amount float64 `json:"amount" api:"required"`
-	// A Unix timestamp in milliseconds indicating when the spend item was created.
+	// The timestamp indicating when the spend item was created.
 	CreatedAt int64 `json:"createdAt" api:"required"`
-	// The name of the spend item, represented as a string.
+	// The name assigned to the spend item.
 	Name string `json:"name" api:"required"`
-	// An integer that specifies the order of the spend item.
+	// The sequence order of the spend item, where 0 is the oldest.
 	Order int64 `json:"order" api:"required"`
-	// A Unix timestamp in milliseconds indicating when the spend item was last
-	// updated.
+	// The timestamp indicating when the spend item was last updated.
 	UpdatedAt int64 `json:"updatedAt" api:"required"`
-	// A brief description of the spend item, represented as a string.
+	// A detailed explanation or notes about the spend item.
 	Description string `json:"description"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1122,6 +1175,18 @@ const (
 	RevenueAttributionAggregateCurrencyCodeZwl RevenueAttributionAggregateCurrencyCode = "ZWL"
 )
 
+type CampaignNewParams struct {
+	PublicCampaignInput PublicCampaignInputParam
+	paramObj
+}
+
+func (r CampaignNewParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.PublicCampaignInput)
+}
+func (r *CampaignNewParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type CampaignUpdateParams struct {
 	PublicCampaignInput PublicCampaignInputParam
 	paramObj
@@ -1134,13 +1199,31 @@ func (r *CampaignUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type CampaignListParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// The maximum number of results to display per page.
+	Limit      param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	Name       param.Opt[string] `query:"name,omitzero" json:"-"`
+	Sort       param.Opt[string] `query:"sort,omitzero" json:"-"`
+	Properties []string          `query:"properties,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [CampaignListParams]'s query parameters as `url.Values`.
+func (r CampaignListParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
 type CampaignGetParams struct {
-	// The end date for filtering campaign data, in YYYY-MM-DD format.
-	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
-	// The start date for filtering campaign data, in YYYY-MM-DD format.
-	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
-	// A comma-separated list of property names to include in the response.
-	Properties []string `query:"properties,omitzero" json:"-"`
+	EndDate    param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	StartDate  param.Opt[string] `query:"startDate,omitzero" json:"-"`
+	Properties []string          `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 

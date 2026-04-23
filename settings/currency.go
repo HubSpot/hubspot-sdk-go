@@ -24,7 +24,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCurrencyService] method instead.
 type CurrencyService struct {
-	Options        []option.RequestOption
+	options        []option.RequestOption
 	CentralFxRates CurrencyCentralFxRateService
 	ExchangeRates  CurrencyExchangeRateService
 }
@@ -34,28 +34,32 @@ type CurrencyService struct {
 // there is one), and before any request-specific options.
 func NewCurrencyService(opts ...option.RequestOption) (r CurrencyService) {
 	r = CurrencyService{}
-	r.Options = opts
+	r.options = opts
 	r.CentralFxRates = NewCurrencyCentralFxRateService(opts...)
 	r.ExchangeRates = NewCurrencyExchangeRateService(opts...)
 	return
 }
 
+// Get the details for the company currency. The company currency is used in deal
+// totals, reports, and the default currency for new deals.
 func (r *CurrencyService) GetCompanyCurrency(ctx context.Context, opts ...option.RequestOption) (res *CompanyCurrency, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/company-currency"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Retrieve a list of all available currency codes and their names.
 func (r *CurrencyService) ListCodes(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseCurrencyCodeInfoNoPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/codes"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Set or update the primary company currency.
 func (r *CurrencyService) UpdateCompanyCurrency(ctx context.Context, body CurrencyUpdateCompanyCurrencyParams, opts ...option.RequestOption) (res *CompanyCurrency, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/company-currency"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, &res, opts...)
 	return res, err
@@ -89,20 +93,6 @@ func (r *BatchInputExchangeRateUpdateRequestParam) UnmarshalJSON(data []byte) er
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property Inputs is required.
-type BatchInputPublicObjectIDParam struct {
-	Inputs []shared.PublicObjectIDParam `json:"inputs,omitzero" api:"required"`
-	paramObj
-}
-
-func (r BatchInputPublicObjectIDParam) MarshalJSON() (data []byte, err error) {
-	type shadow BatchInputPublicObjectIDParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BatchInputPublicObjectIDParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type BatchResponseExchangeRate struct {
 	// The datetime the response was completed
 	CompletedAt time.Time      `json:"completedAt" api:"required" format:"date-time"`
@@ -113,10 +103,8 @@ type BatchResponseExchangeRate struct {
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponseExchangeRateStatus `json:"status" api:"required"`
-	Errors []shared.StandardError          `json:"errors"`
 	// The link to the next page with exchange rates.
-	Links     map[string]string `json:"links"`
-	NumErrors int64             `json:"numErrors"`
+	Links map[string]string `json:"links"`
 	// The datetime the of the request.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -125,9 +113,7 @@ type BatchResponseExchangeRate struct {
 		Results     respjson.Field
 		StartedAt   respjson.Field
 		Status      respjson.Field
-		Errors      respjson.Field
 		Links       respjson.Field
-		NumErrors   respjson.Field
 		RequestedAt respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string

@@ -24,7 +24,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewMeetingBasicService] method instead.
 type MeetingBasicService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewMeetingBasicService generates a new service that applies the given options to
@@ -32,14 +32,14 @@ type MeetingBasicService struct {
 // there is one), and before any request-specific options.
 func NewMeetingBasicService(opts ...option.RequestOption) (r MeetingBasicService) {
 	r = MeetingBasicService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
 // Get a paged list meeting scheduling pages
 func (r *MeetingBasicService) List(ctx context.Context, query MeetingBasicListParams, opts ...option.RequestOption) (res *pagination.Page[ExternalLinkMetadata], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "scheduler/2026-03/meetings/meeting-links"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -61,24 +61,24 @@ func (r *MeetingBasicService) ListAutoPaging(ctx context.Context, query MeetingB
 
 // Get the next availability times for a meeting page.
 func (r *MeetingBasicService) GetAvailabilityBySlug(ctx context.Context, slug string, query MeetingBasicGetAvailabilityBySlugParams, opts ...option.RequestOption) (res *ExternalLinkAvailabilityAndBusyTimes, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if slug == "" {
 		err = errors.New("missing required slug parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("scheduler/2026-03/meetings/meeting-links/book/availability-page/%s", slug)
+	path := fmt.Sprintf("scheduler/2026-03/meetings/meeting-links/book/availability-page/%s", url.PathEscape(slug))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
 // Get details about the initial information necessary for a meeting scheduler.
 func (r *MeetingBasicService) GetBookingInfoBySlug(ctx context.Context, slug string, query MeetingBasicGetBookingInfoBySlugParams, opts ...option.RequestOption) (res *ExternalBookingInfo, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if slug == "" {
 		err = errors.New("missing required slug parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("scheduler/2026-03/meetings/meeting-links/book/%s", slug)
+	path := fmt.Sprintf("scheduler/2026-03/meetings/meeting-links/book/%s", url.PathEscape(slug))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }

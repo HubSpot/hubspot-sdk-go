@@ -13,8 +13,10 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewSettingService] method instead.
 type SettingService struct {
-	Options    []option.RequestOption
+	options    []option.RequestOption
 	Currencies CurrencyService
+	TaxRates   TaxRateService
+	Users      UserService
 }
 
 // NewSettingService generates a new service that applies the given options to each
@@ -22,7 +24,9 @@ type SettingService struct {
 // is one), and before any request-specific options.
 func NewSettingService(opts ...option.RequestOption) (r SettingService) {
 	r = SettingService{}
-	r.Options = opts
+	r.options = opts
 	r.Currencies = NewCurrencyService(opts...)
+	r.TaxRates = NewTaxRateService(opts...)
+	r.Users = NewUserService(opts...)
 	return
 }

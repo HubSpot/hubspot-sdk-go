@@ -26,28 +26,24 @@ func TestObjectContactNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Crm.Objects.Contacts.New(
-		context.TODO(),
-		"objectType",
-		crm.ObjectContactNewParams{
-			SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
-				Associations: []crm.PublicAssociationsForObjectParam{{
-					To: shared.PublicObjectIDParam{
-						ID: "id",
-					},
-					Types: []shared.AssociationSpecParam{{
-						AssociationCategory: shared.AssociationSpecAssociationCategoryHubspotDefined,
-						AssociationTypeID:   0,
-					}},
-				}},
-				Properties: map[string]string{
-					"foo": "string",
+	_, err := client.Crm.Objects.Contacts.New(context.TODO(), crm.ObjectContactNewParams{
+		SimplePublicObjectInputForCreate: crm.SimplePublicObjectInputForCreateParam{
+			Associations: []crm.PublicAssociationsForObjectParam{{
+				To: shared.PublicObjectIDParam{
+					ID: "id",
 				},
+				Types: []shared.AssociationSpecParam{{
+					AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+					AssociationTypeID:   0,
+				}},
+			}},
+			Properties: map[string]string{
+				"foo": "string",
 			},
 		},
-	)
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -68,13 +64,12 @@ func TestObjectContactUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Crm.Objects.Contacts.Update(
 		context.TODO(),
-		"objectId",
+		"contactId",
 		crm.ObjectContactUpdateParams{
-			ObjectType: "objectType",
 			SimplePublicObjectInput: crm.SimplePublicObjectInputParam{
 				Properties: map[string]string{
 					"foo": "string",
@@ -103,20 +98,16 @@ func TestObjectContactListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Crm.Objects.Contacts.List(
-		context.TODO(),
-		"objectType",
-		crm.ObjectContactListParams{
-			After:                 hubspotsdk.String("after"),
-			Archived:              hubspotsdk.Bool(true),
-			Associations:          []string{"string"},
-			Limit:                 hubspotsdk.Int(0),
-			Properties:            []string{"string"},
-			PropertiesWithHistory: []string{"string"},
-		},
-	)
+	_, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
+		After:                 hubspotsdk.String("after"),
+		Archived:              hubspotsdk.Bool(true),
+		Associations:          []string{"string"},
+		Limit:                 hubspotsdk.Int(0),
+		Properties:            []string{"string"},
+		PropertiesWithHistory: []string{"string"},
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -137,15 +128,9 @@ func TestObjectContactDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	err := client.Crm.Objects.Contacts.Delete(
-		context.TODO(),
-		"objectId",
-		crm.ObjectContactDeleteParams{
-			ObjectType: "objectType",
-		},
-	)
+	err := client.Crm.Objects.Contacts.Delete(context.TODO(), "contactId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -166,18 +151,14 @@ func TestObjectContactGdprDeleteWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	err := client.Crm.Objects.Contacts.GdprDelete(
-		context.TODO(),
-		"objectType",
-		crm.ObjectContactGdprDeleteParams{
-			PublicGdprDeleteInput: crm.PublicGdprDeleteInputParam{
-				ObjectID:   "objectId",
-				IDProperty: hubspotsdk.String("idProperty"),
-			},
+	err := client.Crm.Objects.Contacts.GdprDelete(context.TODO(), crm.ObjectContactGdprDeleteParams{
+		PublicGdprDeleteInput: crm.PublicGdprDeleteInputParam{
+			ObjectID:   "objectId",
+			IDProperty: hubspotsdk.String("idProperty"),
 		},
-	)
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -198,13 +179,12 @@ func TestObjectContactGetWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Crm.Objects.Contacts.Get(
 		context.TODO(),
-		"objectId",
+		"contactId",
 		crm.ObjectContactGetParams{
-			ObjectType:            "objectType",
 			Archived:              hubspotsdk.Bool(true),
 			Associations:          []string{"string"},
 			IDProperty:            hubspotsdk.String("idProperty"),
@@ -232,18 +212,14 @@ func TestObjectContactMerge(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Crm.Objects.Contacts.Merge(
-		context.TODO(),
-		"objectType",
-		crm.ObjectContactMergeParams{
-			PublicMergeInput: crm.PublicMergeInputParam{
-				ObjectIDToMerge: "objectIdToMerge",
-				PrimaryObjectID: "primaryObjectId",
-			},
+	_, err := client.Crm.Objects.Contacts.Merge(context.TODO(), crm.ObjectContactMergeParams{
+		PublicMergeInput: crm.PublicMergeInputParam{
+			ObjectIDToMerge: "objectIdToMerge",
+			PrimaryObjectID: "primaryObjectId",
 		},
-	)
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -264,30 +240,26 @@ func TestObjectContactSearchWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Crm.Objects.Contacts.Search(
-		context.TODO(),
-		"objectType",
-		crm.ObjectContactSearchParams{
-			PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
-				After: "after",
-				FilterGroups: []crm.FilterGroupParam{{
-					Filters: []crm.FilterParam{{
-						Operator:     crm.FilterOperatorBetween,
-						PropertyName: "propertyName",
-						HighValue:    hubspotsdk.String("highValue"),
-						Value:        hubspotsdk.String("value"),
-						Values:       []string{"string"},
-					}},
+	_, err := client.Crm.Objects.Contacts.Search(context.TODO(), crm.ObjectContactSearchParams{
+		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
+			After: "after",
+			FilterGroups: []crm.FilterGroupParam{{
+				Filters: []crm.FilterParam{{
+					Operator:     crm.FilterOperatorBetween,
+					PropertyName: "propertyName",
+					HighValue:    hubspotsdk.String("highValue"),
+					Value:        hubspotsdk.String("value"),
+					Values:       []string{"string"},
 				}},
-				Limit:      0,
-				Properties: []string{"string"},
-				Sorts:      []string{"string"},
-				Query:      hubspotsdk.String("query"),
-			},
+			}},
+			Limit:      0,
+			Properties: []string{"string"},
+			Sorts:      []string{"string"},
+			Query:      hubspotsdk.String("query"),
 		},
-	)
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

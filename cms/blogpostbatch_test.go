@@ -17,6 +17,7 @@ import (
 	"github.com/stainless-sdks/hubspot-sdk-go/cms"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 func TestBlogPostBatchNew(t *testing.T) {
@@ -28,7 +29,7 @@ func TestBlogPostBatchNew(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Batch.New(context.TODO(), cms.BlogPostBatchNewParams{
 		BatchInputBlogPost: cms.BatchInputBlogPostParam{
@@ -118,29 +119,29 @@ func TestBlogPostBatchNew(t *testing.T) {
 										Hidden: true,
 										Margin: cms.MarginParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
 										Padding: cms.PaddingParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Left: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Right: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
@@ -188,29 +189,29 @@ func TestBlogPostBatchNew(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
@@ -309,7 +310,7 @@ func TestBlogPostBatchUpdateWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Batch.Update(context.TODO(), cms.BlogPostBatchUpdateParams{
 		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
@@ -350,10 +351,10 @@ func TestBlogPostBatchDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Posts.Batch.Delete(context.TODO(), cms.BlogPostBatchDeleteParams{
-		BatchInputString: cms.BatchInputStringParam{
+		BatchInputString: shared.BatchInputStringParam{
 			Inputs: []string{"string"},
 		},
 	})
@@ -375,10 +376,10 @@ func TestBlogPostBatchGetWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Batch.Get(context.TODO(), cms.BlogPostBatchGetParams{
-		BatchInputString: cms.BatchInputStringParam{
+		BatchInputString: shared.BatchInputStringParam{
 			Inputs: []string{"string"},
 		},
 		Archived: hubspotsdk.Bool(true),

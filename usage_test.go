@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
+	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
@@ -23,11 +24,15 @@ func TestUsage(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	portalInformationResponse, err := client.Account.Get(context.TODO())
+	result, err := client.Crm.Objects.Contacts.Get(
+		context.TODO(),
+		"contactId",
+		crm.ObjectContactGetParams{},
+	)
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	t.Logf("%+v\n", portalInformationResponse.AccountType)
+	t.Logf("%+v\n", result.ID)
 }

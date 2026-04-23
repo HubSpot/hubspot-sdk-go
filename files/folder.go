@@ -27,7 +27,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewFolderService] method instead.
 type FolderService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewFolderService generates a new service that applies the given options to each
@@ -35,18 +35,68 @@ type FolderService struct {
 // is one), and before any request-specific options.
 func NewFolderService(opts ...option.RequestOption) (r FolderService) {
 	r = FolderService{}
-	r.Options = opts
+	r.options = opts
 	return
+}
+
+// Delete folder by ID.
+func (r *FolderService) DeleteByID(ctx context.Context, folderID string, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	if folderID == "" {
+		err = errors.New("missing required folderId parameter")
+		return err
+	}
+	path := fmt.Sprintf("files/2026-03/folders/%s", url.PathEscape(folderID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return err
+}
+
+// Delete a folder, identified by its path.
+func (r *FolderService) DeleteByPath(ctx context.Context, folderPath string, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	if folderPath == "" {
+		err = errors.New("missing required folderPath parameter")
+		return err
+	}
+	path := fmt.Sprintf("files/2026-03/folders/%s", url.PathEscape(folderPath))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return err
+}
+
+// Retrieve a folder by its ID.
+func (r *FolderService) GetByID(ctx context.Context, folderID string, query FolderGetByIDParams, opts ...option.RequestOption) (res *Folder, err error) {
+	opts = slices.Concat(r.options, opts)
+	if folderID == "" {
+		err = errors.New("missing required folderId parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("files/2026-03/folders/%s", url.PathEscape(folderID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
+}
+
+// Retrieve a folder, identified by its path.
+func (r *FolderService) GetByPath(ctx context.Context, folderPath string, query FolderGetByPathParams, opts ...option.RequestOption) (res *Folder, err error) {
+	opts = slices.Concat(r.options, opts)
+	if folderPath == "" {
+		err = errors.New("missing required folderPath parameter")
+		return nil, err
+	}
+	path := fmt.Sprintf("files/2026-03/folders/%s", url.PathEscape(folderPath))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
 }
 
 // Check status of folder update. Folder updates happen asynchronously.
 func (r *FolderService) GetUpdateAsyncStatus(ctx context.Context, taskID string, opts ...option.RequestOption) (res *FolderActionResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if taskID == "" {
 		err = errors.New("missing required taskId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("files/2026-03/folders/update/async/tasks/%s/status", taskID)
+	path := fmt.Sprintf("files/2026-03/folders/update/async/tasks/%s/status", url.PathEscape(taskID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
@@ -54,7 +104,7 @@ func (r *FolderService) GetUpdateAsyncStatus(ctx context.Context, taskID string,
 // Search for folders. Does not contain hidden or archived folders.
 func (r *FolderService) Search(ctx context.Context, query FolderSearchParams, opts ...option.RequestOption) (res *pagination.Page[Folder], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "files/2026-03/folders/search"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -77,7 +127,7 @@ func (r *FolderService) SearchAutoPaging(ctx context.Context, query FolderSearch
 // Update properties of folder by given ID. This action happens asynchronously and
 // will update all of the folder's children as well.
 func (r *FolderService) UpdateAsyncByID(ctx context.Context, body FolderUpdateAsyncByIDParams, opts ...option.RequestOption) (res *FolderUpdateTaskLocator, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "files/2026-03/folders/update/async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
@@ -85,14 +135,40 @@ func (r *FolderService) UpdateAsyncByID(ctx context.Context, body FolderUpdateAs
 
 // Update a folder's properties, identified by folder ID.
 func (r *FolderService) UpdateByID(ctx context.Context, folderID string, body FolderUpdateByIDParams, opts ...option.RequestOption) (res *Folder, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if folderID == "" {
 		err = errors.New("missing required folderId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("files/2026-03/folders/%s", folderID)
+	path := fmt.Sprintf("files/2026-03/folders/%s", url.PathEscape(folderID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return res, err
+}
+
+type FolderGetByIDParams struct {
+	Properties []string `query:"properties,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [FolderGetByIDParams]'s query parameters as `url.Values`.
+func (r FolderGetByIDParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type FolderGetByPathParams struct {
+	Properties []string `query:"properties,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [FolderGetByPathParams]'s query parameters as `url.Values`.
+func (r FolderGetByPathParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type FolderSearchParams struct {

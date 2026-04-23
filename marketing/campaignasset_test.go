@@ -25,7 +25,7 @@ func TestCampaignAssetUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Marketing.Campaigns.Assets.Update(
 		context.TODO(),
@@ -55,7 +55,7 @@ func TestCampaignAssetListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Marketing.Campaigns.Assets.List(
 		context.TODO(),
@@ -88,7 +88,7 @@ func TestCampaignAssetDelete(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Marketing.Campaigns.Assets.Delete(
 		context.TODO(),

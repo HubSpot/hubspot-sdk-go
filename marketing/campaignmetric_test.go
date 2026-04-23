@@ -25,7 +25,7 @@ func TestCampaignMetricGetAttributionMetricsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Marketing.Campaigns.Metrics.GetAttributionMetrics(
 		context.TODO(),
@@ -55,7 +55,7 @@ func TestCampaignMetricGetRevenueAttributionWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Marketing.Campaigns.Metrics.GetRevenueAttribution(
 		context.TODO(),
@@ -86,7 +86,7 @@ func TestCampaignMetricListContactIDsByTypeWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Marketing.Campaigns.Metrics.ListContactIDsByType(
 		context.TODO(),

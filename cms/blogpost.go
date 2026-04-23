@@ -26,8 +26,10 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewBlogPostService] method instead.
 type BlogPostService struct {
-	Options []option.RequestOption
-	Batch   BlogPostBatchService
+	options       []option.RequestOption
+	Batch         BlogPostBatchService
+	MultiLanguage BlogPostMultiLanguageService
+	Revisions     BlogPostRevisionService
 }
 
 // NewBlogPostService generates a new service that applies the given options to
@@ -35,269 +37,181 @@ type BlogPostService struct {
 // there is one), and before any request-specific options.
 func NewBlogPostService(opts ...option.RequestOption) (r BlogPostService) {
 	r = BlogPostService{}
-	r.Options = opts
+	r.options = opts
 	r.Batch = NewBlogPostBatchService(opts...)
+	r.MultiLanguage = NewBlogPostMultiLanguageService(opts...)
+	r.Revisions = NewBlogPostRevisionService(opts...)
 	return
 }
 
+// Create a new blog post, specifying its content in the request body.
 func (r *BlogPostService) New(ctx context.Context, body BlogPostNewParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blogs/2026-03/posts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Partially updates a single blog post by ID. You only need to specify the values
+// that you want to update.
 func (r *BlogPostService) Update(ctx context.Context, objectID string, params BlogPostUpdateParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
 	return res, err
 }
 
 func (r *BlogPostService) List(ctx context.Context, query BlogPostListParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts"
+	path := "cms/blogs/2026-03/posts/cursor"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
+// Delete a blog post by ID.
 func (r *BlogPostService) Delete(ctx context.Context, objectID string, body BlogPostDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, nil, opts...)
 	return err
 }
 
-func (r *BlogPostService) AttachToLangGroup(ctx context.Context, body BlogPostAttachToLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts/multi-language/attach-to-lang-group"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
+// Clone a blog post, making a copy of it in a new blog post.
 func (r *BlogPostService) Clone(ctx context.Context, body BlogPostCloneParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blogs/2026-03/posts/clone"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-func (r *BlogPostService) NewLangVariation(ctx context.Context, body BlogPostNewLangVariationParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts/multi-language/create-language-variation"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-func (r *BlogPostService) DetachFromLangGroup(ctx context.Context, body BlogPostDetachFromLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts/multi-language/detach-from-lang-group"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
+// Retrieve a blog post by the post ID.
 func (r *BlogPostService) Get(ctx context.Context, objectID string, query BlogPostGetParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
+// Retrieve the full draft version of a blog post.
 func (r *BlogPostService) GetDraftByID(ctx context.Context, objectID string, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-func (r *BlogPostService) GetPreviousVersion(ctx context.Context, revisionID string, query BlogPostGetPreviousVersionParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+func (r *BlogPostService) ListAuthors(ctx context.Context, query BlogPostListAuthorsParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if query.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/revisions/%s", query.ObjectID, revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-func (r *BlogPostService) GetPreviousVersions(ctx context.Context, objectID string, query BlogPostGetPreviousVersionsParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/revisions", objectID)
+	path := "cms/blogs/2026-03/authors/cursor"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
+func (r *BlogPostService) ListTags(ctx context.Context, query BlogPostListTagsParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/blogs/2026-03/tags/cursor"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
+}
+
+// Publish the draft version of the blog post, sending its content to the live
+// page.
 func (r *BlogPostService) PushLive(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft/push-live", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft/push-live", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
 	return err
 }
 
+func (r *BlogPostService) Query(ctx context.Context, query BlogPostQueryParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/blogs/2026-03/posts/cursor/query"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
+}
+
+func (r *BlogPostService) QueryAuthors(ctx context.Context, query BlogPostQueryAuthorsParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/blogs/2026-03/authors/cursor/query"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
+}
+
+func (r *BlogPostService) QueryTags(ctx context.Context, query BlogPostQueryTagsParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/blogs/2026-03/tags/cursor/query"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	return res, err
+}
+
+// Discard all drafted content, resetting the draft to contain the content in the
+// currently published version.
 func (r *BlogPostService) ResetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft/reset", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft/reset", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
 	return err
 }
 
-func (r *BlogPostService) RestorePreviousVersion(ctx context.Context, revisionID string, body BlogPostRestorePreviousVersionParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/revisions/%s/restore", body.ObjectID, revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
-func (r *BlogPostService) RestorePreviousVersionToDraft(ctx context.Context, revisionID int64, body BlogPostRestorePreviousVersionToDraftParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/revisions/%v/restore-to-draft", body.ObjectID, revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
+// Schedule a blog post to be published at a specified time.
 func (r *BlogPostService) Schedule(ctx context.Context, body BlogPostScheduleParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/blogs/2026-03/posts/schedule"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return err
 }
 
-func (r *BlogPostService) SetLangPrimary(ctx context.Context, body BlogPostSetLangPrimaryParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts/multi-language/set-new-lang-primary"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
-	return err
-}
-
+// Partially updates the draft version of a single blog post by ID. You only need
+// to specify the values that you want to update.
 func (r *BlogPostService) UpdateDraft(ctx context.Context, objectID string, body BlogPostUpdateDraftParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft", objectID)
+	path := fmt.Sprintf("cms/blogs/2026-03/posts/%s/draft", url.PathEscape(objectID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return res, err
-}
-
-func (r *BlogPostService) UpdateLangs(ctx context.Context, body BlogPostUpdateLangsParams, opts ...option.RequestOption) (res *http.Response, err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/blogs/2026-03/posts/multi-language/update-languages"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-// The properties Units, Value are required.
-type AngleParam struct {
-	// The unit of measurement for the angle.
-	//
-	// Any of "deg", "grad", "rad", "turn".
-	Units AngleUnits `json:"units,omitzero" api:"required"`
-	// The numerical representation of the angle.
-	Value float64 `json:"value" api:"required"`
-	paramObj
-}
-
-func (r AngleParam) MarshalJSON() (data []byte, err error) {
-	type shadow AngleParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AngleParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The unit of measurement for the angle.
-type AngleUnits string
-
-const (
-	AngleUnitsDeg  AngleUnits = "deg"
-	AngleUnitsGrad AngleUnits = "grad"
-	AngleUnitsRad  AngleUnits = "rad"
-	AngleUnitsTurn AngleUnits = "turn"
-)
-
-// The properties BackgroundPosition, BackgroundSize, ImageURL are required.
-type BackgroundImageParam struct {
-	// Defines the position of the background image.
-	BackgroundPosition string `json:"backgroundPosition" api:"required"`
-	// Specifies the size of the background image.
-	BackgroundSize string `json:"backgroundSize" api:"required"`
-	// The URL of the background image.
-	ImageURL string `json:"imageUrl" api:"required"`
-	paramObj
-}
-
-func (r BackgroundImageParam) MarshalJSON() (data []byte, err error) {
-	type shadow BackgroundImageParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BackgroundImageParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 // The property Inputs is required.
@@ -315,36 +229,6 @@ func (r *BatchInputBlogPostParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The property Inputs is required.
-type BatchInputJsonNodeParam struct {
-	// JSON nodes to input.
-	Inputs []any `json:"inputs,omitzero" api:"required"`
-	paramObj
-}
-
-func (r BatchInputJsonNodeParam) MarshalJSON() (data []byte, err error) {
-	type shadow BatchInputJsonNodeParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BatchInputJsonNodeParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Inputs is required.
-type BatchInputStringParam struct {
-	// Strings to input.
-	Inputs []string `json:"inputs,omitzero" api:"required"`
-	paramObj
-}
-
-func (r BatchInputStringParam) MarshalJSON() (data []byte, err error) {
-	type shadow BatchInputStringParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BatchInputStringParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 // The properties ID, AbStatus, AbTestID, ArchivedAt, ArchivedInDashboard,
 // AttachedStylesheets, AuthorName, BlogAuthorID, Campaign, CategoryID,
 // ContentGroupID, ContentTypeCategory, Created, CreatedByID, CurrentlyPublished,
@@ -359,7 +243,7 @@ func (r *BatchInputStringParam) UnmarshalJSON(data []byte) error {
 // ThemeSettingsValues, TranslatedFromID, Translations, Updated, UpdatedByID, URL,
 // UseFeaturedImage, WidgetContainers, Widgets are required.
 type BlogPostParam struct {
-	// The unique ID of the blog post.
+	// The unique ID of the Blog Post.
 	ID string `json:"id" api:"required"`
 	// The status of the AB test associated with this blog post, if applicable
 	//
@@ -379,17 +263,15 @@ type BlogPostParam struct {
 	// List of stylesheets to attach to this blog post. These stylesheets are attached
 	// to just this page. Order of precedence is bottom to top, just like in the HTML.
 	AttachedStylesheets []map[string]any `json:"attachedStylesheets,omitzero" api:"required"`
-	// The name of the user who last published the blog post. For posts that haven't
-	// been published yet, this property will reflect the user who initially created
-	// the draft.
+	// The name of the user that updated this Blog Post.
 	AuthorName string `json:"authorName" api:"required"`
-	// The ID of the blog author associated with this post.
+	// The ID of the Blog Author associated with this Blog Post.
 	BlogAuthorID string `json:"blogAuthorId" api:"required"`
-	// The GUID of the marketing campaign the post is associated with.
+	// The GUID of the marketing campaign this Blog Post is a part of.
 	Campaign string `json:"campaign" api:"required"`
-	// ID of the object type.
+	// ID of the type of object this is. Should always .
 	CategoryID int64 `json:"categoryId" api:"required"`
-	// The ID of the post's parent blog.
+	// The ID of the parent Blog this Blog Post is associated with.
 	ContentGroupID string `json:"contentGroupId" api:"required"`
 	// An ENUM descibing the type of this object. Should always be BLOG_POST.
 	//
@@ -398,7 +280,7 @@ type BlogPostParam struct {
 	ContentTypeCategory BlogPostContentTypeCategory `json:"contentTypeCategory,omitzero" api:"required"`
 	// The timestamp (ISO8601 format) when this Blog Post was created.
 	Created time.Time `json:"created" api:"required" format:"date-time"`
-	// The ID of the user that created the post.
+	// The ID of the user that created this Blog Post.
 	CreatedByID string `json:"createdById" api:"required"`
 	// Whether the post is published (true or false)
 	CurrentlyPublished bool `json:"currentlyPublished" api:"required"`
@@ -415,14 +297,14 @@ type BlogPostParam struct {
 	// "PUBLISHED_OR_SCHEDULED", "RSS_TO_EMAIL_DRAFT", "RSS_TO_EMAIL_PUBLISHED",
 	// "SCHEDULED", "SCHEDULED_AB", "SCHEDULED_OR_PUBLISHED".
 	CurrentState BlogPostCurrentState `json:"currentState,omitzero" api:"required"`
-	// The domain that the post lives on. If null, the post will default to the domain
-	// of the parent blog.
+	// The domain this Blog Post will resolve to. If null, the Blog Post will default
+	// to the domain of the ParentBlog.
 	Domain string `json:"domain" api:"required"`
 	// The identifier for the data source used by the dynamic page.
 	DynamicPageDataSourceID string `json:"dynamicPageDataSourceId" api:"required"`
 	// The type of data source used by the dynamic page.
 	DynamicPageDataSourceType int64 `json:"dynamicPageDataSourceType" api:"required"`
-	// For dynamic HubDB pages, the ID of the HubDB table this post references.
+	// The ID of the HubDB table this Blog Post references, if applicable
 	DynamicPageHubDBTableID string `json:"dynamicPageHubDbTableId" api:"required"`
 	// Boolean to determine whether or not the styles from the template should be
 	// applied.
@@ -444,12 +326,12 @@ type BlogPostParam struct {
 	// Custom HTML for embed codes, javascript, etc. that goes in the <head> tag of the
 	// page.
 	HeadHTML string `json:"headHtml" api:"required"`
-	// The HTML title of the post.
+	// The html title of this Blog Post.
 	HTMLTitle string `json:"htmlTitle" api:"required"`
 	// Boolean to determine whether or not the Primary CSS Files should be applied.
 	IncludeDefaultCustomCss bool `json:"includeDefaultCustomCss" api:"required"`
-	// The explicitly defined ISO 639 language code of the post. If null, the post will
-	// default to the language of the parent blog.
+	// The explicitly defined ISO 639 language code of the Blog Post. If null, the Blog
+	// Post will default to the language of the ParentBlog.
 	//
 	// Any of "aa", "ab", "ae", "af", "af-na", "af-za", "agq", "agq-cm", "ak", "ak-gh",
 	// "am", "am-et", "an", "ann", "ann-ng", "ar", "ar-001", "ar-ae", "ar-bh", "ar-dj",
@@ -550,7 +432,7 @@ type BlogPostParam struct {
 	MabExperimentID string `json:"mabExperimentId" api:"required"`
 	// A description that goes in <meta> tag on the page.
 	MetaDescription string `json:"metaDescription" api:"required"`
-	// The internal name of the post.
+	// The internal name of the Blog Post.
 	Name string `json:"name" api:"required"`
 	// The date at which this blog post should expire and begin redirecting to another
 	// url or page.
@@ -564,7 +446,7 @@ type BlogPostParam struct {
 	// this or pageExpiryRedirectId.
 	PageExpiryRedirectURL string `json:"pageExpiryRedirectUrl" api:"required"`
 	// Set this to create a password protected page. Entering the password will be
-	// required to view the blog post.
+	// required to view the page.
 	Password string `json:"password" api:"required"`
 	// The HTML of the main post body.
 	PostBody string `json:"postBody" api:"required"`
@@ -583,27 +465,27 @@ type BlogPostParam struct {
 	RssBody string `json:"rssBody" api:"required"`
 	// The contents of the RSS summary for this Blog Post.
 	RssSummary string `json:"rssSummary" api:"required"`
-	// The URL slug of the blog post. This field is appended to the domain to construct
-	// the url of this post.
+	// The path of the this blog post. This field is appended to the domain to
+	// construct the url of this post.
 	Slug string `json:"slug" api:"required"`
-	// An enumeration describing the current publish state of the post.
+	// An ENUM descibing the current state of this Blog Post.
 	State string `json:"state" api:"required"`
-	// The IDs of the tags associated with this post.
+	// List of IDs for the tags associated with this Blog Post.
 	TagIDs []int64 `json:"tagIds,omitzero" api:"required"`
 	// A collection of settings specific to the theme applied to the blog post.
 	ThemeSettingsValues map[string]any `json:"themeSettingsValues,omitzero" api:"required"`
-	// ID of the primary blog post that this post was translated from.
+	// ID of the primary blog post this object was translated from.
 	TranslatedFromID string `json:"translatedFromId" api:"required"`
 	// A map of translations for the blog post, each associated with a specific
 	// language variation.
 	Translations map[string]ContentLanguageVariationParam `json:"translations,omitzero" api:"required"`
 	// The timestamp (ISO8601 format) when this Blog Post was updated.
 	Updated time.Time `json:"updated" api:"required" format:"date-time"`
-	// The ID of the user that updated the post.
+	// The ID of the user that updated this Blog Post.
 	UpdatedByID string `json:"updatedById" api:"required"`
 	// A generated field representing the URL of this blog post.
 	URL string `json:"url" api:"required"`
-	// Boolean to determine if this post should use a featured image.
+	// Boolean to determine if this post should use a featuredImage.
 	UseFeaturedImage bool `json:"useFeaturedImage" api:"required"`
 	// A data structure containing the data for all the modules inside the containers
 	// for this post. This will only be populated if the page has widget containers.
@@ -706,8 +588,8 @@ const (
 	BlogPostCurrentStateScheduledOrPublished    BlogPostCurrentState = "SCHEDULED_OR_PUBLISHED"
 )
 
-// The explicitly defined ISO 639 language code of the post. If null, the post will
-// default to the language of the parent blog.
+// The explicitly defined ISO 639 language code of the Blog Post. If null, the Blog
+// Post will default to the language of the ParentBlog.
 type BlogPostLanguage string
 
 const (
@@ -1573,377 +1455,6 @@ func (r *BlogPostLanguageCloneRequestVNextParam) UnmarshalJSON(data []byte) erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The properties Hidden, Margin, Padding are required.
-type BreakpointStylesParam struct {
-	// Boolean indicating if the breakpoint is visible.
-	Hidden  bool         `json:"hidden" api:"required"`
-	Margin  MarginParam  `json:"margin,omitzero" api:"required"`
-	Padding PaddingParam `json:"padding,omitzero" api:"required"`
-	paramObj
-}
-
-func (r BreakpointStylesParam) MarshalJSON() (data []byte, err error) {
-	type shadow BreakpointStylesParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *BreakpointStylesParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property Color is required.
-type ColorStopParam struct {
-	Color RgbaColorParam `json:"color,omitzero" api:"required"`
-	paramObj
-}
-
-func (r ColorStopParam) MarshalJSON() (data []byte, err error) {
-	type shadow ColorStopParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ColorStopParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property ID is required.
-type ContentCloneRequestVNextParam struct {
-	// ID of the object to be cloned.
-	ID string `json:"id" api:"required"`
-	// Name of the cloned object.
-	CloneName param.Opt[string] `json:"cloneName,omitzero"`
-	paramObj
-}
-
-func (r ContentCloneRequestVNextParam) MarshalJSON() (data []byte, err error) {
-	type shadow ContentCloneRequestVNextParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ContentCloneRequestVNextParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties ID, ArchivedInDashboard, AuthorName, Campaign, CampaignName,
-// Created, Name, Password, PublicAccessRules, PublicAccessRulesEnabled,
-// PublishDate, Slug, State, Updated are required.
-type ContentLanguageVariationParam struct {
-	// The unique ID of the content language variation.
-	ID int64 `json:"id" api:"required"`
-	// If True, the variant will not show up in your dashboard, although the post could
-	// still be live.
-	ArchivedInDashboard bool `json:"archivedInDashboard" api:"required"`
-	// The name of the user who last published the blog post. For posts that haven't
-	// been published yet, this property will reflect the user who initially created
-	// the draft.
-	AuthorName string `json:"authorName" api:"required"`
-	// The GUID of the marketing campaign this page is a part of.
-	Campaign string `json:"campaign" api:"required"`
-	// Name of the associated marketing campaign.
-	CampaignName string `json:"campaignName" api:"required"`
-	// The timestamp (ISO8601 format) when this Blog Post was created.
-	Created time.Time `json:"created" api:"required" format:"date-time"`
-	// The internal name of the content language variation.
-	Name string `json:"name" api:"required"`
-	// Set this to create a password protected page. Entering the password will be
-	// required to view the page.
-	Password          string             `json:"password" api:"required"`
-	PublicAccessRules []PublicAccessRule `json:"publicAccessRules,omitzero" api:"required"`
-	// Boolean to determine whether or not to respect publicAccessRules.
-	PublicAccessRulesEnabled bool `json:"publicAccessRulesEnabled" api:"required"`
-	// The date (ISO8601 format) the page is to be published at.
-	PublishDate time.Time `json:"publishDate" api:"required" format:"date-time"`
-	// The path of the this page. This field is appended to the domain to construct the
-	// url of this page.
-	Slug string `json:"slug" api:"required"`
-	// An ENUM describing the current state of this page.
-	//
-	// Maximum string length: 25
-	State string `json:"state" api:"required"`
-	// The timestamp (ISO8601 format) when this Blog Post was updated.
-	Updated time.Time `json:"updated" api:"required" format:"date-time"`
-	TagIDs  []int64   `json:"tagIds,omitzero"`
-	paramObj
-}
-
-func (r ContentLanguageVariationParam) MarshalJSON() (data []byte, err error) {
-	type shadow ContentLanguageVariationParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ContentLanguageVariationParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties ID, PublishDate are required.
-type ContentScheduleRequestVNextParam struct {
-	// The ID of the object to be scheduled.
-	ID string `json:"id" api:"required"`
-	// The date the object should transition from scheduled to published.
-	PublishDate time.Time `json:"publishDate" api:"required" format:"date-time"`
-	paramObj
-}
-
-func (r ContentScheduleRequestVNextParam) MarshalJSON() (data []byte, err error) {
-	type shadow ContentScheduleRequestVNextParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ContentScheduleRequestVNextParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Angle, Colors, SideOrCorner are required.
-type GradientParam struct {
-	Angle        AngleParam        `json:"angle,omitzero" api:"required"`
-	Colors       []ColorStopParam  `json:"colors,omitzero" api:"required"`
-	SideOrCorner SideOrCornerParam `json:"sideOrCorner,omitzero" api:"required"`
-	paramObj
-}
-
-func (r GradientParam) MarshalJSON() (data []byte, err error) {
-	type shadow GradientParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *GradientParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Cells, CssClass, CssID, CssStyle, Label, Name, Params,
-// RowMetaData, Rows, Styles, Type, W, X are required.
-type LayoutSectionParam struct {
-	Cells []LayoutSectionParam `json:"cells,omitzero" api:"required"`
-	// The CSS class applied to the layout section.
-	CssClass string `json:"cssClass" api:"required"`
-	// The CSS ID applied to the layout section.
-	CssID string `json:"cssId" api:"required"`
-	// Custom CSS styles applied to the layout section.
-	CssStyle string `json:"cssStyle" api:"required"`
-	// The label for the layout section.
-	Label string `json:"label" api:"required"`
-	// The name assigned to the layout section.
-	Name string `json:"name" api:"required"`
-	// Parameters associated with the layout section.
-	Params      map[string]any                  `json:"params,omitzero" api:"required"`
-	RowMetaData []RowMetaDataParam              `json:"rowMetaData,omitzero" api:"required"`
-	Rows        []map[string]LayoutSectionParam `json:"rows,omitzero" api:"required"`
-	Styles      StylesParam                     `json:"styles,omitzero" api:"required"`
-	// The type of the layout section.
-	Type string `json:"type" api:"required"`
-	// The width of the layout section.
-	W int64 `json:"w" api:"required"`
-	// The x-coordinate position of the layout section.
-	X int64 `json:"x" api:"required"`
-	paramObj
-}
-
-func (r LayoutSectionParam) MarshalJSON() (data []byte, err error) {
-	type shadow LayoutSectionParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *LayoutSectionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Bottom, Top are required.
-type MarginParam struct {
-	Bottom SizeParam `json:"bottom,omitzero" api:"required"`
-	Top    SizeParam `json:"top,omitzero" api:"required"`
-	paramObj
-}
-
-func (r MarginParam) MarshalJSON() (data []byte, err error) {
-	type shadow MarginParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *MarginParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Bottom, Left, Right, Top are required.
-type PaddingParam struct {
-	Bottom SizeParam `json:"bottom,omitzero" api:"required"`
-	Left   SizeParam `json:"left,omitzero" api:"required"`
-	Right  SizeParam `json:"right,omitzero" api:"required"`
-	Top    SizeParam `json:"top,omitzero" api:"required"`
-	paramObj
-}
-
-func (r PaddingParam) MarshalJSON() (data []byte, err error) {
-	type shadow PaddingParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PaddingParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties A, B, G, R are required.
-type RgbaColorParam struct {
-	// Alpha.
-	A float64 `json:"a" api:"required"`
-	// Blue.
-	B int64 `json:"b" api:"required"`
-	// Green.
-	G int64 `json:"g" api:"required"`
-	// Red.
-	R int64 `json:"r" api:"required"`
-	paramObj
-}
-
-func (r RgbaColorParam) MarshalJSON() (data []byte, err error) {
-	type shadow RgbaColorParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *RgbaColorParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties CssClass, Styles are required.
-type RowMetaDataParam struct {
-	// The CSS class applied to the row.
-	CssClass string      `json:"cssClass" api:"required"`
-	Styles   StylesParam `json:"styles,omitzero" api:"required"`
-	paramObj
-}
-
-func (r RowMetaDataParam) MarshalJSON() (data []byte, err error) {
-	type shadow RowMetaDataParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *RowMetaDataParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties HorizontalSide, VerticalSide are required.
-type SideOrCornerParam struct {
-	// Specifies the horizontal side of an element.
-	//
-	// Any of "CENTER", "LEFT", "RIGHT".
-	HorizontalSide SideOrCornerHorizontalSide `json:"horizontalSide,omitzero" api:"required"`
-	// Specifies the vertical side of an element.
-	//
-	// Any of "BOTTOM", "MIDDLE", "TOP".
-	VerticalSide SideOrCornerVerticalSide `json:"verticalSide,omitzero" api:"required"`
-	paramObj
-}
-
-func (r SideOrCornerParam) MarshalJSON() (data []byte, err error) {
-	type shadow SideOrCornerParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *SideOrCornerParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Specifies the horizontal side of an element.
-type SideOrCornerHorizontalSide string
-
-const (
-	SideOrCornerHorizontalSideCenter SideOrCornerHorizontalSide = "CENTER"
-	SideOrCornerHorizontalSideLeft   SideOrCornerHorizontalSide = "LEFT"
-	SideOrCornerHorizontalSideRight  SideOrCornerHorizontalSide = "RIGHT"
-)
-
-// Specifies the vertical side of an element.
-type SideOrCornerVerticalSide string
-
-const (
-	SideOrCornerVerticalSideBottom SideOrCornerVerticalSide = "BOTTOM"
-	SideOrCornerVerticalSideMiddle SideOrCornerVerticalSide = "MIDDLE"
-	SideOrCornerVerticalSideTop    SideOrCornerVerticalSide = "TOP"
-)
-
-// The properties Units, Value are required.
-type SizeParam struct {
-	// Any of "%", "ch", "cm", "em", "ex", "in", "lh", "mm", "pc", "pt", "px", "Q",
-	// "rem", "vh", "vmax", "vmin", "vw".
-	Units SizeUnits `json:"units,omitzero" api:"required"`
-	Value float64   `json:"value" api:"required"`
-	paramObj
-}
-
-func (r SizeParam) MarshalJSON() (data []byte, err error) {
-	type shadow SizeParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *SizeParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type SizeUnits string
-
-const (
-	SizeUnitsUnknown0 SizeUnits = "%"
-	SizeUnitsCh       SizeUnits = "ch"
-	SizeUnitsCm       SizeUnits = "cm"
-	SizeUnitsEm       SizeUnits = "em"
-	SizeUnitsEx       SizeUnits = "ex"
-	SizeUnitsIn       SizeUnits = "in"
-	SizeUnitsLh       SizeUnits = "lh"
-	SizeUnitsMm       SizeUnits = "mm"
-	SizeUnitsPc       SizeUnits = "pc"
-	SizeUnitsPt       SizeUnits = "pt"
-	SizeUnitsPx       SizeUnits = "px"
-	SizeUnitsQ        SizeUnits = "Q"
-	SizeUnitsRem      SizeUnits = "rem"
-	SizeUnitsVh       SizeUnits = "vh"
-	SizeUnitsVmax     SizeUnits = "vmax"
-	SizeUnitsVmin     SizeUnits = "vmin"
-	SizeUnitsVw       SizeUnits = "vw"
-)
-
-// The properties BackgroundColor, BackgroundGradient, BackgroundImage,
-// FlexboxPositioning, ForceFullWidthSection, MaxWidthSectionCentering,
-// VerticalAlignment are required.
-type StylesParam struct {
-	BackgroundColor    RgbaColorParam       `json:"backgroundColor,omitzero" api:"required"`
-	BackgroundGradient GradientParam        `json:"backgroundGradient,omitzero" api:"required"`
-	BackgroundImage    BackgroundImageParam `json:"backgroundImage,omitzero" api:"required"`
-	// Indicates whether flexbox positioning is enabled for the section.
-	//
-	// Any of "BOTTOM_CENTER", "BOTTOM_LEFT", "BOTTOM_RIGHT", "MIDDLE_CENTER",
-	// "MIDDLE_LEFT", "MIDDLE_RIGHT", "TOP_CENTER", "TOP_LEFT", "TOP_RIGHT".
-	FlexboxPositioning StylesFlexboxPositioning `json:"flexboxPositioning,omitzero" api:"required"`
-	// Determines if the section should be forced to full width.
-	ForceFullWidthSection bool `json:"forceFullWidthSection" api:"required"`
-	// Defines the maximum width for centering the section.
-	MaxWidthSectionCentering int64 `json:"maxWidthSectionCentering" api:"required"`
-	// Specifies the vertical alignment of elements within the section.
-	//
-	// Any of "BOTTOM", "MIDDLE", "TOP".
-	VerticalAlignment StylesVerticalAlignment `json:"verticalAlignment,omitzero" api:"required"`
-	// Breakpoint CSS styles for margin, padding, etc...
-	BreakpointStyles map[string]BreakpointStylesParam `json:"breakpointStyles,omitzero"`
-	paramObj
-}
-
-func (r StylesParam) MarshalJSON() (data []byte, err error) {
-	type shadow StylesParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *StylesParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Indicates whether flexbox positioning is enabled for the section.
-type StylesFlexboxPositioning string
-
-const (
-	StylesFlexboxPositioningBottomCenter StylesFlexboxPositioning = "BOTTOM_CENTER"
-	StylesFlexboxPositioningBottomLeft   StylesFlexboxPositioning = "BOTTOM_LEFT"
-	StylesFlexboxPositioningBottomRight  StylesFlexboxPositioning = "BOTTOM_RIGHT"
-	StylesFlexboxPositioningMiddleCenter StylesFlexboxPositioning = "MIDDLE_CENTER"
-	StylesFlexboxPositioningMiddleLeft   StylesFlexboxPositioning = "MIDDLE_LEFT"
-	StylesFlexboxPositioningMiddleRight  StylesFlexboxPositioning = "MIDDLE_RIGHT"
-	StylesFlexboxPositioningTopCenter    StylesFlexboxPositioning = "TOP_CENTER"
-	StylesFlexboxPositioningTopLeft      StylesFlexboxPositioning = "TOP_LEFT"
-	StylesFlexboxPositioningTopRight     StylesFlexboxPositioning = "TOP_RIGHT"
-)
-
-// Specifies the vertical alignment of elements within the section.
-type StylesVerticalAlignment string
-
-const (
-	StylesVerticalAlignmentBottom StylesVerticalAlignment = "BOTTOM"
-	StylesVerticalAlignmentMiddle StylesVerticalAlignment = "MIDDLE"
-	StylesVerticalAlignmentTop    StylesVerticalAlignment = "TOP"
-)
-
 type BlogPostNewParams struct {
 	BlogPost BlogPostParam
 	paramObj
@@ -2020,18 +1531,6 @@ func (r BlogPostDeleteParams) URLQuery() (v url.Values, err error) {
 	})
 }
 
-type BlogPostAttachToLangGroupParams struct {
-	AttachToLangPrimaryRequestVNext AttachToLangPrimaryRequestVNextParam
-	paramObj
-}
-
-func (r BlogPostAttachToLangGroupParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.AttachToLangPrimaryRequestVNext)
-}
-func (r *BlogPostAttachToLangGroupParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type BlogPostCloneParams struct {
 	ContentCloneRequestVNext ContentCloneRequestVNextParam
 	paramObj
@@ -2041,30 +1540,6 @@ func (r BlogPostCloneParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentCloneRequestVNext)
 }
 func (r *BlogPostCloneParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BlogPostNewLangVariationParams struct {
-	BlogPostLanguageCloneRequestVNext BlogPostLanguageCloneRequestVNextParam
-	paramObj
-}
-
-func (r BlogPostNewLangVariationParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BlogPostLanguageCloneRequestVNext)
-}
-func (r *BlogPostNewLangVariationParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BlogPostDetachFromLangGroupParams struct {
-	DetachFromLangGroupRequestVNext DetachFromLangGroupRequestVNextParam
-	paramObj
-}
-
-func (r BlogPostDetachFromLangGroupParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.DetachFromLangGroupRequestVNext)
-}
-func (r *BlogPostDetachFromLangGroupParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -2083,39 +1558,147 @@ func (r BlogPostGetParams) URLQuery() (v url.Values, err error) {
 	})
 }
 
-type BlogPostGetPreviousVersionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type BlogPostGetPreviousVersionsParams struct {
+type BlogPostListAuthorsParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
-	After  param.Opt[string] `query:"after,omitzero" json:"-"`
-	Before param.Opt[string] `query:"before,omitzero" json:"-"`
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived      param.Opt[bool]      `query:"archived,omitzero" json:"-"`
+	CreatedAfter  param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
+	CreatedAt     param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
 	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	Limit         param.Opt[int64]     `query:"limit,omitzero" json:"-"`
+	Property      param.Opt[string]    `query:"property,omitzero" json:"-"`
+	UpdatedAfter  param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
+	UpdatedAt     param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
+	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
+	Sort          []string             `query:"sort,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [BlogPostGetPreviousVersionsParams]'s query parameters as
+// URLQuery serializes [BlogPostListAuthorsParams]'s query parameters as
 // `url.Values`.
-func (r BlogPostGetPreviousVersionsParams) URLQuery() (v url.Values, err error) {
+func (r BlogPostListAuthorsParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type BlogPostRestorePreviousVersionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
+type BlogPostListTagsParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived      param.Opt[bool]      `query:"archived,omitzero" json:"-"`
+	CreatedAfter  param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
+	CreatedAt     param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// The maximum number of results to display per page.
+	Limit         param.Opt[int64]     `query:"limit,omitzero" json:"-"`
+	Property      param.Opt[string]    `query:"property,omitzero" json:"-"`
+	UpdatedAfter  param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
+	UpdatedAt     param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
+	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
+	Sort          []string             `query:"sort,omitzero" json:"-"`
 	paramObj
 }
 
-type BlogPostRestorePreviousVersionToDraftParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
+// URLQuery serializes [BlogPostListTagsParams]'s query parameters as `url.Values`.
+func (r BlogPostListTagsParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type BlogPostQueryParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived      param.Opt[bool]      `query:"archived,omitzero" json:"-"`
+	CreatedAfter  param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
+	CreatedAt     param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// The maximum number of results to display per page.
+	Limit         param.Opt[int64]     `query:"limit,omitzero" json:"-"`
+	Property      param.Opt[string]    `query:"property,omitzero" json:"-"`
+	UpdatedAfter  param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
+	UpdatedAt     param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
+	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
+	Sort          []string             `query:"sort,omitzero" json:"-"`
 	paramObj
+}
+
+// URLQuery serializes [BlogPostQueryParams]'s query parameters as `url.Values`.
+func (r BlogPostQueryParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type BlogPostQueryAuthorsParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived      param.Opt[bool]      `query:"archived,omitzero" json:"-"`
+	CreatedAfter  param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
+	CreatedAt     param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// The maximum number of results to display per page.
+	Limit         param.Opt[int64]     `query:"limit,omitzero" json:"-"`
+	Property      param.Opt[string]    `query:"property,omitzero" json:"-"`
+	UpdatedAfter  param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
+	UpdatedAt     param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
+	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
+	Sort          []string             `query:"sort,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [BlogPostQueryAuthorsParams]'s query parameters as
+// `url.Values`.
+func (r BlogPostQueryAuthorsParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type BlogPostQueryTagsParams struct {
+	// The paging cursor token of the last successfully read resource will be returned
+	// as the `paging.next.after` JSON property of a paged response containing more
+	// results.
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// Whether to return only results that have been archived.
+	Archived      param.Opt[bool]      `query:"archived,omitzero" json:"-"`
+	CreatedAfter  param.Opt[time.Time] `query:"createdAfter,omitzero" format:"date-time" json:"-"`
+	CreatedAt     param.Opt[time.Time] `query:"createdAt,omitzero" format:"date-time" json:"-"`
+	CreatedBefore param.Opt[time.Time] `query:"createdBefore,omitzero" format:"date-time" json:"-"`
+	// The maximum number of results to display per page.
+	Limit         param.Opt[int64]     `query:"limit,omitzero" json:"-"`
+	Property      param.Opt[string]    `query:"property,omitzero" json:"-"`
+	UpdatedAfter  param.Opt[time.Time] `query:"updatedAfter,omitzero" format:"date-time" json:"-"`
+	UpdatedAt     param.Opt[time.Time] `query:"updatedAt,omitzero" format:"date-time" json:"-"`
+	UpdatedBefore param.Opt[time.Time] `query:"updatedBefore,omitzero" format:"date-time" json:"-"`
+	Sort          []string             `query:"sort,omitzero" json:"-"`
+	paramObj
+}
+
+// URLQuery serializes [BlogPostQueryTagsParams]'s query parameters as
+// `url.Values`.
+func (r BlogPostQueryTagsParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type BlogPostScheduleParams struct {
@@ -2130,18 +1713,6 @@ func (r *BlogPostScheduleParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BlogPostSetLangPrimaryParams struct {
-	SetNewLanguagePrimaryRequestVNext SetNewLanguagePrimaryRequestVNextParam
-	paramObj
-}
-
-func (r BlogPostSetLangPrimaryParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.SetNewLanguagePrimaryRequestVNext)
-}
-func (r *BlogPostSetLangPrimaryParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
 type BlogPostUpdateDraftParams struct {
 	BlogPost BlogPostParam
 	paramObj
@@ -2151,17 +1722,5 @@ func (r BlogPostUpdateDraftParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BlogPost)
 }
 func (r *BlogPostUpdateDraftParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BlogPostUpdateLangsParams struct {
-	UpdateLanguagesRequestVNext UpdateLanguagesRequestVNextParam
-	paramObj
-}
-
-func (r BlogPostUpdateLangsParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.UpdateLanguagesRequestVNext)
-}
-func (r *BlogPostUpdateLangsParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

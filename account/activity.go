@@ -26,7 +26,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewActivityService] method instead.
 type ActivityService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewActivityService generates a new service that applies the given options to
@@ -34,7 +34,7 @@ type ActivityService struct {
 // there is one), and before any request-specific options.
 func NewActivityService(opts ...option.RequestOption) (r ActivityService) {
 	r = ActivityService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
@@ -44,7 +44,7 @@ func NewActivityService(opts ...option.RequestOption) (r ActivityService) {
 // [activities included in audit log exports](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history-in-a-centralized-audit-log?hubs_content=knowledge.hubspot.com/account-management/view-and-export-account-activity-history&hubs_content-cta=centralized%20audit%20log#data-included-in-the-centralized-audit-log).
 func (r *ActivityService) ListAuditLogs(ctx context.Context, query ActivityListAuditLogsParams, opts ...option.RequestOption) (res *pagination.Page[PublicAPIUserActionEvent], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/2026-03/activity/audit-logs"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -71,7 +71,7 @@ func (r *ActivityService) ListAuditLogsAutoPaging(ctx context.Context, query Act
 // [login activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#account-login-history).
 func (r *ActivityService) ListLoginActivities(ctx context.Context, query ActivityListLoginActivitiesParams, opts ...option.RequestOption) (res *pagination.Page[PublicLoginAudit], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/2026-03/activity/login"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -96,7 +96,7 @@ func (r *ActivityService) ListLoginActivitiesAutoPaging(ctx context.Context, que
 // [security activity](https://knowledge.hubspot.com/account-management/view-and-export-account-activity-history#security-activity-history).
 func (r *ActivityService) ListSecurityActivities(ctx context.Context, query ActivityListSecurityActivitiesParams, opts ...option.RequestOption) (res *pagination.Page[HydratedCriticalAction], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "account-info/2026-03/activity/security"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -118,7 +118,7 @@ func (r *ActivityService) ListSecurityActivitiesAutoPaging(ctx context.Context, 
 }
 
 type ActingUser struct {
-	// The ID of the user who performed the action.
+	// The user's unique ID.
 	UserID int64 `json:"userId" api:"required"`
 	// The email address of the user who performed the action.
 	UserEmail string `json:"userEmail"`
@@ -192,7 +192,7 @@ func (r *CollectionResponsePublicLoginAuditForwardPaging) UnmarshalJSON(data []b
 }
 
 type HydratedCriticalAction struct {
-	// The unique ID of the activity.
+	// The activity's unique ID.
 	ID string `json:"id" api:"required"`
 	// The time the activity took place.
 	CreatedAt time.Time `json:"createdAt" api:"required" format:"date-time"`
@@ -261,7 +261,7 @@ type HydratedCriticalAction struct {
 	UserID int64 `json:"userId" api:"required"`
 	// Email address of the user associated with the activity.
 	ActingUser string `json:"actingUser"`
-	// The approximate country code.
+	// The approximate country code
 	CountryCode string `json:"countryCode"`
 	// A link to the URL where the action was taken in the account.
 	InfoURL string `json:"infoUrl"`
@@ -271,7 +271,7 @@ type HydratedCriticalAction struct {
 	Location string `json:"location"`
 	// The ID of the affected object.
 	ObjectID string `json:"objectId"`
-	// The approximate region code.
+	// The approximate region code
 	RegionCode string `json:"regionCode"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -354,8 +354,8 @@ const (
 	HydratedCriticalActionTypeHapikeyCreate                              HydratedCriticalActionType = "HAPIKEY_CREATE"
 	HydratedCriticalActionTypeHapikeyDeactivate                          HydratedCriticalActionType = "HAPIKEY_DEACTIVATE"
 	HydratedCriticalActionTypeHapikeyView                                HydratedCriticalActionType = "HAPIKEY_VIEW"
-	HydratedCriticalActionTypeHubspotEmployeeAccessDisabled              HydratedCriticalActionType = "HUBSPOT_EMPLOYEE_ACCESS_DISABLED"
-	HydratedCriticalActionTypeHubspotEmployeeAccessEnabled               HydratedCriticalActionType = "HUBSPOT_EMPLOYEE_ACCESS_ENABLED"
+	HydratedCriticalActionTypeHubSpotEmployeeAccessDisabled              HydratedCriticalActionType = "HUBSPOT_EMPLOYEE_ACCESS_DISABLED"
+	HydratedCriticalActionTypeHubSpotEmployeeAccessEnabled               HydratedCriticalActionType = "HUBSPOT_EMPLOYEE_ACCESS_ENABLED"
 	HydratedCriticalActionTypeImpersonateUser                            HydratedCriticalActionType = "IMPERSONATE_USER"
 	HydratedCriticalActionTypeImport                                     HydratedCriticalActionType = "IMPORT"
 	HydratedCriticalActionTypeInstallIntegration                         HydratedCriticalActionType = "INSTALL_INTEGRATION"
@@ -443,7 +443,7 @@ const (
 )
 
 type PublicAPIUserActionEvent struct {
-	// The unique ID of the activity.
+	// The login activity's unique ID.
 	ID         string     `json:"id" api:"required"`
 	ActingUser ActingUser `json:"actingUser" api:"required"`
 	// The type of action taken.
@@ -483,7 +483,7 @@ type PublicLoginAudit struct {
 	LoginAt time.Time `json:"loginAt" api:"required" format:"date-time"`
 	// Whether the login was successful or not.
 	LoginSucceeded bool `json:"loginSucceeded" api:"required"`
-	// The approximate country code of the login.
+	// The approximate country code of the login
 	CountryCode string `json:"countryCode"`
 	// Email address of the user associated with the login.
 	Email string `json:"email"`
@@ -491,7 +491,7 @@ type PublicLoginAudit struct {
 	IPAddress string `json:"ipAddress"`
 	// The approximate location where the login activity originated.
 	Location string `json:"location"`
-	// The approximate region code of the login.
+	// The approximate region code of the login
 	RegionCode string `json:"regionCode"`
 	// Information about the device used for logging in.
 	UserAgent string `json:"userAgent"`

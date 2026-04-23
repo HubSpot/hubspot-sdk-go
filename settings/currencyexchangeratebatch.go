@@ -11,6 +11,7 @@ import (
 	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/stainless-sdks/hubspot-sdk-go/shared"
 )
 
 // CurrencyExchangeRateBatchService contains methods and other services that help
@@ -20,7 +21,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCurrencyExchangeRateBatchService] method instead.
 type CurrencyExchangeRateBatchService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewCurrencyExchangeRateBatchService generates a new service that applies the
@@ -28,26 +29,30 @@ type CurrencyExchangeRateBatchService struct {
 // client's options (if there is one), and before any request-specific options.
 func NewCurrencyExchangeRateBatchService(opts ...option.RequestOption) (r CurrencyExchangeRateBatchService) {
 	r = CurrencyExchangeRateBatchService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
+// Create multiple exchange rates in a single request.
 func (r *CurrencyExchangeRateBatchService) New(ctx context.Context, body CurrencyExchangeRateBatchNewParams, opts ...option.RequestOption) (res *BatchResponseExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/exchange-rates/batch/create"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Update the conversion rates for multiple exchange rates in a batch operation.
 func (r *CurrencyExchangeRateBatchService) Update(ctx context.Context, body CurrencyExchangeRateBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/exchange-rates/batch/update"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Retrieve the details of multiple exchange rates in a single request, specified
+// by their IDs.
 func (r *CurrencyExchangeRateBatchService) Get(ctx context.Context, body CurrencyExchangeRateBatchGetParams, opts ...option.RequestOption) (res *BatchResponseExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/exchange-rates/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
@@ -78,7 +83,7 @@ func (r *CurrencyExchangeRateBatchUpdateParams) UnmarshalJSON(data []byte) error
 }
 
 type CurrencyExchangeRateBatchGetParams struct {
-	BatchInputPublicObjectID BatchInputPublicObjectIDParam
+	BatchInputPublicObjectID shared.BatchInputPublicObjectIDParam
 	paramObj
 }
 

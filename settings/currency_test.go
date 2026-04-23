@@ -25,7 +25,7 @@ func TestCurrencyGetCompanyCurrency(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.GetCompanyCurrency(context.TODO())
 	if err != nil {
@@ -48,7 +48,7 @@ func TestCurrencyListCodes(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ListCodes(context.TODO())
 	if err != nil {
@@ -71,7 +71,7 @@ func TestCurrencyUpdateCompanyCurrency(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.UpdateCompanyCurrency(context.TODO(), settings.CurrencyUpdateCompanyCurrencyParams{
 		CompanyCurrencyUpdateRequest: settings.CompanyCurrencyUpdateRequestParam{
