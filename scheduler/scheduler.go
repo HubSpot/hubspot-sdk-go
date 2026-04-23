@@ -13,7 +13,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewSchedulerService] method instead.
 type SchedulerService struct {
-	Options  []option.RequestOption
+	options  []option.RequestOption
 	Meetings MeetingService
 }
 
@@ -22,7 +22,7 @@ type SchedulerService struct {
 // there is one), and before any request-specific options.
 func NewSchedulerService(opts ...option.RequestOption) (r SchedulerService) {
 	r = SchedulerService{}
-	r.Options = opts
+	r.options = opts
 	r.Meetings = NewMeetingService(opts...)
 	return
 }

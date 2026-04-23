@@ -21,7 +21,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewAccountService] method instead.
 type AccountService struct {
-	Options  []option.RequestOption
+	options  []option.RequestOption
 	Activity ActivityService
 }
 
@@ -30,7 +30,7 @@ type AccountService struct {
 // is one), and before any request-specific options.
 func NewAccountService(opts ...option.RequestOption) (r AccountService) {
 	r = AccountService{}
-	r.Options = opts
+	r.options = opts
 	r.Activity = NewActivityService(opts...)
 	return
 }
@@ -38,7 +38,7 @@ func NewAccountService(opts ...option.RequestOption) (r AccountService) {
 // Retrieve account details such as the account type, time zone, currencies, and
 // data hosting location.
 func (r *AccountService) Get(ctx context.Context, opts ...option.RequestOption) (res *PortalInformationResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "account-info/2026-03/details"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
@@ -47,7 +47,7 @@ func (r *AccountService) Get(ctx context.Context, opts ...option.RequestOption) 
 // Retrieve the daily API usage for private apps in the account, along with
 // information about usage limits.
 func (r *AccountService) GetDailyPrivateAppsUsage(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseAPIUsageNoPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "account-info/2026-03/api-usage/daily/private-apps"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err

@@ -26,7 +26,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCurrencyExchangeRateService] method instead.
 type CurrencyExchangeRateService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 	Batch   CurrencyExchangeRateBatchService
 }
 
@@ -35,39 +35,43 @@ type CurrencyExchangeRateService struct {
 // options (if there is one), and before any request-specific options.
 func NewCurrencyExchangeRateService(opts ...option.RequestOption) (r CurrencyExchangeRateService) {
 	r = CurrencyExchangeRateService{}
-	r.Options = opts
+	r.options = opts
 	r.Batch = NewCurrencyExchangeRateBatchService(opts...)
 	return
 }
 
+// Create a new exchange rate with specified conversion rate and currency codes.
 func (r *CurrencyExchangeRateService) NewExchangeRate(ctx context.Context, body CurrencyExchangeRateNewExchangeRateParams, opts ...option.RequestOption) (res *ExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/exchange-rates"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Retrieve the details for a specific exchange rate specified by its ID.
 func (r *CurrencyExchangeRateService) GetExchangeRateByID(ctx context.Context, exchangeRateID string, opts ...option.RequestOption) (res *ExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if exchangeRateID == "" {
 		err = errors.New("missing required exchangeRateId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("settings/currencies/2026-03/exchange-rates/%s", exchangeRateID)
+	path := fmt.Sprintf("settings/currencies/2026-03/exchange-rates/%s", url.PathEscape(exchangeRateID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Retrieve all current exchange rates for all currency pairs.
 func (r *CurrencyExchangeRateService) ListCurrentExchangeRates(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseExchangeRateNoPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/exchange-rates/current"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Get a list of exchange rates
 func (r *CurrencyExchangeRateService) ListExchangeRates(ctx context.Context, query CurrencyExchangeRateListExchangeRatesParams, opts ...option.RequestOption) (res *pagination.Page[ExchangeRate], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "settings/currencies/2026-03/exchange-rates"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -82,23 +86,27 @@ func (r *CurrencyExchangeRateService) ListExchangeRates(ctx context.Context, que
 	return res, nil
 }
 
+// Get a list of exchange rates
 func (r *CurrencyExchangeRateService) ListExchangeRatesAutoPaging(ctx context.Context, query CurrencyExchangeRateListExchangeRatesParams, opts ...option.RequestOption) *pagination.PageAutoPager[ExchangeRate] {
 	return pagination.NewPageAutoPager(r.ListExchangeRates(ctx, query, opts...))
 }
 
+// Update an existing conversion rate, specified by its ID.
 func (r *CurrencyExchangeRateService) UpdateExchangeRate(ctx context.Context, exchangeRateID string, body CurrencyExchangeRateUpdateExchangeRateParams, opts ...option.RequestOption) (res *ExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if exchangeRateID == "" {
 		err = errors.New("missing required exchangeRateId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("settings/currencies/2026-03/exchange-rates/%s", exchangeRateID)
+	path := fmt.Sprintf("settings/currencies/2026-03/exchange-rates/%s", url.PathEscape(exchangeRateID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return res, err
 }
 
+// Change the visibility setting for a currency pair. This will hide or display a
+// currency pair for users in the HubSpot app.
 func (r *CurrencyExchangeRateService) UpdateVisibility(ctx context.Context, body CurrencyExchangeRateUpdateVisibilityParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "settings/currencies/2026-03/exchange-rates/update-visibility"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)

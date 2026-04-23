@@ -13,7 +13,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewMetaService] method instead.
 type MetaService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 	Origins OriginService
 }
 
@@ -22,7 +22,7 @@ type MetaService struct {
 // is one), and before any request-specific options.
 func NewMetaService(opts ...option.RequestOption) (r MetaService) {
 	r = MetaService{}
-	r.Options = opts
+	r.options = opts
 	r.Origins = NewOriginService(opts...)
 	return
 }

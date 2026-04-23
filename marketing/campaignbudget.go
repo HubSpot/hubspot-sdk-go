@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
@@ -22,7 +23,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCampaignBudgetService] method instead.
 type CampaignBudgetService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewCampaignBudgetService generates a new service that applies the given options
@@ -30,79 +31,71 @@ type CampaignBudgetService struct {
 // there is one), and before any request-specific options.
 func NewCampaignBudgetService(opts ...option.RequestOption) (r CampaignBudgetService) {
 	r = CampaignBudgetService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
-// Add a new budget item to the specified campaign. This operation allows you to
-// allocate a budget for a campaign by specifying the necessary details in the
-// request body.
+// Add a new budget item to the campaign
 func (r *CampaignBudgetService) New(ctx context.Context, campaignGuid string, body CampaignBudgetNewParams, opts ...option.RequestOption) (res *PublicBudgetItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-// Update a specific budget item by its ID within a marketing campaign. This
-// operation allows you to modify the details of a budget item, such as its amount,
-// name, or order, ensuring that your campaign's financial records are accurate and
-// up-to-date.
+// Update a specific budget item by ID
 func (r *CampaignBudgetService) Update(ctx context.Context, budgetID int64, params CampaignBudgetUpdateParams, opts ...option.RequestOption) (res *PublicBudgetItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if params.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", params.CampaignGuid, budgetID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", url.PathEscape(params.CampaignGuid), budgetID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
 	return res, err
 }
 
-// Delete a specific budget item from a campaign using its unique ID. This
-// operation removes the budget item from the campaign's budget list, ensuring it
-// is no longer considered in budget calculations.
+// Delete a specific budget item by ID
 func (r *CampaignBudgetService) Delete(ctx context.Context, budgetID int64, body CampaignBudgetDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", body.CampaignGuid, budgetID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", url.PathEscape(body.CampaignGuid), budgetID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return err
 }
 
-// Retrieve a specific budget item by its ID for a given campaign. This endpoint is
-// useful for accessing detailed information about a particular budget item
-// associated with a marketing campaign.
+// Get a specific budget item by ID
 func (r *CampaignBudgetService) Get(ctx context.Context, budgetID int64, query CampaignBudgetGetParams, opts ...option.RequestOption) (res *PublicBudgetItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if query.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", query.CampaignGuid, budgetID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/%v", url.PathEscape(query.CampaignGuid), budgetID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-// Retrieve budget and spending items along with their totals for a specific
-// campaign. This endpoint provides insights into the financial allocations and
-// expenditures associated with the campaign, helping users to manage and analyze
-// campaign budgets effectively.
+// Retrieve detailed information about the budget and spend items for a specified
+// campaign, including the total budget, total spend, and remaining budget. Budget
+// and Spend items may be returned in any order, but the order field specifies
+// their sequence based on the creation date. The item with order 0 is the oldest,
+// and items with higher order values are newer
 func (r *CampaignBudgetService) GetTotals(ctx context.Context, campaignGuid string, opts ...option.RequestOption) (res *PublicBudgetTotals, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/totals", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/budget/totals", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }

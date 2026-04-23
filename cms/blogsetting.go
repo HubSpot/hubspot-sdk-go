@@ -28,7 +28,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewBlogSettingService] method instead.
 type BlogSettingService struct {
-	Options       []option.RequestOption
+	options       []option.RequestOption
 	MultiLanguage BlogSettingMultiLanguageService
 }
 
@@ -37,14 +37,16 @@ type BlogSettingService struct {
 // there is one), and before any request-specific options.
 func NewBlogSettingService(opts ...option.RequestOption) (r BlogSettingService) {
 	r = BlogSettingService{}
-	r.Options = opts
+	r.options = opts
 	r.MultiLanguage = NewBlogSettingMultiLanguageService(opts...)
 	return
 }
 
+// Get the list of blogs. Results can be limited and filtered by creation or
+// updated date.
 func (r *BlogSettingService) List(ctx context.Context, query BlogSettingListParams, opts ...option.RequestOption) (res *pagination.Page[Blog], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "cms/blog-settings/2026-03/settings"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -59,23 +61,27 @@ func (r *BlogSettingService) List(ctx context.Context, query BlogSettingListPara
 	return res, nil
 }
 
+// Get the list of blogs. Results can be limited and filtered by creation or
+// updated date.
 func (r *BlogSettingService) ListAutoPaging(ctx context.Context, query BlogSettingListParams, opts ...option.RequestOption) *pagination.PageAutoPager[Blog] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
+// Retrieve a specific blog by its ID.
 func (r *BlogSettingService) Get(ctx context.Context, blogID string, opts ...option.RequestOption) (res *Blog, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if blogID == "" {
 		err = errors.New("missing required blogId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s", blogID)
+	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s", url.PathEscape(blogID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Get a specific blog revision.
 func (r *BlogSettingService) GetRevision(ctx context.Context, revisionID string, query BlogSettingGetRevisionParams, opts ...option.RequestOption) (res *BlogVersion, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if query.BlogID == "" {
 		err = errors.New("missing required blogId parameter")
 		return nil, err
@@ -84,20 +90,22 @@ func (r *BlogSettingService) GetRevision(ctx context.Context, revisionID string,
 		err = errors.New("missing required revisionId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s/revisions/%s", query.BlogID, revisionID)
+	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s/revisions/%s", url.PathEscape(query.BlogID), url.PathEscape(revisionID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Get the list of blog revisions. Results can be limited and filtered by creation
+// or updated date.
 func (r *BlogSettingService) ListRevisions(ctx context.Context, blogID string, query BlogSettingListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[VersionBlog], err error) {
 	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if blogID == "" {
 		err = errors.New("missing required blogId parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s/revisions", blogID)
+	path := fmt.Sprintf("cms/blog-settings/2026-03/settings/%s/revisions", url.PathEscape(blogID))
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -110,21 +118,30 @@ func (r *BlogSettingService) ListRevisions(ctx context.Context, blogID string, q
 	return res, nil
 }
 
+// Get the list of blog revisions. Results can be limited and filtered by creation
+// or updated date.
 func (r *BlogSettingService) ListRevisionsAutoPaging(ctx context.Context, blogID string, query BlogSettingListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[VersionBlog] {
 	return pagination.NewPageAutoPager(r.ListRevisions(ctx, blogID, query, opts...))
 }
 
 type Blog struct {
+	// The unique ID of the Blog.
 	ID string `json:"id" api:"required"`
 	// Blog's root URL
-	AbsoluteURL   string `json:"absoluteUrl" api:"required"`
-	AllowComments bool   `json:"allowComments" api:"required"`
+	AbsoluteURL string `json:"absoluteUrl" api:"required"`
+	// Boolean determining whether or not this blog allows public comments.
+	AllowComments bool `json:"allowComments" api:"required"`
 	// The timestamp (ISO8601 format) when this blog was created.
 	Created time.Time `json:"created" api:"required" format:"date-time"`
-	// The timestamp (ISO8601 format) when this blog was deleted.
-	DeletedAt   time.Time `json:"deletedAt" api:"required" format:"date-time"`
-	Description string    `json:"description" api:"required"`
-	HTMLTitle   string    `json:"htmlTitle" api:"required"`
+	// The timestamp (ISO8601 format) when this Blog was deleted.
+	DeletedAt time.Time `json:"deletedAt" api:"required" format:"date-time"`
+	// The Description of this Blog.
+	Description string `json:"description" api:"required"`
+	// The html title of this Blog.
+	HTMLTitle string `json:"htmlTitle" api:"required"`
+	// The explicitly defined language of the Blog. If null, the Blog will default to
+	// the language of the Domain.
+	//
 	// Any of "aa", "ab", "ae", "af", "af-na", "af-za", "agq", "agq-cm", "ak", "ak-gh",
 	// "am", "am-et", "an", "ann", "ann-ng", "ar", "ar-001", "ar-ae", "ar-bh", "ar-dj",
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
@@ -214,14 +231,21 @@ type Blog struct {
 	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
 	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
 	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
-	Language                 BlogLanguage       `json:"language" api:"required"`
-	ListingPageID            string             `json:"listingPageId" api:"required"`
-	Name                     string             `json:"name" api:"required"`
-	PublicAccessRules        []PublicAccessRule `json:"publicAccessRules" api:"required"`
-	PublicAccessRulesEnabled bool               `json:"publicAccessRulesEnabled" api:"required"`
-	PublicTitle              string             `json:"publicTitle" api:"required"`
-	Slug                     string             `json:"slug" api:"required"`
-	TranslatedFromID         string             `json:"translatedFromId" api:"required"`
+	Language      BlogLanguage `json:"language" api:"required"`
+	ListingPageID string       `json:"listingPageId" api:"required"`
+	// The internal name of the blog.
+	Name string `json:"name" api:"required"`
+	// Rules for require member registration to access private content.
+	PublicAccessRules []PublicAccessRule `json:"publicAccessRules" api:"required"`
+	// Boolean to determine whether or not to respect publicAccessRules.
+	PublicAccessRulesEnabled bool `json:"publicAccessRulesEnabled" api:"required"`
+	// The public title of this Blog.
+	PublicTitle string `json:"publicTitle" api:"required"`
+	// The path of the this blog. This field is appended to the domain to construct the
+	// url of this blog.
+	Slug string `json:"slug" api:"required"`
+	// ID of the primary Blog this object was translated from.
+	TranslatedFromID string `json:"translatedFromId" api:"required"`
 	// The timestamp (ISO8601 format) when this blog was updated.
 	Updated time.Time `json:"updated" api:"required" format:"date-time"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -253,6 +277,8 @@ func (r *Blog) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The explicitly defined language of the Blog. If null, the Blog will default to
+// the language of the Domain.
 type BlogLanguage string
 
 const (
@@ -1103,10 +1129,14 @@ const (
 
 // The property ID is required.
 type BlogLanguageCloneRequestVNextParam struct {
-	ID              string            `json:"id" api:"required"`
-	Language        param.Opt[string] `json:"language,omitzero"`
+	// ID of blog to clone.
+	ID string `json:"id" api:"required"`
+	// Target language of new variant.
+	Language param.Opt[string] `json:"language,omitzero"`
+	// Language of primary blog to clone.
 	PrimaryLanguage param.Opt[string] `json:"primaryLanguage,omitzero"`
-	Slug            param.Opt[string] `json:"slug,omitzero"`
+	// Path to this blog.
+	Slug param.Opt[string] `json:"slug,omitzero"`
 	paramObj
 }
 
@@ -1119,10 +1149,10 @@ func (r *BlogLanguageCloneRequestVNextParam) UnmarshalJSON(data []byte) error {
 }
 
 type BlogVersion struct {
-	ID        string      `json:"id" api:"required"`
-	Object    Blog        `json:"object" api:"required"`
-	UpdatedAt time.Time   `json:"updatedAt" api:"required" format:"date-time"`
-	User      VersionUser `json:"user" api:"required"`
+	ID        string             `json:"id" api:"required"`
+	Object    Blog               `json:"object" api:"required"`
+	UpdatedAt time.Time          `json:"updatedAt" api:"required" format:"date-time"`
+	User      shared.VersionUser `json:"user" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -1181,11 +1211,12 @@ func (r *CollectionResponseWithTotalBlogVersion) UnmarshalJSON(data []byte) erro
 }
 
 type VersionBlog struct {
+	// The id of the version.
 	ID     string `json:"id" api:"required"`
 	Object Blog   `json:"object" api:"required"`
 	// The timestamp (ISO8601 format) when this blog version was updated.
-	UpdatedAt time.Time   `json:"updatedAt" api:"required" format:"date-time"`
-	User      VersionUser `json:"user" api:"required"`
+	UpdatedAt time.Time          `json:"updatedAt" api:"required" format:"date-time"`
+	User      shared.VersionUser `json:"user" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field

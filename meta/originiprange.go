@@ -20,7 +20,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewOriginIPRangeService] method instead.
 type OriginIPRangeService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewOriginIPRangeService generates a new service that applies the given options
@@ -28,7 +28,7 @@ type OriginIPRangeService struct {
 // there is one), and before any request-specific options.
 func NewOriginIPRangeService(opts ...option.RequestOption) (r OriginIPRangeService) {
 	r = OriginIPRangeService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
@@ -37,7 +37,7 @@ func NewOriginIPRangeService(opts ...option.RequestOption) (r OriginIPRangeServi
 // includes details like CIDR notation, description, and the direction of IP
 // traffic.
 func (r *OriginIPRangeService) List(ctx context.Context, query OriginIPRangeListParams, opts ...option.RequestOption) (res *CollectionResponseIPRangeNoPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "meta/network-origins/2026-03/ip-ranges"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
@@ -47,7 +47,7 @@ func (r *OriginIPRangeService) List(ctx context.Context, query OriginIPRangeList
 // plain text format. This endpoint provides a straightforward representation of IP
 // ranges without additional metadata.
 func (r *OriginIPRangeService) ListSimple(ctx context.Context, query OriginIPRangeListSimpleParams, opts ...option.RequestOption) (res *string, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "text/plain")}, opts...)
 	path := "meta/network-origins/2026-03/ip-ranges/simple"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -55,15 +55,9 @@ func (r *OriginIPRangeService) ListSimple(ctx context.Context, query OriginIPRan
 }
 
 type OriginIPRangeListParams struct {
-	// An array of traffic directions to filter the IP ranges. Valid values are
-	// `INGRESS` and `EGRESS`.
-	//
 	// Any of "INGRESS", "EGRESS".
 	Direction []string `query:"direction,omitzero" json:"-"`
-	// An array of service types to filter the IP ranges. Valid values include `EMAIL`,
-	// `API`, `DNS`, `WEB_SCRAPING`, and `TEST_SERVICE`.
-	//
-	// Any of "EMAIL", "API", "DNS", "WEB_SCRAPING".
+	// Any of "EMAIL", "API", "DNS", "WEB_SCRAPING", "TEST_SERVICE".
 	Service []string `query:"service,omitzero" json:"-"`
 	paramObj
 }
@@ -78,15 +72,9 @@ func (r OriginIPRangeListParams) URLQuery() (v url.Values, err error) {
 }
 
 type OriginIPRangeListSimpleParams struct {
-	// An array of directions to filter the IP ranges by. Valid values are `INGRESS`
-	// and `EGRESS`.
-	//
 	// Any of "INGRESS", "EGRESS".
 	Direction []string `query:"direction,omitzero" json:"-"`
-	// An array specifying the service types to filter by. Valid values include
-	// `EMAIL`, `API`, `DNS`, `WEB_SCRAPING`, and `TEST_SERVICE`.
-	//
-	// Any of "EMAIL", "API", "DNS", "WEB_SCRAPING".
+	// Any of "EMAIL", "API", "DNS", "WEB_SCRAPING", "TEST_SERVICE".
 	Service []string `query:"service,omitzero" json:"-"`
 	paramObj
 }

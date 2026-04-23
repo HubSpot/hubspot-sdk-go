@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/account"
+	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
@@ -24,14 +24,16 @@ func TestManualPagination(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	page, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{})
+	page, err := client.Crm.Objects.Contacts.List(context.TODO(), crm.ObjectContactListParams{
+		Limit: hubspotsdk.Int(100),
+	})
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	for _, activity := range page.Results {
-		t.Logf("%+v\n", activity.ID)
+	for _, contact := range page.Results {
+		t.Logf("%+v\n", contact.ID)
 	}
 	// The mock server isn't going to give us real pagination
 	page, err = page.GetNextPage()
@@ -39,8 +41,8 @@ func TestManualPagination(t *testing.T) {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 	if page != nil {
-		for _, activity := range page.Results {
-			t.Logf("%+v\n", activity.ID)
+		for _, contact := range page.Results {
+			t.Logf("%+v\n", contact.ID)
 		}
 	}
 }

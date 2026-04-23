@@ -26,7 +26,7 @@ func TestActivityListAuditLogsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Account.Activity.ListAuditLogs(context.TODO(), account.ActivityListAuditLogsParams{
 		ActingUserID:       []int64{0},
@@ -57,7 +57,7 @@ func TestActivityListLoginActivitiesWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Account.Activity.ListLoginActivities(context.TODO(), account.ActivityListLoginActivitiesParams{
 		After:  hubspotsdk.String("after"),
@@ -84,7 +84,7 @@ func TestActivityListSecurityActivitiesWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Account.Activity.ListSecurityActivities(context.TODO(), account.ActivityListSecurityActivitiesParams{
 		After:         hubspotsdk.String("after"),

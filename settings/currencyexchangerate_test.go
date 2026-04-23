@@ -26,7 +26,7 @@ func TestCurrencyExchangeRateNewExchangeRateWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.NewExchangeRate(context.TODO(), settings.CurrencyExchangeRateNewExchangeRateParams{
 		ExchangeRateCreateRequest: settings.ExchangeRateCreateRequestParam{
@@ -55,7 +55,7 @@ func TestCurrencyExchangeRateGetExchangeRateByID(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.GetExchangeRateByID(context.TODO(), "exchangeRateId")
 	if err != nil {
@@ -78,7 +78,7 @@ func TestCurrencyExchangeRateListCurrentExchangeRates(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.ListCurrentExchangeRates(context.TODO())
 	if err != nil {
@@ -101,7 +101,7 @@ func TestCurrencyExchangeRateListExchangeRatesWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.ListExchangeRates(context.TODO(), settings.CurrencyExchangeRateListExchangeRatesParams{
 		After:            hubspotsdk.String("after"),
@@ -129,7 +129,7 @@ func TestCurrencyExchangeRateUpdateExchangeRateWithOptionalParams(t *testing.T) 
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.UpdateExchangeRate(
 		context.TODO(),
@@ -161,7 +161,7 @@ func TestCurrencyExchangeRateUpdateVisibility(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Settings.Currencies.ExchangeRates.UpdateVisibility(context.TODO(), settings.CurrencyExchangeRateUpdateVisibilityParams{
 		CurrencyPairUpdate: settings.CurrencyPairUpdateParam{

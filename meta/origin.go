@@ -15,7 +15,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewOriginService] method instead.
 type OriginService struct {
-	Options  []option.RequestOption
+	options  []option.RequestOption
 	IPRanges OriginIPRangeService
 }
 
@@ -24,7 +24,7 @@ type OriginService struct {
 // is one), and before any request-specific options.
 func NewOriginService(opts ...option.RequestOption) (r OriginService) {
 	r = OriginService{}
-	r.Options = opts
+	r.options = opts
 	r.IPRanges = NewOriginIPRangeService(opts...)
 	return
 }
@@ -59,7 +59,7 @@ type IPRange struct {
 	// The service associated with the IP range, such as EMAIL, API, DNS, or
 	// WEB_SCRAPING.
 	//
-	// Any of "API", "DNS", "EMAIL", "WEB_SCRAPING".
+	// Any of "API", "DNS", "EMAIL", "TEST_SERVICE", "WEB_SCRAPING".
 	Service IPRangeService `json:"service" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -94,5 +94,6 @@ const (
 	IPRangeServiceAPI         IPRangeService = "API"
 	IPRangeServiceDNS         IPRangeService = "DNS"
 	IPRangeServiceEmail       IPRangeService = "EMAIL"
+	IPRangeServiceTestService IPRangeService = "TEST_SERVICE"
 	IPRangeServiceWebScraping IPRangeService = "WEB_SCRAPING"
 )

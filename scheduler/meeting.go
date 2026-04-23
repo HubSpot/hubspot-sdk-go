@@ -20,7 +20,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewMeetingService] method instead.
 type MeetingService struct {
-	Options  []option.RequestOption
+	options  []option.RequestOption
 	Advanced MeetingAdvancedService
 	Basic    MeetingBasicService
 }
@@ -30,7 +30,7 @@ type MeetingService struct {
 // is one), and before any request-specific options.
 func NewMeetingService(opts ...option.RequestOption) (r MeetingService) {
 	r = MeetingService{}
-	r.Options = opts
+	r.options = opts
 	r.Advanced = NewMeetingAdvancedService(opts...)
 	r.Basic = NewMeetingBasicService(opts...)
 	return
@@ -206,7 +206,7 @@ func (r *ExternalBrandingMetadata) UnmarshalJSON(data []byte) error {
 }
 
 // The properties HsMeetingEndTime, HsMeetingOutcome, HsMeetingStartTime,
-// HsMeetingTitle, HsTimestamp, HubspotOwnerID are required.
+// HsMeetingTitle, HsTimestamp, HubSpotOwnerID are required.
 type ExternalCalendarMeetingEventCreatePropertiesParam struct {
 	// The time that the meeting should end in ISO 8601 format.
 	HsMeetingEndTime time.Time `json:"hs_meeting_end_time" api:"required" format:"date-time"`
@@ -222,7 +222,7 @@ type ExternalCalendarMeetingEventCreatePropertiesParam struct {
 	// the same as `hs_meeting_start_time`.
 	HsTimestamp time.Time `json:"hs_timestamp" api:"required" format:"date-time"`
 	// The ownerId of the HubSpot user who will host the meeting.
-	HubspotOwnerID string `json:"hubspot_owner_id" api:"required"`
+	HubSpotOwnerID string `json:"hubspot_owner_id" api:"required"`
 	// The activity type of the meeting. Acceptable values are based on portal defined
 	// call and meeting types.
 	HsActivityType param.Opt[string] `json:"hs_activity_type,omitzero"`
@@ -289,26 +289,27 @@ type ExternalCalendarMeetingEventResponseProperties struct {
 	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
 	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
 	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
-	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS", "CONTACTS",
-	// "CONTACTS_WEB", "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT",
-	// "CONVERSATIONS", "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION",
-	// "CUSTOMER_AGENT", "DATA_ENRICHMENT", "DATA_QUALITY", "DATASET", "DEALS",
-	// "DEFAULT", "DELETE_OBJECTS", "EMAIL", "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION",
-	// "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC",
-	// "FORECASTING", "FORM", "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS",
-	// "HEISENBERG", "HELP_DESK", "HELP_DESK_AI", "IMPORT", "INTEGRATION",
-	// "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING",
-	// "LEADIN", "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE",
+	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS",
+	// "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB", "CONTENT_MEMBERSHIP",
+	// "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS", "CRM_PROCESSES_PLATFORM",
+	// "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT", "DATA_ENRICHMENT",
+	// "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT", "DELETE_OBJECTS", "EMAIL",
+	// "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION",
+	// "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM",
+	// "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK",
+	// "HELP_DESK_AI", "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM",
+	// "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING", "LEADIN",
+	// "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE", "MARKETS",
 	// "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS", "MERGE_OBJECTS",
 	// "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
 	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
 	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
 	// "PRIMARY_AUTOMATION", "PROPERTY_DEFAULT_VALUE", "PROPERTY_RESTORE",
 	// "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS", "QUOTES", "RECYCLING_BIN",
-	// "RESTORE_OBJECTS", "SALES", "SALES_MESSAGES", "SALESFORCE", "SEQUENCES",
-	// "SETTINGS", "SIDEKICK", "SIGNALS", "SLACK_INTEGRATION", "SMART_DATA_CAPTURE",
-	// "SOCIAL", "SUCCESS", "TALLY", "TASK", "UNKNOWN", "WAL_INCREMENTAL", "WORK_UI",
-	// "WORKFLOW_CONTACT_DELETE_ACTION", "WORKFLOWS".
+	// "RESTORE_OBJECTS", "REVENUE_PLATFORM", "SALES", "SALES_MESSAGES", "SALESFORCE",
+	// "SEQUENCES", "SETTINGS", "SIDEKICK", "SIGNALS", "SLACK_INTEGRATION",
+	// "SMART_DATA_CAPTURE", "SOCIAL", "SUCCESS", "TALLY", "TASK", "UNKNOWN",
+	// "WAL_INCREMENTAL", "WORK_UI", "WORKFLOW_CONTACT_DELETE_ACTION", "WORKFLOWS".
 	HsEngagementSource ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource `json:"hs_engagement_source" api:"required"`
 	// The ID associated with the process created the engagement. Should always be
 	// empty when creating meeting events through this API.
@@ -350,7 +351,7 @@ type ExternalCalendarMeetingEventResponseProperties struct {
 	// The unique ID of the created calendar event.
 	HsUniqueID string `json:"hs_unique_id"`
 	// The owner ID of the HubSpot user hosting the meeting.
-	HubspotOwnerID string `json:"hubspot_owner_id"`
+	HubSpotOwnerID string `json:"hubspot_owner_id"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		HsEngagementSource             respjson.Field
@@ -370,7 +371,7 @@ type ExternalCalendarMeetingEventResponseProperties struct {
 		HsMeetingLocation              respjson.Field
 		HsMeetingLocationType          respjson.Field
 		HsUniqueID                     respjson.Field
-		HubspotOwnerID                 respjson.Field
+		HubSpotOwnerID                 respjson.Field
 		ExtraFields                    map[string]respjson.Field
 		raw                            string
 	} `json:"-"`
@@ -417,6 +418,7 @@ const (
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanies                   ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANIES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyFamilies             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_FAMILIES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCompanyInsights             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "COMPANY_INSIGHTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceConnectedAccount            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONNECTED_ACCOUNT"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContacts                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContactsWeb                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTACTS_WEB"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceContentMembership           ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CONTENT_MEMBERSHIP"
@@ -457,6 +459,7 @@ const (
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceLegalBasisRemediation       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "LEGAL_BASIS_REMEDIATION"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketSourcing              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKET_SOURCING"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarketplace                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKETPLACE"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMarkets                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MARKETS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMeetings                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MEETINGS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeCompanies              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_COMPANIES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceMergeContacts               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "MERGE_CONTACTS"
@@ -481,6 +484,7 @@ const (
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceQuotes                      ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "QUOTES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRecyclingBin                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "RECYCLING_BIN"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRestoreObjects              ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "RESTORE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceRevenuePlatform             ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "REVENUE_PLATFORM"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSales                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesMessages               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALES_MESSAGES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceSalesforce                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "SALESFORCE"

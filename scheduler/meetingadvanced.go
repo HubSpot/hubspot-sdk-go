@@ -22,7 +22,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewMeetingAdvancedService] method instead.
 type MeetingAdvancedService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewMeetingAdvancedService generates a new service that applies the given options
@@ -30,7 +30,7 @@ type MeetingAdvancedService struct {
 // there is one), and before any request-specific options.
 func NewMeetingAdvancedService(opts ...option.RequestOption) (r MeetingAdvancedService) {
 	r = MeetingAdvancedService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
@@ -38,7 +38,7 @@ func NewMeetingAdvancedService(opts ...option.RequestOption) (r MeetingAdvancedS
 // details such as associations, email reminders, meeting object properties, and
 // timezone.
 func (r *MeetingAdvancedService) New(ctx context.Context, params MeetingAdvancedNewParams, opts ...option.RequestOption) (res *ExternalCalenderMeetingEventResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "scheduler/2026-03/meetings/calendar"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -46,7 +46,7 @@ func (r *MeetingAdvancedService) New(ctx context.Context, params MeetingAdvanced
 
 // Book a meeting for a specified meeting page.
 func (r *MeetingAdvancedService) Book(ctx context.Context, body MeetingAdvancedBookParams, opts ...option.RequestOption) (res *ExternalMeetingBookingResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "scheduler/2026-03/meetings/meeting-links/book"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err

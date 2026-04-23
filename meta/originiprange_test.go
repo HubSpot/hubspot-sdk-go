@@ -25,7 +25,7 @@ func TestOriginIPRangeListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Meta.Origins.IPRanges.List(context.TODO(), meta.OriginIPRangeListParams{
 		Direction: []string{"INGRESS"},
@@ -51,7 +51,7 @@ func TestOriginIPRangeListSimpleWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Meta.Origins.IPRanges.ListSimple(context.TODO(), meta.OriginIPRangeListSimpleParams{
 		Direction: []string{"INGRESS"},

@@ -20,7 +20,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCurrencyCentralFxRateService] method instead.
 type CurrencyCentralFxRateService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewCurrencyCentralFxRateService generates a new service that applies the given
@@ -28,26 +28,32 @@ type CurrencyCentralFxRateService struct {
 // options (if there is one), and before any request-specific options.
 func NewCurrencyCentralFxRateService(opts ...option.RequestOption) (r CurrencyCentralFxRateService) {
 	r = CurrencyCentralFxRateService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
+// Create a new currency with central exchange rates in the portal. Unsupported
+// currencies cannot be added here.
 func (r *CurrencyCentralFxRateService) NewCurrency(ctx context.Context, body CurrencyCentralFxRateNewCurrencyParams, opts ...option.RequestOption) (res *ExchangeRate, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/central-fx-rates/add-currency"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
+// Retrieve details on whether the central exchange rates feature is enabled for
+// the portal.
 func (r *CurrencyCentralFxRateService) GetInformation(ctx context.Context, opts ...option.RequestOption) (res *CentralExchangeRatesInformation, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/central-fx-rates/information"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
+// Retrieve a list of currency codes that are not supported by the central exchange
+// rates. Unsupported currencies will need to be manually updated.
 func (r *CurrencyCentralFxRateService) GetUnsupportedCurrencies(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseCurrencyCodeInfoNoPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	path := "settings/currencies/2026-03/central-fx-rates/unsupported-currencies"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err

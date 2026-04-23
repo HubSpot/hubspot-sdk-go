@@ -28,7 +28,7 @@ func TestBlogPostNew(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.New(context.TODO(), cms.BlogPostNewParams{
 		BlogPost: cms.BlogPostParam{
@@ -117,29 +117,29 @@ func TestBlogPostNew(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
@@ -187,29 +187,29 @@ func TestBlogPostNew(t *testing.T) {
 								Hidden: true,
 								Margin: cms.MarginParam{
 									Bottom: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 									Top: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 								},
 								Padding: cms.PaddingParam{
 									Bottom: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 									Left: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 									Right: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 									Top: cms.SizeParam{
-										Units: cms.SizeUnitsUnknown0,
+										Units: cms.SizeUnitsPercent,
 										Value: 0,
 									},
 								},
@@ -307,7 +307,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Update(
 		context.TODO(),
@@ -399,29 +399,29 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 										Hidden: true,
 										Margin: cms.MarginParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
 										Padding: cms.PaddingParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Left: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Right: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
@@ -469,29 +469,29 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
@@ -591,7 +591,7 @@ func TestBlogPostListWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.List(context.TODO(), cms.BlogPostListParams{
 		After:         hubspotsdk.String("after"),
@@ -639,7 +639,7 @@ func TestBlogPostDeleteWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Posts.Delete(
 		context.TODO(),
@@ -657,47 +657,6 @@ func TestBlogPostDeleteWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBlogPostAttachToLangGroupWithOptionalParams(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.AttachToLangGroup(context.TODO(), cms.BlogPostAttachToLangGroupParams{
-		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
-			ID:              "id",
-			Language:        cms.AttachToLangPrimaryRequestVNextLanguageAa,
-			PrimaryID:       "primaryId",
-			PrimaryLanguage: cms.AttachToLangPrimaryRequestVNextPrimaryLanguageAa,
-		},
-	})
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
 func TestBlogPostCloneWithOptionalParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
@@ -707,89 +666,12 @@ func TestBlogPostCloneWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Clone(context.TODO(), cms.BlogPostCloneParams{
 		ContentCloneRequestVNext: cms.ContentCloneRequestVNextParam{
 			ID:        "id",
 			CloneName: hubspotsdk.String("cloneName"),
-		},
-	})
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
-func TestBlogPostNewLangVariationWithOptionalParams(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.NewLangVariation(context.TODO(), cms.BlogPostNewLangVariationParams{
-		BlogPostLanguageCloneRequestVNext: cms.BlogPostLanguageCloneRequestVNextParam{
-			ID:       "id",
-			Language: hubspotsdk.String("language"),
-		},
-	})
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
-func TestBlogPostDetachFromLangGroup(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.DetachFromLangGroup(context.TODO(), cms.BlogPostDetachFromLangGroupParams{
-		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
-			ID: "id",
 		},
 	})
 	if err != nil {
@@ -823,7 +705,7 @@ func TestBlogPostGetWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.Get(
 		context.TODO(),
@@ -864,7 +746,7 @@ func TestBlogPostGetDraftByID(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.GetDraftByID(context.TODO(), "objectId")
 	if err != nil {
@@ -889,7 +771,7 @@ func TestBlogPostGetDraftByID(t *testing.T) {
 	}
 }
 
-func TestBlogPostGetPreviousVersion(t *testing.T) {
+func TestBlogPostListAuthorsWithOptionalParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -898,15 +780,21 @@ func TestBlogPostGetPreviousVersion(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Blogs.Posts.GetPreviousVersion(
-		context.TODO(),
-		"revisionId",
-		cms.BlogPostGetPreviousVersionParams{
-			ObjectID: "objectId",
-		},
-	)
+	resp, err := client.Cms.Blogs.Posts.ListAuthors(context.TODO(), cms.BlogPostListAuthorsParams{
+		After:         hubspotsdk.String("after"),
+		Archived:      hubspotsdk.Bool(true),
+		CreatedAfter:  hubspotsdk.Time(time.Now()),
+		CreatedAt:     hubspotsdk.Time(time.Now()),
+		CreatedBefore: hubspotsdk.Time(time.Now()),
+		Limit:         hubspotsdk.Int(0),
+		Property:      hubspotsdk.String("property"),
+		Sort:          []string{"string"},
+		UpdatedAfter:  hubspotsdk.Time(time.Now()),
+		UpdatedAt:     hubspotsdk.Time(time.Now()),
+		UpdatedBefore: hubspotsdk.Time(time.Now()),
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -929,7 +817,7 @@ func TestBlogPostGetPreviousVersion(t *testing.T) {
 	}
 }
 
-func TestBlogPostGetPreviousVersionsWithOptionalParams(t *testing.T) {
+func TestBlogPostListTagsWithOptionalParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -938,17 +826,21 @@ func TestBlogPostGetPreviousVersionsWithOptionalParams(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Blogs.Posts.GetPreviousVersions(
-		context.TODO(),
-		"objectId",
-		cms.BlogPostGetPreviousVersionsParams{
-			After:  hubspotsdk.String("after"),
-			Before: hubspotsdk.String("before"),
-			Limit:  hubspotsdk.Int(0),
-		},
-	)
+	resp, err := client.Cms.Blogs.Posts.ListTags(context.TODO(), cms.BlogPostListTagsParams{
+		After:         hubspotsdk.String("after"),
+		Archived:      hubspotsdk.Bool(true),
+		CreatedAfter:  hubspotsdk.Time(time.Now()),
+		CreatedAt:     hubspotsdk.Time(time.Now()),
+		CreatedBefore: hubspotsdk.Time(time.Now()),
+		Limit:         hubspotsdk.Int(0),
+		Property:      hubspotsdk.String("property"),
+		Sort:          []string{"string"},
+		UpdatedAfter:  hubspotsdk.Time(time.Now()),
+		UpdatedAt:     hubspotsdk.Time(time.Now()),
+		UpdatedBefore: hubspotsdk.Time(time.Now()),
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -982,7 +874,7 @@ func TestBlogPostPushLive(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Posts.PushLive(context.TODO(), "objectId")
 	if err != nil {
@@ -991,6 +883,144 @@ func TestBlogPostPushLive(t *testing.T) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestBlogPostQueryWithOptionalParams(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		w.Write([]byte("abc"))
+	}))
+	defer server.Close()
+	baseURL := server.URL
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	resp, err := client.Cms.Blogs.Posts.Query(context.TODO(), cms.BlogPostQueryParams{
+		After:         hubspotsdk.String("after"),
+		Archived:      hubspotsdk.Bool(true),
+		CreatedAfter:  hubspotsdk.Time(time.Now()),
+		CreatedAt:     hubspotsdk.Time(time.Now()),
+		CreatedBefore: hubspotsdk.Time(time.Now()),
+		Limit:         hubspotsdk.Int(0),
+		Property:      hubspotsdk.String("property"),
+		Sort:          []string{"string"},
+		UpdatedAfter:  hubspotsdk.Time(time.Now()),
+		UpdatedAt:     hubspotsdk.Time(time.Now()),
+		UpdatedBefore: hubspotsdk.Time(time.Now()),
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	if !bytes.Equal(b, []byte("abc")) {
+		t.Fatalf("return value not %s: %s", "abc", b)
+	}
+}
+
+func TestBlogPostQueryAuthorsWithOptionalParams(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		w.Write([]byte("abc"))
+	}))
+	defer server.Close()
+	baseURL := server.URL
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	resp, err := client.Cms.Blogs.Posts.QueryAuthors(context.TODO(), cms.BlogPostQueryAuthorsParams{
+		After:         hubspotsdk.String("after"),
+		Archived:      hubspotsdk.Bool(true),
+		CreatedAfter:  hubspotsdk.Time(time.Now()),
+		CreatedAt:     hubspotsdk.Time(time.Now()),
+		CreatedBefore: hubspotsdk.Time(time.Now()),
+		Limit:         hubspotsdk.Int(0),
+		Property:      hubspotsdk.String("property"),
+		Sort:          []string{"string"},
+		UpdatedAfter:  hubspotsdk.Time(time.Now()),
+		UpdatedAt:     hubspotsdk.Time(time.Now()),
+		UpdatedBefore: hubspotsdk.Time(time.Now()),
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	if !bytes.Equal(b, []byte("abc")) {
+		t.Fatalf("return value not %s: %s", "abc", b)
+	}
+}
+
+func TestBlogPostQueryTagsWithOptionalParams(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		w.Write([]byte("abc"))
+	}))
+	defer server.Close()
+	baseURL := server.URL
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	resp, err := client.Cms.Blogs.Posts.QueryTags(context.TODO(), cms.BlogPostQueryTagsParams{
+		After:         hubspotsdk.String("after"),
+		Archived:      hubspotsdk.Bool(true),
+		CreatedAfter:  hubspotsdk.Time(time.Now()),
+		CreatedAt:     hubspotsdk.Time(time.Now()),
+		CreatedBefore: hubspotsdk.Time(time.Now()),
+		Limit:         hubspotsdk.Int(0),
+		Property:      hubspotsdk.String("property"),
+		Sort:          []string{"string"},
+		UpdatedAfter:  hubspotsdk.Time(time.Now()),
+		UpdatedAt:     hubspotsdk.Time(time.Now()),
+		UpdatedBefore: hubspotsdk.Time(time.Now()),
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	b, err := io.ReadAll(resp.Body)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+	if !bytes.Equal(b, []byte("abc")) {
+		t.Fatalf("return value not %s: %s", "abc", b)
 	}
 }
 
@@ -1005,7 +1035,7 @@ func TestBlogPostResetDraft(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Posts.ResetDraft(context.TODO(), "objectId")
 	if err != nil {
@@ -1014,86 +1044,6 @@ func TestBlogPostResetDraft(t *testing.T) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestBlogPostRestorePreviousVersion(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.RestorePreviousVersion(
-		context.TODO(),
-		"revisionId",
-		cms.BlogPostRestorePreviousVersionParams{
-			ObjectID: "objectId",
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
-func TestBlogPostRestorePreviousVersionToDraft(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.RestorePreviousVersionToDraft(
-		context.TODO(),
-		0,
-		cms.BlogPostRestorePreviousVersionToDraftParams{
-			ObjectID: "objectId",
-		},
-	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
 	}
 }
 
@@ -1108,39 +1058,12 @@ func TestBlogPostSchedule(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	err := client.Cms.Blogs.Posts.Schedule(context.TODO(), cms.BlogPostScheduleParams{
 		ContentScheduleRequestVNext: cms.ContentScheduleRequestVNextParam{
 			ID:          "id",
 			PublishDate: time.Now(),
-		},
-	})
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestBlogPostSetLangPrimary(t *testing.T) {
-	t.Skip("Mock server tests are disabled")
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	err := client.Cms.Blogs.Posts.SetLangPrimary(context.TODO(), cms.BlogPostSetLangPrimaryParams{
-		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
-			ID: "id",
 		},
 	})
 	if err != nil {
@@ -1161,7 +1084,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 	baseURL := server.URL
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	resp, err := client.Cms.Blogs.Posts.UpdateDraft(
 		context.TODO(),
@@ -1253,29 +1176,29 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 										Hidden: true,
 										Margin: cms.MarginParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
 										Padding: cms.PaddingParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Left: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Right: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsUnknown0,
+												Units: cms.SizeUnitsPercent,
 												Value: 0,
 											},
 										},
@@ -1323,29 +1246,29 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsUnknown0,
+											Units: cms.SizeUnitsPercent,
 											Value: 0,
 										},
 									},
@@ -1413,47 +1336,6 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 			},
 		},
 	)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
-func TestBlogPostUpdateLangs(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
-	)
-	resp, err := client.Cms.Blogs.Posts.UpdateLangs(context.TODO(), cms.BlogPostUpdateLangsParams{
-		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{
-			Languages: map[string]string{
-				"foo": "aa",
-			},
-			PrimaryID: "primaryId",
-		},
-	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

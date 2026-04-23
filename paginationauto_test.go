@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/account"
+	"github.com/stainless-sdks/hubspot-sdk-go/crm"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
 )
@@ -24,13 +24,15 @@ func TestAutoPagination(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
-	iter := client.Account.Activity.ListAuditLogsAutoPaging(context.TODO(), account.ActivityListAuditLogsParams{})
+	iter := client.Crm.Objects.Contacts.ListAutoPaging(context.TODO(), crm.ObjectContactListParams{
+		Limit: hubspotsdk.Int(100),
+	})
 	// The mock server isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
-		activity := iter.Current()
-		t.Logf("%+v\n", activity.ID)
+		contact := iter.Current()
+		t.Logf("%+v\n", contact.ID)
 	}
 	if err := iter.Err(); err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())

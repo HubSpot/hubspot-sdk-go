@@ -3,22 +3,11 @@
 package automation
 
 import (
-	"context"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/events"
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
-	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
 	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
 	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
 	"github.com/stainless-sdks/hubspot-sdk-go/shared"
@@ -31,7 +20,11 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewActionService] method instead.
 type ActionService struct {
-	Options []option.RequestOption
+	options     []option.RequestOption
+	Callbacks   ActionCallbackService
+	Definitions ActionDefinitionService
+	Functions   ActionFunctionService
+	Revisions   ActionRevisionService
 }
 
 // NewActionService generates a new service that applies the given options to each
@@ -39,180 +32,20 @@ type ActionService struct {
 // is one), and before any request-specific options.
 func NewActionService(opts ...option.RequestOption) (r ActionService) {
 	r = ActionService{}
-	r.Options = opts
+	r.options = opts
+	r.Callbacks = NewActionCallbackService(opts...)
+	r.Definitions = NewActionDefinitionService(opts...)
+	r.Functions = NewActionFunctionService(opts...)
+	r.Revisions = NewActionRevisionService(opts...)
 	return
-}
-
-func (r *ActionService) New(ctx context.Context, appID int64, body ActionNewParams, opts ...option.RequestOption) (res *PublicActionDefinition, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := fmt.Sprintf("automation/actions/2026-03/%v", appID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) Update(ctx context.Context, definitionID string, params ActionUpdateParams, opts ...option.RequestOption) (res *PublicActionDefinition, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if definitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s", params.AppID, definitionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) List(ctx context.Context, definitionID string, params ActionListParams, opts ...option.RequestOption) (res *pagination.Page[PublicActionRevision], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	if definitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/revisions", params.AppID, definitionID)
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
-}
-
-func (r *ActionService) ListAutoPaging(ctx context.Context, definitionID string, params ActionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PublicActionRevision] {
-	return pagination.NewPageAutoPager(r.List(ctx, definitionID, params, opts...))
-}
-
-func (r *ActionService) Delete(ctx context.Context, functionID string, body ActionDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if body.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return err
-	}
-	if functionID == "" {
-		err = errors.New("missing required functionId parameter")
-		return err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/functions/%v/%s", body.AppID, body.DefinitionID, body.FunctionType, functionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
-}
-
-func (r *ActionService) Complete(ctx context.Context, callbackID string, body ActionCompleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if callbackID == "" {
-		err = errors.New("missing required callbackId parameter")
-		return err
-	}
-	path := fmt.Sprintf("automation/actions/callbacks/2026-03/%s/complete", callbackID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
-	return err
-}
-
-func (r *ActionService) CompleteBatch(ctx context.Context, body ActionCompleteBatchParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "automation/actions/callbacks/2026-03/complete"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
-	return err
-}
-
-func (r *ActionService) NewOrReplace(ctx context.Context, functionID string, params ActionNewOrReplaceParams, opts ...option.RequestOption) (res *PublicActionFunctionIdentifier, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if params.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	if functionID == "" {
-		err = errors.New("missing required functionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/functions/%v/%s", params.AppID, params.DefinitionID, params.FunctionType, functionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) NewOrReplaceByFunctionType(ctx context.Context, functionType ActionNewOrReplaceByFunctionTypeParamsFunctionType, params ActionNewOrReplaceByFunctionTypeParams, opts ...option.RequestOption) (res *PublicActionFunctionIdentifier, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if params.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/functions/%v", params.AppID, params.DefinitionID, functionType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) NewRequiresObject(ctx context.Context, definitionID string, params ActionNewRequiresObjectParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if definitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/requires-object", params.AppID, definitionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, nil, opts...)
-	return err
-}
-
-func (r *ActionService) DeleteByFunctionType(ctx context.Context, functionType ActionDeleteByFunctionTypeParamsFunctionType, body ActionDeleteByFunctionTypeParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if body.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/functions/%v", body.AppID, body.DefinitionID, functionType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
-}
-
-func (r *ActionService) Get(ctx context.Context, revisionID string, query ActionGetParams, opts ...option.RequestOption) (res *PublicActionRevision, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if query.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/revisions/%s", query.AppID, query.DefinitionID, revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) GetByFunctionType(ctx context.Context, functionType ActionGetByFunctionTypeParamsFunctionType, query ActionGetByFunctionTypeParams, opts ...option.RequestOption) (res *PublicActionFunction, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if query.DefinitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/functions/%v", query.AppID, query.DefinitionID, functionType)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-func (r *ActionService) GetRequiresObject(ctx context.Context, definitionID string, query ActionGetRequiresObjectParams, opts ...option.RequestOption) (res *PublicActionDefinitionRequiresObjectResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if definitionID == "" {
-		err = errors.New("missing required definitionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("automation/actions/2026-03/%v/%s/requires-object", query.AppID, definitionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
 }
 
 // The properties ActionExecutionIndex, EnrollmentID are required.
 type ActionExecutionIndexIdentifierParam struct {
+	// The index number representing the execution order of the action.
 	ActionExecutionIndex int64 `json:"actionExecutionIndex" api:"required"`
-	EnrollmentID         int64 `json:"enrollmentId" api:"required"`
+	// The ID associated with the enrollment process.
+	EnrollmentID int64 `json:"enrollmentId" api:"required"`
 	paramObj
 }
 
@@ -226,11 +59,15 @@ func (r *ActionExecutionIndexIdentifierParam) UnmarshalJSON(data []byte) error {
 
 // The properties AgentID, ChirpAIContextObject, Source are required.
 type AgentRequestContextParam struct {
+	// The unique identifier for the agent making the request.
 	AgentID              int64                     `json:"agentId" api:"required"`
 	ChirpAIContextObject ChirpAIContextObjectParam `json:"chirpAiContextObject,omitzero" api:"required"`
+	// Indicates the source of the request, with the default value being 'AGENTS'.
+	//
 	// Any of "AGENTS".
-	Source       AgentRequestContextSource `json:"source,omitzero" api:"required"`
-	TrajectoryID param.Opt[string]         `json:"trajectoryId,omitzero"`
+	Source AgentRequestContextSource `json:"source,omitzero" api:"required"`
+	// The unique identifier for the trajectory associated with the agent request.
+	TrajectoryID param.Opt[string] `json:"trajectoryId,omitzero"`
 	paramObj
 }
 
@@ -242,6 +79,7 @@ func (r *AgentRequestContextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the source of the request, with the default value being 'AGENTS'.
 type AgentRequestContextSource string
 
 const (
@@ -249,7 +87,9 @@ const (
 )
 
 type ArrayFieldSchema struct {
-	Items ArrayFieldSchemaItemsUnion `json:"items" api:"required"`
+	Items any `json:"items" api:"required"`
+	// Specifies that the field is of type 'ARRAY'.
+	//
 	// Any of "ARRAY".
 	Type ArrayFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -276,127 +116,7 @@ func (r ArrayFieldSchema) ToParam() ArrayFieldSchemaParam {
 	return param.Override[ArrayFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
-// ArrayFieldSchemaItemsUnion contains all possible properties and values from
-// [IntegerFieldSchema], [LongFieldSchema], [DoubleFieldSchema],
-// [StringFieldSchema], [BooleanFieldSchema], [ArrayFieldSchema],
-// [ObjectFieldSchema].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type ArrayFieldSchemaItemsUnion struct {
-	Type string `json:"type"`
-	// This field is a union of [int64], [int64], [float64]
-	Maximum ArrayFieldSchemaItemsUnionMaximum `json:"maximum"`
-	// This field is a union of [int64], [int64], [float64]
-	Minimum ArrayFieldSchemaItemsUnionMinimum `json:"minimum"`
-	// This field is from variant [StringFieldSchema].
-	Format StringFieldSchemaFormat `json:"format"`
-	// This field is from variant [ArrayFieldSchema].
-	Items ArrayFieldSchemaItemsUnion `json:"items"`
-	// This field is from variant [ObjectFieldSchema].
-	Properties any `json:"properties"`
-	JSON       struct {
-		Type       respjson.Field
-		Maximum    respjson.Field
-		Minimum    respjson.Field
-		Format     respjson.Field
-		Items      respjson.Field
-		Properties respjson.Field
-		raw        string
-	} `json:"-"`
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsInteger() (v IntegerFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsLong() (v LongFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsDouble() (v DoubleFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsString() (v StringFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsBoolean() (v BooleanFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsArray() (v ArrayFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u ArrayFieldSchemaItemsUnion) AsObject() (v ObjectFieldSchema) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u ArrayFieldSchemaItemsUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *ArrayFieldSchemaItemsUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ArrayFieldSchemaItemsUnionMaximum is an implicit subunion of
-// [ArrayFieldSchemaItemsUnion]. ArrayFieldSchemaItemsUnionMaximum provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [ArrayFieldSchemaItemsUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfInt OfFloat]
-type ArrayFieldSchemaItemsUnionMaximum struct {
-	// This field will be present if the value is a [int64] instead of an object.
-	OfInt int64 `json:",inline"`
-	// This field will be present if the value is a [float64] instead of an object.
-	OfFloat float64 `json:",inline"`
-	JSON    struct {
-		OfInt   respjson.Field
-		OfFloat respjson.Field
-		raw     string
-	} `json:"-"`
-}
-
-func (r *ArrayFieldSchemaItemsUnionMaximum) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ArrayFieldSchemaItemsUnionMinimum is an implicit subunion of
-// [ArrayFieldSchemaItemsUnion]. ArrayFieldSchemaItemsUnionMinimum provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [ArrayFieldSchemaItemsUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfInt OfFloat]
-type ArrayFieldSchemaItemsUnionMinimum struct {
-	// This field will be present if the value is a [int64] instead of an object.
-	OfInt int64 `json:",inline"`
-	// This field will be present if the value is a [float64] instead of an object.
-	OfFloat float64 `json:",inline"`
-	JSON    struct {
-		OfInt   respjson.Field
-		OfFloat respjson.Field
-		raw     string
-	} `json:"-"`
-}
-
-func (r *ArrayFieldSchemaItemsUnionMinimum) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
+// Specifies that the field is of type 'ARRAY'.
 type ArrayFieldSchemaType string
 
 const (
@@ -405,7 +125,9 @@ const (
 
 // The properties Items, Type are required.
 type ArrayFieldSchemaParam struct {
-	Items ArrayFieldSchemaItemsUnionParam `json:"items,omitzero" api:"required"`
+	Items any `json:"items,omitzero" api:"required"`
+	// Specifies that the field is of type 'ARRAY'.
+	//
 	// Any of "ARRAY".
 	Type ArrayFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
@@ -418,150 +140,6 @@ func (r ArrayFieldSchemaParam) MarshalJSON() (data []byte, err error) {
 func (r *ArrayFieldSchemaParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type ArrayFieldSchemaItemsUnionParam struct {
-	OfInteger *IntegerFieldSchemaParam `json:",omitzero,inline"`
-	OfLong    *LongFieldSchemaParam    `json:",omitzero,inline"`
-	OfDouble  *DoubleFieldSchemaParam  `json:",omitzero,inline"`
-	OfString  *StringFieldSchemaParam  `json:",omitzero,inline"`
-	OfBoolean *BooleanFieldSchemaParam `json:",omitzero,inline"`
-	OfArray   *ArrayFieldSchemaParam   `json:",omitzero,inline"`
-	OfObject  *ObjectFieldSchemaParam  `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u ArrayFieldSchemaItemsUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfInteger,
-		u.OfLong,
-		u.OfDouble,
-		u.OfString,
-		u.OfBoolean,
-		u.OfArray,
-		u.OfObject)
-}
-func (u *ArrayFieldSchemaItemsUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func (u *ArrayFieldSchemaItemsUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfInteger) {
-		return u.OfInteger
-	} else if !param.IsOmitted(u.OfLong) {
-		return u.OfLong
-	} else if !param.IsOmitted(u.OfDouble) {
-		return u.OfDouble
-	} else if !param.IsOmitted(u.OfString) {
-		return u.OfString
-	} else if !param.IsOmitted(u.OfBoolean) {
-		return u.OfBoolean
-	} else if !param.IsOmitted(u.OfArray) {
-		return u.OfArray
-	} else if !param.IsOmitted(u.OfObject) {
-		return u.OfObject
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u ArrayFieldSchemaItemsUnionParam) GetFormat() *string {
-	if vt := u.OfString; vt != nil {
-		return (*string)(&vt.Format)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u ArrayFieldSchemaItemsUnionParam) GetItems() *ArrayFieldSchemaItemsUnionParam {
-	if vt := u.OfArray; vt != nil {
-		return &vt.Items
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u ArrayFieldSchemaItemsUnionParam) GetProperties() *any {
-	if vt := u.OfObject; vt != nil {
-		return &vt.Properties
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u ArrayFieldSchemaItemsUnionParam) GetType() *string {
-	if vt := u.OfInteger; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfLong; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfDouble; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfString; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfBoolean; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfArray; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfObject; vt != nil {
-		return (*string)(&vt.Type)
-	}
-	return nil
-}
-
-// Returns a subunion which exports methods to access subproperties
-//
-// Or use AsAny() to get the underlying value
-func (u ArrayFieldSchemaItemsUnionParam) GetMaximum() (res arrayFieldSchemaItemsUnionParamMaximum) {
-	if vt := u.OfInteger; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	} else if vt := u.OfLong; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	} else if vt := u.OfDouble; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	}
-	return
-}
-
-// Can have the runtime types [*int64], [*float64]
-type arrayFieldSchemaItemsUnionParamMaximum struct{ any }
-
-// Use the following switch statement to get the type of the union:
-//
-//	switch u.AsAny().(type) {
-//	case *int64:
-//	case *float64:
-//	default:
-//	    fmt.Errorf("not present")
-//	}
-func (u arrayFieldSchemaItemsUnionParamMaximum) AsAny() any { return u.any }
-
-// Returns a subunion which exports methods to access subproperties
-//
-// Or use AsAny() to get the underlying value
-func (u ArrayFieldSchemaItemsUnionParam) GetMinimum() (res arrayFieldSchemaItemsUnionParamMinimum) {
-	if vt := u.OfInteger; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	} else if vt := u.OfLong; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	} else if vt := u.OfDouble; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	}
-	return
-}
-
-// Can have the runtime types [*int64], [*float64]
-type arrayFieldSchemaItemsUnionParamMinimum struct{ any }
-
-// Use the following switch statement to get the type of the union:
-//
-//	switch u.AsAny().(type) {
-//	case *int64:
-//	case *float64:
-//	default:
-//	    fmt.Errorf("not present")
-//	}
-func (u arrayFieldSchemaItemsUnionParamMinimum) AsAny() any { return u.any }
 
 // The property Inputs is required.
 type BatchInputCallbackCompletionBatchRequestParam struct {
@@ -578,6 +156,9 @@ func (r *BatchInputCallbackCompletionBatchRequestParam) UnmarshalJSON(data []byt
 }
 
 type BooleanFieldSchema struct {
+	// Specifies the field type as BOOLEAN, indicating that the field can hold a true
+	// or false value.
+	//
 	// Any of "BOOLEAN".
 	Type BooleanFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -603,6 +184,8 @@ func (r BooleanFieldSchema) ToParam() BooleanFieldSchemaParam {
 	return param.Override[BooleanFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// Specifies the field type as BOOLEAN, indicating that the field can hold a true
+// or false value.
 type BooleanFieldSchemaType string
 
 const (
@@ -611,6 +194,9 @@ const (
 
 // The property Type is required.
 type BooleanFieldSchemaParam struct {
+	// Specifies the field type as BOOLEAN, indicating that the field can hold a true
+	// or false value.
+	//
 	// Any of "BOOLEAN".
 	Type BooleanFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
@@ -626,11 +212,17 @@ func (r *BooleanFieldSchemaParam) UnmarshalJSON(data []byte) error {
 
 // The properties CallbackID, OutputFields, TypedOutputs are required.
 type CallbackCompletionBatchRequestParam struct {
-	CallbackID        string                                                 `json:"callbackId" api:"required"`
-	OutputFields      map[string]string                                      `json:"outputFields,omitzero" api:"required"`
-	TypedOutputs      any                                                    `json:"typedOutputs,omitzero" api:"required"`
-	FailureReasonType param.Opt[string]                                      `json:"failureReasonType,omitzero"`
-	RequestContext    CallbackCompletionBatchRequestRequestContextUnionParam `json:"requestContext,omitzero"`
+	// The unique identifier for the callback.
+	CallbackID string `json:"callbackId" api:"required"`
+	// Holds the output fields for the callback completion.
+	OutputFields map[string]string `json:"outputFields,omitzero" api:"required"`
+	// Contains the typed outputs for the callback completion.
+	TypedOutputs any `json:"typedOutputs,omitzero" api:"required"`
+	// Specifies the type of failure reason for the callback completion.
+	FailureReasonType param.Opt[string] `json:"failureReasonType,omitzero"`
+	// Defines the context of the request, which can be one of several predefined
+	// types.
+	RequestContext CallbackCompletionBatchRequestRequestContextUnionParam `json:"requestContext,omitzero"`
 	paramObj
 }
 
@@ -665,98 +257,18 @@ func (u *CallbackCompletionBatchRequestRequestContextUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
-func (u *CallbackCompletionBatchRequestRequestContextUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfWorkflows) {
-		return u.OfWorkflows
-	} else if !param.IsOmitted(u.OfAgents) {
-		return u.OfAgents
-	} else if !param.IsOmitted(u.OfCopilot) {
-		return u.OfCopilot
-	} else if !param.IsOmitted(u.OfStandalone) {
-		return u.OfStandalone
-	} else if !param.IsOmitted(u.OfTest) {
-		return u.OfTest
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetWorkflowID() *int64 {
-	if vt := u.OfWorkflows; vt != nil {
-		return &vt.WorkflowID
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetActionExecutionIndexIdentifier() *ActionExecutionIndexIdentifierParam {
-	if vt := u.OfWorkflows; vt != nil {
-		return &vt.ActionExecutionIndexIdentifier
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetActionID() *int64 {
-	if vt := u.OfWorkflows; vt != nil && vt.ActionID.Valid() {
-		return &vt.ActionID.Value
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetAgentID() *int64 {
-	if vt := u.OfAgents; vt != nil {
-		return &vt.AgentID
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetSource() *string {
-	if vt := u.OfWorkflows; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfAgents; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfCopilot; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfStandalone; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfTest; vt != nil {
-		return (*string)(&vt.Source)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetTrajectoryID() *string {
-	if vt := u.OfAgents; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	} else if vt := u.OfCopilot; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	} else if vt := u.OfStandalone; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's ChirpAIContextObject property, if
-// present.
-func (u CallbackCompletionBatchRequestRequestContextUnionParam) GetChirpAIContextObject() *ChirpAIContextObjectParam {
-	if vt := u.OfAgents; vt != nil {
-		return &vt.ChirpAIContextObject
-	} else if vt := u.OfStandalone; vt != nil {
-		return &vt.ChirpAIContextObject
-	}
-	return nil
-}
-
 // The properties OutputFields, TypedOutputs are required.
 type CallbackCompletionRequestParam struct {
-	OutputFields      map[string]string                                 `json:"outputFields,omitzero" api:"required"`
-	TypedOutputs      any                                               `json:"typedOutputs,omitzero" api:"required"`
-	FailureReasonType param.Opt[string]                                 `json:"failureReasonType,omitzero"`
-	RequestContext    CallbackCompletionRequestRequestContextUnionParam `json:"requestContext,omitzero"`
+	// Contains the output fields associated with the callback, with each field
+	// represented as a key-value pair.
+	OutputFields map[string]string `json:"outputFields,omitzero" api:"required"`
+	// Holds the typed outputs related to the callback, structured as an object.
+	TypedOutputs any `json:"typedOutputs,omitzero" api:"required"`
+	// Indicates the reason for the failure of a callback completion.
+	FailureReasonType param.Opt[string] `json:"failureReasonType,omitzero"`
+	// Specifies the context in which the request is made, which can be one of several
+	// predefined contexts.
+	RequestContext CallbackCompletionRequestRequestContextUnionParam `json:"requestContext,omitzero"`
 	paramObj
 }
 
@@ -791,108 +303,30 @@ func (u *CallbackCompletionRequestRequestContextUnionParam) UnmarshalJSON(data [
 	return apijson.UnmarshalRoot(data, u)
 }
 
-func (u *CallbackCompletionRequestRequestContextUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfWorkflows) {
-		return u.OfWorkflows
-	} else if !param.IsOmitted(u.OfAgents) {
-		return u.OfAgents
-	} else if !param.IsOmitted(u.OfCopilot) {
-		return u.OfCopilot
-	} else if !param.IsOmitted(u.OfStandalone) {
-		return u.OfStandalone
-	} else if !param.IsOmitted(u.OfTest) {
-		return u.OfTest
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetWorkflowID() *int64 {
-	if vt := u.OfWorkflows; vt != nil {
-		return &vt.WorkflowID
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetActionExecutionIndexIdentifier() *ActionExecutionIndexIdentifierParam {
-	if vt := u.OfWorkflows; vt != nil {
-		return &vt.ActionExecutionIndexIdentifier
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetActionID() *int64 {
-	if vt := u.OfWorkflows; vt != nil && vt.ActionID.Valid() {
-		return &vt.ActionID.Value
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetAgentID() *int64 {
-	if vt := u.OfAgents; vt != nil {
-		return &vt.AgentID
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetSource() *string {
-	if vt := u.OfWorkflows; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfAgents; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfCopilot; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfStandalone; vt != nil {
-		return (*string)(&vt.Source)
-	} else if vt := u.OfTest; vt != nil {
-		return (*string)(&vt.Source)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetTrajectoryID() *string {
-	if vt := u.OfAgents; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	} else if vt := u.OfCopilot; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	} else if vt := u.OfStandalone; vt != nil && vt.TrajectoryID.Valid() {
-		return &vt.TrajectoryID.Value
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's ChirpAIContextObject property, if
-// present.
-func (u CallbackCompletionRequestRequestContextUnionParam) GetChirpAIContextObject() *ChirpAIContextObjectParam {
-	if vt := u.OfAgents; vt != nil {
-		return &vt.ChirpAIContextObject
-	} else if vt := u.OfStandalone; vt != nil {
-		return &vt.ChirpAIContextObject
-	}
-	return nil
-}
-
 // The properties ApplicationGroup, ApplicationID, Metadata, OtelContextHolder,
 // UnstructuredSources are required.
 type ChirpAIContextObjectParam struct {
-	ApplicationGroup  string            `json:"applicationGroup" api:"required"`
-	ApplicationID     string            `json:"applicationId" api:"required"`
-	Metadata          map[string]string `json:"metadata,omitzero" api:"required"`
+	// The group to which the application belongs.
+	ApplicationGroup string `json:"applicationGroup" api:"required"`
+	// The identifier for the application associated with the context.
+	ApplicationID string `json:"applicationId" api:"required"`
+	// Additional metadata related to the context, represented as key-value pairs.
+	Metadata map[string]string `json:"metadata,omitzero" api:"required"`
+	// Holds OpenTelemetry context information as key-value pairs.
 	OtelContextHolder map[string]string `json:"otelContextHolder,omitzero" api:"required"`
 	// Any of "NONE", "USER_INPUT", "LOGGED_EMAIL", "VIDEO_CALL", "AUDIO_CALL",
 	// "CALL_TRANSCRIPT", "MEETING_TRANSCRIPT", "FORMS", "FEEDBACK_SURVEY", "PDF",
 	// "QUOTE", "INVOICE", "OTHER_ATTACHMENT_DOC", "WHATSAPP", "SMS", "CHAT",
 	// "FACEBOOK_MESSENGER", "CUSTOM_CHANNEL_OR_API", "MANY", "NOTE", "DERIVED".
-	UnstructuredSources []string           `json:"unstructuredSources,omitzero" api:"required"`
-	FeatureID           param.Opt[string]  `json:"featureId,omitzero"`
-	InferenceID         param.Opt[string]  `json:"inferenceId,omitzero"`
-	TrajectoryID        param.Opt[string]  `json:"trajectoryId,omitzero" format:"uuid"`
-	ComplianceIDs       ComplianceIDsParam `json:"complianceIds,omitzero"`
+	UnstructuredSources []string          `json:"unstructuredSources,omitzero" api:"required"`
+	ConversationID      param.Opt[string] `json:"conversationId,omitzero"`
+	// The identifier for the feature associated with the context.
+	FeatureID param.Opt[string] `json:"featureId,omitzero"`
+	// The identifier for the inference associated with the context.
+	InferenceID param.Opt[string] `json:"inferenceId,omitzero"`
+	// The identifier for the trajectory, formatted as a UUID.
+	TrajectoryID  param.Opt[string]  `json:"trajectoryId,omitzero" format:"uuid"`
+	ComplianceIDs ComplianceIDsParam `json:"complianceIds,omitzero"`
 	paramObj
 }
 
@@ -901,6 +335,40 @@ func (r ChirpAIContextObjectParam) MarshalJSON() (data []byte, err error) {
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *ChirpAIContextObjectParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type CollectionResponsePublicActionDefinitionForwardPaging struct {
+	Results []PublicActionDefinition `json:"results" api:"required"`
+	Paging  shared.ForwardPaging     `json:"paging"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		Paging      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CollectionResponsePublicActionDefinitionForwardPaging) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponsePublicActionDefinitionForwardPaging) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type CollectionResponsePublicActionFunctionIdentifierNoPaging struct {
+	Results []PublicActionFunctionIdentifier `json:"results" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Results     respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CollectionResponsePublicActionFunctionIdentifierNoPaging) RawJSON() string { return r.JSON.raw }
+func (r *CollectionResponsePublicActionFunctionIdentifierNoPaging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -924,12 +392,15 @@ func (r *CollectionResponsePublicActionRevisionForwardPaging) UnmarshalJSON(data
 
 // The properties ContactIDs, PortalIDs, UserIDs are required.
 type ComplianceIDsParam struct {
-	ContactIDs        []ContactIDParam  `json:"contactIds,omitzero" api:"required"`
-	PortalIDs         []int64           `json:"portalIds,omitzero" api:"required"`
-	UserIDs           []int64           `json:"userIds,omitzero" api:"required"`
+	ContactIDs []ContactIDParam `json:"contactIds,omitzero" api:"required"`
+	PortalIDs  []int64          `json:"portalIds,omitzero" api:"required"`
+	UserIDs    []int64          `json:"userIds,omitzero" api:"required"`
+	// The reason why no contact ID is available.
 	NoContactIDReason param.Opt[string] `json:"noContactIdReason,omitzero"`
-	NoPortalIDReason  param.Opt[string] `json:"noPortalIdReason,omitzero"`
-	NoUserIDReason    param.Opt[string] `json:"noUserIdReason,omitzero"`
+	// The reason why no portal ID is available.
+	NoPortalIDReason param.Opt[string] `json:"noPortalIdReason,omitzero"`
+	// The reason why no user ID is available.
+	NoUserIDReason param.Opt[string] `json:"noUserIdReason,omitzero"`
 	paramObj
 }
 
@@ -943,9 +414,12 @@ func (r *ComplianceIDsParam) UnmarshalJSON(data []byte) error {
 
 // The property PortalID is required.
 type ContactIDParam struct {
-	PortalID int64             `json:"portalId" api:"required"`
-	Email    param.Opt[string] `json:"email,omitzero"`
-	Vid      param.Opt[int64]  `json:"vid,omitzero"`
+	// The ID of the portal associated with the contact.
+	PortalID int64 `json:"portalId" api:"required"`
+	// The email address of the contact.
+	Email param.Opt[string] `json:"email,omitzero"`
+	// The unique identifier for the contact.
+	Vid param.Opt[int64] `json:"vid,omitzero"`
 	paramObj
 }
 
@@ -959,9 +433,12 @@ func (r *ContactIDParam) UnmarshalJSON(data []byte) error {
 
 // The property Source is required.
 type CopilotRequestContextParam struct {
+	// Indicates the source of the request, with the default value being 'COPILOT'.
+	//
 	// Any of "COPILOT".
-	Source       CopilotRequestContextSource `json:"source,omitzero" api:"required"`
-	TrajectoryID param.Opt[string]           `json:"trajectoryId,omitzero"`
+	Source CopilotRequestContextSource `json:"source,omitzero" api:"required"`
+	// The unique identifier for the trajectory.
+	TrajectoryID param.Opt[string] `json:"trajectoryId,omitzero"`
 	paramObj
 }
 
@@ -973,6 +450,7 @@ func (r *CopilotRequestContextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the source of the request, with the default value being 'COPILOT'.
 type CopilotRequestContextSource string
 
 const (
@@ -980,10 +458,14 @@ const (
 )
 
 type DoubleFieldSchema struct {
+	// Indicates the field type as DOUBLE.
+	//
 	// Any of "DOUBLE".
-	Type    DoubleFieldSchemaType `json:"type" api:"required"`
-	Maximum float64               `json:"maximum"`
-	Minimum float64               `json:"minimum"`
+	Type DoubleFieldSchemaType `json:"type" api:"required"`
+	// The maximum allowable value for the double field.
+	Maximum float64 `json:"maximum"`
+	// The minimum allowable value for the double field.
+	Minimum float64 `json:"minimum"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Type        respjson.Field
@@ -1009,6 +491,7 @@ func (r DoubleFieldSchema) ToParam() DoubleFieldSchemaParam {
 	return param.Override[DoubleFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// Indicates the field type as DOUBLE.
 type DoubleFieldSchemaType string
 
 const (
@@ -1017,10 +500,14 @@ const (
 
 // The property Type is required.
 type DoubleFieldSchemaParam struct {
+	// Indicates the field type as DOUBLE.
+	//
 	// Any of "DOUBLE".
-	Type    DoubleFieldSchemaType `json:"type,omitzero" api:"required"`
-	Maximum param.Opt[float64]    `json:"maximum,omitzero"`
-	Minimum param.Opt[float64]    `json:"minimum,omitzero"`
+	Type DoubleFieldSchemaType `json:"type,omitzero" api:"required"`
+	// The maximum allowable value for the double field.
+	Maximum param.Opt[float64] `json:"maximum,omitzero"`
+	// The minimum allowable value for the double field.
+	Minimum param.Opt[float64] `json:"minimum,omitzero"`
 	paramObj
 }
 
@@ -1033,23 +520,42 @@ func (r *DoubleFieldSchemaParam) UnmarshalJSON(data []byte) error {
 }
 
 type FieldTypeDefinition struct {
-	ExternalOptions bool                           `json:"externalOptions" api:"required"`
-	Name            string                         `json:"name" api:"required"`
-	Options         []events.Option                `json:"options" api:"required"`
-	Schema          FieldTypeDefinitionSchemaUnion `json:"schema" api:"required"`
+	// Indicates whether the field's options are sourced externally.
+	ExternalOptions bool `json:"externalOptions" api:"required"`
+	// The unique identifier for the field.
+	Name    string                           `json:"name" api:"required"`
+	Options []shared.AutomationActionsOption `json:"options" api:"required"`
+	// Defines the structure and constraints of the field.
+	Schema FieldTypeDefinitionSchemaUnion `json:"schema" api:"required"`
+	// Specifies the data type of the field, with accepted values like bool, date,
+	// datetime, enumeration, json, number, object_coordinates, phone_number, string.
+	//
 	// Any of "bool", "currency_number", "date", "datetime", "enumeration", "json",
 	// "number", "object_coordinates", "phone_number", "string".
-	Type                         FieldTypeDefinitionType `json:"type" api:"required"`
-	UseChirp                     bool                    `json:"useChirp" api:"required"`
-	Description                  string                  `json:"description"`
-	ExternalOptionsReferenceType string                  `json:"externalOptionsReferenceType"`
+	Type FieldTypeDefinitionType `json:"type" api:"required"`
+	// Specifies whether the field uses the Chirp feature.
+	UseChirp bool `json:"useChirp" api:"required"`
+	// A detailed explanation of the field's purpose and usage.
+	Description string `json:"description"`
+	// Specifies the type of external reference for options.
+	ExternalOptionsReferenceType string `json:"externalOptionsReferenceType"`
+	// Describes the field's type in the UI, with accepted values like booleancheckbox,
+	// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+	// select, text, textarea, unknown.
+	//
 	// Any of "booleancheckbox", "calculation_equation", "calculation_read_time",
 	// "calculation_rollup", "calculation_score", "checkbox", "date", "file", "html",
 	// "number", "phonenumber", "radio", "select", "text", "textarea", "unknown".
-	FieldType  FieldTypeDefinitionFieldType `json:"fieldType"`
-	HelpText   string                       `json:"helpText"`
-	Label      string                       `json:"label"`
-	OptionsURL string                       `json:"optionsUrl"`
+	FieldType FieldTypeDefinitionFieldType `json:"fieldType"`
+	// Additional information or guidance about the field.
+	HelpText string `json:"helpText"`
+	// The user-friendly label for the field.
+	Label string `json:"label"`
+	// A URL that provides options for the field.
+	OptionsURL string `json:"optionsUrl"`
+	// Indicates the type of object that the field references, with accepted values
+	// like OWNER.
+	//
 	// Any of "ABANDONED_CART", "ACCEPTANCE_TEST", "AD", "AD_ACCOUNT", "AD_CAMPAIGN",
 	// "AD_GROUP", "AI_FORECAST", "ALL_PAGES", "APPROVAL", "APPROVAL_STEP",
 	// "ATTRIBUTION", "AUDIENCE", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM_FLOW",
@@ -1140,7 +646,7 @@ type FieldTypeDefinitionSchemaUnion struct {
 	// This field is from variant [StringFieldSchema].
 	Format StringFieldSchemaFormat `json:"format"`
 	// This field is from variant [ArrayFieldSchema].
-	Items ArrayFieldSchemaItemsUnion `json:"items"`
+	Items any `json:"items"`
 	// This field is from variant [ObjectFieldSchema].
 	Properties any `json:"properties"`
 	JSON       struct {
@@ -1246,6 +752,8 @@ func (r *FieldTypeDefinitionSchemaUnionMinimum) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Specifies the data type of the field, with accepted values like bool, date,
+// datetime, enumeration, json, number, object_coordinates, phone_number, string.
 type FieldTypeDefinitionType string
 
 const (
@@ -1261,6 +769,9 @@ const (
 	FieldTypeDefinitionTypeString            FieldTypeDefinitionType = "string"
 )
 
+// Describes the field's type in the UI, with accepted values like booleancheckbox,
+// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+// select, text, textarea, unknown.
 type FieldTypeDefinitionFieldType string
 
 const (
@@ -1282,6 +793,8 @@ const (
 	FieldTypeDefinitionFieldTypeUnknown             FieldTypeDefinitionFieldType = "unknown"
 )
 
+// Indicates the type of object that the field references, with accepted values
+// like OWNER.
 type FieldTypeDefinitionReferencedObjectType string
 
 const (
@@ -1451,23 +964,42 @@ const (
 // The properties ExternalOptions, Name, Options, Schema, Type, UseChirp are
 // required.
 type FieldTypeDefinitionParam struct {
-	ExternalOptions bool                                `json:"externalOptions" api:"required"`
-	Name            string                              `json:"name" api:"required"`
-	Options         []events.OptionParam                `json:"options,omitzero" api:"required"`
-	Schema          FieldTypeDefinitionSchemaUnionParam `json:"schema,omitzero" api:"required"`
+	// Indicates whether the field's options are sourced externally.
+	ExternalOptions bool `json:"externalOptions" api:"required"`
+	// The unique identifier for the field.
+	Name    string                                `json:"name" api:"required"`
+	Options []shared.AutomationActionsOptionParam `json:"options,omitzero" api:"required"`
+	// Defines the structure and constraints of the field.
+	Schema FieldTypeDefinitionSchemaUnionParam `json:"schema,omitzero" api:"required"`
+	// Specifies the data type of the field, with accepted values like bool, date,
+	// datetime, enumeration, json, number, object_coordinates, phone_number, string.
+	//
 	// Any of "bool", "currency_number", "date", "datetime", "enumeration", "json",
 	// "number", "object_coordinates", "phone_number", "string".
-	Type                         FieldTypeDefinitionType `json:"type,omitzero" api:"required"`
-	UseChirp                     bool                    `json:"useChirp" api:"required"`
-	Description                  param.Opt[string]       `json:"description,omitzero"`
-	ExternalOptionsReferenceType param.Opt[string]       `json:"externalOptionsReferenceType,omitzero"`
-	HelpText                     param.Opt[string]       `json:"helpText,omitzero"`
-	Label                        param.Opt[string]       `json:"label,omitzero"`
-	OptionsURL                   param.Opt[string]       `json:"optionsUrl,omitzero"`
+	Type FieldTypeDefinitionType `json:"type,omitzero" api:"required"`
+	// Specifies whether the field uses the Chirp feature.
+	UseChirp bool `json:"useChirp" api:"required"`
+	// A detailed explanation of the field's purpose and usage.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// Specifies the type of external reference for options.
+	ExternalOptionsReferenceType param.Opt[string] `json:"externalOptionsReferenceType,omitzero"`
+	// Additional information or guidance about the field.
+	HelpText param.Opt[string] `json:"helpText,omitzero"`
+	// The user-friendly label for the field.
+	Label param.Opt[string] `json:"label,omitzero"`
+	// A URL that provides options for the field.
+	OptionsURL param.Opt[string] `json:"optionsUrl,omitzero"`
+	// Describes the field's type in the UI, with accepted values like booleancheckbox,
+	// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+	// select, text, textarea, unknown.
+	//
 	// Any of "booleancheckbox", "calculation_equation", "calculation_read_time",
 	// "calculation_rollup", "calculation_score", "checkbox", "date", "file", "html",
 	// "number", "phonenumber", "radio", "select", "text", "textarea", "unknown".
 	FieldType FieldTypeDefinitionFieldType `json:"fieldType,omitzero"`
+	// Indicates the type of object that the field references, with accepted values
+	// like OWNER.
+	//
 	// Any of "ABANDONED_CART", "ACCEPTANCE_TEST", "AD", "AD_ACCOUNT", "AD_CAMPAIGN",
 	// "AD_GROUP", "AI_FORECAST", "ALL_PAGES", "APPROVAL", "APPROVAL_STEP",
 	// "ATTRIBUTION", "AUDIENCE", "AUTOMATION_JOURNEY", "AUTOMATION_PLATFORM_FLOW",
@@ -1546,128 +1078,15 @@ func (u *FieldTypeDefinitionSchemaUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
 }
 
-func (u *FieldTypeDefinitionSchemaUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfInteger) {
-		return u.OfInteger
-	} else if !param.IsOmitted(u.OfLong) {
-		return u.OfLong
-	} else if !param.IsOmitted(u.OfDouble) {
-		return u.OfDouble
-	} else if !param.IsOmitted(u.OfString) {
-		return u.OfString
-	} else if !param.IsOmitted(u.OfBoolean) {
-		return u.OfBoolean
-	} else if !param.IsOmitted(u.OfArray) {
-		return u.OfArray
-	} else if !param.IsOmitted(u.OfObject) {
-		return u.OfObject
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u FieldTypeDefinitionSchemaUnionParam) GetFormat() *string {
-	if vt := u.OfString; vt != nil {
-		return (*string)(&vt.Format)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u FieldTypeDefinitionSchemaUnionParam) GetItems() *ArrayFieldSchemaItemsUnionParam {
-	if vt := u.OfArray; vt != nil {
-		return &vt.Items
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u FieldTypeDefinitionSchemaUnionParam) GetProperties() *any {
-	if vt := u.OfObject; vt != nil {
-		return &vt.Properties
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u FieldTypeDefinitionSchemaUnionParam) GetType() *string {
-	if vt := u.OfInteger; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfLong; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfDouble; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfString; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfBoolean; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfArray; vt != nil {
-		return (*string)(&vt.Type)
-	} else if vt := u.OfObject; vt != nil {
-		return (*string)(&vt.Type)
-	}
-	return nil
-}
-
-// Returns a subunion which exports methods to access subproperties
-//
-// Or use AsAny() to get the underlying value
-func (u FieldTypeDefinitionSchemaUnionParam) GetMaximum() (res fieldTypeDefinitionSchemaUnionParamMaximum) {
-	if vt := u.OfInteger; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	} else if vt := u.OfLong; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	} else if vt := u.OfDouble; vt != nil && vt.Maximum.Valid() {
-		res.any = &vt.Maximum.Value
-	}
-	return
-}
-
-// Can have the runtime types [*int64], [*float64]
-type fieldTypeDefinitionSchemaUnionParamMaximum struct{ any }
-
-// Use the following switch statement to get the type of the union:
-//
-//	switch u.AsAny().(type) {
-//	case *int64:
-//	case *float64:
-//	default:
-//	    fmt.Errorf("not present")
-//	}
-func (u fieldTypeDefinitionSchemaUnionParamMaximum) AsAny() any { return u.any }
-
-// Returns a subunion which exports methods to access subproperties
-//
-// Or use AsAny() to get the underlying value
-func (u FieldTypeDefinitionSchemaUnionParam) GetMinimum() (res fieldTypeDefinitionSchemaUnionParamMinimum) {
-	if vt := u.OfInteger; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	} else if vt := u.OfLong; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	} else if vt := u.OfDouble; vt != nil && vt.Minimum.Valid() {
-		res.any = &vt.Minimum.Value
-	}
-	return
-}
-
-// Can have the runtime types [*int64], [*float64]
-type fieldTypeDefinitionSchemaUnionParamMinimum struct{ any }
-
-// Use the following switch statement to get the type of the union:
-//
-//	switch u.AsAny().(type) {
-//	case *int64:
-//	case *float64:
-//	default:
-//	    fmt.Errorf("not present")
-//	}
-func (u fieldTypeDefinitionSchemaUnionParamMinimum) AsAny() any { return u.any }
-
 type IntegerFieldSchema struct {
+	// The type of the field, which is set to INTEGER.
+	//
 	// Any of "INTEGER".
-	Type    IntegerFieldSchemaType `json:"type" api:"required"`
-	Maximum int64                  `json:"maximum"`
-	Minimum int64                  `json:"minimum"`
+	Type IntegerFieldSchemaType `json:"type" api:"required"`
+	// The maximum value allowed for the integer field.
+	Maximum int64 `json:"maximum"`
+	// The minimum value allowed for the integer field.
+	Minimum int64 `json:"minimum"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Type        respjson.Field
@@ -1693,6 +1112,7 @@ func (r IntegerFieldSchema) ToParam() IntegerFieldSchemaParam {
 	return param.Override[IntegerFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// The type of the field, which is set to INTEGER.
 type IntegerFieldSchemaType string
 
 const (
@@ -1701,10 +1121,14 @@ const (
 
 // The property Type is required.
 type IntegerFieldSchemaParam struct {
+	// The type of the field, which is set to INTEGER.
+	//
 	// Any of "INTEGER".
-	Type    IntegerFieldSchemaType `json:"type,omitzero" api:"required"`
-	Maximum param.Opt[int64]       `json:"maximum,omitzero"`
-	Minimum param.Opt[int64]       `json:"minimum,omitzero"`
+	Type IntegerFieldSchemaType `json:"type,omitzero" api:"required"`
+	// The maximum value allowed for the integer field.
+	Maximum param.Opt[int64] `json:"maximum,omitzero"`
+	// The minimum value allowed for the integer field.
+	Minimum param.Opt[int64] `json:"minimum,omitzero"`
 	paramObj
 }
 
@@ -1717,10 +1141,14 @@ func (r *IntegerFieldSchemaParam) UnmarshalJSON(data []byte) error {
 }
 
 type LongFieldSchema struct {
+	// The type of the field, which is LONG by default.
+	//
 	// Any of "LONG".
-	Type    LongFieldSchemaType `json:"type" api:"required"`
-	Maximum int64               `json:"maximum"`
-	Minimum int64               `json:"minimum"`
+	Type LongFieldSchemaType `json:"type" api:"required"`
+	// The maximum value allowed for the long field.
+	Maximum int64 `json:"maximum"`
+	// The minimum value allowed for the long field.
+	Minimum int64 `json:"minimum"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Type        respjson.Field
@@ -1746,6 +1174,7 @@ func (r LongFieldSchema) ToParam() LongFieldSchemaParam {
 	return param.Override[LongFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// The type of the field, which is LONG by default.
 type LongFieldSchemaType string
 
 const (
@@ -1754,10 +1183,14 @@ const (
 
 // The property Type is required.
 type LongFieldSchemaParam struct {
+	// The type of the field, which is LONG by default.
+	//
 	// Any of "LONG".
-	Type    LongFieldSchemaType `json:"type,omitzero" api:"required"`
-	Maximum param.Opt[int64]    `json:"maximum,omitzero"`
-	Minimum param.Opt[int64]    `json:"minimum,omitzero"`
+	Type LongFieldSchemaType `json:"type,omitzero" api:"required"`
+	// The maximum value allowed for the long field.
+	Maximum param.Opt[int64] `json:"maximum,omitzero"`
+	// The minimum value allowed for the long field.
+	Minimum param.Opt[int64] `json:"minimum,omitzero"`
 	paramObj
 }
 
@@ -1770,7 +1203,10 @@ func (r *LongFieldSchemaParam) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectFieldSchema struct {
+	// Contains the properties of the object.
 	Properties any `json:"properties" api:"required"`
+	// Specifies the type of the field, which is 'OBJECT' by default.
+	//
 	// Any of "OBJECT".
 	Type ObjectFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -1797,6 +1233,7 @@ func (r ObjectFieldSchema) ToParam() ObjectFieldSchemaParam {
 	return param.Override[ObjectFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// Specifies the type of the field, which is 'OBJECT' by default.
 type ObjectFieldSchemaType string
 
 const (
@@ -1805,7 +1242,10 @@ const (
 
 // The properties Properties, Type are required.
 type ObjectFieldSchemaParam struct {
+	// Contains the properties of the object.
 	Properties any `json:"properties,omitzero" api:"required"`
+	// Specifies the type of the field, which is 'OBJECT' by default.
+	//
 	// Any of "OBJECT".
 	Type ObjectFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
@@ -1938,12 +1378,17 @@ func (r *PublicActionDefinitionInputFieldDependencyUnion) UnmarshalJSON(data []b
 // The properties ActionURL, Functions, InputFields, Labels, ObjectTypes, Published
 // are required.
 type PublicActionDefinitionEggParam struct {
-	ActionURL              string                                                    `json:"actionUrl" api:"required"`
-	Functions              []PublicActionFunctionParam                               `json:"functions,omitzero" api:"required"`
-	InputFields            []PublicInputFieldDefinitionParam                         `json:"inputFields,omitzero" api:"required"`
-	Labels                 map[string]PublicActionLabelsParam                        `json:"labels,omitzero" api:"required"`
-	ObjectTypes            []string                                                  `json:"objectTypes,omitzero" api:"required"`
-	Published              bool                                                      `json:"published" api:"required"`
+	// The URL endpoint where the action is executed.
+	ActionURL   string                            `json:"actionUrl" api:"required"`
+	Functions   []PublicActionFunctionParam       `json:"functions,omitzero" api:"required"`
+	InputFields []PublicInputFieldDefinitionParam `json:"inputFields,omitzero" api:"required"`
+	// Holds various labels associated with the action, including names and
+	// descriptions.
+	Labels      map[string]PublicActionLabelsParam `json:"labels,omitzero" api:"required"`
+	ObjectTypes []string                           `json:"objectTypes,omitzero" api:"required"`
+	// Indicates whether the action is published and available for use.
+	Published bool `json:"published" api:"required"`
+	// The timestamp indicating when the action was archived.
 	ArchivedAt             param.Opt[int64]                                          `json:"archivedAt,omitzero"`
 	ExecutionRules         []PublicExecutionTranslationRuleParam                     `json:"executionRules,omitzero"`
 	InputFieldDependencies []PublicActionDefinitionEggInputFieldDependencyUnionParam `json:"inputFieldDependencies,omitzero"`
@@ -1976,64 +1421,19 @@ func (u *PublicActionDefinitionEggInputFieldDependencyUnionParam) UnmarshalJSON(
 	return apijson.UnmarshalRoot(data, u)
 }
 
-func (u *PublicActionDefinitionEggInputFieldDependencyUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfSingleField) {
-		return u.OfSingleField
-	} else if !param.IsOmitted(u.OfConditionalSingleField) {
-		return u.OfConditionalSingleField
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionEggInputFieldDependencyUnionParam) GetControllingFieldValue() *string {
-	if vt := u.OfConditionalSingleField; vt != nil {
-		return &vt.ControllingFieldValue
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionEggInputFieldDependencyUnionParam) GetControllingFieldName() *string {
-	if vt := u.OfSingleField; vt != nil {
-		return (*string)(&vt.ControllingFieldName)
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return (*string)(&vt.ControllingFieldName)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionEggInputFieldDependencyUnionParam) GetDependencyType() *string {
-	if vt := u.OfSingleField; vt != nil {
-		return (*string)(&vt.DependencyType)
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return (*string)(&vt.DependencyType)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's DependentFieldNames property, if
-// present.
-func (u PublicActionDefinitionEggInputFieldDependencyUnionParam) GetDependentFieldNames() []string {
-	if vt := u.OfSingleField; vt != nil {
-		return vt.DependentFieldNames
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return vt.DependentFieldNames
-	}
-	return nil
-}
-
 type PublicActionDefinitionPatchParam struct {
-	ActionURL              param.Opt[string]                                           `json:"actionUrl,omitzero"`
+	// The URL endpoint where the action is executed.
+	ActionURL param.Opt[string] `json:"actionUrl,omitzero"`
+	// Indicates whether the action is published and available for use.
 	Published              param.Opt[bool]                                             `json:"published,omitzero"`
 	ExecutionRules         []PublicExecutionTranslationRuleParam                       `json:"executionRules,omitzero"`
 	InputFieldDependencies []PublicActionDefinitionPatchInputFieldDependencyUnionParam `json:"inputFieldDependencies,omitzero"`
 	InputFields            []PublicInputFieldDefinitionParam                           `json:"inputFields,omitzero"`
-	Labels                 map[string]PublicActionLabelsParam                          `json:"labels,omitzero"`
-	ObjectRequestOptions   PublicObjectRequestOptionsParam                             `json:"objectRequestOptions,omitzero"`
-	ObjectTypes            []string                                                    `json:"objectTypes,omitzero"`
-	OutputFields           []OutputFieldDefinitionParam                                `json:"outputFields,omitzero"`
+	// Contains labels for the action, including names and descriptions.
+	Labels               map[string]PublicActionLabelsParam `json:"labels,omitzero"`
+	ObjectRequestOptions PublicObjectRequestOptionsParam    `json:"objectRequestOptions,omitzero"`
+	ObjectTypes          []string                           `json:"objectTypes,omitzero"`
+	OutputFields         []OutputFieldDefinitionParam       `json:"outputFields,omitzero"`
 	paramObj
 }
 
@@ -2061,56 +1461,9 @@ func (u *PublicActionDefinitionPatchInputFieldDependencyUnionParam) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, u)
 }
 
-func (u *PublicActionDefinitionPatchInputFieldDependencyUnionParam) asAny() any {
-	if !param.IsOmitted(u.OfSingleField) {
-		return u.OfSingleField
-	} else if !param.IsOmitted(u.OfConditionalSingleField) {
-		return u.OfConditionalSingleField
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) GetControllingFieldValue() *string {
-	if vt := u.OfConditionalSingleField; vt != nil {
-		return &vt.ControllingFieldValue
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) GetControllingFieldName() *string {
-	if vt := u.OfSingleField; vt != nil {
-		return (*string)(&vt.ControllingFieldName)
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return (*string)(&vt.ControllingFieldName)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's property, if present.
-func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) GetDependencyType() *string {
-	if vt := u.OfSingleField; vt != nil {
-		return (*string)(&vt.DependencyType)
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return (*string)(&vt.DependencyType)
-	}
-	return nil
-}
-
-// Returns a pointer to the underlying variant's DependentFieldNames property, if
-// present.
-func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) GetDependentFieldNames() []string {
-	if vt := u.OfSingleField; vt != nil {
-		return vt.DependentFieldNames
-	} else if vt := u.OfConditionalSingleField; vt != nil {
-		return vt.DependentFieldNames
-	}
-	return nil
-}
-
 // The property RequiresObject is required.
 type PublicActionDefinitionRequiresObjectRequestParam struct {
+	// Indicates whether a custom action definition requires an associated object.
 	RequiresObject bool `json:"requiresObject" api:"required"`
 	paramObj
 }
@@ -2124,6 +1477,7 @@ func (r *PublicActionDefinitionRequiresObjectRequestParam) UnmarshalJSON(data []
 }
 
 type PublicActionDefinitionRequiresObjectResponse struct {
+	// Indicates whether a custom action definition requires an object.
 	RequiresObject bool `json:"requiresObject" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -2140,11 +1494,16 @@ func (r *PublicActionDefinitionRequiresObjectResponse) UnmarshalJSON(data []byte
 }
 
 type PublicActionFunction struct {
+	// The source code or script that defines the function's behavior.
 	FunctionSource string `json:"functionSource" api:"required"`
+	// The type of function, with accepted values: POST_ACTION_EXECUTION,
+	// POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.
+	//
 	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
 	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionFunctionType `json:"functionType" api:"required"`
-	ID           string                           `json:"id"`
+	// The unique identifier for the action function.
+	ID string `json:"id"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		FunctionSource respjson.Field
@@ -2170,6 +1529,8 @@ func (r PublicActionFunction) ToParam() PublicActionFunctionParam {
 	return param.Override[PublicActionFunctionParam](json.RawMessage(r.RawJSON()))
 }
 
+// The type of function, with accepted values: POST_ACTION_EXECUTION,
+// POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.
 type PublicActionFunctionFunctionType string
 
 const (
@@ -2181,11 +1542,16 @@ const (
 
 // The properties FunctionSource, FunctionType are required.
 type PublicActionFunctionParam struct {
+	// The source code or script that defines the function's behavior.
 	FunctionSource string `json:"functionSource" api:"required"`
+	// The type of function, with accepted values: POST_ACTION_EXECUTION,
+	// POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.
+	//
 	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
 	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionFunctionType `json:"functionType,omitzero" api:"required"`
-	ID           param.Opt[string]                `json:"id,omitzero"`
+	// The unique identifier for the action function.
+	ID param.Opt[string] `json:"id,omitzero"`
 	paramObj
 }
 
@@ -2198,10 +1564,14 @@ func (r *PublicActionFunctionParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicActionFunctionIdentifier struct {
+	// The type of function, with accepted values: POST_ACTION_EXECUTION,
+	// POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.
+	//
 	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
 	// "PRE_FETCH_OPTIONS".
 	FunctionType PublicActionFunctionIdentifierFunctionType `json:"functionType" api:"required"`
-	ID           string                                     `json:"id"`
+	// The unique identifier for the function.
+	ID string `json:"id"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		FunctionType respjson.Field
@@ -2217,6 +1587,8 @@ func (r *PublicActionFunctionIdentifier) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of function, with accepted values: POST_ACTION_EXECUTION,
+// POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.
 type PublicActionFunctionIdentifierFunctionType string
 
 const (
@@ -2227,15 +1599,24 @@ const (
 )
 
 type PublicActionLabels struct {
-	ActionName             string                       `json:"actionName" api:"required"`
-	ActionCardContent      string                       `json:"actionCardContent"`
-	ActionDescription      string                       `json:"actionDescription"`
-	AppDisplayName         string                       `json:"appDisplayName"`
-	ExecutionRules         map[string]string            `json:"executionRules"`
-	InputFieldDescriptions map[string]string            `json:"inputFieldDescriptions"`
-	InputFieldLabels       map[string]string            `json:"inputFieldLabels"`
+	// The name of the action.
+	ActionName string `json:"actionName" api:"required"`
+	// Content displayed on the action card.
+	ActionCardContent string `json:"actionCardContent"`
+	// A description of what the action does.
+	ActionDescription string `json:"actionDescription"`
+	// The display name of the application associated with the action.
+	AppDisplayName string `json:"appDisplayName"`
+	// Rules that govern the execution of the action.
+	ExecutionRules map[string]string `json:"executionRules"`
+	// Descriptions for each input field.
+	InputFieldDescriptions map[string]string `json:"inputFieldDescriptions"`
+	// Labels for the input fields.
+	InputFieldLabels map[string]string `json:"inputFieldLabels"`
+	// Labels for the options available in input fields.
 	InputFieldOptionLabels map[string]map[string]string `json:"inputFieldOptionLabels"`
-	OutputFieldLabels      map[string]string            `json:"outputFieldLabels"`
+	// Labels for the output fields.
+	OutputFieldLabels map[string]string `json:"outputFieldLabels"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ActionName             respjson.Field
@@ -2269,15 +1650,24 @@ func (r PublicActionLabels) ToParam() PublicActionLabelsParam {
 
 // The property ActionName is required.
 type PublicActionLabelsParam struct {
-	ActionName             string                       `json:"actionName" api:"required"`
-	ActionCardContent      param.Opt[string]            `json:"actionCardContent,omitzero"`
-	ActionDescription      param.Opt[string]            `json:"actionDescription,omitzero"`
-	AppDisplayName         param.Opt[string]            `json:"appDisplayName,omitzero"`
-	ExecutionRules         map[string]string            `json:"executionRules,omitzero"`
-	InputFieldDescriptions map[string]string            `json:"inputFieldDescriptions,omitzero"`
-	InputFieldLabels       map[string]string            `json:"inputFieldLabels,omitzero"`
+	// The name of the action.
+	ActionName string `json:"actionName" api:"required"`
+	// Content displayed on the action card.
+	ActionCardContent param.Opt[string] `json:"actionCardContent,omitzero"`
+	// A description of what the action does.
+	ActionDescription param.Opt[string] `json:"actionDescription,omitzero"`
+	// The display name of the application associated with the action.
+	AppDisplayName param.Opt[string] `json:"appDisplayName,omitzero"`
+	// Rules that govern the execution of the action.
+	ExecutionRules map[string]string `json:"executionRules,omitzero"`
+	// Descriptions for each input field.
+	InputFieldDescriptions map[string]string `json:"inputFieldDescriptions,omitzero"`
+	// Labels for the input fields.
+	InputFieldLabels map[string]string `json:"inputFieldLabels,omitzero"`
+	// Labels for the options available in input fields.
 	InputFieldOptionLabels map[string]map[string]string `json:"inputFieldOptionLabels,omitzero"`
-	OutputFieldLabels      map[string]string            `json:"outputFieldLabels,omitzero"`
+	// Labels for the output fields.
+	OutputFieldLabels map[string]string `json:"outputFieldLabels,omitzero"`
 	paramObj
 }
 
@@ -2290,10 +1680,13 @@ func (r *PublicActionLabelsParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicActionRevision struct {
-	ID         string                 `json:"id" api:"required"`
+	// The unique identifier for the action revision.
+	ID string `json:"id" api:"required"`
+	// The date and time when the action revision was created.
 	CreatedAt  time.Time              `json:"createdAt" api:"required" format:"date-time"`
 	Definition PublicActionDefinition `json:"definition" api:"required"`
-	RevisionID string                 `json:"revisionId" api:"required"`
+	// The unique identifier for the specific revision of the action.
+	RevisionID string `json:"revisionId" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -2312,8 +1705,12 @@ func (r *PublicActionRevision) UnmarshalJSON(data []byte) error {
 }
 
 type PublicConditionalSingleFieldDependency struct {
-	ControllingFieldName  string `json:"controllingFieldName" api:"required"`
+	// The name of the field that determines the dependency.
+	ControllingFieldName string `json:"controllingFieldName" api:"required"`
+	// The value of the controlling field that triggers the dependency.
 	ControllingFieldValue string `json:"controllingFieldValue" api:"required"`
+	// The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
+	//
 	// Any of "CONDITIONAL_SINGLE_FIELD".
 	DependencyType      PublicConditionalSingleFieldDependencyDependencyType `json:"dependencyType" api:"required"`
 	DependentFieldNames []string                                             `json:"dependentFieldNames" api:"required"`
@@ -2344,6 +1741,7 @@ func (r PublicConditionalSingleFieldDependency) ToParam() PublicConditionalSingl
 	return param.Override[PublicConditionalSingleFieldDependencyParam](json.RawMessage(r.RawJSON()))
 }
 
+// The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
 type PublicConditionalSingleFieldDependencyDependencyType string
 
 const (
@@ -2353,8 +1751,12 @@ const (
 // The properties ControllingFieldName, ControllingFieldValue, DependencyType,
 // DependentFieldNames are required.
 type PublicConditionalSingleFieldDependencyParam struct {
-	ControllingFieldName  string `json:"controllingFieldName" api:"required"`
+	// The name of the field that determines the dependency.
+	ControllingFieldName string `json:"controllingFieldName" api:"required"`
+	// The value of the controlling field that triggers the dependency.
 	ControllingFieldValue string `json:"controllingFieldValue" api:"required"`
+	// The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
+	//
 	// Any of "CONDITIONAL_SINGLE_FIELD".
 	DependencyType      PublicConditionalSingleFieldDependencyDependencyType `json:"dependencyType,omitzero" api:"required"`
 	DependentFieldNames []string                                             `json:"dependentFieldNames,omitzero" api:"required"`
@@ -2370,8 +1772,10 @@ func (r *PublicConditionalSingleFieldDependencyParam) UnmarshalJSON(data []byte)
 }
 
 type PublicExecutionTranslationRule struct {
+	// Defines the conditions that must be met for the execution rule to apply.
 	Conditions map[string]any `json:"conditions" api:"required"`
-	LabelName  string         `json:"labelName" api:"required"`
+	// Specifies the name of the label associated with the execution rule.
+	LabelName string `json:"labelName" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Conditions  respjson.Field
@@ -2399,8 +1803,10 @@ func (r PublicExecutionTranslationRule) ToParam() PublicExecutionTranslationRule
 
 // The properties Conditions, LabelName are required.
 type PublicExecutionTranslationRuleParam struct {
+	// Defines the conditions that must be met for the execution rule to apply.
 	Conditions map[string]any `json:"conditions,omitzero" api:"required"`
-	LabelName  string         `json:"labelName" api:"required"`
+	// Specifies the name of the label associated with the execution rule.
+	LabelName string `json:"labelName" api:"required"`
 	paramObj
 }
 
@@ -2413,18 +1819,33 @@ func (r *PublicExecutionTranslationRuleParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicFieldTypeDefinition struct {
+	// The internal name used to identify the field.
 	Name    string         `json:"name" api:"required"`
 	Options []PublicOption `json:"options" api:"required"`
+	// The data type of the field, with accepted values including bool, date, datetime,
+	// enumeration, json, number, object_coordinates, phone_number, and string.
+	//
 	// Any of "bool", "date", "datetime", "enumeration", "json", "number",
 	// "object_coordinates", "phone_number", "string".
-	Type        PublicFieldTypeDefinitionType `json:"type" api:"required"`
-	Description string                        `json:"description"`
+	Type PublicFieldTypeDefinitionType `json:"type" api:"required"`
+	// A detailed explanation of the field's purpose.
+	Description string `json:"description"`
+	// The type of field, with accepted values including booleancheckbox,
+	// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+	// select, text, and textarea.
+	//
 	// Any of "booleancheckbox", "calculation_equation", "checkbox", "date", "file",
 	// "html", "number", "phonenumber", "radio", "select", "text", "textarea".
-	FieldType  PublicFieldTypeDefinitionFieldType `json:"fieldType"`
-	HelpText   string                             `json:"helpText"`
-	Label      string                             `json:"label"`
-	OptionsURL string                             `json:"optionsUrl"`
+	FieldType PublicFieldTypeDefinitionFieldType `json:"fieldType"`
+	// Additional information or guidance about the field.
+	HelpText string `json:"helpText"`
+	// A user-friendly name for the field.
+	Label string `json:"label"`
+	// A URL that provides options for the field.
+	OptionsURL string `json:"optionsUrl"`
+	// The type of object that the field references, with accepted values including
+	// OWNER.
+	//
 	// Any of "OWNER".
 	ReferencedObjectType PublicFieldTypeDefinitionReferencedObjectType `json:"referencedObjectType"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2459,6 +1880,8 @@ func (r PublicFieldTypeDefinition) ToParam() PublicFieldTypeDefinitionParam {
 	return param.Override[PublicFieldTypeDefinitionParam](json.RawMessage(r.RawJSON()))
 }
 
+// The data type of the field, with accepted values including bool, date, datetime,
+// enumeration, json, number, object_coordinates, phone_number, and string.
 type PublicFieldTypeDefinitionType string
 
 const (
@@ -2473,6 +1896,9 @@ const (
 	PublicFieldTypeDefinitionTypeString            PublicFieldTypeDefinitionType = "string"
 )
 
+// The type of field, with accepted values including booleancheckbox,
+// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+// select, text, and textarea.
 type PublicFieldTypeDefinitionFieldType string
 
 const (
@@ -2490,6 +1916,8 @@ const (
 	PublicFieldTypeDefinitionFieldTypeTextarea            PublicFieldTypeDefinitionFieldType = "textarea"
 )
 
+// The type of object that the field references, with accepted values including
+// OWNER.
 type PublicFieldTypeDefinitionReferencedObjectType string
 
 const (
@@ -2498,18 +1926,33 @@ const (
 
 // The properties Name, Options, Type are required.
 type PublicFieldTypeDefinitionParam struct {
+	// The internal name used to identify the field.
 	Name    string              `json:"name" api:"required"`
 	Options []PublicOptionParam `json:"options,omitzero" api:"required"`
+	// The data type of the field, with accepted values including bool, date, datetime,
+	// enumeration, json, number, object_coordinates, phone_number, and string.
+	//
 	// Any of "bool", "date", "datetime", "enumeration", "json", "number",
 	// "object_coordinates", "phone_number", "string".
-	Type        PublicFieldTypeDefinitionType `json:"type,omitzero" api:"required"`
-	Description param.Opt[string]             `json:"description,omitzero"`
-	HelpText    param.Opt[string]             `json:"helpText,omitzero"`
-	Label       param.Opt[string]             `json:"label,omitzero"`
-	OptionsURL  param.Opt[string]             `json:"optionsUrl,omitzero"`
+	Type PublicFieldTypeDefinitionType `json:"type,omitzero" api:"required"`
+	// A detailed explanation of the field's purpose.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// Additional information or guidance about the field.
+	HelpText param.Opt[string] `json:"helpText,omitzero"`
+	// A user-friendly name for the field.
+	Label param.Opt[string] `json:"label,omitzero"`
+	// A URL that provides options for the field.
+	OptionsURL param.Opt[string] `json:"optionsUrl,omitzero"`
+	// The type of field, with accepted values including booleancheckbox,
+	// calculation_equation, checkbox, date, file, html, number, phonenumber, radio,
+	// select, text, and textarea.
+	//
 	// Any of "booleancheckbox", "calculation_equation", "checkbox", "date", "file",
 	// "html", "number", "phonenumber", "radio", "select", "text", "textarea".
 	FieldType PublicFieldTypeDefinitionFieldType `json:"fieldType,omitzero"`
+	// The type of object that the field references, with accepted values including
+	// OWNER.
+	//
 	// Any of "OWNER".
 	ReferencedObjectType PublicFieldTypeDefinitionReferencedObjectType `json:"referencedObjectType,omitzero"`
 	paramObj
@@ -2524,6 +1967,7 @@ func (r *PublicFieldTypeDefinitionParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicInputFieldDefinition struct {
+	// Indicates whether the input field is mandatory.
 	IsRequired     bool                      `json:"isRequired" api:"required"`
 	TypeDefinition PublicFieldTypeDefinition `json:"typeDefinition" api:"required"`
 	// Any of "STATIC_VALUE", "OBJECT_PROPERTY".
@@ -2556,6 +2000,7 @@ func (r PublicInputFieldDefinition) ToParam() PublicInputFieldDefinitionParam {
 
 // The properties IsRequired, TypeDefinition are required.
 type PublicInputFieldDefinitionParam struct {
+	// Indicates whether the input field is mandatory.
 	IsRequired     bool                           `json:"isRequired" api:"required"`
 	TypeDefinition PublicFieldTypeDefinitionParam `json:"typeDefinition,omitzero" api:"required"`
 	// Any of "STATIC_VALUE", "OBJECT_PROPERTY".
@@ -2612,10 +2057,14 @@ func (r *PublicObjectRequestOptionsParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicOption struct {
-	Label        string `json:"label" api:"required"`
-	Value        string `json:"value" api:"required"`
-	Description  string `json:"description"`
-	DisplayOrder int64  `json:"displayOrder"`
+	// A user-friendly label that identifies the option.
+	Label string `json:"label" api:"required"`
+	// The actual value of the option.
+	Value string `json:"value" api:"required"`
+	// A description of the option.
+	Description string `json:"description"`
+	// The position of the option relative to others in the list.
+	DisplayOrder int64 `json:"displayOrder"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Label        respjson.Field
@@ -2644,10 +2093,14 @@ func (r PublicOption) ToParam() PublicOptionParam {
 
 // The properties Label, Value are required.
 type PublicOptionParam struct {
-	Label        string            `json:"label" api:"required"`
-	Value        string            `json:"value" api:"required"`
-	Description  param.Opt[string] `json:"description,omitzero"`
-	DisplayOrder param.Opt[int64]  `json:"displayOrder,omitzero"`
+	// A user-friendly label that identifies the option.
+	Label string `json:"label" api:"required"`
+	// The actual value of the option.
+	Value string `json:"value" api:"required"`
+	// A description of the option.
+	Description param.Opt[string] `json:"description,omitzero"`
+	// The position of the option relative to others in the list.
+	DisplayOrder param.Opt[int64] `json:"displayOrder,omitzero"`
 	paramObj
 }
 
@@ -2660,7 +2113,10 @@ func (r *PublicOptionParam) UnmarshalJSON(data []byte) error {
 }
 
 type PublicSingleFieldDependency struct {
+	// The name of the field that controls the dependency.
 	ControllingFieldName string `json:"controllingFieldName" api:"required"`
+	// The type of dependency, with the default value being 'SINGLE_FIELD'.
+	//
 	// Any of "SINGLE_FIELD".
 	DependencyType      PublicSingleFieldDependencyDependencyType `json:"dependencyType" api:"required"`
 	DependentFieldNames []string                                  `json:"dependentFieldNames" api:"required"`
@@ -2690,6 +2146,7 @@ func (r PublicSingleFieldDependency) ToParam() PublicSingleFieldDependencyParam 
 	return param.Override[PublicSingleFieldDependencyParam](json.RawMessage(r.RawJSON()))
 }
 
+// The type of dependency, with the default value being 'SINGLE_FIELD'.
 type PublicSingleFieldDependencyDependencyType string
 
 const (
@@ -2699,7 +2156,10 @@ const (
 // The properties ControllingFieldName, DependencyType, DependentFieldNames are
 // required.
 type PublicSingleFieldDependencyParam struct {
+	// The name of the field that controls the dependency.
 	ControllingFieldName string `json:"controllingFieldName" api:"required"`
+	// The type of dependency, with the default value being 'SINGLE_FIELD'.
+	//
 	// Any of "SINGLE_FIELD".
 	DependencyType      PublicSingleFieldDependencyDependencyType `json:"dependencyType,omitzero" api:"required"`
 	DependentFieldNames []string                                  `json:"dependentFieldNames,omitzero" api:"required"`
@@ -2717,9 +2177,12 @@ func (r *PublicSingleFieldDependencyParam) UnmarshalJSON(data []byte) error {
 // The properties ChirpAIContextObject, Source are required.
 type StandaloneRequestContextParam struct {
 	ChirpAIContextObject ChirpAIContextObjectParam `json:"chirpAiContextObject,omitzero" api:"required"`
+	// Indicates the source of the request, with the default value being 'STANDALONE'.
+	//
 	// Any of "STANDALONE".
-	Source       StandaloneRequestContextSource `json:"source,omitzero" api:"required"`
-	TrajectoryID param.Opt[string]              `json:"trajectoryId,omitzero"`
+	Source StandaloneRequestContextSource `json:"source,omitzero" api:"required"`
+	// A unique identifier for tracking the trajectory of the request.
+	TrajectoryID param.Opt[string] `json:"trajectoryId,omitzero"`
 	paramObj
 }
 
@@ -2731,6 +2194,7 @@ func (r *StandaloneRequestContextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the source of the request, with the default value being 'STANDALONE'.
 type StandaloneRequestContextSource string
 
 const (
@@ -2738,8 +2202,13 @@ const (
 )
 
 type StringFieldSchema struct {
+	// Indicates that the type is a string, with the default value being STRING.
+	//
 	// Any of "STRING".
 	Type StringFieldSchemaType `json:"type" api:"required"`
+	// Specifies the format of the string, with accepted values: DATE, DATE_TIME,
+	// OBJECT_COORDINATE, TIME, URI.
+	//
 	// Any of "DATE", "DATE_TIME", "OBJECT_COORDINATE", "TIME", "URI".
 	Format StringFieldSchemaFormat `json:"format"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2766,12 +2235,15 @@ func (r StringFieldSchema) ToParam() StringFieldSchemaParam {
 	return param.Override[StringFieldSchemaParam](json.RawMessage(r.RawJSON()))
 }
 
+// Indicates that the type is a string, with the default value being STRING.
 type StringFieldSchemaType string
 
 const (
 	StringFieldSchemaTypeString StringFieldSchemaType = "STRING"
 )
 
+// Specifies the format of the string, with accepted values: DATE, DATE_TIME,
+// OBJECT_COORDINATE, TIME, URI.
 type StringFieldSchemaFormat string
 
 const (
@@ -2784,8 +2256,13 @@ const (
 
 // The property Type is required.
 type StringFieldSchemaParam struct {
+	// Indicates that the type is a string, with the default value being STRING.
+	//
 	// Any of "STRING".
 	Type StringFieldSchemaType `json:"type,omitzero" api:"required"`
+	// Specifies the format of the string, with accepted values: DATE, DATE_TIME,
+	// OBJECT_COORDINATE, TIME, URI.
+	//
 	// Any of "DATE", "DATE_TIME", "OBJECT_COORDINATE", "TIME", "URI".
 	Format StringFieldSchemaFormat `json:"format,omitzero"`
 	paramObj
@@ -2801,6 +2278,9 @@ func (r *StringFieldSchemaParam) UnmarshalJSON(data []byte) error {
 
 // The property Source is required.
 type TestRequestContextParam struct {
+	// Indicates the source of the test request, with the only accepted value being
+	// 'TEST'.
+	//
 	// Any of "TEST".
 	Source TestRequestContextSource `json:"source,omitzero" api:"required"`
 	paramObj
@@ -2814,6 +2294,8 @@ func (r *TestRequestContextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the source of the test request, with the only accepted value being
+// 'TEST'.
 type TestRequestContextSource string
 
 const (
@@ -2822,9 +2304,13 @@ const (
 
 // The properties Source, WorkflowID are required.
 type WorkflowsRequestContextParam struct {
+	// Indicates the source of the request, with the default value being WORKFLOWS.
+	//
 	// Any of "WORKFLOWS".
-	Source                         WorkflowsRequestContextSource       `json:"source,omitzero" api:"required"`
-	WorkflowID                     int64                               `json:"workflowId" api:"required"`
+	Source WorkflowsRequestContextSource `json:"source,omitzero" api:"required"`
+	// The ID of the workflow associated with the request context.
+	WorkflowID int64 `json:"workflowId" api:"required"`
+	// The ID of the action within the workflow context.
 	ActionID                       param.Opt[int64]                    `json:"actionId,omitzero"`
 	ActionExecutionIndexIdentifier ActionExecutionIndexIdentifierParam `json:"actionExecutionIndexIdentifier,omitzero"`
 	paramObj
@@ -2838,197 +2324,9 @@ func (r *WorkflowsRequestContextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Indicates the source of the request, with the default value being WORKFLOWS.
 type WorkflowsRequestContextSource string
 
 const (
 	WorkflowsRequestContextSourceWorkflows WorkflowsRequestContextSource = "WORKFLOWS"
 )
-
-type ActionNewParams struct {
-	PublicActionDefinitionEgg PublicActionDefinitionEggParam
-	paramObj
-}
-
-func (r ActionNewParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PublicActionDefinitionEgg)
-}
-func (r *ActionNewParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionUpdateParams struct {
-	AppID                       int64 `path:"appId" api:"required" json:"-"`
-	PublicActionDefinitionPatch PublicActionDefinitionPatchParam
-	paramObj
-}
-
-func (r ActionUpdateParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PublicActionDefinitionPatch)
-}
-func (r *ActionUpdateParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionListParams struct {
-	AppID int64 `path:"appId" api:"required" json:"-"`
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	paramObj
-}
-
-// URLQuery serializes [ActionListParams]'s query parameters as `url.Values`.
-func (r ActionListParams) URLQuery() (v url.Values, err error) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type ActionDeleteParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
-	// "PRE_FETCH_OPTIONS".
-	FunctionType ActionDeleteParamsFunctionType `path:"functionType,omitzero" api:"required" json:"-"`
-	paramObj
-}
-
-type ActionDeleteParamsFunctionType string
-
-const (
-	ActionDeleteParamsFunctionTypePostActionExecution ActionDeleteParamsFunctionType = "POST_ACTION_EXECUTION"
-	ActionDeleteParamsFunctionTypePostFetchOptions    ActionDeleteParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionDeleteParamsFunctionTypePreActionExecution  ActionDeleteParamsFunctionType = "PRE_ACTION_EXECUTION"
-	ActionDeleteParamsFunctionTypePreFetchOptions     ActionDeleteParamsFunctionType = "PRE_FETCH_OPTIONS"
-)
-
-type ActionCompleteParams struct {
-	CallbackCompletionRequest CallbackCompletionRequestParam
-	paramObj
-}
-
-func (r ActionCompleteParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.CallbackCompletionRequest)
-}
-func (r *ActionCompleteParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionCompleteBatchParams struct {
-	BatchInputCallbackCompletionBatchRequest BatchInputCallbackCompletionBatchRequestParam
-	paramObj
-}
-
-func (r ActionCompleteBatchParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputCallbackCompletionBatchRequest)
-}
-func (r *ActionCompleteBatchParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionNewOrReplaceParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	// Any of "POST_ACTION_EXECUTION", "POST_FETCH_OPTIONS", "PRE_ACTION_EXECUTION",
-	// "PRE_FETCH_OPTIONS".
-	FunctionType ActionNewOrReplaceParamsFunctionType `path:"functionType,omitzero" api:"required" json:"-"`
-	Body         string
-	paramObj
-}
-
-func (r ActionNewOrReplaceParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.Body)
-}
-func (r *ActionNewOrReplaceParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionNewOrReplaceParamsFunctionType string
-
-const (
-	ActionNewOrReplaceParamsFunctionTypePostActionExecution ActionNewOrReplaceParamsFunctionType = "POST_ACTION_EXECUTION"
-	ActionNewOrReplaceParamsFunctionTypePostFetchOptions    ActionNewOrReplaceParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionNewOrReplaceParamsFunctionTypePreActionExecution  ActionNewOrReplaceParamsFunctionType = "PRE_ACTION_EXECUTION"
-	ActionNewOrReplaceParamsFunctionTypePreFetchOptions     ActionNewOrReplaceParamsFunctionType = "PRE_FETCH_OPTIONS"
-)
-
-type ActionNewOrReplaceByFunctionTypeParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	Body         string
-	paramObj
-}
-
-func (r ActionNewOrReplaceByFunctionTypeParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.Body)
-}
-func (r *ActionNewOrReplaceByFunctionTypeParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionNewOrReplaceByFunctionTypeParamsFunctionType string
-
-const (
-	ActionNewOrReplaceByFunctionTypeParamsFunctionTypePostActionExecution ActionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
-	ActionNewOrReplaceByFunctionTypeParamsFunctionTypePostFetchOptions    ActionNewOrReplaceByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionNewOrReplaceByFunctionTypeParamsFunctionTypePreActionExecution  ActionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
-	ActionNewOrReplaceByFunctionTypeParamsFunctionTypePreFetchOptions     ActionNewOrReplaceByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-)
-
-type ActionNewRequiresObjectParams struct {
-	AppID                                       int64 `path:"appId" api:"required" json:"-"`
-	PublicActionDefinitionRequiresObjectRequest PublicActionDefinitionRequiresObjectRequestParam
-	paramObj
-}
-
-func (r ActionNewRequiresObjectParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PublicActionDefinitionRequiresObjectRequest)
-}
-func (r *ActionNewRequiresObjectParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ActionDeleteByFunctionTypeParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	paramObj
-}
-
-type ActionDeleteByFunctionTypeParamsFunctionType string
-
-const (
-	ActionDeleteByFunctionTypeParamsFunctionTypePostActionExecution ActionDeleteByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
-	ActionDeleteByFunctionTypeParamsFunctionTypePostFetchOptions    ActionDeleteByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionDeleteByFunctionTypeParamsFunctionTypePreActionExecution  ActionDeleteByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
-	ActionDeleteByFunctionTypeParamsFunctionTypePreFetchOptions     ActionDeleteByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-)
-
-type ActionGetParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	paramObj
-}
-
-type ActionGetByFunctionTypeParams struct {
-	AppID        int64  `path:"appId" api:"required" json:"-"`
-	DefinitionID string `path:"definitionId" api:"required" json:"-"`
-	paramObj
-}
-
-type ActionGetByFunctionTypeParamsFunctionType string
-
-const (
-	ActionGetByFunctionTypeParamsFunctionTypePostActionExecution ActionGetByFunctionTypeParamsFunctionType = "POST_ACTION_EXECUTION"
-	ActionGetByFunctionTypeParamsFunctionTypePostFetchOptions    ActionGetByFunctionTypeParamsFunctionType = "POST_FETCH_OPTIONS"
-	ActionGetByFunctionTypeParamsFunctionTypePreActionExecution  ActionGetByFunctionTypeParamsFunctionType = "PRE_ACTION_EXECUTION"
-	ActionGetByFunctionTypeParamsFunctionTypePreFetchOptions     ActionGetByFunctionTypeParamsFunctionType = "PRE_FETCH_OPTIONS"
-)
-
-type ActionGetRequiresObjectParams struct {
-	AppID int64 `path:"appId" api:"required" json:"-"`
-	paramObj
-}

@@ -23,7 +23,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCampaignAssetService] method instead.
 type CampaignAssetService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewCampaignAssetService generates a new service that applies the given options
@@ -31,15 +31,22 @@ type CampaignAssetService struct {
 // there is one), and before any request-specific options.
 func NewCampaignAssetService(opts ...option.RequestOption) (r CampaignAssetService) {
 	r = CampaignAssetService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
-// Associate an asset with a specific campaign in your HubSpot account. This
-// operation allows you to link an asset of a specified type and ID to a campaign,
-// facilitating better organization and tracking of campaign resources.
+// Associate a specified asset with a campaign. Using the API, you can create
+// associations for the following asset types: ads, blog posts, calls, case
+// studies, CTAs, CTAs (legacy), external website pages, feedback surveys, forms,
+// files, knowledge base articles, landing pages, marketing email, marketing
+// events, meetings, playbooks, podcast episodes, sales documents, sales emails,
+// sequences, SMS, social posts, static lists, videos, website pages, and
+// workflows.
+//
+// For other asset types, it is recommended to manage your associations directly in
+// the campaign tool in HubSpot.
 func (r *CampaignAssetService) Update(ctx context.Context, assetID string, body CampaignAssetUpdateParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
@@ -53,16 +60,17 @@ func (r *CampaignAssetService) Update(ctx context.Context, assetID string, body 
 		err = errors.New("missing required assetId parameter")
 		return err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s/%s", body.CampaignGuid, body.AssetType, assetID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s/%s", url.PathEscape(body.CampaignGuid), url.PathEscape(body.AssetType), url.PathEscape(assetID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
 	return err
 }
 
-// List all assets of a specified campaign by asset type. This endpoint allows you
-// to retrieve assets associated with a campaign, filtered by the type of asset. It
-// supports pagination and date filtering to manage and refine the results.
+// This endpoint lists all assets of the campaign by asset type. The assetType
+// parameter is required, and each request can only fetch assets of a single type.
+// Asset metrics can also be fetched along with the assets; they are available only
+// if start and end dates are provided.
 func (r *CampaignAssetService) List(ctx context.Context, assetType string, params CampaignAssetListParams, opts ...option.RequestOption) (res *CollectionResponsePublicCampaignAssetForwardPaging, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if params.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
@@ -71,16 +79,23 @@ func (r *CampaignAssetService) List(ctx context.Context, assetType string, param
 		err = errors.New("missing required assetType parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s", params.CampaignGuid, assetType)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s", url.PathEscape(params.CampaignGuid), url.PathEscape(assetType))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return res, err
 }
 
-// Disassociate an asset from a specific campaign. This operation removes the
-// association between the specified asset and campaign, effectively detaching the
-// asset from the campaign's context.
+// Disassociate a specified asset from a campaign. Using the API, you can remove
+// associations for the following asset types: ads, blog posts, calls, case
+// studies, CTAs, CTAs (legacy), external website pages, feedback surveys, forms,
+// files, knowledge base articles, landing pages, marketing email, marketing
+// events, meetings, playbooks, podcast episodes, sales documents, sales emails,
+// sequences, SMS, social posts, static lists, videos, website pages, and
+// workflows.
+//
+// For other asset types, it is recommended to manage your associations directly in
+// the campaign tool in HubSpot.
 func (r *CampaignAssetService) Delete(ctx context.Context, assetID string, body CampaignAssetDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
@@ -94,7 +109,7 @@ func (r *CampaignAssetService) Delete(ctx context.Context, assetID string, body 
 		err = errors.New("missing required assetId parameter")
 		return err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s/%s", body.CampaignGuid, body.AssetType, assetID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/assets/%s/%s", url.PathEscape(body.CampaignGuid), url.PathEscape(body.AssetType), url.PathEscape(assetID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return err
 }
@@ -110,12 +125,10 @@ type CampaignAssetListParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
-	After param.Opt[string] `query:"after,omitzero" json:"-"`
-	// The end date for filtering assets, in YYYY-MM-DD format.
+	After   param.Opt[string] `query:"after,omitzero" json:"-"`
 	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
 	// The maximum number of results to display per page.
-	Limit param.Opt[string] `query:"limit,omitzero" json:"-"`
-	// The start date for filtering assets, in YYYY-MM-DD format.
+	Limit     param.Opt[string] `query:"limit,omitzero" json:"-"`
 	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
 	paramObj
 }

@@ -27,7 +27,7 @@ func TestCurrencyExchangeRateBatchNew(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.Batch.New(context.TODO(), settings.CurrencyExchangeRateBatchNewParams{
 		BatchInputExchangeRateCreateRequest: settings.BatchInputExchangeRateCreateRequestParam{
@@ -58,7 +58,7 @@ func TestCurrencyExchangeRateBatchUpdate(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.Batch.Update(context.TODO(), settings.CurrencyExchangeRateBatchUpdateParams{
 		BatchInputExchangeRateUpdateRequest: settings.BatchInputExchangeRateUpdateRequestParam{
@@ -89,10 +89,10 @@ func TestCurrencyExchangeRateBatchGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Settings.Currencies.ExchangeRates.Batch.Get(context.TODO(), settings.CurrencyExchangeRateBatchGetParams{
-		BatchInputPublicObjectID: settings.BatchInputPublicObjectIDParam{
+		BatchInputPublicObjectID: shared.BatchInputPublicObjectIDParam{
 			Inputs: []shared.PublicObjectIDParam{{
 				ID: "id",
 			}},

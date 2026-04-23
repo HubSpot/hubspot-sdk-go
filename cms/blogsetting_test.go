@@ -26,7 +26,7 @@ func TestBlogSettingListWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Blogs.Settings.List(context.TODO(), cms.BlogSettingListParams{
 		After:         hubspotsdk.String("after"),
@@ -60,7 +60,7 @@ func TestBlogSettingGet(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Blogs.Settings.Get(context.TODO(), "blogId")
 	if err != nil {
@@ -83,7 +83,7 @@ func TestBlogSettingGetRevision(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Blogs.Settings.GetRevision(
 		context.TODO(),
@@ -112,7 +112,7 @@ func TestBlogSettingListRevisionsWithOptionalParams(t *testing.T) {
 	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAccessToken("pat-na1-xxxxxxxx-xxxx"),
+		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Blogs.Settings.ListRevisions(
 		context.TODO(),

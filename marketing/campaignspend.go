@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
 	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
@@ -22,7 +23,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewCampaignSpendService] method instead.
 type CampaignSpendService struct {
-	Options []option.RequestOption
+	options []option.RequestOption
 }
 
 // NewCampaignSpendService generates a new service that applies the given options
@@ -30,64 +31,55 @@ type CampaignSpendService struct {
 // there is one), and before any request-specific options.
 func NewCampaignSpendService(opts ...option.RequestOption) (r CampaignSpendService) {
 	r = CampaignSpendService{}
-	r.Options = opts
+	r.options = opts
 	return
 }
 
-// Create a new campaign spend item for a specific campaign identified by its
-// unique ID. This endpoint allows you to add financial details related to campaign
-// expenditures, which can be useful for budget tracking and financial reporting.
+// Create a new campaign spend item
 func (r *CampaignSpendService) New(ctx context.Context, campaignGuid string, body CampaignSpendNewParams, opts ...option.RequestOption) (res *PublicSpendItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if campaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend", campaignGuid)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend", url.PathEscape(campaignGuid))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-// Update a specific campaign spend item by its ID. This endpoint allows you to
-// modify the details of a spend item associated with a marketing campaign, such as
-// its amount, name, or order. Use this to keep your campaign spend data accurate
-// and up-to-date.
+// Update a specific campaign spend item by ID
 func (r *CampaignSpendService) Update(ctx context.Context, spendID int64, params CampaignSpendUpdateParams, opts ...option.RequestOption) (res *PublicSpendItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if params.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", params.CampaignGuid, spendID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", url.PathEscape(params.CampaignGuid), spendID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, params, &res, opts...)
 	return res, err
 }
 
-// Delete a specific campaign spend item by its ID. This operation is useful for
-// removing spend items that are no longer needed or were added in error. Once
-// deleted, the spend item cannot be recovered.
+// Delete a specific campaign spend item by ID
 func (r *CampaignSpendService) Delete(ctx context.Context, spendID int64, body CampaignSpendDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if body.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", body.CampaignGuid, spendID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", url.PathEscape(body.CampaignGuid), spendID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return err
 }
 
-// Retrieve details of a specific campaign spend item using its spendId. This
-// endpoint allows you to access information about the spend associated with a
-// particular campaign, identified by the campaignGuid.
+// Read a campaign spend item by its spendId
 func (r *CampaignSpendService) Get(ctx context.Context, spendID int64, query CampaignSpendGetParams, opts ...option.RequestOption) (res *PublicSpendItem, err error) {
-	opts = slices.Concat(r.Options, opts)
+	opts = slices.Concat(r.options, opts)
 	if query.CampaignGuid == "" {
 		err = errors.New("missing required campaignGuid parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", query.CampaignGuid, spendID)
+	path := fmt.Sprintf("marketing/campaigns/2026-03/%s/spend/%v", url.PathEscape(query.CampaignGuid), spendID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
