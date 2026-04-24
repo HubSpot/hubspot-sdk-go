@@ -40,7 +40,7 @@ func NewPageLandingPageService(opts ...option.RequestOption) (r PageLandingPageS
 }
 
 // Create a new landing page.
-func (r *PageLandingPageService) New(ctx context.Context, body PageLandingPageNewParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) New(ctx context.Context, body PageLandingPageNewParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/landing-pages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -49,7 +49,7 @@ func (r *PageLandingPageService) New(ctx context.Context, body PageLandingPageNe
 
 // Sparse updates a single Landing Page object identified by the id in the path.
 // You only need to specify the column values that you are modifying.
-func (r *PageLandingPageService) Update(ctx context.Context, objectID string, params PageLandingPageUpdateParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) Update(ctx context.Context, objectID string, params PageLandingPageUpdateParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -64,7 +64,7 @@ func (r *PageLandingPageService) Update(ctx context.Context, objectID string, pa
 // you to filter landing pages based on creation and update timestamps, sort them,
 // and paginate through results. You can also choose to include archived pages or
 // specify certain properties to be included in the response.
-func (r *PageLandingPageService) List(ctx context.Context, query PageLandingPageListParams, opts ...option.RequestOption) (res *pagination.Page[PageData], err error) {
+func (r *PageLandingPageService) List(ctx context.Context, query PageLandingPageListParams, opts ...option.RequestOption) (res *pagination.Page[PagesPage], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -85,7 +85,7 @@ func (r *PageLandingPageService) List(ctx context.Context, query PageLandingPage
 // you to filter landing pages based on creation and update timestamps, sort them,
 // and paginate through results. You can also choose to include archived pages or
 // specify certain properties to be included in the response.
-func (r *PageLandingPageService) ListAutoPaging(ctx context.Context, query PageLandingPageListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PageData] {
+func (r *PageLandingPageService) ListAutoPaging(ctx context.Context, query PageLandingPageListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PagesPage] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
@@ -103,7 +103,7 @@ func (r *PageLandingPageService) Delete(ctx context.Context, objectID string, bo
 }
 
 // Create a copy of an existing landing page.
-func (r *PageLandingPageService) Clone(ctx context.Context, body PageLandingPageCloneParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) Clone(ctx context.Context, body PageLandingPageCloneParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/landing-pages/clone"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -111,7 +111,7 @@ func (r *PageLandingPageService) Clone(ctx context.Context, body PageLandingPage
 }
 
 // Retrieve a landing page, specified by its ID.
-func (r *PageLandingPageService) Get(ctx context.Context, objectID string, query PageLandingPageGetParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) Get(ctx context.Context, objectID string, query PageLandingPageGetParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -123,7 +123,7 @@ func (r *PageLandingPageService) Get(ctx context.Context, objectID string, query
 }
 
 // Retrieve the full draft version of a landing page, specified by page ID.
-func (r *PageLandingPageService) GetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) GetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -172,7 +172,7 @@ func (r *PageLandingPageService) Schedule(ctx context.Context, body PageLandingP
 
 // Partially updates the draft version of a single landing page, specified by its
 // ID. You only need to specify the column values that you are modifying.
-func (r *PageLandingPageService) UpdateDraft(ctx context.Context, objectID string, body PageLandingPageUpdateDraftParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageLandingPageService) UpdateDraft(ctx context.Context, objectID string, body PageLandingPageUpdateDraftParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -184,26 +184,26 @@ func (r *PageLandingPageService) UpdateDraft(ctx context.Context, objectID strin
 }
 
 type PageLandingPageNewParams struct {
-	PageData PageDataParam
+	PagesPage PagesPageParam
 	paramObj
 }
 
 func (r PageLandingPageNewParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PageData)
+	return shimjson.Marshal(r.PagesPage)
 }
 func (r *PageLandingPageNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type PageLandingPageUpdateParams struct {
-	PageData PageDataParam
+	PagesPage PagesPageParam
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
 func (r PageLandingPageUpdateParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PageData)
+	return shimjson.Marshal(r.PagesPage)
 }
 func (r *PageLandingPageUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
@@ -311,12 +311,12 @@ func (r *PageLandingPageScheduleParams) UnmarshalJSON(data []byte) error {
 }
 
 type PageLandingPageUpdateDraftParams struct {
-	PageData PageDataParam
+	PagesPage PagesPageParam
 	paramObj
 }
 
 func (r PageLandingPageUpdateDraftParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PageData)
+	return shimjson.Marshal(r.PagesPage)
 }
 func (r *PageLandingPageUpdateDraftParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)

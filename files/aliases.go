@@ -40,6 +40,11 @@ const ActionResponseStatusPending = shared.ActionResponseStatusPending
 // Equals "PROCESSING"
 const ActionResponseStatusProcessing = shared.ActionResponseStatusProcessing
 
+// The definition of an association
+//
+// This is an alias to an internal type.
+type AssociationDefinition = shared.AssociationDefinition
+
 // This is an alias to an internal type.
 type AssociationDefinitionEggParam = shared.AssociationDefinitionEggParam
 
@@ -82,85 +87,6 @@ type AutomationActionsOption = shared.AutomationActionsOption
 // This is an alias to an internal type.
 type AutomationActionsOptionParam = shared.AutomationActionsOptionParam
 
-// The definition of an association
-//
-// This is an alias to an internal type.
-type BaseAssociationDefinition = shared.BaseAssociationDefinition
-
-// This is an alias to an internal type.
-type BaseError = shared.BaseError
-
-// This is an alias to an internal type.
-type BaseObjectTypeDefinition = shared.BaseObjectTypeDefinition
-
-// A HubSpot property option
-//
-// This is an alias to an internal type.
-type BaseOption = shared.BaseOption
-
-// A HubSpot property
-//
-// This is an alias to an internal type.
-type BaseProperty = shared.BaseProperty
-
-// Indicates the sensitivity level of the property, such as "non_sensitive",
-// "sensitive", or "highly_sensitive".
-//
-// This is an alias to an internal type.
-type BasePropertyDataSensitivity = shared.BasePropertyDataSensitivity
-
-// Equals "highly_sensitive"
-const BasePropertyDataSensitivityHighlySensitive = shared.BasePropertyDataSensitivityHighlySensitive
-
-// Equals "non_sensitive"
-const BasePropertyDataSensitivityNonSensitive = shared.BasePropertyDataSensitivityNonSensitive
-
-// Equals "sensitive"
-const BasePropertyDataSensitivitySensitive = shared.BasePropertyDataSensitivitySensitive
-
-// Controls how date properties are displayed in the HubSpot UI, with options such
-// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
-//
-// This is an alias to an internal type.
-type BasePropertyDateDisplayHint = shared.BasePropertyDateDisplayHint
-
-// Equals "absolute"
-const BasePropertyDateDisplayHintAbsolute = shared.BasePropertyDateDisplayHintAbsolute
-
-// Equals "absolute_with_relative"
-const BasePropertyDateDisplayHintAbsoluteWithRelative = shared.BasePropertyDateDisplayHintAbsoluteWithRelative
-
-// Equals "time_since"
-const BasePropertyDateDisplayHintTimeSince = shared.BasePropertyDateDisplayHintTimeSince
-
-// Equals "time_until"
-const BasePropertyDateDisplayHintTimeUntil = shared.BasePropertyDateDisplayHintTimeUntil
-
-// Hint for how a number property is displayed and validated in HubSpot's UI. Can
-// be: "unformatted", "formatted", "currency", "percentage", "duration", or
-// "probability".
-//
-// This is an alias to an internal type.
-type BasePropertyNumberDisplayHint = shared.BasePropertyNumberDisplayHint
-
-// Equals "currency"
-const BasePropertyNumberDisplayHintCurrency = shared.BasePropertyNumberDisplayHintCurrency
-
-// Equals "duration"
-const BasePropertyNumberDisplayHintDuration = shared.BasePropertyNumberDisplayHintDuration
-
-// Equals "formatted"
-const BasePropertyNumberDisplayHintFormatted = shared.BasePropertyNumberDisplayHintFormatted
-
-// Equals "percentage"
-const BasePropertyNumberDisplayHintPercentage = shared.BasePropertyNumberDisplayHintPercentage
-
-// Equals "probability"
-const BasePropertyNumberDisplayHintProbability = shared.BasePropertyNumberDisplayHintProbability
-
-// Equals "unformatted"
-const BasePropertyNumberDisplayHintUnformatted = shared.BasePropertyNumberDisplayHintUnformatted
-
 // This is an alias to an internal type.
 type BatchInputPropertyCreateParam = shared.BatchInputPropertyCreateParam
 
@@ -192,6 +118,9 @@ const BatchReadInputPropertyNameDataSensitivitySensitive = shared.BatchReadInput
 type CollectionResponsePropertyGroupNoPaging = shared.CollectionResponsePropertyGroupNoPaging
 
 // This is an alias to an internal type.
+type ErrorData = shared.ErrorData
+
+// This is an alias to an internal type.
 type ErrorDetail = shared.ErrorDetail
 
 // This is an alias to an internal type.
@@ -204,6 +133,9 @@ type ForwardPaging = shared.ForwardPaging
 type NextPage = shared.NextPage
 
 // This is an alias to an internal type.
+type ObjectTypeDefinition = shared.ObjectTypeDefinition
+
+// This is an alias to an internal type.
 type ObjectTypeDefinitionLabels = shared.ObjectTypeDefinitionLabels
 
 // This is an alias to an internal type.
@@ -211,6 +143,11 @@ type ObjectTypeDefinitionLabelsParam = shared.ObjectTypeDefinitionLabelsParam
 
 // This is an alias to an internal type.
 type ObjectTypeDefinitionPatchParam = shared.ObjectTypeDefinitionPatchParam
+
+// A HubSpot property option
+//
+// This is an alias to an internal type.
+type Option = shared.Option
 
 // This is an alias to an internal type.
 type OptionInputParam = shared.OptionInputParam
@@ -223,6 +160,69 @@ type Paging = shared.Paging
 //
 // This is an alias to an internal type.
 type PreviousPage = shared.PreviousPage
+
+// A HubSpot property
+//
+// This is an alias to an internal type.
+type Property = shared.Property
+
+// Indicates the sensitivity level of the property, such as "non_sensitive",
+// "sensitive", or "highly_sensitive".
+//
+// This is an alias to an internal type.
+type PropertyDataSensitivity = shared.PropertyDataSensitivity
+
+// Equals "highly_sensitive"
+const PropertyDataSensitivityHighlySensitive = shared.PropertyDataSensitivityHighlySensitive
+
+// Equals "non_sensitive"
+const PropertyDataSensitivityNonSensitive = shared.PropertyDataSensitivityNonSensitive
+
+// Equals "sensitive"
+const PropertyDataSensitivitySensitive = shared.PropertyDataSensitivitySensitive
+
+// Controls how date properties are displayed in the HubSpot UI, with options such
+// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
+//
+// This is an alias to an internal type.
+type PropertyDateDisplayHint = shared.PropertyDateDisplayHint
+
+// Equals "absolute"
+const PropertyDateDisplayHintAbsolute = shared.PropertyDateDisplayHintAbsolute
+
+// Equals "absolute_with_relative"
+const PropertyDateDisplayHintAbsoluteWithRelative = shared.PropertyDateDisplayHintAbsoluteWithRelative
+
+// Equals "time_since"
+const PropertyDateDisplayHintTimeSince = shared.PropertyDateDisplayHintTimeSince
+
+// Equals "time_until"
+const PropertyDateDisplayHintTimeUntil = shared.PropertyDateDisplayHintTimeUntil
+
+// Hint for how a number property is displayed and validated in HubSpot's UI. Can
+// be: "unformatted", "formatted", "currency", "percentage", "duration", or
+// "probability".
+//
+// This is an alias to an internal type.
+type PropertyNumberDisplayHint = shared.PropertyNumberDisplayHint
+
+// Equals "currency"
+const PropertyNumberDisplayHintCurrency = shared.PropertyNumberDisplayHintCurrency
+
+// Equals "duration"
+const PropertyNumberDisplayHintDuration = shared.PropertyNumberDisplayHintDuration
+
+// Equals "formatted"
+const PropertyNumberDisplayHintFormatted = shared.PropertyNumberDisplayHintFormatted
+
+// Equals "percentage"
+const PropertyNumberDisplayHintPercentage = shared.PropertyNumberDisplayHintPercentage
+
+// Equals "probability"
+const PropertyNumberDisplayHintProbability = shared.PropertyNumberDisplayHintProbability
+
+// Equals "unformatted"
+const PropertyNumberDisplayHintUnformatted = shared.PropertyNumberDisplayHintUnformatted
 
 // This is an alias to an internal type.
 type PropertyCreateParam = shared.PropertyCreateParam
