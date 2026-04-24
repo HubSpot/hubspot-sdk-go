@@ -52,7 +52,7 @@ func (r *ObjectSchemaService) New(ctx context.Context, body ObjectSchemaNewParam
 
 // Update attributes of a custom object schema, such as properties and labels,
 // using the object type ID or fully qualified name.
-func (r *ObjectSchemaService) Update(ctx context.Context, objectType string, body ObjectSchemaUpdateParams, opts ...option.RequestOption) (res *shared.ObjectTypeDefinition, err error) {
+func (r *ObjectSchemaService) Update(ctx context.Context, objectType string, body ObjectSchemaUpdateParams, opts ...option.RequestOption) (res *shared.BaseObjectTypeDefinition, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -89,7 +89,7 @@ func (r *ObjectSchemaService) Delete(ctx context.Context, objectType string, bod
 // Create a new association between the specified object type and another object
 // type. This operation requires the definition of the association attributes, such
 // as the primary and target object type IDs.
-func (r *ObjectSchemaService) NewAssociation(ctx context.Context, objectType string, body ObjectSchemaNewAssociationParams, opts ...option.RequestOption) (res *shared.AssociationDefinition, err error) {
+func (r *ObjectSchemaService) NewAssociation(ctx context.Context, objectType string, body ObjectSchemaNewAssociationParams, opts ...option.RequestOption) (res *shared.BaseAssociationDefinition, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -155,7 +155,7 @@ type ObjectSchema struct {
 	AllowsSensitiveProperties bool   `json:"allowsSensitiveProperties" api:"required"`
 	Archived                  bool   `json:"archived" api:"required"`
 	// Associations defined for a given object type.
-	Associations []shared.AssociationDefinition `json:"associations" api:"required"`
+	Associations []shared.BaseAssociationDefinition `json:"associations" api:"required"`
 	// An assigned unique ID for the object, including portal ID and object name.
 	FullyQualifiedName string                            `json:"fullyQualifiedName" api:"required"`
 	Labels             shared.ObjectTypeDefinitionLabels `json:"labels" api:"required"`
@@ -163,7 +163,7 @@ type ObjectSchema struct {
 	Name         string `json:"name" api:"required"`
 	ObjectTypeID string `json:"objectTypeId" api:"required"`
 	// Properties defined for this object type.
-	Properties []shared.Property `json:"properties" api:"required"`
+	Properties []shared.BaseProperty `json:"properties" api:"required"`
 	// The names of properties that should be **required** when creating an object of
 	// this type.
 	RequiredProperties []string `json:"requiredProperties" api:"required"`

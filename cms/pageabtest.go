@@ -35,7 +35,7 @@ func NewPageABTestService(opts ...option.RequestOption) (r PageABTestService) {
 
 // Create a new A/B test variation based on the information provided in the request
 // body.
-func (r *PageABTestService) NewLandingPageVariation(ctx context.Context, body PageABTestNewLandingPageVariationParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageABTestService) NewLandingPageVariation(ctx context.Context, body PageABTestNewLandingPageVariationParams, opts ...option.RequestOption) (res *PageData, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/landing-pages/ab-test/create-variation"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -44,7 +44,7 @@ func (r *PageABTestService) NewLandingPageVariation(ctx context.Context, body Pa
 
 // Create a new A/B test variation based on the information provided in the request
 // body.
-func (r *PageABTestService) NewSitePageVariation(ctx context.Context, body PageABTestNewSitePageVariationParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageABTestService) NewSitePageVariation(ctx context.Context, body PageABTestNewSitePageVariationParams, opts ...option.RequestOption) (res *PageData, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/site-pages/ab-test/create-variation"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
