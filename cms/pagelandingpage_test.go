@@ -29,9 +29,9 @@ func TestPageLandingPageNew(t *testing.T) {
 		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Cms.Pages.LandingPages.New(context.TODO(), cms.PageLandingPageNewParams{
-		PagesPage: cms.PagesPageParam{
+		PageData: cms.PageDataParam{
 			ID:                  "id",
-			AbStatus:            cms.PagesPageAbStatusAutomatedLoserVariant,
+			AbStatus:            cms.PageDataAbStatusAutomatedLoserVariant,
 			AbTestID:            "abTestId",
 			ArchivedAt:          time.Now(),
 			ArchivedInDashboard: true,
@@ -42,11 +42,11 @@ func TestPageLandingPageNew(t *testing.T) {
 			Campaign:                  "campaign",
 			CategoryID:                0,
 			ContentGroupID:            "contentGroupId",
-			ContentTypeCategory:       cms.PagesPageContentTypeCategory0,
+			ContentTypeCategory:       cms.PageDataContentTypeCategory0,
 			Created:                   time.Now(),
 			CreatedByID:               "createdById",
 			CurrentlyPublished:        true,
-			CurrentState:              cms.PagesPageCurrentStateAgentGenerated,
+			CurrentState:              cms.PageDataCurrentStateAgentGenerated,
 			Domain:                    "domain",
 			DynamicPageDataSourceID:   "dynamicPageDataSourceId",
 			DynamicPageDataSourceType: 0,
@@ -60,7 +60,7 @@ func TestPageLandingPageNew(t *testing.T) {
 			HeadHTML:                  "headHtml",
 			HTMLTitle:                 "htmlTitle",
 			IncludeDefaultCustomCss:   true,
-			Language:                  cms.PagesPageLanguageAa,
+			Language:                  cms.PageDataLanguageAa,
 			LayoutSections: map[string]cms.LayoutSectionParam{
 				"foo": {
 					Cells:    []cms.LayoutSectionParam{},
@@ -296,9 +296,9 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"objectId",
 		cms.PageLandingPageUpdateParams{
-			PagesPage: cms.PagesPageParam{
+			PageData: cms.PageDataParam{
 				ID:                  "id",
-				AbStatus:            cms.PagesPageAbStatusAutomatedLoserVariant,
+				AbStatus:            cms.PageDataAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
@@ -309,11 +309,11 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 				Campaign:                  "campaign",
 				CategoryID:                0,
 				ContentGroupID:            "contentGroupId",
-				ContentTypeCategory:       cms.PagesPageContentTypeCategory0,
+				ContentTypeCategory:       cms.PageDataContentTypeCategory0,
 				Created:                   time.Now(),
 				CreatedByID:               "createdById",
 				CurrentlyPublished:        true,
-				CurrentState:              cms.PagesPageCurrentStateAgentGenerated,
+				CurrentState:              cms.PageDataCurrentStateAgentGenerated,
 				Domain:                    "domain",
 				DynamicPageDataSourceID:   "dynamicPageDataSourceId",
 				DynamicPageDataSourceType: 0,
@@ -327,7 +327,7 @@ func TestPageLandingPageUpdateWithOptionalParams(t *testing.T) {
 				HeadHTML:                  "headHtml",
 				HTMLTitle:                 "htmlTitle",
 				IncludeDefaultCustomCss:   true,
-				Language:                  cms.PagesPageLanguageAa,
+				Language:                  cms.PageDataLanguageAa,
 				LayoutSections: map[string]cms.LayoutSectionParam{
 					"foo": {
 						Cells:    []cms.LayoutSectionParam{},
@@ -784,9 +784,9 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 		context.TODO(),
 		"objectId",
 		cms.PageLandingPageUpdateDraftParams{
-			PagesPage: cms.PagesPageParam{
+			PageData: cms.PageDataParam{
 				ID:                  "id",
-				AbStatus:            cms.PagesPageAbStatusAutomatedLoserVariant,
+				AbStatus:            cms.PageDataAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
 				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
@@ -797,11 +797,11 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 				Campaign:                  "campaign",
 				CategoryID:                0,
 				ContentGroupID:            "contentGroupId",
-				ContentTypeCategory:       cms.PagesPageContentTypeCategory0,
+				ContentTypeCategory:       cms.PageDataContentTypeCategory0,
 				Created:                   time.Now(),
 				CreatedByID:               "createdById",
 				CurrentlyPublished:        true,
-				CurrentState:              cms.PagesPageCurrentStateAgentGenerated,
+				CurrentState:              cms.PageDataCurrentStateAgentGenerated,
 				Domain:                    "domain",
 				DynamicPageDataSourceID:   "dynamicPageDataSourceId",
 				DynamicPageDataSourceType: 0,
@@ -815,7 +815,7 @@ func TestPageLandingPageUpdateDraft(t *testing.T) {
 				HeadHTML:                  "headHtml",
 				HTMLTitle:                 "htmlTitle",
 				IncludeDefaultCustomCss:   true,
-				Language:                  cms.PagesPageLanguageAa,
+				Language:                  cms.PageDataLanguageAa,
 				LayoutSections: map[string]cms.LayoutSectionParam{
 					"foo": {
 						Cells:    []cms.LayoutSectionParam{},

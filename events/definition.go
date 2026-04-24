@@ -99,7 +99,7 @@ func (r *DefinitionService) Delete(ctx context.Context, eventName string, opts .
 }
 
 // Create a new property for an existing event definition.
-func (r *DefinitionService) NewProperty(ctx context.Context, eventName string, body DefinitionNewPropertyParams, opts ...option.RequestOption) (res *shared.Property, err error) {
+func (r *DefinitionService) NewProperty(ctx context.Context, eventName string, body DefinitionNewPropertyParams, opts ...option.RequestOption) (res *shared.BaseProperty, err error) {
 	opts = slices.Concat(r.options, opts)
 	if eventName == "" {
 		err = errors.New("missing required eventName parameter")
@@ -149,7 +149,7 @@ func (r *DefinitionService) SendBatch(ctx context.Context, body DefinitionSendBa
 }
 
 // Update an existing property in a custom event definition.
-func (r *DefinitionService) UpdateProperty(ctx context.Context, propertyName string, params DefinitionUpdatePropertyParams, opts ...option.RequestOption) (res *shared.Property, err error) {
+func (r *DefinitionService) UpdateProperty(ctx context.Context, propertyName string, params DefinitionUpdatePropertyParams, opts ...option.RequestOption) (res *shared.BaseProperty, err error) {
 	opts = slices.Concat(r.options, opts)
 	if params.EventName == "" {
 		err = errors.New("missing required eventName parameter")
@@ -1760,7 +1760,7 @@ type ExternalBehavioralEventTypeDefinition struct {
 	Labels             BehavioralEventTypeDefinitionLabels     `json:"labels" api:"required"`
 	Name               string                                  `json:"name" api:"required"`
 	ObjectTypeID       string                                  `json:"objectTypeId" api:"required"`
-	Properties         []shared.Property                       `json:"properties" api:"required"`
+	Properties         []shared.BaseProperty                   `json:"properties" api:"required"`
 	ComboEventRules    ComboEventRuleBranch                    `json:"comboEventRules"`
 	CreatedAt          time.Time                               `json:"createdAt" format:"date-time"`
 	CreatedUserID      int64                                   `json:"createdUserId"`

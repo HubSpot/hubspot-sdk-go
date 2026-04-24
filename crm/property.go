@@ -45,7 +45,7 @@ func NewPropertyService(opts ...option.RequestOption) (r PropertyService) {
 }
 
 // Create and return a copy of a new property for the specified object type.
-func (r *PropertyService) New(ctx context.Context, objectType string, body PropertyNewParams, opts ...option.RequestOption) (res *shared.Property, err error) {
+func (r *PropertyService) New(ctx context.Context, objectType string, body PropertyNewParams, opts ...option.RequestOption) (res *shared.BaseProperty, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -58,7 +58,7 @@ func (r *PropertyService) New(ctx context.Context, objectType string, body Prope
 
 // Perform a partial update of a property identified by { propertyName }. Provided
 // fields will be overwritten.
-func (r *PropertyService) Update(ctx context.Context, propertyName string, params PropertyUpdateParams, opts ...option.RequestOption) (res *shared.Property, err error) {
+func (r *PropertyService) Update(ctx context.Context, propertyName string, params PropertyUpdateParams, opts ...option.RequestOption) (res *shared.BaseProperty, err error) {
 	opts = slices.Concat(r.options, opts)
 	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -103,7 +103,7 @@ func (r *PropertyService) Delete(ctx context.Context, propertyName string, body 
 }
 
 // Read a property identified by {propertyName}.
-func (r *PropertyService) Get(ctx context.Context, propertyName string, params PropertyGetParams, opts ...option.RequestOption) (res *shared.Property, err error) {
+func (r *PropertyService) Get(ctx context.Context, propertyName string, params PropertyGetParams, opts ...option.RequestOption) (res *shared.BaseProperty, err error) {
 	opts = slices.Concat(r.options, opts)
 	if params.ObjectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -120,8 +120,8 @@ func (r *PropertyService) Get(ctx context.Context, propertyName string, params P
 
 type BatchResponseProperty struct {
 	// The timestamp indicating when the batch operation was completed.
-	CompletedAt time.Time         `json:"completedAt" api:"required" format:"date-time"`
-	Results     []shared.Property `json:"results" api:"required"`
+	CompletedAt time.Time             `json:"completedAt" api:"required" format:"date-time"`
+	Results     []shared.BaseProperty `json:"results" api:"required"`
 	// The timestamp indicating when the batch operation began processing.
 	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
 	// The current status of the batch operation, with possible values being CANCELED,
@@ -165,7 +165,7 @@ const (
 )
 
 type CollectionResponsePropertyNoPaging struct {
-	Results []shared.Property `json:"results" api:"required"`
+	Results []shared.BaseProperty `json:"results" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
