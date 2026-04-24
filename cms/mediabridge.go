@@ -44,7 +44,7 @@ func NewMediaBridgeService(opts ...option.RequestOption) (r MediaBridgeService) 
 }
 
 // Create a new association definition for the specified object type.
-func (r *MediaBridgeService) NewAssociation(ctx context.Context, objectType string, params MediaBridgeNewAssociationParams, opts ...option.RequestOption) (res *shared.BaseAssociationDefinition, err error) {
+func (r *MediaBridgeService) NewAssociation(ctx context.Context, objectType string, params MediaBridgeNewAssociationParams, opts ...option.RequestOption) (res *shared.AssociationDefinition, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -120,7 +120,7 @@ func (r *MediaBridgeService) NewPropertyGroup(ctx context.Context, objectType st
 	return res, err
 }
 
-func (r *MediaBridgeService) NewVideoAssociationDefinition(ctx context.Context, appID int64, opts ...option.RequestOption) (res *shared.BaseAssociationDefinition, err error) {
+func (r *MediaBridgeService) NewVideoAssociationDefinition(ctx context.Context, appID int64, opts ...option.RequestOption) (res *shared.AssociationDefinition, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("media-bridge/2026-03/%v/settings/video-association-definition", appID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
@@ -363,7 +363,7 @@ func (r *MediaBridgeService) UpdatePropertyGroup(ctx context.Context, groupName 
 }
 
 // Update the schema for an existing object type
-func (r *MediaBridgeService) UpdateSchema(ctx context.Context, objectType string, params MediaBridgeUpdateSchemaParams, opts ...option.RequestOption) (res *shared.BaseObjectTypeDefinition, err error) {
+func (r *MediaBridgeService) UpdateSchema(ctx context.Context, objectType string, params MediaBridgeUpdateSchemaParams, opts ...option.RequestOption) (res *shared.ObjectTypeDefinition, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectType == "" {
 		err = errors.New("missing required objectType parameter")
@@ -2118,24 +2118,24 @@ func (r *ObjectDefinitionResponse) UnmarshalJSON(data []byte) error {
 }
 
 type ObjectSchema struct {
-	ID                         string                             `json:"id" api:"required"`
-	AllowsSensitiveProperties  bool                               `json:"allowsSensitiveProperties" api:"required"`
-	Archived                   bool                               `json:"archived" api:"required"`
-	Associations               []shared.BaseAssociationDefinition `json:"associations" api:"required"`
-	FullyQualifiedName         string                             `json:"fullyQualifiedName" api:"required"`
-	Labels                     shared.ObjectTypeDefinitionLabels  `json:"labels" api:"required"`
-	Name                       string                             `json:"name" api:"required"`
-	ObjectTypeID               string                             `json:"objectTypeId" api:"required"`
-	Properties                 []Property1                        `json:"properties" api:"required"`
-	RequiredProperties         []string                           `json:"requiredProperties" api:"required"`
-	SearchableProperties       []string                           `json:"searchableProperties" api:"required"`
-	SecondaryDisplayProperties []string                           `json:"secondaryDisplayProperties" api:"required"`
-	CreatedAt                  time.Time                          `json:"createdAt" format:"date-time"`
-	CreatedByUserID            int64                              `json:"createdByUserId"`
-	Description                string                             `json:"description"`
-	PrimaryDisplayProperty     string                             `json:"primaryDisplayProperty"`
-	UpdatedAt                  time.Time                          `json:"updatedAt" format:"date-time"`
-	UpdatedByUserID            int64                              `json:"updatedByUserId"`
+	ID                         string                            `json:"id" api:"required"`
+	AllowsSensitiveProperties  bool                              `json:"allowsSensitiveProperties" api:"required"`
+	Archived                   bool                              `json:"archived" api:"required"`
+	Associations               []shared.AssociationDefinition    `json:"associations" api:"required"`
+	FullyQualifiedName         string                            `json:"fullyQualifiedName" api:"required"`
+	Labels                     shared.ObjectTypeDefinitionLabels `json:"labels" api:"required"`
+	Name                       string                            `json:"name" api:"required"`
+	ObjectTypeID               string                            `json:"objectTypeId" api:"required"`
+	Properties                 []Property1                       `json:"properties" api:"required"`
+	RequiredProperties         []string                          `json:"requiredProperties" api:"required"`
+	SearchableProperties       []string                          `json:"searchableProperties" api:"required"`
+	SecondaryDisplayProperties []string                          `json:"secondaryDisplayProperties" api:"required"`
+	CreatedAt                  time.Time                         `json:"createdAt" format:"date-time"`
+	CreatedByUserID            int64                             `json:"createdByUserId"`
+	Description                string                            `json:"description"`
+	PrimaryDisplayProperty     string                            `json:"primaryDisplayProperty"`
+	UpdatedAt                  time.Time                         `json:"updatedAt" format:"date-time"`
+	UpdatedByUserID            int64                             `json:"updatedByUserId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                         respjson.Field
