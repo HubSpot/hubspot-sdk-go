@@ -8,9 +8,9 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
+	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 // OriginIPRangeService contains methods and other services that help with

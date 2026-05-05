@@ -2,8 +2,8 @@ package apijson_test
 
 import (
 	"encoding/json"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 	"testing"
 )
 

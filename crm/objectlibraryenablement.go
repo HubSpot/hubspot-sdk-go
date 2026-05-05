@@ -10,10 +10,10 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
+	"github.com/HubSpot/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 )
 
 // ObjectLibraryEnablementService contains methods and other services that help

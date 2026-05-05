@@ -3,9 +3,9 @@
 package settings
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apierror"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apierror"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
 // aliased to make [param.APIUnion] private when embedding

@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-<a href="https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/hubspot-sdk-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go"><img src="https://pkg.go.dev/badge/github.com/HubSpot/hubspot-sdk-go.svg" alt="Go Reference"></a>
 
 <!-- x-release-please-end -->
 
@@ -13,17 +13,25 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
+<!-- x-release-please-start-version -->
+
 ```go
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go" // imported as hubspotsdk
+	"github.com/HubSpot/hubspot-sdk-go" // imported as hubspotsdk
 )
 ```
 
+<!-- x-release-please-end -->
+
 Or to pin the version:
 
+<!-- x-release-please-start-version -->
+
 ```sh
-go get -u 'github.com/stainless-sdks/hubspot-sdk-go@v0.0.1'
+go get -u 'github.com/HubSpot/hubspot-sdk-go@v0.0.1'
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -40,9 +48,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/crm"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go"
+	"github.com/HubSpot/hubspot-sdk-go/crm"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 func main() {
@@ -273,7 +281,7 @@ client.Crm.Objects.Contacts.New(context.TODO(), ...,
 
 The request option `option.WithDebugLog(nil)` may be helpful while debugging.
 
-See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/hubspot-sdk-go/option).
+See the [full list of request options](https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/option).
 
 ### Pagination
 
@@ -586,7 +594,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/hubspot-sdk-go/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/HubSpot/hubspot-sdk-go/issues) with questions, bugs, or suggestions.
 
 ## Contributing
 

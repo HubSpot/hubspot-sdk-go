@@ -1,7 +1,7 @@
 package apijson
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 	"reflect"
 )
 

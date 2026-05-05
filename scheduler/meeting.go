@@ -6,11 +6,11 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	"github.com/HubSpot/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
 // MeetingService contains methods and other services that help with interacting
