@@ -6,9 +6,9 @@
 
 <!-- x-release-please-end -->
 
-The HubSpot Go library provides convenient access to the [HubSpot REST API](https://developers.hubspot.com/docs/api-reference/overview)
+The HubSpot Go library provides convenient access to HubSpot date-versioned [REST API](https://developers.hubspot.com/docs/api-reference/overview) (`2026-03` release) 
 from applications written in Go.
-
+ 
 It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
