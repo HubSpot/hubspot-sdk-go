@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/cms"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go"
+	"github.com/HubSpot/hubspot-sdk-go/cms"
+	"github.com/HubSpot/hubspot-sdk-go/internal/testutil"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 func TestPageLandingPageNew(t *testing.T) {

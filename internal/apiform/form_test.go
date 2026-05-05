@@ -2,7 +2,7 @@ package apiform
 
 import (
 	"bytes"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 	"io"
 	"mime/multipart"
 	"strings"

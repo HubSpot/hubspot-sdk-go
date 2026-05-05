@@ -11,9 +11,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/marketing"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go"
+	"github.com/HubSpot/hubspot-sdk-go/marketing"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 func TestMarketingEventSubscriberStateRecordByEmail(t *testing.T) {

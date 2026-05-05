@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/hubspot-sdk-go
+module github.com/HubSpot/hubspot-sdk-go
 
 go 1.22
 

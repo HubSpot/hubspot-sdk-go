@@ -3,7 +3,7 @@
 package auth
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 // AuthService contains methods and other services that help with interacting with

@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 )
 
 // aliased to make [param.APIUnion] private when embedding

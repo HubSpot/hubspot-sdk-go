@@ -3,8 +3,8 @@ package respjson_test
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	rj "github.com/stainless-sdks/hubspot-sdk-go/packages/respjson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	rj "github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 	"reflect"
 	"testing"
 )

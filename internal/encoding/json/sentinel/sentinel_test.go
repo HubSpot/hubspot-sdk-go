@@ -1,8 +1,8 @@
 package sentinel_test
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json/sentinel"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/internal/encoding/json/sentinel"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 	"reflect"
 	"slices"
 	"testing"

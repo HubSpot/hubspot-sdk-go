@@ -3,7 +3,7 @@
 package communication_preferences
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 // StatusService contains methods and other services that help with interacting

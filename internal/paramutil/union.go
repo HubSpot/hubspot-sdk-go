@@ -2,7 +2,7 @@ package paramutil
 
 import (
 	"fmt"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 	"reflect"
 )
 

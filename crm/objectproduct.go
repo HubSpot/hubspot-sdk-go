@@ -10,13 +10,13 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
-	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/pagination"
-	"github.com/stainless-sdks/hubspot-sdk-go/packages/param"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
+	shimjson "github.com/HubSpot/hubspot-sdk-go/internal/encoding/json"
+	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
+	"github.com/HubSpot/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/packages/pagination"
+	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 )
 
 // ObjectProductService contains methods and other services that help with

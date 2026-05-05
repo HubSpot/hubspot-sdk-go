@@ -18,10 +18,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apierror"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiform"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apiquery"
+	"github.com/HubSpot/hubspot-sdk-go/internal"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apierror"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiform"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {

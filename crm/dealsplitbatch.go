@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"slices"
 
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/apijson"
-	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/requestconfig"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
-	"github.com/stainless-sdks/hubspot-sdk-go/shared"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
+	shimjson "github.com/HubSpot/hubspot-sdk-go/internal/encoding/json"
+	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
+	"github.com/HubSpot/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
 // DealSplitBatchService contains methods and other services that help with

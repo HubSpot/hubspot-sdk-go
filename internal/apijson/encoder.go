@@ -13,7 +13,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
+	shimjson "github.com/HubSpot/hubspot-sdk-go/internal/encoding/json"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc

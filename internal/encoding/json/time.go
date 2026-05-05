@@ -2,7 +2,7 @@
 package json
 
 import (
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json/shims"
+	"github.com/HubSpot/hubspot-sdk-go/internal/encoding/json/shims"
 	"reflect"
 	"time"
 )

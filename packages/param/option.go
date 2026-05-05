@@ -3,7 +3,7 @@ package param
 import (
 	"encoding/json"
 	"fmt"
-	shimjson "github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json"
+	shimjson "github.com/HubSpot/hubspot-sdk-go/internal/encoding/json"
 	"time"
 )
 

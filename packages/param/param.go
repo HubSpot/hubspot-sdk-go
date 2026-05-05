@@ -2,7 +2,7 @@ package param
 
 import (
 	"encoding/json"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/encoding/json/sentinel"
+	"github.com/HubSpot/hubspot-sdk-go/internal/encoding/json/sentinel"
 	"reflect"
 )
 

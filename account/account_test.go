@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/hubspot-sdk-go"
-	"github.com/stainless-sdks/hubspot-sdk-go/internal/testutil"
-	"github.com/stainless-sdks/hubspot-sdk-go/option"
+	"github.com/HubSpot/hubspot-sdk-go"
+	"github.com/HubSpot/hubspot-sdk-go/internal/testutil"
+	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
 func TestAccountGet(t *testing.T) {
