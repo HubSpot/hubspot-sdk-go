@@ -125,10 +125,16 @@ type CampaignAssetListParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
-	After   param.Opt[string] `query:"after,omitzero" json:"-"`
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// End date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched. Example: 2024-01-27
 	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
 	// The maximum number of results to display per page.
-	Limit     param.Opt[string] `query:"limit,omitzero" json:"-"`
+	Limit param.Opt[string] `query:"limit,omitzero" json:"-"`
+	// Start date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched. Example: 2023-01-20
 	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
 	paramObj
 }
