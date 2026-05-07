@@ -45,7 +45,7 @@ func (r *PageMultiLanguageService) AttachToLangGroup(ctx context.Context, body P
 // will be a copy of the draft state of the source page. To preview the content,
 // you can
 // [retrieve the draft of the source website page](/api-reference/latest/cms/pages/website-pages/drafts/get-website-page-draft).
-func (r *PageMultiLanguageService) NewLanguageVariation(ctx context.Context, body PageMultiLanguageNewLanguageVariationParams, opts ...option.RequestOption) (res *PageData, err error) {
+func (r *PageMultiLanguageService) NewLanguageVariation(ctx context.Context, body PageMultiLanguageNewLanguageVariationParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/site-pages/multi-language/create-language-variation"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)

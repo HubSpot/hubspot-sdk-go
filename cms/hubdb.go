@@ -702,7 +702,7 @@ type ImportResult struct {
 	// Specifies number of duplicate rows
 	DuplicateRows int64 `json:"duplicateRows" api:"required"`
 	// List of errors during import
-	Errors []shared.BaseError `json:"errors" api:"required"`
+	Errors []shared.ErrorData `json:"errors" api:"required"`
 	// Specifies whether row limit exceeded during import
 	RowLimitExceeded bool `json:"rowLimitExceeded" api:"required"`
 	// Specifies number of rows imported

@@ -105,6 +105,8 @@ func (r *ExtensionCardsDevService) GetSampleResponse(ctx context.Context, opts .
 	return res, err
 }
 
+// Swaps a Legacy CRM Card with an App Card in views. Reference the "Migrate a
+// legacy CRM card to an app card" docs for more information
 func (r *ExtensionCardsDevService) MigrateViews(ctx context.Context, appID int64, body ExtensionCardsDevMigrateViewsParams, opts ...option.RequestOption) (res *CardMigrateViewsResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("crm/extensions/cards-dev/2026-03/%v/views/migrate", appID)
@@ -526,14 +528,26 @@ func (r *CardMigrateViewsRequestParam) UnmarshalJSON(data []byte) error {
 }
 
 type CardMigrateViewsResponse struct {
-	// A human readable message describing the error along with remediation steps where
-	// appropriate
+	// A human readable message describing the progress of the migration.
 	Message string `json:"message" api:"required"`
+	// The timestamp for when the migration ended.
+	EndedAt int64 `json:"endedAt"`
+	// The number of portals that remain to be swapped from the Legacy CRM Card to the
+	// App Card
+	RemainingPortalCount int64 `json:"remainingPortalCount"`
+	// The timestamp for when the migration started.
+	StartedAt int64 `json:"startedAt"`
+	// The total number of portals that have access to the Legacy CRM Card
+	TotalPortalCount int64 `json:"totalPortalCount"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		Message     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
+		Message              respjson.Field
+		EndedAt              respjson.Field
+		RemainingPortalCount respjson.Field
+		StartedAt            respjson.Field
+		TotalPortalCount     respjson.Field
+		ExtraFields          map[string]respjson.Field
+		raw                  string
 	} `json:"-"`
 }
 

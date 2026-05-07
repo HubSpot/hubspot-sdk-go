@@ -119,9 +119,20 @@ func (r *CampaignBatchDeleteParams) UnmarshalJSON(data []byte) error {
 
 type CampaignBatchGetParams struct {
 	BatchInputPublicCampaignReadInput BatchInputPublicCampaignReadInputParam
-	EndDate                           param.Opt[string] `query:"endDate,omitzero" json:"-"`
-	StartDate                         param.Opt[string] `query:"startDate,omitzero" json:"-"`
-	Properties                        []string          `query:"properties,omitzero" json:"-"`
+	// End date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched. Example: 2024-01-27
+	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	// Start date to fetch asset metrics, formatted as YYYY-MM-DD. This date is used to
+	// fetch the metrics associated with the assets for a specified period. If not
+	// provided, no asset metrics will be fetched. Example: 2023-01-20
+	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
+	// A comma-separated list of the properties to be returned in the response. If any
+	// of the specified properties has empty value on the requested object(s), they
+	// will be ignored and not returned in response. If this parameter is empty, the
+	// response will include an empty properties map. Example: hs_name,
+	// hs_campaign_status, hs_notes
+	Properties []string `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 
