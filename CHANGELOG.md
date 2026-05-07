@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2026-05-07)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* **api:** manual updates ([8c16968](https://github.com/HubSpot/hubspot-sdk-go/commit/8c16968fc9c2a6093c6d3b094f1e5ddc4db1e768))
+
 ## 0.1.0-alpha.1 (2026-05-06)
 
 ### Features
