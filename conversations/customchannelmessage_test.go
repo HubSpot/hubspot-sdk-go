@@ -64,13 +64,7 @@ func TestCustomChannelMessageNewWithOptionalParams(t *testing.T) {
 				InReplyToID:              hubspotsdk.String("inReplyToId"),
 				IntegrationIdempotencyID: hubspotsdk.String("integrationIdempotencyId"),
 				IntegrationThreadID:      hubspotsdk.String("integrationThreadId"),
-				PreResolvedContacts: conversations.PreResolvedContactsParam{
-					Contacts: []conversations.PreResolvedContactParam{{
-						ContactPropertiesLeadingToMatch: []string{"address"},
-						ContactVid:                      0,
-					}},
-				},
-				RichText: hubspotsdk.String("richText"),
+				RichText:                 hubspotsdk.String("richText"),
 			},
 		},
 	)

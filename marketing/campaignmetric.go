@@ -93,7 +93,11 @@ func (r *CampaignMetricService) ListContactIDsByTypeAutoPaging(ctx context.Conte
 }
 
 type CampaignMetricGetAttributionMetricsParams struct {
-	EndDate   param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	// The end date for fetching attribution data, in YYYY-MM-DD format. Optional.
+	// Example: 2000-01-27
+	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	// The start date for fetching attribution data, in YYYY-MM-DD format. Optional.
+	// Example: 2000-01-20
 	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
 	paramObj
 }
@@ -108,6 +112,10 @@ func (r CampaignMetricGetAttributionMetricsParams) URLQuery() (v url.Values, err
 }
 
 type CampaignMetricGetRevenueAttributionParams struct {
+	// The revenue attribution model used to calculate deal revenue credit. Defaults to
+	// LINEAR if not specified. Enum values: LINEAR, FIRST_INTERACTION,
+	// LAST_INTERACTION, FULL_PATH, U_SHAPED, W_SHAPED, TIME_DECAY, J_SHAPED,
+	// INVERSE_J_SHAPED
 	AttributionModel param.Opt[string] `query:"attributionModel,omitzero" json:"-"`
 	// End date to fetch attribution data, YYYY-MM-DD
 	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
@@ -130,10 +138,14 @@ type CampaignMetricListContactIDsByTypeParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
-	After   param.Opt[string] `query:"after,omitzero" json:"-"`
+	After param.Opt[string] `query:"after,omitzero" json:"-"`
+	// The end date for fetching contact data, in YYYY-MM-DD format.
+	// Optional. Example: 2000-01-27
 	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
 	// The maximum number of results to display per page.
-	Limit     param.Opt[int64]  `query:"limit,omitzero" json:"-"`
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// The start date for fetching contact data, in YYYY-MM-DD format.
+	// Optional. Example: 2000-01-20
 	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
 	paramObj
 }

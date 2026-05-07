@@ -303,13 +303,14 @@ func (u *CallbackCompletionRequestRequestContextUnionParam) UnmarshalJSON(data [
 	return apijson.UnmarshalRoot(data, u)
 }
 
-// The properties ApplicationGroup, ApplicationID, Metadata, OtelContextHolder,
-// UnstructuredSources are required.
+// The properties ApplicationGroup, ApplicationID, IsPrivate, Metadata,
+// OtelContextHolder, UnstructuredSources are required.
 type ChirpAIContextObjectParam struct {
 	// The group to which the application belongs.
 	ApplicationGroup string `json:"applicationGroup" api:"required"`
 	// The identifier for the application associated with the context.
 	ApplicationID string `json:"applicationId" api:"required"`
+	IsPrivate     bool   `json:"isPrivate" api:"required"`
 	// Additional metadata related to the context, represented as key-value pairs.
 	Metadata map[string]string `json:"metadata,omitzero" api:"required"`
 	// Holds OpenTelemetry context information as key-value pairs.

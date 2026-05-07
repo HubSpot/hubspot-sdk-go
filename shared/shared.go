@@ -78,6 +78,40 @@ const (
 	ActionResponseStatusProcessing ActionResponseStatus = "PROCESSING"
 )
 
+// The definition of an association
+type AssociationDefinition struct {
+	// The unique ID of the associated object (e.g., a contact ID).
+	ID string `json:"id" api:"required"`
+	// The ID of the source object type (e.g., 0-1 for contacts).
+	FromObjectTypeID string `json:"fromObjectTypeId" api:"required"`
+	// The ID of the destination object type (e.g., 0-3 for deals).
+	ToObjectTypeID string `json:"toObjectTypeId" api:"required"`
+	// The timestamp when the association was created, in ISO 8601 format.
+	CreatedAt time.Time `json:"createdAt" format:"date-time"`
+	// For labeled association types, the internal name of the association.
+	Name string `json:"name"`
+	// The timestamp when the last update was made to an association, in ISO 8601
+	// format.
+	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID               respjson.Field
+		FromObjectTypeID respjson.Field
+		ToObjectTypeID   respjson.Field
+		CreatedAt        respjson.Field
+		Name             respjson.Field
+		UpdatedAt        respjson.Field
+		ExtraFields      map[string]respjson.Field
+		raw              string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AssociationDefinition) RawJSON() string { return r.JSON.raw }
+func (r *AssociationDefinition) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 // The properties FromObjectTypeID, ToObjectTypeID are required.
 type AssociationDefinitionEggParam struct {
 	FromObjectTypeID string            `json:"fromObjectTypeId" api:"required"`
@@ -234,313 +268,6 @@ func (r *AutomationActionsOptionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The definition of an association
-type BaseAssociationDefinition struct {
-	// The unique ID of the associated object (e.g., a contact ID).
-	ID string `json:"id" api:"required"`
-	// The ID of the source object type (e.g., 0-1 for contacts).
-	FromObjectTypeID string `json:"fromObjectTypeId" api:"required"`
-	// The ID of the destination object type (e.g., 0-3 for deals).
-	ToObjectTypeID string `json:"toObjectTypeId" api:"required"`
-	// The timestamp when the association was created, in ISO 8601 format.
-	CreatedAt time.Time `json:"createdAt" format:"date-time"`
-	// For labeled association types, the internal name of the association.
-	Name string `json:"name"`
-	// The timestamp when the last update was made to an association, in ISO 8601
-	// format.
-	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID               respjson.Field
-		FromObjectTypeID respjson.Field
-		ToObjectTypeID   respjson.Field
-		CreatedAt        respjson.Field
-		Name             respjson.Field
-		UpdatedAt        respjson.Field
-		ExtraFields      map[string]respjson.Field
-		raw              string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BaseAssociationDefinition) RawJSON() string { return r.JSON.raw }
-func (r *BaseAssociationDefinition) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BaseError struct {
-	// The error category
-	Category string `json:"category" api:"required"`
-	// A unique identifier for the request. Include this value with any error reports
-	// or support tickets
-	CorrelationID string `json:"correlationId" api:"required" format:"uuid"`
-	// A human readable message describing the error along with remediation steps where
-	// appropriate
-	Message string `json:"message" api:"required"`
-	// Context about the error condition
-	Context map[string][]string `json:"context"`
-	// further information about the error
-	Errors []ErrorDetail `json:"errors"`
-	// A map of link names to associated URIs containing documentation about the error
-	// or recommended remediation steps
-	Links map[string]string `json:"links"`
-	// A specific category that contains more specific detail about the error
-	SubCategory string `json:"subCategory"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Category      respjson.Field
-		CorrelationID respjson.Field
-		Message       respjson.Field
-		Context       respjson.Field
-		Errors        respjson.Field
-		Links         respjson.Field
-		SubCategory   respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BaseError) RawJSON() string { return r.JSON.raw }
-func (r *BaseError) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type BaseObjectTypeDefinition struct {
-	ID                         string                     `json:"id" api:"required"`
-	AllowsSensitiveProperties  bool                       `json:"allowsSensitiveProperties" api:"required"`
-	Archived                   bool                       `json:"archived" api:"required"`
-	FullyQualifiedName         string                     `json:"fullyQualifiedName" api:"required"`
-	Labels                     ObjectTypeDefinitionLabels `json:"labels" api:"required"`
-	Name                       string                     `json:"name" api:"required"`
-	ObjectTypeID               string                     `json:"objectTypeId" api:"required"`
-	RequiredProperties         []string                   `json:"requiredProperties" api:"required"`
-	SearchableProperties       []string                   `json:"searchableProperties" api:"required"`
-	SecondaryDisplayProperties []string                   `json:"secondaryDisplayProperties" api:"required"`
-	CreatedAt                  time.Time                  `json:"createdAt" format:"date-time"`
-	Description                string                     `json:"description"`
-	PortalID                   int64                      `json:"portalId"`
-	PrimaryDisplayProperty     string                     `json:"primaryDisplayProperty"`
-	UpdatedAt                  time.Time                  `json:"updatedAt" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                         respjson.Field
-		AllowsSensitiveProperties  respjson.Field
-		Archived                   respjson.Field
-		FullyQualifiedName         respjson.Field
-		Labels                     respjson.Field
-		Name                       respjson.Field
-		ObjectTypeID               respjson.Field
-		RequiredProperties         respjson.Field
-		SearchableProperties       respjson.Field
-		SecondaryDisplayProperties respjson.Field
-		CreatedAt                  respjson.Field
-		Description                respjson.Field
-		PortalID                   respjson.Field
-		PrimaryDisplayProperty     respjson.Field
-		UpdatedAt                  respjson.Field
-		ExtraFields                map[string]respjson.Field
-		raw                        string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BaseObjectTypeDefinition) RawJSON() string { return r.JSON.raw }
-func (r *BaseObjectTypeDefinition) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// A HubSpot property option
-type BaseOption struct {
-	// Hidden options will not be displayed in HubSpot.
-	Hidden bool `json:"hidden" api:"required"`
-	// A human-readable option label that will be shown in HubSpot.
-	Label string `json:"label" api:"required"`
-	// The internal value of the option, which must be used when setting the property
-	// value through the API.
-	Value string `json:"value" api:"required"`
-	// A description of the option.
-	Description string `json:"description"`
-	// Options are displayed in order starting with the lowest positive integer value.
-	// Values of -1 will cause the option to be displayed after any positive values.
-	DisplayOrder int64 `json:"displayOrder"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Hidden       respjson.Field
-		Label        respjson.Field
-		Value        respjson.Field
-		Description  respjson.Field
-		DisplayOrder respjson.Field
-		ExtraFields  map[string]respjson.Field
-		raw          string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BaseOption) RawJSON() string { return r.JSON.raw }
-func (r *BaseOption) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// A HubSpot property
-type BaseProperty struct {
-	// A description of the property that will be shown as help text in HubSpot.
-	Description string `json:"description" api:"required"`
-	// Controls how the property appears in HubSpot.
-	FieldType string `json:"fieldType" api:"required"`
-	// The name of the property group the property belongs to.
-	GroupName string `json:"groupName" api:"required"`
-	// A human-readable property label that will be shown in HubSpot.
-	Label string `json:"label" api:"required"`
-	// The internal property name, which must be used when referencing the property via
-	// the API.
-	Name string `json:"name" api:"required"`
-	// A list of valid options for the property. This field is required for enumerated
-	// properties, but will be empty for other property types.
-	Options []BaseOption `json:"options" api:"required"`
-	// The property data type.
-	Type string `json:"type" api:"required"`
-	// Whether or not the property is archived.
-	Archived bool `json:"archived"`
-	// When the property was archived.
-	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
-	// For default properties, true indicates that the property is calculated by a
-	// HubSpot process. It has no effect for custom properties.
-	Calculated bool `json:"calculated"`
-	// The formula used for calculated properties.
-	CalculationFormula string `json:"calculationFormula"`
-	// When the property was created
-	CreatedAt time.Time `json:"createdAt" format:"date-time"`
-	// The internal ID of the user who created the property in HubSpot. This field may
-	// not exist if the property was created outside of HubSpot.
-	CreatedUserID string `json:"createdUserId"`
-	// The name of the related currency property.
-	CurrencyPropertyName string `json:"currencyPropertyName"`
-	// Indicates the sensitivity level of the property, such as "non_sensitive",
-	// "sensitive", or "highly_sensitive".
-	//
-	// Any of "highly_sensitive", "non_sensitive", "sensitive".
-	DataSensitivity BasePropertyDataSensitivity `json:"dataSensitivity"`
-	// Controls how date properties are displayed in the HubSpot UI, with options such
-	// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
-	//
-	// Any of "absolute", "absolute_with_relative", "time_since", "time_until".
-	DateDisplayHint BasePropertyDateDisplayHint `json:"dateDisplayHint"`
-	// The order that this property should be displayed in the HubSpot UI relative to
-	// other properties for this object type. Properties are displayed in order
-	// starting with the lowest positive integer value. A value of -1 will cause the
-	// property to be displayed **after** any positive values.
-	DisplayOrder int64 `json:"displayOrder"`
-	// For default properties, true indicates that the options are stored externally to
-	// the property settings.
-	ExternalOptions bool `json:"externalOptions"`
-	// Whether or not the property can be used in a HubSpot form.
-	FormField bool `json:"formField"`
-	// Whether or not the property's value must be unique. Once set, this can't be
-	// changed.
-	HasUniqueValue bool `json:"hasUniqueValue"`
-	// Hidden options won't be shown in HubSpot.
-	Hidden bool `json:"hidden"`
-	// This will be true for default object properties built into HubSpot.
-	HubSpotDefined       bool                         `json:"hubspotDefined"`
-	ModificationMetadata PropertyModificationMetadata `json:"modificationMetadata"`
-	// Hint for how a number property is displayed and validated in HubSpot's UI. Can
-	// be: "unformatted", "formatted", "currency", "percentage", "duration", or
-	// "probability".
-	//
-	// Any of "currency", "duration", "formatted", "percentage", "probability",
-	// "unformatted".
-	NumberDisplayHint BasePropertyNumberDisplayHint `json:"numberDisplayHint"`
-	// If this property is related to other object(s), they'll be listed here.
-	ReferencedObjectType string `json:"referencedObjectType"`
-	// When sensitiveData is true, lists the type of sensitive data contained in the
-	// property (e.g., "HIPAA").
-	SensitiveDataCategories []string `json:"sensitiveDataCategories"`
-	// Whether the property will display the currency symbol set in the account
-	// settings.
-	ShowCurrencySymbol bool `json:"showCurrencySymbol"`
-	// When the object type was last updated.
-	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
-	// The internal user ID of the user who updated the property in HubSpot. This field
-	// may not exist if the property was updated outside of HubSpot.
-	UpdatedUserID string `json:"updatedUserId"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Description             respjson.Field
-		FieldType               respjson.Field
-		GroupName               respjson.Field
-		Label                   respjson.Field
-		Name                    respjson.Field
-		Options                 respjson.Field
-		Type                    respjson.Field
-		Archived                respjson.Field
-		ArchivedAt              respjson.Field
-		Calculated              respjson.Field
-		CalculationFormula      respjson.Field
-		CreatedAt               respjson.Field
-		CreatedUserID           respjson.Field
-		CurrencyPropertyName    respjson.Field
-		DataSensitivity         respjson.Field
-		DateDisplayHint         respjson.Field
-		DisplayOrder            respjson.Field
-		ExternalOptions         respjson.Field
-		FormField               respjson.Field
-		HasUniqueValue          respjson.Field
-		Hidden                  respjson.Field
-		HubSpotDefined          respjson.Field
-		ModificationMetadata    respjson.Field
-		NumberDisplayHint       respjson.Field
-		ReferencedObjectType    respjson.Field
-		SensitiveDataCategories respjson.Field
-		ShowCurrencySymbol      respjson.Field
-		UpdatedAt               respjson.Field
-		UpdatedUserID           respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BaseProperty) RawJSON() string { return r.JSON.raw }
-func (r *BaseProperty) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Indicates the sensitivity level of the property, such as "non_sensitive",
-// "sensitive", or "highly_sensitive".
-type BasePropertyDataSensitivity string
-
-const (
-	BasePropertyDataSensitivityHighlySensitive BasePropertyDataSensitivity = "highly_sensitive"
-	BasePropertyDataSensitivityNonSensitive    BasePropertyDataSensitivity = "non_sensitive"
-	BasePropertyDataSensitivitySensitive       BasePropertyDataSensitivity = "sensitive"
-)
-
-// Controls how date properties are displayed in the HubSpot UI, with options such
-// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
-type BasePropertyDateDisplayHint string
-
-const (
-	BasePropertyDateDisplayHintAbsolute             BasePropertyDateDisplayHint = "absolute"
-	BasePropertyDateDisplayHintAbsoluteWithRelative BasePropertyDateDisplayHint = "absolute_with_relative"
-	BasePropertyDateDisplayHintTimeSince            BasePropertyDateDisplayHint = "time_since"
-	BasePropertyDateDisplayHintTimeUntil            BasePropertyDateDisplayHint = "time_until"
-)
-
-// Hint for how a number property is displayed and validated in HubSpot's UI. Can
-// be: "unformatted", "formatted", "currency", "percentage", "duration", or
-// "probability".
-type BasePropertyNumberDisplayHint string
-
-const (
-	BasePropertyNumberDisplayHintCurrency    BasePropertyNumberDisplayHint = "currency"
-	BasePropertyNumberDisplayHintDuration    BasePropertyNumberDisplayHint = "duration"
-	BasePropertyNumberDisplayHintFormatted   BasePropertyNumberDisplayHint = "formatted"
-	BasePropertyNumberDisplayHintPercentage  BasePropertyNumberDisplayHint = "percentage"
-	BasePropertyNumberDisplayHintProbability BasePropertyNumberDisplayHint = "probability"
-	BasePropertyNumberDisplayHintUnformatted BasePropertyNumberDisplayHint = "unformatted"
-)
-
 // The property Inputs is required.
 type BatchInputPropertyCreateParam struct {
 	Inputs []PropertyCreateParam `json:"inputs,omitzero" api:"required"`
@@ -640,6 +367,44 @@ func (r *CollectionResponsePropertyGroupNoPaging) UnmarshalJSON(data []byte) err
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type ErrorData struct {
+	// The error category
+	Category string `json:"category" api:"required"`
+	// A unique identifier for the request. Include this value with any error reports
+	// or support tickets
+	CorrelationID string `json:"correlationId" api:"required" format:"uuid"`
+	// A human readable message describing the error along with remediation steps where
+	// appropriate
+	Message string `json:"message" api:"required"`
+	// Context about the error condition
+	Context map[string][]string `json:"context"`
+	// further information about the error
+	Errors []ErrorDetail `json:"errors"`
+	// A map of link names to associated URIs containing documentation about the error
+	// or recommended remediation steps
+	Links map[string]string `json:"links"`
+	// A specific category that contains more specific detail about the error
+	SubCategory string `json:"subCategory"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Category      respjson.Field
+		CorrelationID respjson.Field
+		Message       respjson.Field
+		Context       respjson.Field
+		Errors        respjson.Field
+		Links         respjson.Field
+		SubCategory   respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ErrorData) RawJSON() string { return r.JSON.raw }
+func (r *ErrorData) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type ErrorDetail struct {
 	// A human readable message describing the error along with remediation steps where
 	// appropriate
@@ -710,6 +475,50 @@ func (r *NextPage) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type ObjectTypeDefinition struct {
+	ID                         string                     `json:"id" api:"required"`
+	AllowsSensitiveProperties  bool                       `json:"allowsSensitiveProperties" api:"required"`
+	Archived                   bool                       `json:"archived" api:"required"`
+	FullyQualifiedName         string                     `json:"fullyQualifiedName" api:"required"`
+	Labels                     ObjectTypeDefinitionLabels `json:"labels" api:"required"`
+	Name                       string                     `json:"name" api:"required"`
+	ObjectTypeID               string                     `json:"objectTypeId" api:"required"`
+	RequiredProperties         []string                   `json:"requiredProperties" api:"required"`
+	SearchableProperties       []string                   `json:"searchableProperties" api:"required"`
+	SecondaryDisplayProperties []string                   `json:"secondaryDisplayProperties" api:"required"`
+	CreatedAt                  time.Time                  `json:"createdAt" format:"date-time"`
+	Description                string                     `json:"description"`
+	PortalID                   int64                      `json:"portalId"`
+	PrimaryDisplayProperty     string                     `json:"primaryDisplayProperty"`
+	UpdatedAt                  time.Time                  `json:"updatedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID                         respjson.Field
+		AllowsSensitiveProperties  respjson.Field
+		Archived                   respjson.Field
+		FullyQualifiedName         respjson.Field
+		Labels                     respjson.Field
+		Name                       respjson.Field
+		ObjectTypeID               respjson.Field
+		RequiredProperties         respjson.Field
+		SearchableProperties       respjson.Field
+		SecondaryDisplayProperties respjson.Field
+		CreatedAt                  respjson.Field
+		Description                respjson.Field
+		PortalID                   respjson.Field
+		PrimaryDisplayProperty     respjson.Field
+		UpdatedAt                  respjson.Field
+		ExtraFields                map[string]respjson.Field
+		raw                        string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ObjectTypeDefinition) RawJSON() string { return r.JSON.raw }
+func (r *ObjectTypeDefinition) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type ObjectTypeDefinitionLabels struct {
 	Plural   string `json:"plural"`
 	Singular string `json:"singular"`
@@ -771,6 +580,38 @@ func (r ObjectTypeDefinitionPatchParam) MarshalJSON() (data []byte, err error) {
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *ObjectTypeDefinitionPatchParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// A HubSpot property option
+type Option struct {
+	// Hidden options will not be displayed in HubSpot.
+	Hidden bool `json:"hidden" api:"required"`
+	// A human-readable option label that will be shown in HubSpot.
+	Label string `json:"label" api:"required"`
+	// The internal value of the option, which must be used when setting the property
+	// value through the API.
+	Value string `json:"value" api:"required"`
+	// A description of the option.
+	Description string `json:"description"`
+	// Options are displayed in order starting with the lowest positive integer value.
+	// Values of -1 will cause the option to be displayed after any positive values.
+	DisplayOrder int64 `json:"displayOrder"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Hidden       respjson.Field
+		Label        respjson.Field
+		Value        respjson.Field
+		Description  respjson.Field
+		DisplayOrder respjson.Field
+		ExtraFields  map[string]respjson.Field
+		raw          string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r Option) RawJSON() string { return r.JSON.raw }
+func (r *Option) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -836,6 +677,165 @@ func (r PreviousPage) RawJSON() string { return r.JSON.raw }
 func (r *PreviousPage) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// A HubSpot property
+type Property struct {
+	// A description of the property that will be shown as help text in HubSpot.
+	Description string `json:"description" api:"required"`
+	// Controls how the property appears in HubSpot.
+	FieldType string `json:"fieldType" api:"required"`
+	// The name of the property group the property belongs to.
+	GroupName string `json:"groupName" api:"required"`
+	// A human-readable property label that will be shown in HubSpot.
+	Label string `json:"label" api:"required"`
+	// The internal property name, which must be used when referencing the property via
+	// the API.
+	Name string `json:"name" api:"required"`
+	// A list of valid options for the property. This field is required for enumerated
+	// properties, but will be empty for other property types.
+	Options []Option `json:"options" api:"required"`
+	// The property data type.
+	Type string `json:"type" api:"required"`
+	// Whether or not the property is archived.
+	Archived bool `json:"archived"`
+	// When the property was archived.
+	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
+	// For default properties, true indicates that the property is calculated by a
+	// HubSpot process. It has no effect for custom properties.
+	Calculated bool `json:"calculated"`
+	// The formula used for calculated properties.
+	CalculationFormula string `json:"calculationFormula"`
+	// When the property was created
+	CreatedAt time.Time `json:"createdAt" format:"date-time"`
+	// The internal ID of the user who created the property in HubSpot. This field may
+	// not exist if the property was created outside of HubSpot.
+	CreatedUserID string `json:"createdUserId"`
+	// The name of the related currency property.
+	CurrencyPropertyName string `json:"currencyPropertyName"`
+	// Indicates the sensitivity level of the property, such as "non_sensitive",
+	// "sensitive", or "highly_sensitive".
+	//
+	// Any of "highly_sensitive", "non_sensitive", "sensitive".
+	DataSensitivity PropertyDataSensitivity `json:"dataSensitivity"`
+	// Controls how date properties are displayed in the HubSpot UI, with options such
+	// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
+	//
+	// Any of "absolute", "absolute_with_relative", "time_since", "time_until".
+	DateDisplayHint PropertyDateDisplayHint `json:"dateDisplayHint"`
+	// The order that this property should be displayed in the HubSpot UI relative to
+	// other properties for this object type. Properties are displayed in order
+	// starting with the lowest positive integer value. A value of -1 will cause the
+	// property to be displayed **after** any positive values.
+	DisplayOrder int64 `json:"displayOrder"`
+	// For default properties, true indicates that the options are stored externally to
+	// the property settings.
+	ExternalOptions bool `json:"externalOptions"`
+	// Whether or not the property can be used in a HubSpot form.
+	FormField bool `json:"formField"`
+	// Whether or not the property's value must be unique. Once set, this can't be
+	// changed.
+	HasUniqueValue bool `json:"hasUniqueValue"`
+	// Hidden options won't be shown in HubSpot.
+	Hidden bool `json:"hidden"`
+	// This will be true for default object properties built into HubSpot.
+	HubSpotDefined       bool                         `json:"hubspotDefined"`
+	ModificationMetadata PropertyModificationMetadata `json:"modificationMetadata"`
+	// Hint for how a number property is displayed and validated in HubSpot's UI. Can
+	// be: "unformatted", "formatted", "currency", "percentage", "duration", or
+	// "probability".
+	//
+	// Any of "currency", "duration", "formatted", "percentage", "probability",
+	// "unformatted".
+	NumberDisplayHint PropertyNumberDisplayHint `json:"numberDisplayHint"`
+	// If this property is related to other object(s), they'll be listed here.
+	ReferencedObjectType string `json:"referencedObjectType"`
+	// When sensitiveData is true, lists the type of sensitive data contained in the
+	// property (e.g., "HIPAA").
+	SensitiveDataCategories []string `json:"sensitiveDataCategories"`
+	// Whether the property will display the currency symbol set in the account
+	// settings.
+	ShowCurrencySymbol bool `json:"showCurrencySymbol"`
+	// When the object type was last updated.
+	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
+	// The internal user ID of the user who updated the property in HubSpot. This field
+	// may not exist if the property was updated outside of HubSpot.
+	UpdatedUserID string `json:"updatedUserId"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Description             respjson.Field
+		FieldType               respjson.Field
+		GroupName               respjson.Field
+		Label                   respjson.Field
+		Name                    respjson.Field
+		Options                 respjson.Field
+		Type                    respjson.Field
+		Archived                respjson.Field
+		ArchivedAt              respjson.Field
+		Calculated              respjson.Field
+		CalculationFormula      respjson.Field
+		CreatedAt               respjson.Field
+		CreatedUserID           respjson.Field
+		CurrencyPropertyName    respjson.Field
+		DataSensitivity         respjson.Field
+		DateDisplayHint         respjson.Field
+		DisplayOrder            respjson.Field
+		ExternalOptions         respjson.Field
+		FormField               respjson.Field
+		HasUniqueValue          respjson.Field
+		Hidden                  respjson.Field
+		HubSpotDefined          respjson.Field
+		ModificationMetadata    respjson.Field
+		NumberDisplayHint       respjson.Field
+		ReferencedObjectType    respjson.Field
+		SensitiveDataCategories respjson.Field
+		ShowCurrencySymbol      respjson.Field
+		UpdatedAt               respjson.Field
+		UpdatedUserID           respjson.Field
+		ExtraFields             map[string]respjson.Field
+		raw                     string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r Property) RawJSON() string { return r.JSON.raw }
+func (r *Property) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// Indicates the sensitivity level of the property, such as "non_sensitive",
+// "sensitive", or "highly_sensitive".
+type PropertyDataSensitivity string
+
+const (
+	PropertyDataSensitivityHighlySensitive PropertyDataSensitivity = "highly_sensitive"
+	PropertyDataSensitivityNonSensitive    PropertyDataSensitivity = "non_sensitive"
+	PropertyDataSensitivitySensitive       PropertyDataSensitivity = "sensitive"
+)
+
+// Controls how date properties are displayed in the HubSpot UI, with options such
+// as 'absolute', 'absolute_with_relative', 'time_since', and 'time_until'.
+type PropertyDateDisplayHint string
+
+const (
+	PropertyDateDisplayHintAbsolute             PropertyDateDisplayHint = "absolute"
+	PropertyDateDisplayHintAbsoluteWithRelative PropertyDateDisplayHint = "absolute_with_relative"
+	PropertyDateDisplayHintTimeSince            PropertyDateDisplayHint = "time_since"
+	PropertyDateDisplayHintTimeUntil            PropertyDateDisplayHint = "time_until"
+)
+
+// Hint for how a number property is displayed and validated in HubSpot's UI. Can
+// be: "unformatted", "formatted", "currency", "percentage", "duration", or
+// "probability".
+type PropertyNumberDisplayHint string
+
+const (
+	PropertyNumberDisplayHintCurrency    PropertyNumberDisplayHint = "currency"
+	PropertyNumberDisplayHintDuration    PropertyNumberDisplayHint = "duration"
+	PropertyNumberDisplayHintFormatted   PropertyNumberDisplayHint = "formatted"
+	PropertyNumberDisplayHintPercentage  PropertyNumberDisplayHint = "percentage"
+	PropertyNumberDisplayHintProbability PropertyNumberDisplayHint = "probability"
+	PropertyNumberDisplayHintUnformatted PropertyNumberDisplayHint = "unformatted"
+)
 
 // The properties FieldType, GroupName, Label, Name, Type are required.
 type PropertyCreateParam struct {

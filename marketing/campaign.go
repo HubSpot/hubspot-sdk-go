@@ -1205,10 +1205,16 @@ type CampaignListParams struct {
 	// results.
 	After param.Opt[string] `query:"after,omitzero" json:"-"`
 	// The maximum number of results to display per page.
-	Limit      param.Opt[int64]  `query:"limit,omitzero" json:"-"`
-	Name       param.Opt[string] `query:"name,omitzero" json:"-"`
-	Sort       param.Opt[string] `query:"sort,omitzero" json:"-"`
-	Properties []string          `query:"properties,omitzero" json:"-"`
+	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
+	// Filter campaigns by name. Optional.
+	Name param.Opt[string] `query:"name,omitzero" json:"-"`
+	// The property to sort results by. Optional.
+	Sort param.Opt[string] `query:"sort,omitzero" json:"-"`
+	// A comma-separated list of properties to include in the response.
+	//
+	//	Unrecognized properties are ignored. Optional. Example:
+	//	hs_name, hs_budget,hs_notes
+	Properties []string `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1221,9 +1227,16 @@ func (r CampaignListParams) URLQuery() (v url.Values, err error) {
 }
 
 type CampaignGetParams struct {
-	EndDate    param.Opt[string] `query:"endDate,omitzero" json:"-"`
-	StartDate  param.Opt[string] `query:"startDate,omitzero" json:"-"`
-	Properties []string          `query:"properties,omitzero" json:"-"`
+	// The end date for fetching asset metrics, in YYYY-MM-DD format. Optional.
+	// Example: 2000-01-27
+	EndDate param.Opt[string] `query:"endDate,omitzero" json:"-"`
+	// The start date for fetching asset metrics, in YYYY-MM-DD format.
+	// Optional. Example: 2000-01-20
+	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
+	// A comma-separated list of properties to include in the response.
+	//
+	//	Unrecognized properties are ignored. Optional. Example: hs_name,hs_budget, hs_notes
+	Properties []string `query:"properties,omitzero" json:"-"`
 	paramObj
 }
 
