@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2026-05-14)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **client:** optimize json encoder for internal types ([3f4f4f1](https://github.com/HubSpot/hubspot-sdk-go/commit/3f4f4f113cd0950beec2df3156bdd1ac0772ad2f))
+
+
+### Bug Fixes
+
+* **go:** avoid panic when http.DefaultTransport is wrapped ([56d4ce1](https://github.com/HubSpot/hubspot-sdk-go/commit/56d4ce18b0212b1ff14ab5330ab3398ee4d50a0a))
+
+
+### Chores
+
+* redact api-key headers in debug logs ([14847b4](https://github.com/HubSpot/hubspot-sdk-go/commit/14847b43b20668ac21eaf1d00a804cb20c64ca14))
+
 ## 0.1.0-alpha.2 (2026-05-07)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
