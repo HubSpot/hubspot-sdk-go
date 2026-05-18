@@ -21244,8 +21244,8 @@ type ListGetRecordMembershipsParams struct {
 }
 
 type ListGetSizeAndEditsHistoryBetweenParams struct {
-	EndDate   param.Opt[string] `query:"endDate,omitzero" json:"-"`
-	StartDate param.Opt[string] `query:"startDate,omitzero" json:"-"`
+	EndDate   param.Opt[time.Time] `query:"endDate,omitzero" format:"date-time" json:"-"`
+	StartDate param.Opt[time.Time] `query:"startDate,omitzero" format:"date-time" json:"-"`
 	paramObj
 }
 

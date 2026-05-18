@@ -1211,6 +1211,7 @@ type BlogAuthorCloneRequestVNextParam struct {
 	Language param.Opt[string] `json:"language,omitzero"`
 	// Primary language in multi-language group.
 	PrimaryLanguage param.Opt[string] `json:"primaryLanguage,omitzero"`
+	UsePublished    param.Opt[bool]   `json:"usePublished,omitzero"`
 	paramObj
 }
 

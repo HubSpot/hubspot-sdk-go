@@ -1443,7 +1443,8 @@ type BlogPostLanguageCloneRequestVNextParam struct {
 	// ID of blog post to clone.
 	ID string `json:"id" api:"required"`
 	// Target language of new variant.
-	Language param.Opt[string] `json:"language,omitzero"`
+	Language     param.Opt[string] `json:"language,omitzero"`
+	UsePublished param.Opt[bool]   `json:"usePublished,omitzero"`
 	paramObj
 }
 

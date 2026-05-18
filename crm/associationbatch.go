@@ -35,26 +35,19 @@ func NewAssociationBatchService(opts ...option.RequestOption) (r AssociationBatc
 	return
 }
 
-func (r *AssociationBatchService) New(ctx context.Context, toObjectID string, body AssociationBatchNewParams, opts ...option.RequestOption) (res *BatchResponsePublicDefaultAssociation, err error) {
+// Batch create associations for objects
+func (r *AssociationBatchService) New(ctx context.Context, toObjectType string, params AssociationBatchNewParams, opts ...option.RequestOption) (res *BatchResponseLabelsBetweenObjectPair, err error) {
 	opts = slices.Concat(r.options, opts)
-	if body.FromObjectType == "" {
+	if params.FromObjectType == "" {
 		err = errors.New("missing required fromObjectType parameter")
 		return nil, err
 	}
-	if body.FromObjectID == "" {
-		err = errors.New("missing required fromObjectId parameter")
-		return nil, err
-	}
-	if body.ToObjectType == "" {
+	if toObjectType == "" {
 		err = errors.New("missing required toObjectType parameter")
 		return nil, err
 	}
-	if toObjectID == "" {
-		err = errors.New("missing required toObjectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("crm/objects/2026-03/%s/%s/associations/default/%s/%s", url.PathEscape(body.FromObjectType), url.PathEscape(body.FromObjectID), url.PathEscape(body.ToObjectType), url.PathEscape(toObjectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, &res, opts...)
+	path := fmt.Sprintf("crm/associations/2026-03/%s/%s/batch/create", url.PathEscape(params.FromObjectType), url.PathEscape(toObjectType))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
 }
 
@@ -130,10 +123,16 @@ func (r *AssociationBatchService) Get(ctx context.Context, toObjectType string, 
 }
 
 type AssociationBatchNewParams struct {
-	FromObjectType string `path:"fromObjectType" api:"required" json:"-"`
-	FromObjectID   string `path:"fromObjectId" api:"required" json:"-"`
-	ToObjectType   string `path:"toObjectType" api:"required" json:"-"`
+	FromObjectType                       string `path:"fromObjectType" api:"required" json:"-"`
+	BatchInputPublicAssociationMultiPost BatchInputPublicAssociationMultiPostParam
 	paramObj
+}
+
+func (r AssociationBatchNewParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputPublicAssociationMultiPost)
+}
+func (r *AssociationBatchNewParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
 
 type AssociationBatchDeleteParams struct {

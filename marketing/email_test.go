@@ -546,9 +546,9 @@ func TestEmailGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Marketing.Emails.Get(context.TODO(), marketing.EmailGetParams{
 		EmailIDs:       []int64{0},
-		EndTimestamp:   hubspotsdk.String("endTimestamp"),
+		EndTimestamp:   hubspotsdk.Time(time.Now()),
 		Property:       hubspotsdk.String("property"),
-		StartTimestamp: hubspotsdk.String("startTimestamp"),
+		StartTimestamp: hubspotsdk.Time(time.Now()),
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
@@ -631,9 +631,9 @@ func TestEmailGetHistogramWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Marketing.Emails.GetHistogram(context.TODO(), marketing.EmailGetHistogramParams{
 		EmailIDs:       []int64{0},
-		EndTimestamp:   hubspotsdk.String("endTimestamp"),
+		EndTimestamp:   hubspotsdk.Time(time.Now()),
 		Interval:       marketing.EmailGetHistogramParamsIntervalDay,
-		StartTimestamp: hubspotsdk.String("startTimestamp"),
+		StartTimestamp: hubspotsdk.Time(time.Now()),
 	})
 	if err != nil {
 		var apierr *hubspotsdk.Error

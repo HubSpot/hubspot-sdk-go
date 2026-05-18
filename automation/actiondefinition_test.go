@@ -118,7 +118,7 @@ func TestActionDefinitionNewWithOptionalParams(t *testing.T) {
 						}},
 						Schema: automation.FieldTypeDefinitionSchemaUnionParam{
 							OfInteger: &automation.IntegerFieldSchemaParam{
-								Type:    automation.IntegerFieldSchemaTypeInteger,
+								Type:    automation.IntegerFieldSchemaTypeArray,
 								Maximum: hubspotsdk.Int(0),
 								Minimum: hubspotsdk.Int(0),
 							},
@@ -243,7 +243,7 @@ func TestActionDefinitionUpdateWithOptionalParams(t *testing.T) {
 						}},
 						Schema: automation.FieldTypeDefinitionSchemaUnionParam{
 							OfInteger: &automation.IntegerFieldSchemaParam{
-								Type:    automation.IntegerFieldSchemaTypeInteger,
+								Type:    automation.IntegerFieldSchemaTypeArray,
 								Maximum: hubspotsdk.Int(0),
 								Minimum: hubspotsdk.Int(0),
 							},

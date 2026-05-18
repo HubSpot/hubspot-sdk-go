@@ -35,36 +35,6 @@ func NewObjectContractBatchService(opts ...option.RequestOption) (r ObjectContra
 	return
 }
 
-// Create multiple contracts in a single request by providing the necessary
-// properties and associations for each contract. This endpoint returns a batch
-// response containing the details of each created contract.
-func (r *ObjectContractBatchService) New(ctx context.Context, body ObjectContractBatchNewParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	path := "crm/objects/2026-03/contracts/batch/create"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-// Update multiple contracts by their internal IDs or unique property values. This
-// endpoint allows you to modify the properties of several contracts in a single
-// request, streamlining the update process for batch operations.
-func (r *ObjectContractBatchService) Update(ctx context.Context, body ObjectContractBatchUpdateParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	path := "crm/objects/2026-03/contracts/batch/update"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-// Archive a batch of contracts by their IDs. This operation moves the specified
-// contracts to the archive, making them inactive but still retrievable if needed.
-func (r *ObjectContractBatchService) Delete(ctx context.Context, body ObjectContractBatchDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "crm/objects/2026-03/contracts/batch/archive"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
-	return err
-}
-
 // Retrieve records by record ID or include the `idProperty` parameter to retrieve
 // records by a custom unique value property.
 func (r *ObjectContractBatchService) Get(ctx context.Context, params ObjectContractBatchGetParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicObject, err error) {
@@ -72,52 +42,6 @@ func (r *ObjectContractBatchService) Get(ctx context.Context, params ObjectContr
 	path := "crm/objects/2026-03/contracts/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
-}
-
-// Create or update records identified by a unique property value as specified by
-// the `idProperty` query param. `idProperty` query param refers to a property
-// whose values are unique for the object.
-func (r *ObjectContractBatchService) Upsert(ctx context.Context, body ObjectContractBatchUpsertParams, opts ...option.RequestOption) (res *BatchResponseSimplePublicUpsertObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	path := "crm/objects/2026-03/contracts/batch/upsert"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-type ObjectContractBatchNewParams struct {
-	BatchInputSimplePublicObjectBatchInputForCreate BatchInputSimplePublicObjectBatchInputForCreateParam
-	paramObj
-}
-
-func (r ObjectContractBatchNewParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputForCreate)
-}
-func (r *ObjectContractBatchNewParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ObjectContractBatchUpdateParams struct {
-	BatchInputSimplePublicObjectBatchInput BatchInputSimplePublicObjectBatchInputParam
-	paramObj
-}
-
-func (r ObjectContractBatchUpdateParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInput)
-}
-func (r *ObjectContractBatchUpdateParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ObjectContractBatchDeleteParams struct {
-	BatchInputSimplePublicObjectID BatchInputSimplePublicObjectIDParam
-	paramObj
-}
-
-func (r ObjectContractBatchDeleteParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectID)
-}
-func (r *ObjectContractBatchDeleteParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }
 
 type ObjectContractBatchGetParams struct {
@@ -144,16 +68,4 @@ func (r ObjectContractBatchGetParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type ObjectContractBatchUpsertParams struct {
-	BatchInputSimplePublicObjectBatchInputUpsert BatchInputSimplePublicObjectBatchInputUpsertParam
-	paramObj
-}
-
-func (r ObjectContractBatchUpsertParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.BatchInputSimplePublicObjectBatchInputUpsert)
-}
-func (r *ObjectContractBatchUpsertParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

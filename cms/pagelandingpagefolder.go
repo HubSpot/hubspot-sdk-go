@@ -21,27 +21,27 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
-// PageFolderService contains methods and other services that help with interacting
-// with the hubspot API.
+// PageLandingPageFolderService contains methods and other services that help with
+// interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewPageFolderService] method instead.
-type PageFolderService struct {
+// the [NewPageLandingPageFolderService] method instead.
+type PageLandingPageFolderService struct {
 	options []option.RequestOption
 }
 
-// NewPageFolderService generates a new service that applies the given options to
-// each request. These options are applied after the parent client's options (if
-// there is one), and before any request-specific options.
-func NewPageFolderService(opts ...option.RequestOption) (r PageFolderService) {
-	r = PageFolderService{}
+// NewPageLandingPageFolderService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
+func NewPageLandingPageFolderService(opts ...option.RequestOption) (r PageLandingPageFolderService) {
+	r = PageLandingPageFolderService{}
 	r.options = opts
 	return
 }
 
 // Create a new folder for landing pages.
-func (r *PageFolderService) New(ctx context.Context, body PageFolderNewParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
+func (r *PageLandingPageFolderService) New(ctx context.Context, body PageLandingPageFolderNewParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/landing-pages/folders"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -50,7 +50,7 @@ func (r *PageFolderService) New(ctx context.Context, body PageFolderNewParams, o
 
 // Partially update a landing page folder, specified by the folder ID. You only
 // need to specify the details values that you are modifying.
-func (r *PageFolderService) Update(ctx context.Context, objectID string, params PageFolderUpdateParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
+func (r *PageLandingPageFolderService) Update(ctx context.Context, objectID string, params PageLandingPageFolderUpdateParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -64,7 +64,7 @@ func (r *PageFolderService) Update(ctx context.Context, objectID string, params 
 // Get the list of Landing Page Folders. Supports paging and filtering. This method
 // would be useful for an integration that examined these models and used an
 // external service to suggest edits.
-func (r *PageFolderService) List(ctx context.Context, query PageFolderListParams, opts ...option.RequestOption) (res *pagination.Page[ContentFolder], err error) {
+func (r *PageLandingPageFolderService) List(ctx context.Context, query PageLandingPageFolderListParams, opts ...option.RequestOption) (res *pagination.Page[ContentFolder], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -84,12 +84,12 @@ func (r *PageFolderService) List(ctx context.Context, query PageFolderListParams
 // Get the list of Landing Page Folders. Supports paging and filtering. This method
 // would be useful for an integration that examined these models and used an
 // external service to suggest edits.
-func (r *PageFolderService) ListAutoPaging(ctx context.Context, query PageFolderListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ContentFolder] {
+func (r *PageLandingPageFolderService) ListAutoPaging(ctx context.Context, query PageLandingPageFolderListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ContentFolder] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a landing page folder, specified by its ID.
-func (r *PageFolderService) Delete(ctx context.Context, objectID string, body PageFolderDeleteParams, opts ...option.RequestOption) (err error) {
+func (r *PageLandingPageFolderService) Delete(ctx context.Context, objectID string, body PageLandingPageFolderDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
@@ -102,15 +102,32 @@ func (r *PageFolderService) Delete(ctx context.Context, objectID string, body Pa
 }
 
 // Retrieve a batch of landing page folders as identified in the request body.
-func (r *PageFolderService) BatchGet(ctx context.Context, params PageFolderBatchGetParams, opts ...option.RequestOption) (res *BatchResponseContentFolder, err error) {
+func (r *PageLandingPageFolderService) BatchGet(ctx context.Context, params PageLandingPageFolderBatchGetParams, opts ...option.RequestOption) (res *BatchResponseContentFolder, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/landing-pages/folders/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
 }
 
+// Create a batch of folders as detailed in the request body.
+func (r *PageLandingPageFolderService) NewFolders(ctx context.Context, body PageLandingPageFolderNewFoldersParams, opts ...option.RequestOption) (res *BatchResponseContentFolder, err error) {
+	opts = slices.Concat(r.options, opts)
+	path := "cms/pages/2026-03/landing-pages/folders/batch/create"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return res, err
+}
+
+// Delete a batch of folders as specified in the request body.
+func (r *PageLandingPageFolderService) DeleteFolders(ctx context.Context, body PageLandingPageFolderDeleteFoldersParams, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/pages/2026-03/landing-pages/folders/batch/archive"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
+	return err
+}
+
 // Retrieve a landing page folder, specified by its ID.
-func (r *PageFolderService) Get(ctx context.Context, objectID string, query PageFolderGetParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
+func (r *PageLandingPageFolderService) Get(ctx context.Context, objectID string, query PageLandingPageFolderGetParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -123,7 +140,7 @@ func (r *PageFolderService) Get(ctx context.Context, objectID string, query Page
 
 // Retrieve a previous version of a folder, specified by the folder ID and revision
 // ID.
-func (r *PageFolderService) GetRevision(ctx context.Context, revisionID string, query PageFolderGetRevisionParams, opts ...option.RequestOption) (res *ContentFolderVersion, err error) {
+func (r *PageLandingPageFolderService) GetRevision(ctx context.Context, revisionID string, query PageLandingPageFolderGetRevisionParams, opts ...option.RequestOption) (res *ContentFolderVersion, err error) {
 	opts = slices.Concat(r.options, opts)
 	if query.ObjectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -139,7 +156,7 @@ func (r *PageFolderService) GetRevision(ctx context.Context, revisionID string, 
 }
 
 // Retrieves all the previous versions of a landing page folder.
-func (r *PageFolderService) ListRevisions(ctx context.Context, objectID string, query PageFolderListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[ContentFolderVersion], err error) {
+func (r *PageLandingPageFolderService) ListRevisions(ctx context.Context, objectID string, query PageLandingPageFolderListRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[ContentFolderVersion], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -161,12 +178,12 @@ func (r *PageFolderService) ListRevisions(ctx context.Context, objectID string, 
 }
 
 // Retrieves all the previous versions of a landing page folder.
-func (r *PageFolderService) ListRevisionsAutoPaging(ctx context.Context, objectID string, query PageFolderListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[ContentFolderVersion] {
+func (r *PageLandingPageFolderService) ListRevisionsAutoPaging(ctx context.Context, objectID string, query PageLandingPageFolderListRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[ContentFolderVersion] {
 	return pagination.NewPageAutoPager(r.ListRevisions(ctx, objectID, query, opts...))
 }
 
 // Takes a specified version of a landing page folder and restores it.
-func (r *PageFolderService) RestoreRevision(ctx context.Context, revisionID string, body PageFolderRestoreRevisionParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
+func (r *PageLandingPageFolderService) RestoreRevision(ctx context.Context, revisionID string, body PageLandingPageFolderRestoreRevisionParams, opts ...option.RequestOption) (res *ContentFolder, err error) {
 	opts = slices.Concat(r.options, opts)
 	if body.ObjectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -181,41 +198,50 @@ func (r *PageFolderService) RestoreRevision(ctx context.Context, revisionID stri
 	return res, err
 }
 
-type PageFolderNewParams struct {
+// Update a batch of landing page folders as specified in the request body.
+func (r *PageLandingPageFolderService) UpdateFolders(ctx context.Context, params PageLandingPageFolderUpdateFoldersParams, opts ...option.RequestOption) (res *BatchResponseContentFolder, err error) {
+	opts = slices.Concat(r.options, opts)
+	path := "cms/pages/2026-03/landing-pages/folders/batch/update"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	return res, err
+}
+
+type PageLandingPageFolderNewParams struct {
 	ContentFolder ContentFolderParam
 	paramObj
 }
 
-func (r PageFolderNewParams) MarshalJSON() (data []byte, err error) {
+func (r PageLandingPageFolderNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentFolder)
 }
-func (r *PageFolderNewParams) UnmarshalJSON(data []byte) error {
+func (r *PageLandingPageFolderNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageFolderUpdateParams struct {
+type PageLandingPageFolderUpdateParams struct {
 	ContentFolder ContentFolderParam
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
-func (r PageFolderUpdateParams) MarshalJSON() (data []byte, err error) {
+func (r PageLandingPageFolderUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentFolder)
 }
-func (r *PageFolderUpdateParams) UnmarshalJSON(data []byte) error {
+func (r *PageLandingPageFolderUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// URLQuery serializes [PageFolderUpdateParams]'s query parameters as `url.Values`.
-func (r PageFolderUpdateParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageLandingPageFolderUpdateParams]'s query parameters as
+// `url.Values`.
+func (r PageLandingPageFolderUpdateParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderListParams struct {
+type PageLandingPageFolderListParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
@@ -238,72 +264,99 @@ type PageFolderListParams struct {
 	paramObj
 }
 
-// URLQuery serializes [PageFolderListParams]'s query parameters as `url.Values`.
-func (r PageFolderListParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageLandingPageFolderListParams]'s query parameters as
+// `url.Values`.
+func (r PageLandingPageFolderListParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderDeleteParams struct {
+type PageLandingPageFolderDeleteParams struct {
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [PageFolderDeleteParams]'s query parameters as `url.Values`.
-func (r PageFolderDeleteParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageLandingPageFolderDeleteParams]'s query parameters as
+// `url.Values`.
+func (r PageLandingPageFolderDeleteParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderBatchGetParams struct {
+type PageLandingPageFolderBatchGetParams struct {
 	BatchInputString shared.BatchInputStringParam
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
-func (r PageFolderBatchGetParams) MarshalJSON() (data []byte, err error) {
+func (r PageLandingPageFolderBatchGetParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.BatchInputString)
 }
-func (r *PageFolderBatchGetParams) UnmarshalJSON(data []byte) error {
+func (r *PageLandingPageFolderBatchGetParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// URLQuery serializes [PageFolderBatchGetParams]'s query parameters as
+// URLQuery serializes [PageLandingPageFolderBatchGetParams]'s query parameters as
 // `url.Values`.
-func (r PageFolderBatchGetParams) URLQuery() (v url.Values, err error) {
+func (r PageLandingPageFolderBatchGetParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderGetParams struct {
+type PageLandingPageFolderNewFoldersParams struct {
+	BatchInputContentFolder BatchInputContentFolderParam
+	paramObj
+}
+
+func (r PageLandingPageFolderNewFoldersParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputContentFolder)
+}
+func (r *PageLandingPageFolderNewFoldersParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PageLandingPageFolderDeleteFoldersParams struct {
+	BatchInputString shared.BatchInputStringParam
+	paramObj
+}
+
+func (r PageLandingPageFolderDeleteFoldersParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputString)
+}
+func (r *PageLandingPageFolderDeleteFoldersParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PageLandingPageFolderGetParams struct {
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool]   `query:"archived,omitzero" json:"-"`
 	Property param.Opt[string] `query:"property,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [PageFolderGetParams]'s query parameters as `url.Values`.
-func (r PageFolderGetParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageLandingPageFolderGetParams]'s query parameters as
+// `url.Values`.
+func (r PageLandingPageFolderGetParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderGetRevisionParams struct {
+type PageLandingPageFolderGetRevisionParams struct {
 	ObjectID string `path:"objectId" api:"required" json:"-"`
 	paramObj
 }
 
-type PageFolderListRevisionsParams struct {
+type PageLandingPageFolderListRevisionsParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
@@ -314,16 +367,39 @@ type PageFolderListRevisionsParams struct {
 	paramObj
 }
 
-// URLQuery serializes [PageFolderListRevisionsParams]'s query parameters as
-// `url.Values`.
-func (r PageFolderListRevisionsParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageLandingPageFolderListRevisionsParams]'s query
+// parameters as `url.Values`.
+func (r PageLandingPageFolderListRevisionsParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageFolderRestoreRevisionParams struct {
+type PageLandingPageFolderRestoreRevisionParams struct {
 	ObjectID string `path:"objectId" api:"required" json:"-"`
 	paramObj
+}
+
+type PageLandingPageFolderUpdateFoldersParams struct {
+	BatchInputJsonNode BatchInputJsonNodeParam
+	// Whether to return only results that have been archived.
+	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
+	paramObj
+}
+
+func (r PageLandingPageFolderUpdateFoldersParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.BatchInputJsonNode)
+}
+func (r *PageLandingPageFolderUpdateFoldersParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// URLQuery serializes [PageLandingPageFolderUpdateFoldersParams]'s query
+// parameters as `url.Values`.
+func (r PageLandingPageFolderUpdateFoldersParams) URLQuery() (v url.Values, err error) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

@@ -18,7 +18,7 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
-func TestPageMultiLanguageAttachToLangGroupWithOptionalParams(t *testing.T) {
+func TestPageLandingPageMultiLanguageAttachToLangGroupWithOptionalParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -29,7 +29,7 @@ func TestPageMultiLanguageAttachToLangGroupWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Pages.MultiLanguage.AttachToLangGroup(context.TODO(), cms.PageMultiLanguageAttachToLangGroupParams{
+	resp, err := client.Cms.Pages.LandingPages.MultiLanguage.AttachToLangGroup(context.TODO(), cms.PageLandingPageMultiLanguageAttachToLangGroupParams{
 		AttachToLangPrimaryRequestVNext: cms.AttachToLangPrimaryRequestVNextParam{
 			ID:              "id",
 			Language:        cms.AttachToLangPrimaryRequestVNextLanguageAa,
@@ -59,7 +59,7 @@ func TestPageMultiLanguageAttachToLangGroupWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageMultiLanguageNewLanguageVariationWithOptionalParams(t *testing.T) {
+func TestPageLandingPageMultiLanguageNewLanguageVariationWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -72,11 +72,12 @@ func TestPageMultiLanguageNewLanguageVariationWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.MultiLanguage.NewLanguageVariation(context.TODO(), cms.PageMultiLanguageNewLanguageVariationParams{
+	_, err := client.Cms.Pages.LandingPages.MultiLanguage.NewLanguageVariation(context.TODO(), cms.PageLandingPageMultiLanguageNewLanguageVariationParams{
 		ContentLanguageCloneRequestVNext: cms.ContentLanguageCloneRequestVNextParam{
 			ID:              "id",
 			Language:        hubspotsdk.String("language"),
 			PrimaryLanguage: hubspotsdk.String("primaryLanguage"),
+			UsePublished:    hubspotsdk.Bool(true),
 		},
 	})
 	if err != nil {
@@ -88,7 +89,7 @@ func TestPageMultiLanguageNewLanguageVariationWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageMultiLanguageDetachFromLangGroup(t *testing.T) {
+func TestPageLandingPageMultiLanguageDetachFromLangGroup(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -99,7 +100,7 @@ func TestPageMultiLanguageDetachFromLangGroup(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Pages.MultiLanguage.DetachFromLangGroup(context.TODO(), cms.PageMultiLanguageDetachFromLangGroupParams{
+	resp, err := client.Cms.Pages.LandingPages.MultiLanguage.DetachFromLangGroup(context.TODO(), cms.PageLandingPageMultiLanguageDetachFromLangGroupParams{
 		DetachFromLangGroupRequestVNext: cms.DetachFromLangGroupRequestVNextParam{
 			ID: "id",
 		},
@@ -126,7 +127,7 @@ func TestPageMultiLanguageDetachFromLangGroup(t *testing.T) {
 	}
 }
 
-func TestPageMultiLanguageSetNewLangPrimary(t *testing.T) {
+func TestPageLandingPageMultiLanguageSetNewLangPrimary(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -139,7 +140,7 @@ func TestPageMultiLanguageSetNewLangPrimary(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	err := client.Cms.Pages.MultiLanguage.SetNewLangPrimary(context.TODO(), cms.PageMultiLanguageSetNewLangPrimaryParams{
+	err := client.Cms.Pages.LandingPages.MultiLanguage.SetNewLangPrimary(context.TODO(), cms.PageLandingPageMultiLanguageSetNewLangPrimaryParams{
 		SetNewLanguagePrimaryRequestVNext: cms.SetNewLanguagePrimaryRequestVNextParam{
 			ID: "id",
 		},
@@ -153,7 +154,7 @@ func TestPageMultiLanguageSetNewLangPrimary(t *testing.T) {
 	}
 }
 
-func TestPageMultiLanguageUpdateLanguages(t *testing.T) {
+func TestPageLandingPageMultiLanguageUpdateLanguages(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -164,7 +165,7 @@ func TestPageMultiLanguageUpdateLanguages(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Pages.MultiLanguage.UpdateLanguages(context.TODO(), cms.PageMultiLanguageUpdateLanguagesParams{
+	resp, err := client.Cms.Pages.LandingPages.MultiLanguage.UpdateLanguages(context.TODO(), cms.PageLandingPageMultiLanguageUpdateLanguagesParams{
 		UpdateLanguagesRequestVNext: cms.UpdateLanguagesRequestVNextParam{
 			Languages: map[string]string{
 				"foo": "aa",

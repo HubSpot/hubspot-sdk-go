@@ -87,7 +87,7 @@ func TestBlogPostNew(t *testing.T) {
 							},
 							BackgroundGradient: cms.GradientParam{
 								Angle: cms.AngleParam{
-									Units: cms.AngleUnitsDeg,
+									Units: cms.AngleUnitsDegrees,
 									Value: 0,
 								},
 								Colors: []cms.ColorStopParam{{
@@ -117,29 +117,29 @@ func TestBlogPostNew(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},
@@ -157,7 +157,7 @@ func TestBlogPostNew(t *testing.T) {
 						},
 						BackgroundGradient: cms.GradientParam{
 							Angle: cms.AngleParam{
-								Units: cms.AngleUnitsDeg,
+								Units: cms.AngleUnitsDegrees,
 								Value: 0,
 							},
 							Colors: []cms.ColorStopParam{{
@@ -187,29 +187,29 @@ func TestBlogPostNew(t *testing.T) {
 								Hidden: true,
 								Margin: cms.MarginParam{
 									Bottom: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 									Top: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 								},
 								Padding: cms.PaddingParam{
 									Bottom: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 									Left: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 									Right: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 									Top: cms.SizeParam{
-										Units: cms.SizeUnitsPercent,
+										Units: cms.SizeUnitsCh,
 										Value: 0,
 									},
 								},
@@ -369,7 +369,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 								},
 								BackgroundGradient: cms.GradientParam{
 									Angle: cms.AngleParam{
-										Units: cms.AngleUnitsDeg,
+										Units: cms.AngleUnitsDegrees,
 										Value: 0,
 									},
 									Colors: []cms.ColorStopParam{{
@@ -399,29 +399,29 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 										Hidden: true,
 										Margin: cms.MarginParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 										},
 										Padding: cms.PaddingParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Left: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Right: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 										},
@@ -439,7 +439,7 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 							},
 							BackgroundGradient: cms.GradientParam{
 								Angle: cms.AngleParam{
-									Units: cms.AngleUnitsDeg,
+									Units: cms.AngleUnitsDegrees,
 									Value: 0,
 								},
 								Colors: []cms.ColorStopParam{{
@@ -469,29 +469,29 @@ func TestBlogPostUpdateWithOptionalParams(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},
@@ -1146,7 +1146,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 								},
 								BackgroundGradient: cms.GradientParam{
 									Angle: cms.AngleParam{
-										Units: cms.AngleUnitsDeg,
+										Units: cms.AngleUnitsDegrees,
 										Value: 0,
 									},
 									Colors: []cms.ColorStopParam{{
@@ -1176,29 +1176,29 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 										Hidden: true,
 										Margin: cms.MarginParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 										},
 										Padding: cms.PaddingParam{
 											Bottom: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Left: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Right: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 											Top: cms.SizeParam{
-												Units: cms.SizeUnitsPercent,
+												Units: cms.SizeUnitsCh,
 												Value: 0,
 											},
 										},
@@ -1216,7 +1216,7 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 							},
 							BackgroundGradient: cms.GradientParam{
 								Angle: cms.AngleParam{
-									Units: cms.AngleUnitsDeg,
+									Units: cms.AngleUnitsDegrees,
 									Value: 0,
 								},
 								Colors: []cms.ColorStopParam{{
@@ -1246,29 +1246,29 @@ func TestBlogPostUpdateDraft(t *testing.T) {
 									Hidden: true,
 									Margin: cms.MarginParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},
 									Padding: cms.PaddingParam{
 										Bottom: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Left: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Right: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 										Top: cms.SizeParam{
-											Units: cms.SizeUnitsPercent,
+											Units: cms.SizeUnitsCh,
 											Value: 0,
 										},
 									},

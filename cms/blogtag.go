@@ -1187,6 +1187,7 @@ type TagCloneRequestVNextParam struct {
 	Language param.Opt[string] `json:"language,omitzero"`
 	// Language of primary blog tag to clone.
 	PrimaryLanguage param.Opt[string] `json:"primaryLanguage,omitzero"`
+	UsePublished    param.Opt[bool]   `json:"usePublished,omitzero"`
 	paramObj
 }
 
