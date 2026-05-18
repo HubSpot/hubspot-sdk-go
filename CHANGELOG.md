@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2026-05-18)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** manual updates ([b09ae91](https://github.com/HubSpot/hubspot-sdk-go/commit/b09ae91f474f81f1a664169a37994a7cf91408c8))
+
+
+### Chores
+
+* configure new SDK language ([8c26036](https://github.com/HubSpot/hubspot-sdk-go/commit/8c26036fd4f5bfde3bfb56b59ae69a669f934bdd))
+
 ## 0.1.0-alpha.3 (2026-05-14)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
