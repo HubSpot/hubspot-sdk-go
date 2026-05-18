@@ -3,12 +3,8 @@
 package cms_test
 
 import (
-	"bytes"
 	"context"
 	"errors"
-	"io"
-	"net/http"
-	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -17,56 +13,57 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/cms"
 	"github.com/HubSpot/hubspot-sdk-go/internal/testutil"
 	"github.com/HubSpot/hubspot-sdk-go/option"
-	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
-func TestBlogPostBatchNew(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
+func TestPageLandingPageDraftUpdate(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Blogs.Posts.Batch.New(context.TODO(), cms.BlogPostBatchNewParams{
-		BatchInputBlogPost: cms.BatchInputBlogPostParam{
-			Inputs: []cms.BlogPostParam{{
+	_, err := client.Cms.Pages.LandingPages.Draft.Update(
+		context.TODO(),
+		"objectId",
+		cms.PageLandingPageDraftUpdateParams{
+			PagesPage: cms.PagesPageParam{
 				ID:                  "id",
-				AbStatus:            cms.BlogPostAbStatusAutomatedLoserVariant,
+				AbStatus:            cms.PagesPageAbStatusAutomatedLoserVariant,
 				AbTestID:            "abTestId",
-				ArchivedAt:          0,
+				ArchivedAt:          time.Now(),
 				ArchivedInDashboard: true,
 				AttachedStylesheets: []map[string]any{{
 					"foo": map[string]any{},
 				}},
-				AuthorName:                    "authorName",
-				BlogAuthorID:                  "blogAuthorId",
-				Campaign:                      "campaign",
-				CategoryID:                    0,
-				ContentGroupID:                "contentGroupId",
-				ContentTypeCategory:           cms.BlogPostContentTypeCategory0,
-				Created:                       time.Now(),
-				CreatedByID:                   "createdById",
-				CurrentlyPublished:            true,
-				CurrentState:                  cms.BlogPostCurrentStateAgentGenerated,
-				Domain:                        "domain",
-				DynamicPageDataSourceID:       "dynamicPageDataSourceId",
-				DynamicPageDataSourceType:     0,
-				DynamicPageHubDBTableID:       "dynamicPageHubDbTableId",
-				EnableDomainStylesheets:       true,
-				EnableGoogleAmpOutputOverride: true,
-				EnableLayoutStylesheets:       true,
-				FeaturedImage:                 "featuredImage",
-				FeaturedImageAltText:          "featuredImageAltText",
-				FolderID:                      "folderId",
-				FooterHTML:                    "footerHtml",
-				HeadHTML:                      "headHtml",
-				HTMLTitle:                     "htmlTitle",
-				IncludeDefaultCustomCss:       true,
-				Language:                      cms.BlogPostLanguageAa,
+				AuthorName:                "authorName",
+				Campaign:                  "campaign",
+				CategoryID:                0,
+				ContentGroupID:            "contentGroupId",
+				ContentTypeCategory:       cms.PagesPageContentTypeCategory0,
+				Created:                   time.Now(),
+				CreatedByID:               "createdById",
+				CurrentlyPublished:        true,
+				CurrentState:              cms.PagesPageCurrentStateAgentGenerated,
+				Domain:                    "domain",
+				DynamicPageDataSourceID:   "dynamicPageDataSourceId",
+				DynamicPageDataSourceType: 0,
+				DynamicPageHubDBTableID:   "dynamicPageHubDbTableId",
+				EnableDomainStylesheets:   true,
+				EnableLayoutStylesheets:   true,
+				FeaturedImage:             "featuredImage",
+				FeaturedImageAltText:      "featuredImageAltText",
+				FolderID:                  "folderId",
+				FooterHTML:                "footerHtml",
+				HeadHTML:                  "headHtml",
+				HTMLTitle:                 "htmlTitle",
+				IncludeDefaultCustomCss:   true,
+				Language:                  cms.PagesPageLanguageAa,
 				LayoutSections: map[string]cms.LayoutSectionParam{
 					"foo": {
 						Cells:    []cms.LayoutSectionParam{},
@@ -231,18 +228,16 @@ func TestBlogPostBatchNew(t *testing.T) {
 				PageExpiryEnabled:        true,
 				PageExpiryRedirectID:     0,
 				PageExpiryRedirectURL:    "pageExpiryRedirectUrl",
+				PageRedirected:           true,
 				Password:                 "password",
-				PostBody:                 "postBody",
-				PostSummary:              "postSummary",
 				PublicAccessRules:        []cms.PublicAccessRule{map[string]any{}},
 				PublicAccessRulesEnabled: true,
 				PublishDate:              time.Now(),
 				PublishImmediately:       true,
-				RssBody:                  "rssBody",
-				RssSummary:               "rssSummary",
 				Slug:                     "slug",
 				State:                    "state",
-				TagIDs:                   []int64{0},
+				Subcategory:              "subcategory",
+				TemplatePath:             "templatePath",
 				ThemeSettingsValues: map[string]any{
 					"foo": map[string]any{},
 				},
@@ -276,71 +271,19 @@ func TestBlogPostBatchNew(t *testing.T) {
 				Widgets: map[string]any{
 					"foo": map[string]any{},
 				},
-			}},
+			},
 		},
-	})
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
-	}
-}
-
-func TestBlogPostBatchUpdateWithOptionalParams(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
-	client := hubspotsdk.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Blogs.Posts.Batch.Update(context.TODO(), cms.BlogPostBatchUpdateParams{
-		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
-			Inputs: []any{map[string]any{}},
-		},
-		Archived: hubspotsdk.Bool(true),
-	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	defer resp.Body.Close()
-
-	b, err := io.ReadAll(resp.Body)
-	if err != nil {
-		var apierr *hubspotsdk.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
 	}
 }
 
-func TestBlogPostBatchDelete(t *testing.T) {
+func TestPageLandingPageDraftGet(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -353,11 +296,7 @@ func TestBlogPostBatchDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	err := client.Cms.Blogs.Posts.Batch.Delete(context.TODO(), cms.BlogPostBatchDeleteParams{
-		BatchInputString: shared.BatchInputStringParam{
-			Inputs: []string{"string"},
-		},
-	})
+	_, err := client.Cms.Pages.LandingPages.Draft.Get(context.TODO(), "objectId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -367,23 +306,20 @@ func TestBlogPostBatchDelete(t *testing.T) {
 	}
 }
 
-func TestBlogPostBatchGetWithOptionalParams(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-		w.Write([]byte("abc"))
-	}))
-	defer server.Close()
-	baseURL := server.URL
+func TestPageLandingPageDraftPushLive(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
 	client := hubspotsdk.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	resp, err := client.Cms.Blogs.Posts.Batch.Get(context.TODO(), cms.BlogPostBatchGetParams{
-		BatchInputString: shared.BatchInputStringParam{
-			Inputs: []string{"string"},
-		},
-		Archived: hubspotsdk.Bool(true),
-	})
+	err := client.Cms.Pages.LandingPages.Draft.PushLive(context.TODO(), "objectId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
@@ -391,17 +327,27 @@ func TestBlogPostBatchGetWithOptionalParams(t *testing.T) {
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	defer resp.Body.Close()
+}
 
-	b, err := io.ReadAll(resp.Body)
+func TestPageLandingPageDraftReset(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	err := client.Cms.Pages.LandingPages.Draft.Reset(context.TODO(), "objectId")
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
-	}
-	if !bytes.Equal(b, []byte("abc")) {
-		t.Fatalf("return value not %s: %s", "abc", b)
 	}
 }

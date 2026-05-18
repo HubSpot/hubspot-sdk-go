@@ -90,7 +90,7 @@ type ArrayFieldSchema struct {
 	Items any `json:"items" api:"required"`
 	// Specifies that the field is of type 'ARRAY'.
 	//
-	// Any of "ARRAY".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type ArrayFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -120,7 +120,13 @@ func (r ArrayFieldSchema) ToParam() ArrayFieldSchemaParam {
 type ArrayFieldSchemaType string
 
 const (
-	ArrayFieldSchemaTypeArray ArrayFieldSchemaType = "ARRAY"
+	ArrayFieldSchemaTypeArray   ArrayFieldSchemaType = "ARRAY"
+	ArrayFieldSchemaTypeBoolean ArrayFieldSchemaType = "BOOLEAN"
+	ArrayFieldSchemaTypeDouble  ArrayFieldSchemaType = "DOUBLE"
+	ArrayFieldSchemaTypeInteger ArrayFieldSchemaType = "INTEGER"
+	ArrayFieldSchemaTypeLong    ArrayFieldSchemaType = "LONG"
+	ArrayFieldSchemaTypeObject  ArrayFieldSchemaType = "OBJECT"
+	ArrayFieldSchemaTypeString  ArrayFieldSchemaType = "STRING"
 )
 
 // The properties Items, Type are required.
@@ -128,7 +134,7 @@ type ArrayFieldSchemaParam struct {
 	Items any `json:"items,omitzero" api:"required"`
 	// Specifies that the field is of type 'ARRAY'.
 	//
-	// Any of "ARRAY".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type ArrayFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
 }
@@ -159,7 +165,7 @@ type BooleanFieldSchema struct {
 	// Specifies the field type as BOOLEAN, indicating that the field can hold a true
 	// or false value.
 	//
-	// Any of "BOOLEAN".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type BooleanFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -189,7 +195,13 @@ func (r BooleanFieldSchema) ToParam() BooleanFieldSchemaParam {
 type BooleanFieldSchemaType string
 
 const (
+	BooleanFieldSchemaTypeArray   BooleanFieldSchemaType = "ARRAY"
 	BooleanFieldSchemaTypeBoolean BooleanFieldSchemaType = "BOOLEAN"
+	BooleanFieldSchemaTypeDouble  BooleanFieldSchemaType = "DOUBLE"
+	BooleanFieldSchemaTypeInteger BooleanFieldSchemaType = "INTEGER"
+	BooleanFieldSchemaTypeLong    BooleanFieldSchemaType = "LONG"
+	BooleanFieldSchemaTypeObject  BooleanFieldSchemaType = "OBJECT"
+	BooleanFieldSchemaTypeString  BooleanFieldSchemaType = "STRING"
 )
 
 // The property Type is required.
@@ -197,7 +209,7 @@ type BooleanFieldSchemaParam struct {
 	// Specifies the field type as BOOLEAN, indicating that the field can hold a true
 	// or false value.
 	//
-	// Any of "BOOLEAN".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type BooleanFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
 }
@@ -461,7 +473,7 @@ const (
 type DoubleFieldSchema struct {
 	// Indicates the field type as DOUBLE.
 	//
-	// Any of "DOUBLE".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type DoubleFieldSchemaType `json:"type" api:"required"`
 	// The maximum allowable value for the double field.
 	Maximum float64 `json:"maximum"`
@@ -496,14 +508,20 @@ func (r DoubleFieldSchema) ToParam() DoubleFieldSchemaParam {
 type DoubleFieldSchemaType string
 
 const (
-	DoubleFieldSchemaTypeDouble DoubleFieldSchemaType = "DOUBLE"
+	DoubleFieldSchemaTypeArray   DoubleFieldSchemaType = "ARRAY"
+	DoubleFieldSchemaTypeBoolean DoubleFieldSchemaType = "BOOLEAN"
+	DoubleFieldSchemaTypeDouble  DoubleFieldSchemaType = "DOUBLE"
+	DoubleFieldSchemaTypeInteger DoubleFieldSchemaType = "INTEGER"
+	DoubleFieldSchemaTypeLong    DoubleFieldSchemaType = "LONG"
+	DoubleFieldSchemaTypeObject  DoubleFieldSchemaType = "OBJECT"
+	DoubleFieldSchemaTypeString  DoubleFieldSchemaType = "STRING"
 )
 
 // The property Type is required.
 type DoubleFieldSchemaParam struct {
 	// Indicates the field type as DOUBLE.
 	//
-	// Any of "DOUBLE".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type DoubleFieldSchemaType `json:"type,omitzero" api:"required"`
 	// The maximum allowable value for the double field.
 	Maximum param.Opt[float64] `json:"maximum,omitzero"`
@@ -1082,7 +1100,7 @@ func (u *FieldTypeDefinitionSchemaUnionParam) UnmarshalJSON(data []byte) error {
 type IntegerFieldSchema struct {
 	// The type of the field, which is set to INTEGER.
 	//
-	// Any of "INTEGER".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type IntegerFieldSchemaType `json:"type" api:"required"`
 	// The maximum value allowed for the integer field.
 	Maximum int64 `json:"maximum"`
@@ -1117,14 +1135,20 @@ func (r IntegerFieldSchema) ToParam() IntegerFieldSchemaParam {
 type IntegerFieldSchemaType string
 
 const (
+	IntegerFieldSchemaTypeArray   IntegerFieldSchemaType = "ARRAY"
+	IntegerFieldSchemaTypeBoolean IntegerFieldSchemaType = "BOOLEAN"
+	IntegerFieldSchemaTypeDouble  IntegerFieldSchemaType = "DOUBLE"
 	IntegerFieldSchemaTypeInteger IntegerFieldSchemaType = "INTEGER"
+	IntegerFieldSchemaTypeLong    IntegerFieldSchemaType = "LONG"
+	IntegerFieldSchemaTypeObject  IntegerFieldSchemaType = "OBJECT"
+	IntegerFieldSchemaTypeString  IntegerFieldSchemaType = "STRING"
 )
 
 // The property Type is required.
 type IntegerFieldSchemaParam struct {
 	// The type of the field, which is set to INTEGER.
 	//
-	// Any of "INTEGER".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type IntegerFieldSchemaType `json:"type,omitzero" api:"required"`
 	// The maximum value allowed for the integer field.
 	Maximum param.Opt[int64] `json:"maximum,omitzero"`
@@ -1144,7 +1168,7 @@ func (r *IntegerFieldSchemaParam) UnmarshalJSON(data []byte) error {
 type LongFieldSchema struct {
 	// The type of the field, which is LONG by default.
 	//
-	// Any of "LONG".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type LongFieldSchemaType `json:"type" api:"required"`
 	// The maximum value allowed for the long field.
 	Maximum int64 `json:"maximum"`
@@ -1179,14 +1203,20 @@ func (r LongFieldSchema) ToParam() LongFieldSchemaParam {
 type LongFieldSchemaType string
 
 const (
-	LongFieldSchemaTypeLong LongFieldSchemaType = "LONG"
+	LongFieldSchemaTypeArray   LongFieldSchemaType = "ARRAY"
+	LongFieldSchemaTypeBoolean LongFieldSchemaType = "BOOLEAN"
+	LongFieldSchemaTypeDouble  LongFieldSchemaType = "DOUBLE"
+	LongFieldSchemaTypeInteger LongFieldSchemaType = "INTEGER"
+	LongFieldSchemaTypeLong    LongFieldSchemaType = "LONG"
+	LongFieldSchemaTypeObject  LongFieldSchemaType = "OBJECT"
+	LongFieldSchemaTypeString  LongFieldSchemaType = "STRING"
 )
 
 // The property Type is required.
 type LongFieldSchemaParam struct {
 	// The type of the field, which is LONG by default.
 	//
-	// Any of "LONG".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type LongFieldSchemaType `json:"type,omitzero" api:"required"`
 	// The maximum value allowed for the long field.
 	Maximum param.Opt[int64] `json:"maximum,omitzero"`
@@ -1208,7 +1238,7 @@ type ObjectFieldSchema struct {
 	Properties any `json:"properties" api:"required"`
 	// Specifies the type of the field, which is 'OBJECT' by default.
 	//
-	// Any of "OBJECT".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type ObjectFieldSchemaType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1238,7 +1268,13 @@ func (r ObjectFieldSchema) ToParam() ObjectFieldSchemaParam {
 type ObjectFieldSchemaType string
 
 const (
-	ObjectFieldSchemaTypeObject ObjectFieldSchemaType = "OBJECT"
+	ObjectFieldSchemaTypeArray   ObjectFieldSchemaType = "ARRAY"
+	ObjectFieldSchemaTypeBoolean ObjectFieldSchemaType = "BOOLEAN"
+	ObjectFieldSchemaTypeDouble  ObjectFieldSchemaType = "DOUBLE"
+	ObjectFieldSchemaTypeInteger ObjectFieldSchemaType = "INTEGER"
+	ObjectFieldSchemaTypeLong    ObjectFieldSchemaType = "LONG"
+	ObjectFieldSchemaTypeObject  ObjectFieldSchemaType = "OBJECT"
+	ObjectFieldSchemaTypeString  ObjectFieldSchemaType = "STRING"
 )
 
 // The properties Properties, Type are required.
@@ -1247,7 +1283,7 @@ type ObjectFieldSchemaParam struct {
 	Properties any `json:"properties,omitzero" api:"required"`
 	// Specifies the type of the field, which is 'OBJECT' by default.
 	//
-	// Any of "OBJECT".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type ObjectFieldSchemaType `json:"type,omitzero" api:"required"`
 	paramObj
 }
@@ -2205,7 +2241,7 @@ const (
 type StringFieldSchema struct {
 	// Indicates that the type is a string, with the default value being STRING.
 	//
-	// Any of "STRING".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type StringFieldSchemaType `json:"type" api:"required"`
 	// Specifies the format of the string, with accepted values: DATE, DATE_TIME,
 	// OBJECT_COORDINATE, TIME, URI.
@@ -2240,7 +2276,13 @@ func (r StringFieldSchema) ToParam() StringFieldSchemaParam {
 type StringFieldSchemaType string
 
 const (
-	StringFieldSchemaTypeString StringFieldSchemaType = "STRING"
+	StringFieldSchemaTypeArray   StringFieldSchemaType = "ARRAY"
+	StringFieldSchemaTypeBoolean StringFieldSchemaType = "BOOLEAN"
+	StringFieldSchemaTypeDouble  StringFieldSchemaType = "DOUBLE"
+	StringFieldSchemaTypeInteger StringFieldSchemaType = "INTEGER"
+	StringFieldSchemaTypeLong    StringFieldSchemaType = "LONG"
+	StringFieldSchemaTypeObject  StringFieldSchemaType = "OBJECT"
+	StringFieldSchemaTypeString  StringFieldSchemaType = "STRING"
 )
 
 // Specifies the format of the string, with accepted values: DATE, DATE_TIME,
@@ -2259,7 +2301,7 @@ const (
 type StringFieldSchemaParam struct {
 	// Indicates that the type is a string, with the default value being STRING.
 	//
-	// Any of "STRING".
+	// Any of "ARRAY", "BOOLEAN", "DOUBLE", "INTEGER", "LONG", "OBJECT", "STRING".
 	Type StringFieldSchemaType `json:"type,omitzero" api:"required"`
 	// Specifies the format of the string, with accepted values: DATE, DATE_TIME,
 	// OBJECT_COORDINATE, TIME, URI.

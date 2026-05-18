@@ -20,27 +20,37 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 )
 
-// PageWebsitePageService contains methods and other services that help with
+// PageSitePageService contains methods and other services that help with
 // interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewPageWebsitePageService] method instead.
-type PageWebsitePageService struct {
-	options []option.RequestOption
+// the [NewPageSitePageService] method instead.
+type PageSitePageService struct {
+	options       []option.RequestOption
+	AbTest        PageSitePageAbTestService
+	Batch         PageSitePageBatchService
+	Draft         PageSitePageDraftService
+	MultiLanguage PageSitePageMultiLanguageService
+	Revisions     PageSitePageRevisionService
 }
 
-// NewPageWebsitePageService generates a new service that applies the given options
-// to each request. These options are applied after the parent client's options (if
+// NewPageSitePageService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
-func NewPageWebsitePageService(opts ...option.RequestOption) (r PageWebsitePageService) {
-	r = PageWebsitePageService{}
+func NewPageSitePageService(opts ...option.RequestOption) (r PageSitePageService) {
+	r = PageSitePageService{}
 	r.options = opts
+	r.AbTest = NewPageSitePageAbTestService(opts...)
+	r.Batch = NewPageSitePageBatchService(opts...)
+	r.Draft = NewPageSitePageDraftService(opts...)
+	r.MultiLanguage = NewPageSitePageMultiLanguageService(opts...)
+	r.Revisions = NewPageSitePageRevisionService(opts...)
 	return
 }
 
 // Create a new website page.
-func (r *PageWebsitePageService) New(ctx context.Context, body PageWebsitePageNewParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageSitePageService) New(ctx context.Context, body PageSitePageNewParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/site-pages"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -49,7 +59,7 @@ func (r *PageWebsitePageService) New(ctx context.Context, body PageWebsitePageNe
 
 // Partially updates a single website page, specified by its ID. You only need to
 // specify the column values that you are modifying.
-func (r *PageWebsitePageService) Update(ctx context.Context, objectID string, params PageWebsitePageUpdateParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageSitePageService) Update(ctx context.Context, objectID string, params PageSitePageUpdateParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -63,7 +73,7 @@ func (r *PageWebsitePageService) Update(ctx context.Context, objectID string, pa
 // Retrieve all website pages. Supports paging and filtering. This method would be
 // useful for an integration that examined these models and used an external
 // service to suggest edits.
-func (r *PageWebsitePageService) List(ctx context.Context, query PageWebsitePageListParams, opts ...option.RequestOption) (res *pagination.Page[PagesPage], err error) {
+func (r *PageSitePageService) List(ctx context.Context, query PageSitePageListParams, opts ...option.RequestOption) (res *pagination.Page[PagesPage], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -83,12 +93,12 @@ func (r *PageWebsitePageService) List(ctx context.Context, query PageWebsitePage
 // Retrieve all website pages. Supports paging and filtering. This method would be
 // useful for an integration that examined these models and used an external
 // service to suggest edits.
-func (r *PageWebsitePageService) ListAutoPaging(ctx context.Context, query PageWebsitePageListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PagesPage] {
+func (r *PageSitePageService) ListAutoPaging(ctx context.Context, query PageSitePageListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PagesPage] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a website page, specified by its ID.
-func (r *PageWebsitePageService) Delete(ctx context.Context, objectID string, body PageWebsitePageDeleteParams, opts ...option.RequestOption) (err error) {
+func (r *PageSitePageService) Delete(ctx context.Context, objectID string, body PageSitePageDeleteParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if objectID == "" {
@@ -101,7 +111,7 @@ func (r *PageWebsitePageService) Delete(ctx context.Context, objectID string, bo
 }
 
 // Create a copy of an existing website page.
-func (r *PageWebsitePageService) Clone(ctx context.Context, body PageWebsitePageCloneParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageSitePageService) Clone(ctx context.Context, body PageSitePageCloneParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/site-pages/clone"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -109,7 +119,7 @@ func (r *PageWebsitePageService) Clone(ctx context.Context, body PageWebsitePage
 }
 
 // Retrieve a website page by its ID.
-func (r *PageWebsitePageService) Get(ctx context.Context, objectID string, query PageWebsitePageGetParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageSitePageService) Get(ctx context.Context, objectID string, query PageSitePageGetParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	if objectID == "" {
 		err = errors.New("missing required objectId parameter")
@@ -120,34 +130,8 @@ func (r *PageWebsitePageService) Get(ctx context.Context, objectID string, query
 	return res, err
 }
 
-// Retrieve the full draft version of a website page, specified by its ID.
-func (r *PageWebsitePageService) GetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/draft", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-// Take any changes from the draft version of the website page and apply them to
-// the live version.
-func (r *PageWebsitePageService) PublishDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/draft/push-live", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
-	return err
-}
-
 // Schedule a website page to published at a future time.
-func (r *PageWebsitePageService) Schedule(ctx context.Context, body PageWebsitePageScheduleParams, opts ...option.RequestOption) (err error) {
+func (r *PageSitePageService) Schedule(ctx context.Context, body PageSitePageScheduleParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/pages/2026-03/site-pages/schedule"
@@ -155,64 +139,42 @@ func (r *PageWebsitePageService) Schedule(ctx context.Context, body PageWebsiteP
 	return err
 }
 
-// Set a landing page as the primary language of a multi-language group.
-func (r *PageWebsitePageService) SetNewLangPrimary(ctx context.Context, body PageWebsitePageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "cms/pages/2026-03/landing-pages/multi-language/set-new-lang-primary"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, body, nil, opts...)
-	return err
-}
-
-// Partially update the draft version of a website page, specified by page ID. You
-// only need to specify the values for the details that you're modifying.
-func (r *PageWebsitePageService) UpdateDraft(ctx context.Context, objectID string, body PageWebsitePageUpdateDraftParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/draft", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
-}
-
-type PageWebsitePageNewParams struct {
+type PageSitePageNewParams struct {
 	PagesPage PagesPageParam
 	paramObj
 }
 
-func (r PageWebsitePageNewParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageNewParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PagesPage)
 }
-func (r *PageWebsitePageNewParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageNewParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageWebsitePageUpdateParams struct {
+type PageSitePageUpdateParams struct {
 	PagesPage PagesPageParam
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
-func (r PageWebsitePageUpdateParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageUpdateParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.PagesPage)
 }
-func (r *PageWebsitePageUpdateParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageUpdateParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// URLQuery serializes [PageWebsitePageUpdateParams]'s query parameters as
+// URLQuery serializes [PageSitePageUpdateParams]'s query parameters as
 // `url.Values`.
-func (r PageWebsitePageUpdateParams) URLQuery() (v url.Values, err error) {
+func (r PageSitePageUpdateParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageWebsitePageListParams struct {
+type PageSitePageListParams struct {
 	// The paging cursor token of the last successfully read resource will be returned
 	// as the `paging.next.after` JSON property of a paged response containing more
 	// results.
@@ -241,90 +203,64 @@ type PageWebsitePageListParams struct {
 	paramObj
 }
 
-// URLQuery serializes [PageWebsitePageListParams]'s query parameters as
-// `url.Values`.
-func (r PageWebsitePageListParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageSitePageListParams]'s query parameters as `url.Values`.
+func (r PageSitePageListParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageWebsitePageDeleteParams struct {
+type PageSitePageDeleteParams struct {
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool] `query:"archived,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [PageWebsitePageDeleteParams]'s query parameters as
+// URLQuery serializes [PageSitePageDeleteParams]'s query parameters as
 // `url.Values`.
-func (r PageWebsitePageDeleteParams) URLQuery() (v url.Values, err error) {
+func (r PageSitePageDeleteParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageWebsitePageCloneParams struct {
+type PageSitePageCloneParams struct {
 	ContentCloneRequestVNext ContentCloneRequestVNextParam
 	paramObj
 }
 
-func (r PageWebsitePageCloneParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageCloneParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentCloneRequestVNext)
 }
-func (r *PageWebsitePageCloneParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageCloneParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageWebsitePageGetParams struct {
+type PageSitePageGetParams struct {
 	// Whether to return only results that have been archived.
 	Archived param.Opt[bool]   `query:"archived,omitzero" json:"-"`
 	Property param.Opt[string] `query:"property,omitzero" json:"-"`
 	paramObj
 }
 
-// URLQuery serializes [PageWebsitePageGetParams]'s query parameters as
-// `url.Values`.
-func (r PageWebsitePageGetParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [PageSitePageGetParams]'s query parameters as `url.Values`.
+func (r PageSitePageGetParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type PageWebsitePageScheduleParams struct {
+type PageSitePageScheduleParams struct {
 	ContentScheduleRequestVNext ContentScheduleRequestVNextParam
 	paramObj
 }
 
-func (r PageWebsitePageScheduleParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageScheduleParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentScheduleRequestVNext)
 }
-func (r *PageWebsitePageScheduleParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PageWebsitePageSetNewLangPrimaryParams struct {
-	SetNewLanguagePrimaryRequestVNext SetNewLanguagePrimaryRequestVNextParam
-	paramObj
-}
-
-func (r PageWebsitePageSetNewLangPrimaryParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.SetNewLanguagePrimaryRequestVNext)
-}
-func (r *PageWebsitePageSetNewLangPrimaryParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PageWebsitePageUpdateDraftParams struct {
-	PagesPage PagesPageParam
-	paramObj
-}
-
-func (r PageWebsitePageUpdateDraftParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PagesPage)
-}
-func (r *PageWebsitePageUpdateDraftParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageScheduleParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

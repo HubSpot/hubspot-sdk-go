@@ -1347,7 +1347,7 @@ func (r *PropertyValueParam) UnmarshalJSON(data []byte) error {
 
 // Contains the Id of a Public Object
 type PublicObjectID struct {
-	// ID of the object
+	// The unique identifier for the public object.
 	ID string `json:"id" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1376,7 +1376,7 @@ func (r PublicObjectID) ToParam() PublicObjectIDParam {
 //
 // The property ID is required.
 type PublicObjectIDParam struct {
-	// ID of the object
+	// The unique identifier for the public object.
 	ID string `json:"id" api:"required"`
 	paramObj
 }

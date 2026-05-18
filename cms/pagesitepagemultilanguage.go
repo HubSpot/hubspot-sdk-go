@@ -13,27 +13,27 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/option"
 )
 
-// PageMultiLanguageService contains methods and other services that help with
-// interacting with the hubspot API.
+// PageSitePageMultiLanguageService contains methods and other services that help
+// with interacting with the hubspot API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewPageMultiLanguageService] method instead.
-type PageMultiLanguageService struct {
+// the [NewPageSitePageMultiLanguageService] method instead.
+type PageSitePageMultiLanguageService struct {
 	options []option.RequestOption
 }
 
-// NewPageMultiLanguageService generates a new service that applies the given
-// options to each request. These options are applied after the parent client's
-// options (if there is one), and before any request-specific options.
-func NewPageMultiLanguageService(opts ...option.RequestOption) (r PageMultiLanguageService) {
-	r = PageMultiLanguageService{}
+// NewPageSitePageMultiLanguageService generates a new service that applies the
+// given options to each request. These options are applied after the parent
+// client's options (if there is one), and before any request-specific options.
+func NewPageSitePageMultiLanguageService(opts ...option.RequestOption) (r PageSitePageMultiLanguageService) {
+	r = PageSitePageMultiLanguageService{}
 	r.options = opts
 	return
 }
 
 // Attach a site page to a multi-language group.
-func (r *PageMultiLanguageService) AttachToLangGroup(ctx context.Context, body PageMultiLanguageAttachToLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *PageSitePageMultiLanguageService) AttachToLangGroup(ctx context.Context, body PageSitePageMultiLanguageAttachToLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/pages/2026-03/site-pages/multi-language/attach-to-lang-group"
@@ -45,7 +45,7 @@ func (r *PageMultiLanguageService) AttachToLangGroup(ctx context.Context, body P
 // will be a copy of the draft state of the source page. To preview the content,
 // you can
 // [retrieve the draft of the source website page](/api-reference/latest/cms/pages/website-pages/drafts/get-website-page-draft).
-func (r *PageMultiLanguageService) NewLanguageVariation(ctx context.Context, body PageMultiLanguageNewLanguageVariationParams, opts ...option.RequestOption) (res *PagesPage, err error) {
+func (r *PageSitePageMultiLanguageService) NewLanguageVariation(ctx context.Context, body PageSitePageMultiLanguageNewLanguageVariationParams, opts ...option.RequestOption) (res *PagesPage, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "cms/pages/2026-03/site-pages/multi-language/create-language-variation"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -53,7 +53,7 @@ func (r *PageMultiLanguageService) NewLanguageVariation(ctx context.Context, bod
 }
 
 // Detach a website page from a multi-language group.
-func (r *PageMultiLanguageService) DetachFromLangGroup(ctx context.Context, body PageMultiLanguageDetachFromLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *PageSitePageMultiLanguageService) DetachFromLangGroup(ctx context.Context, body PageSitePageMultiLanguageDetachFromLangGroupParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/pages/2026-03/site-pages/multi-language/detach-from-lang-group"
@@ -62,7 +62,7 @@ func (r *PageMultiLanguageService) DetachFromLangGroup(ctx context.Context, body
 }
 
 // Set a site page as the primary language of a multi-language group.
-func (r *PageMultiLanguageService) SetNewLangPrimary(ctx context.Context, body PageMultiLanguageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
+func (r *PageSitePageMultiLanguageService) SetNewLangPrimary(ctx context.Context, body PageSitePageMultiLanguageSetNewLangPrimaryParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/pages/2026-03/site-pages/multi-language/set-new-lang-primary"
@@ -71,7 +71,7 @@ func (r *PageMultiLanguageService) SetNewLangPrimary(ctx context.Context, body P
 }
 
 // Explicitly set new languages for each site page in a multi-language group.
-func (r *PageMultiLanguageService) UpdateLanguages(ctx context.Context, body PageMultiLanguageUpdateLanguagesParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *PageSitePageMultiLanguageService) UpdateLanguages(ctx context.Context, body PageSitePageMultiLanguageUpdateLanguagesParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "cms/pages/2026-03/site-pages/multi-language/update-languages"
@@ -79,62 +79,62 @@ func (r *PageMultiLanguageService) UpdateLanguages(ctx context.Context, body Pag
 	return res, err
 }
 
-type PageMultiLanguageAttachToLangGroupParams struct {
+type PageSitePageMultiLanguageAttachToLangGroupParams struct {
 	AttachToLangPrimaryRequestVNext AttachToLangPrimaryRequestVNextParam
 	paramObj
 }
 
-func (r PageMultiLanguageAttachToLangGroupParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageMultiLanguageAttachToLangGroupParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.AttachToLangPrimaryRequestVNext)
 }
-func (r *PageMultiLanguageAttachToLangGroupParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageMultiLanguageAttachToLangGroupParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageMultiLanguageNewLanguageVariationParams struct {
+type PageSitePageMultiLanguageNewLanguageVariationParams struct {
 	ContentLanguageCloneRequestVNext ContentLanguageCloneRequestVNextParam
 	paramObj
 }
 
-func (r PageMultiLanguageNewLanguageVariationParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageMultiLanguageNewLanguageVariationParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentLanguageCloneRequestVNext)
 }
-func (r *PageMultiLanguageNewLanguageVariationParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageMultiLanguageNewLanguageVariationParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageMultiLanguageDetachFromLangGroupParams struct {
+type PageSitePageMultiLanguageDetachFromLangGroupParams struct {
 	DetachFromLangGroupRequestVNext DetachFromLangGroupRequestVNextParam
 	paramObj
 }
 
-func (r PageMultiLanguageDetachFromLangGroupParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageMultiLanguageDetachFromLangGroupParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.DetachFromLangGroupRequestVNext)
 }
-func (r *PageMultiLanguageDetachFromLangGroupParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageMultiLanguageDetachFromLangGroupParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageMultiLanguageSetNewLangPrimaryParams struct {
+type PageSitePageMultiLanguageSetNewLangPrimaryParams struct {
 	SetNewLanguagePrimaryRequestVNext SetNewLanguagePrimaryRequestVNextParam
 	paramObj
 }
 
-func (r PageMultiLanguageSetNewLangPrimaryParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageMultiLanguageSetNewLangPrimaryParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.SetNewLanguagePrimaryRequestVNext)
 }
-func (r *PageMultiLanguageSetNewLangPrimaryParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageMultiLanguageSetNewLangPrimaryParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type PageMultiLanguageUpdateLanguagesParams struct {
+type PageSitePageMultiLanguageUpdateLanguagesParams struct {
 	UpdateLanguagesRequestVNext UpdateLanguagesRequestVNextParam
 	paramObj
 }
 
-func (r PageMultiLanguageUpdateLanguagesParams) MarshalJSON() (data []byte, err error) {
+func (r PageSitePageMultiLanguageUpdateLanguagesParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.UpdateLanguagesRequestVNext)
 }
-func (r *PageMultiLanguageUpdateLanguagesParams) UnmarshalJSON(data []byte) error {
+func (r *PageSitePageMultiLanguageUpdateLanguagesParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

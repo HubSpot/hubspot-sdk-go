@@ -3,20 +3,11 @@
 package cms
 
 import (
-	"context"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
 	"time"
 
 	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
-	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
-	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
 	"github.com/HubSpot/hubspot-sdk-go/option"
-	"github.com/HubSpot/hubspot-sdk-go/packages/pagination"
 	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 	"github.com/HubSpot/hubspot-sdk-go/shared"
@@ -29,13 +20,9 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewPageService] method instead.
 type PageService struct {
-	options       []option.RequestOption
-	ABTests       PageABTestService
-	Batch         PageBatchService
-	Folders       PageFolderService
-	LandingPages  PageLandingPageService
-	MultiLanguage PageMultiLanguageService
-	WebsitePages  PageWebsitePageService
+	options      []option.RequestOption
+	LandingPages PageLandingPageService
+	SitePages    PageSitePageService
 }
 
 // NewPageService generates a new service that applies the given options to each
@@ -44,172 +31,9 @@ type PageService struct {
 func NewPageService(opts ...option.RequestOption) (r PageService) {
 	r = PageService{}
 	r.options = opts
-	r.ABTests = NewPageABTestService(opts...)
-	r.Batch = NewPageBatchService(opts...)
-	r.Folders = NewPageFolderService(opts...)
 	r.LandingPages = NewPageLandingPageService(opts...)
-	r.MultiLanguage = NewPageMultiLanguageService(opts...)
-	r.WebsitePages = NewPageWebsitePageService(opts...)
+	r.SitePages = NewPageSitePageService(opts...)
 	return
-}
-
-// Retrieve a previous version of a landing page, specified by page ID and revision
-// ID.
-func (r *PageService) GetLandingPageRevision(ctx context.Context, revisionID string, query PageGetLandingPageRevisionParams, opts ...option.RequestOption) (res *PageVersion, err error) {
-	opts = slices.Concat(r.options, opts)
-	if query.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/revisions/%s", url.PathEscape(query.ObjectID), url.PathEscape(revisionID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-// Retrieve a previous version of a website page by the revision ID.
-func (r *PageService) GetSitePageRevision(ctx context.Context, revisionID string, query PageGetSitePageRevisionParams, opts ...option.RequestOption) (res *PageVersion, err error) {
-	opts = slices.Concat(r.options, opts)
-	if query.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/revisions/%s", url.PathEscape(query.ObjectID), url.PathEscape(revisionID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-// Retrieve all the previous versions of a landing page, specified by page ID.
-func (r *PageService) ListLandingPageRevisions(ctx context.Context, objectID string, query PageListLandingPageRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[PageVersion], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/revisions", url.PathEscape(objectID))
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
-}
-
-// Retrieve all the previous versions of a landing page, specified by page ID.
-func (r *PageService) ListLandingPageRevisionsAutoPaging(ctx context.Context, objectID string, query PageListLandingPageRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[PageVersion] {
-	return pagination.NewPageAutoPager(r.ListLandingPageRevisions(ctx, objectID, query, opts...))
-}
-
-// Retrieves all the previous versions of a website page, specified by page ID.
-func (r *PageService) ListSitePageRevisions(ctx context.Context, objectID string, query PageListSitePageRevisionsParams, opts ...option.RequestOption) (res *pagination.Page[PageVersion], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/revisions", url.PathEscape(objectID))
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
-}
-
-// Retrieves all the previous versions of a website page, specified by page ID.
-func (r *PageService) ListSitePageRevisionsAutoPaging(ctx context.Context, objectID string, query PageListSitePageRevisionsParams, opts ...option.RequestOption) *pagination.PageAutoPager[PageVersion] {
-	return pagination.NewPageAutoPager(r.ListSitePageRevisions(ctx, objectID, query, opts...))
-}
-
-// Discards any edits and resets the draft to match the live version.
-func (r *PageService) ResetSitePageDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/draft/reset", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
-	return err
-}
-
-// Restores a previous version of a landing page, specified by page ID and revision
-// ID.
-func (r *PageService) RestoreLandingPageRevision(ctx context.Context, revisionID string, body PageRestoreLandingPageRevisionParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/revisions/%s/restore", url.PathEscape(body.ObjectID), url.PathEscape(revisionID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
-// Specify a previous version of a landing page to set as the page draft.
-func (r *PageService) RestoreLandingPageRevisionToDraft(ctx context.Context, revisionID int64, body PageRestoreLandingPageRevisionToDraftParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/revisions/%v/restore-to-draft", url.PathEscape(body.ObjectID), revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
-// Restores a website page to a previous version, specified by page ID and version
-// ID.
-func (r *PageService) RestoreSitePageRevision(ctx context.Context, revisionID string, body PageRestoreSitePageRevisionParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	if revisionID == "" {
-		err = errors.New("missing required revisionId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/revisions/%s/restore", url.PathEscape(body.ObjectID), url.PathEscape(revisionID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
-// Takes a specified version of a website page and sets it as the new draft version
-// of the page.
-func (r *PageService) RestoreSitePageRevisionToDraft(ctx context.Context, revisionID int64, body PageRestoreSitePageRevisionToDraftParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if body.ObjectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/site-pages/%s/revisions/%v/restore-to-draft", url.PathEscape(body.ObjectID), revisionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
 }
 
 // The properties AbTestID, WinnerID are required.
@@ -550,6 +374,7 @@ type ContentLanguageCloneRequestVNextParam struct {
 	Language param.Opt[string] `json:"language,omitzero"`
 	// Language of primary content to clone.
 	PrimaryLanguage param.Opt[string] `json:"primaryLanguage,omitzero"`
+	UsePublished    param.Opt[bool]   `json:"usePublished,omitzero"`
 	paramObj
 }
 
@@ -2100,74 +1925,4 @@ func (r PagesPageParam) MarshalJSON() (data []byte, err error) {
 }
 func (r *PagesPageParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
-}
-
-type PageGetLandingPageRevisionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type PageGetSitePageRevisionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type PageListLandingPageRevisionsParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
-	After  param.Opt[string] `query:"after,omitzero" json:"-"`
-	Before param.Opt[string] `query:"before,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	paramObj
-}
-
-// URLQuery serializes [PageListLandingPageRevisionsParams]'s query parameters as
-// `url.Values`.
-func (r PageListLandingPageRevisionsParams) URLQuery() (v url.Values, err error) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type PageListSitePageRevisionsParams struct {
-	// The paging cursor token of the last successfully read resource will be returned
-	// as the `paging.next.after` JSON property of a paged response containing more
-	// results.
-	After  param.Opt[string] `query:"after,omitzero" json:"-"`
-	Before param.Opt[string] `query:"before,omitzero" json:"-"`
-	// The maximum number of results to display per page.
-	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
-	paramObj
-}
-
-// URLQuery serializes [PageListSitePageRevisionsParams]'s query parameters as
-// `url.Values`.
-func (r PageListSitePageRevisionsParams) URLQuery() (v url.Values, err error) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type PageRestoreLandingPageRevisionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type PageRestoreLandingPageRevisionToDraftParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type PageRestoreSitePageRevisionParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
-}
-
-type PageRestoreSitePageRevisionToDraftParams struct {
-	ObjectID string `path:"objectId" api:"required" json:"-"`
-	paramObj
 }

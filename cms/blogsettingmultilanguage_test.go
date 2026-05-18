@@ -78,6 +78,7 @@ func TestBlogSettingMultiLanguageNewLanguageVariationWithOptionalParams(t *testi
 			Language:        hubspotsdk.String("language"),
 			PrimaryLanguage: hubspotsdk.String("primaryLanguage"),
 			Slug:            hubspotsdk.String("slug"),
+			UsePublished:    hubspotsdk.Bool(true),
 		},
 	})
 	if err != nil {
