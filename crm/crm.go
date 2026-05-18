@@ -70,14 +70,16 @@ func NewCrmService(opts ...option.RequestOption) (r CrmService) {
 // Defines the type, direction, and details of the relationship between two CRM
 // objects.
 type AssociationSpecWithLabel struct {
-	// The category of the association, such as HUBSPOT_DEFINED, USER_DEFINED, or
-	// INTEGRATOR_DEFINED.
+	// Association category. Can be HUBSPOT_DEFINED, USER_DEFINED, INTEGRATOR_DEFINED
+	// or WORK
 	//
 	// Any of "HUBSPOT_DEFINED", "INTEGRATOR_DEFINED", "USER_DEFINED", "WORK".
 	Category AssociationSpecWithLabelCategory `json:"category" api:"required"`
-	// The unique identifier for the type of association.
+	// An integer value used to uniquely identify a specific association type within
+	// its Association Category.
 	TypeID int64 `json:"typeId" api:"required"`
-	// A label describing the association between two objects.
+	// An optional descriptor that provides additional context about the relationship
+	// between associated records, such as "Mentor" and "Mentee".
 	Label string `json:"label"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -95,8 +97,8 @@ func (r *AssociationSpecWithLabel) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The category of the association, such as HUBSPOT_DEFINED, USER_DEFINED, or
-// INTEGRATOR_DEFINED.
+// Association category. Can be HUBSPOT_DEFINED, USER_DEFINED, INTEGRATOR_DEFINED
+// or WORK
 type AssociationSpecWithLabelCategory string
 
 const (
@@ -106,6 +108,152 @@ const (
 	AssociationSpecWithLabelCategoryWork              AssociationSpecWithLabelCategory = "WORK"
 )
 
+// The property Inputs is required.
+type BatchInputPublicAssociationMultiArchiveParam struct {
+	Inputs []PublicAssociationMultiArchiveParam `json:"inputs,omitzero" api:"required"`
+	paramObj
+}
+
+func (r BatchInputPublicAssociationMultiArchiveParam) MarshalJSON() (data []byte, err error) {
+	type shadow BatchInputPublicAssociationMultiArchiveParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *BatchInputPublicAssociationMultiArchiveParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property Inputs is required.
+type BatchInputPublicAssociationMultiPostParam struct {
+	Inputs []PublicAssociationMultiPostParam `json:"inputs,omitzero" api:"required"`
+	paramObj
+}
+
+func (r BatchInputPublicAssociationMultiPostParam) MarshalJSON() (data []byte, err error) {
+	type shadow BatchInputPublicAssociationMultiPostParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *BatchInputPublicAssociationMultiPostParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property Inputs is required.
+type BatchInputPublicDefaultAssociationMultiPostParam struct {
+	Inputs []PublicDefaultAssociationMultiPostParam `json:"inputs,omitzero" api:"required"`
+	paramObj
+}
+
+func (r BatchInputPublicDefaultAssociationMultiPostParam) MarshalJSON() (data []byte, err error) {
+	type shadow BatchInputPublicDefaultAssociationMultiPostParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *BatchInputPublicDefaultAssociationMultiPostParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property Inputs is required.
+type BatchInputPublicFetchAssociationsBatchRequestParam struct {
+	Inputs []PublicFetchAssociationsBatchRequestParam `json:"inputs,omitzero" api:"required"`
+	paramObj
+}
+
+func (r BatchInputPublicFetchAssociationsBatchRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow BatchInputPublicFetchAssociationsBatchRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *BatchInputPublicFetchAssociationsBatchRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type BatchResponseLabelsBetweenObjectPair struct {
+	// The timestamp when the batch processing was completed, in ISO 8601 format.
+	CompletedAt time.Time                 `json:"completedAt" api:"required" format:"date-time"`
+	Results     []LabelsBetweenObjectPair `json:"results" api:"required"`
+	// The timestamp when the batch processing began, in ISO 8601 format.
+	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
+	// The status of the batch processing request: "PENDING", "PROCESSING",
+	// "CANCELLED", or "COMPLETE".
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponseLabelsBetweenObjectPairStatus `json:"status" api:"required"`
+	// An object containing relevant links related to the batch request.
+	Links map[string]string `json:"links"`
+	// The timestamp when the batch request was initially made, in ISO 8601 format.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		CompletedAt respjson.Field
+		Results     respjson.Field
+		StartedAt   respjson.Field
+		Status      respjson.Field
+		Links       respjson.Field
+		RequestedAt respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r BatchResponseLabelsBetweenObjectPair) RawJSON() string { return r.JSON.raw }
+func (r *BatchResponseLabelsBetweenObjectPair) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The status of the batch processing request: "PENDING", "PROCESSING",
+// "CANCELLED", or "COMPLETE".
+type BatchResponseLabelsBetweenObjectPairStatus string
+
+const (
+	BatchResponseLabelsBetweenObjectPairStatusCanceled   BatchResponseLabelsBetweenObjectPairStatus = "CANCELED"
+	BatchResponseLabelsBetweenObjectPairStatusComplete   BatchResponseLabelsBetweenObjectPairStatus = "COMPLETE"
+	BatchResponseLabelsBetweenObjectPairStatusPending    BatchResponseLabelsBetweenObjectPairStatus = "PENDING"
+	BatchResponseLabelsBetweenObjectPairStatusProcessing BatchResponseLabelsBetweenObjectPairStatus = "PROCESSING"
+)
+
+type BatchResponsePublicAssociationMultiWithLabel struct {
+	// The timestamp when the batch processing was completed, in ISO 8601 format.
+	CompletedAt time.Time                         `json:"completedAt" api:"required" format:"date-time"`
+	Results     []PublicAssociationMultiWithLabel `json:"results" api:"required"`
+	// The timestamp when the batch processing began, in ISO 8601 format.
+	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
+	// The status of the batch processing request: "PENDING", "PROCESSING", "CANCELED",
+	// or "COMPLETE".
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponsePublicAssociationMultiWithLabelStatus `json:"status" api:"required"`
+	// An object containing relevant links related to the batch request.
+	Links map[string]string `json:"links"`
+	// The timestamp when the batch request was initially made, in ISO 8601 format.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		CompletedAt respjson.Field
+		Results     respjson.Field
+		StartedAt   respjson.Field
+		Status      respjson.Field
+		Links       respjson.Field
+		RequestedAt respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r BatchResponsePublicAssociationMultiWithLabel) RawJSON() string { return r.JSON.raw }
+func (r *BatchResponsePublicAssociationMultiWithLabel) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The status of the batch processing request: "PENDING", "PROCESSING", "CANCELED",
+// or "COMPLETE".
+type BatchResponsePublicAssociationMultiWithLabelStatus string
+
+const (
+	BatchResponsePublicAssociationMultiWithLabelStatusCanceled   BatchResponsePublicAssociationMultiWithLabelStatus = "CANCELED"
+	BatchResponsePublicAssociationMultiWithLabelStatusComplete   BatchResponsePublicAssociationMultiWithLabelStatus = "COMPLETE"
+	BatchResponsePublicAssociationMultiWithLabelStatusPending    BatchResponsePublicAssociationMultiWithLabelStatus = "PENDING"
+	BatchResponsePublicAssociationMultiWithLabelStatusProcessing BatchResponsePublicAssociationMultiWithLabelStatus = "PROCESSING"
+)
+
 // The response returned after performing a batch operation on associations.
 type BatchResponsePublicDefaultAssociation struct {
 	// The timestamp when the batch process was completed, in ISO 8601 format.
@@ -113,15 +261,15 @@ type BatchResponsePublicDefaultAssociation struct {
 	Results     []PublicDefaultAssociation `json:"results" api:"required"`
 	// The timestamp when the batch process began execution, in ISO 8601 format.
 	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
-	// The status of the batch processing request: "PENDING", "PROCESSING",
-	// "CANCELLED", or "COMPLETE".
+	// The status of the batch processing request. Can be: "PENDING", "PROCESSING",
+	// "CANCELED", or "COMPLETE".
 	//
 	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
 	Status BatchResponsePublicDefaultAssociationStatus `json:"status" api:"required"`
 	Errors []shared.StandardError                      `json:"errors"`
 	// An object containing relevant links related to the batch request.
 	Links map[string]string `json:"links"`
-	// The number of errors encountered during the batch processing.
+	// The total number of errors that occurred during the operation.
 	NumErrors int64 `json:"numErrors"`
 	// The timestamp when the batch process was initiated, in ISO 8601 format.
 	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
@@ -146,8 +294,8 @@ func (r *BatchResponsePublicDefaultAssociation) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The status of the batch processing request: "PENDING", "PROCESSING",
-// "CANCELLED", or "COMPLETE".
+// The status of the batch processing request. Can be: "PENDING", "PROCESSING",
+// "CANCELED", or "COMPLETE".
 type BatchResponsePublicDefaultAssociationStatus string
 
 const (
@@ -181,7 +329,7 @@ func (r *CollectionResponseMultiAssociatedObjectWithLabelForwardPaging) Unmarsha
 // total count of objects available.
 type CollectionResponseWithTotalSimplePublicObject struct {
 	Results []SimplePublicObject `json:"results" api:"required"`
-	// The total number of objects in the collection.
+	// The number of available results
 	Total  int64         `json:"total" api:"required"`
 	Paging shared.Paging `json:"paging"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -197,6 +345,31 @@ type CollectionResponseWithTotalSimplePublicObject struct {
 // Returns the unmodified JSON received from the API
 func (r CollectionResponseWithTotalSimplePublicObject) RawJSON() string { return r.JSON.raw }
 func (r *CollectionResponseWithTotalSimplePublicObject) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type DateTime struct {
+	// Indicates whether the DateTime value represents only a date without a time
+	// component.
+	DateOnly bool `json:"dateOnly" api:"required"`
+	// The integer value representing the shift in minutes from UTC for the DateTime
+	// value.
+	TimeZoneShift int64 `json:"timeZoneShift" api:"required"`
+	// The integer value representing a specific point in time.
+	Value int64 `json:"value" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		DateOnly      respjson.Field
+		TimeZoneShift respjson.Field
+		Value         respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r DateTime) RawJSON() string { return r.JSON.raw }
+func (r *DateTime) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -265,15 +438,14 @@ func (r *FilterGroupParam) UnmarshalJSON(data []byte) error {
 
 // The relationship descriptors applicable between two object types.
 type LabelsBetweenObjectPair struct {
-	// The ID of the source object in the association.
+	// Source unique ID of the object.
 	FromObjectID string `json:"fromObjectId" api:"required"`
-	// The type ID of the source object in the association.
-	FromObjectTypeID string `json:"fromObjectTypeId" api:"required"`
-	// An array of labels associated with the relationship between the objects.
-	Labels []string `json:"labels" api:"required"`
-	// The ID of the target object in the association.
+	// Source object type.
+	FromObjectTypeID string   `json:"fromObjectTypeId" api:"required"`
+	Labels           []string `json:"labels" api:"required"`
+	// Target unique ID of the object.
 	ToObjectID string `json:"toObjectId" api:"required"`
-	// The type ID of the target object in the association.
+	// Target object type.
 	ToObjectTypeID string `json:"toObjectTypeId" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -297,7 +469,7 @@ func (r *LabelsBetweenObjectPair) UnmarshalJSON(data []byte) error {
 // optional context.
 type MultiAssociatedObjectWithLabel struct {
 	AssociationTypes []AssociationSpecWithLabel `json:"associationTypes" api:"required"`
-	// The unique identifier for the target object in the association.
+	// Target unique ID of the object.
 	ToObjectID string `json:"toObjectId" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -311,6 +483,61 @@ type MultiAssociatedObjectWithLabel struct {
 // Returns the unmodified JSON received from the API
 func (r MultiAssociatedObjectWithLabel) RawJSON() string { return r.JSON.raw }
 func (r *MultiAssociatedObjectWithLabel) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties From, To are required.
+type PublicAssociationMultiArchiveParam struct {
+	// Contains the Id of a Public Object
+	From shared.PublicObjectIDParam   `json:"from,omitzero" api:"required"`
+	To   []shared.PublicObjectIDParam `json:"to,omitzero" api:"required"`
+	paramObj
+}
+
+func (r PublicAssociationMultiArchiveParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicAssociationMultiArchiveParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicAssociationMultiArchiveParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties From, To, Types are required.
+type PublicAssociationMultiPostParam struct {
+	// Contains the Id of a Public Object
+	From shared.PublicObjectIDParam `json:"from,omitzero" api:"required"`
+	// Contains the Id of a Public Object
+	To    shared.PublicObjectIDParam    `json:"to,omitzero" api:"required"`
+	Types []shared.AssociationSpecParam `json:"types,omitzero" api:"required"`
+	paramObj
+}
+
+func (r PublicAssociationMultiPostParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicAssociationMultiPostParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicAssociationMultiPostParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type PublicAssociationMultiWithLabel struct {
+	// Contains the Id of a Public Object
+	From   shared.PublicObjectID            `json:"from" api:"required"`
+	To     []MultiAssociatedObjectWithLabel `json:"to" api:"required"`
+	Paging shared.Paging                    `json:"paging"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		From        respjson.Field
+		To          respjson.Field
+		Paging      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r PublicAssociationMultiWithLabel) RawJSON() string { return r.JSON.raw }
+func (r *PublicAssociationMultiWithLabel) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -335,6 +562,41 @@ type PublicDefaultAssociation struct {
 // Returns the unmodified JSON received from the API
 func (r PublicDefaultAssociation) RawJSON() string { return r.JSON.raw }
 func (r *PublicDefaultAssociation) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties From, To are required.
+type PublicDefaultAssociationMultiPostParam struct {
+	// Contains the Id of a Public Object
+	From shared.PublicObjectIDParam `json:"from,omitzero" api:"required"`
+	// Contains the Id of a Public Object
+	To shared.PublicObjectIDParam `json:"to,omitzero" api:"required"`
+	paramObj
+}
+
+func (r PublicDefaultAssociationMultiPostParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicDefaultAssociationMultiPostParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicDefaultAssociationMultiPostParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property ID is required.
+type PublicFetchAssociationsBatchRequestParam struct {
+	// The unique identifier for the object whose associations are being fetched.
+	ID string `json:"id" api:"required"`
+	// A paging cursor token used to retrieve the next set of results in a paginated
+	// response.
+	After param.Opt[string] `json:"after,omitzero"`
+	paramObj
+}
+
+func (r PublicFetchAssociationsBatchRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow PublicFetchAssociationsBatchRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *PublicFetchAssociationsBatchRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -365,6 +627,28 @@ func (r *PublicObjectSearchRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type ReportCreationResponse struct {
+	EnqueueTime DateTime `json:"enqueueTime" api:"required"`
+	// Email of the user
+	UserEmail string `json:"userEmail" api:"required"`
+	// ID of the user
+	UserID int64 `json:"userId" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		EnqueueTime respjson.Field
+		UserEmail   respjson.Field
+		UserID      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ReportCreationResponse) RawJSON() string { return r.JSON.raw }
+func (r *ReportCreationResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 // A simple public object.
 type SimplePublicObject struct {
 	// The unique ID of the object.
@@ -379,7 +663,7 @@ type SimplePublicObject struct {
 	UpdatedAt time.Time `json:"updatedAt" api:"required" format:"date-time"`
 	// The timestamp when the object was archived, in ISO 8601 format.
 	ArchivedAt time.Time `json:"archivedAt" format:"date-time"`
-	// A unique identifier for tracing the creation request.
+	// An identifier used for tracing the write request for the object.
 	ObjectWriteTraceID string `json:"objectWriteTraceId"`
 	// Key-value pairs representing the properties of the object along with their
 	// history.

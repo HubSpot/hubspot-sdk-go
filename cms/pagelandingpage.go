@@ -27,7 +27,13 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewPageLandingPageService] method instead.
 type PageLandingPageService struct {
-	options []option.RequestOption
+	options       []option.RequestOption
+	AbTest        PageLandingPageAbTestService
+	Batch         PageLandingPageBatchService
+	Draft         PageLandingPageDraftService
+	Folders       PageLandingPageFolderService
+	MultiLanguage PageLandingPageMultiLanguageService
+	Revisions     PageLandingPageRevisionService
 }
 
 // NewPageLandingPageService generates a new service that applies the given options
@@ -36,6 +42,12 @@ type PageLandingPageService struct {
 func NewPageLandingPageService(opts ...option.RequestOption) (r PageLandingPageService) {
 	r = PageLandingPageService{}
 	r.options = opts
+	r.AbTest = NewPageLandingPageAbTestService(opts...)
+	r.Batch = NewPageLandingPageBatchService(opts...)
+	r.Draft = NewPageLandingPageDraftService(opts...)
+	r.Folders = NewPageLandingPageFolderService(opts...)
+	r.MultiLanguage = NewPageLandingPageMultiLanguageService(opts...)
+	r.Revisions = NewPageLandingPageRevisionService(opts...)
 	return
 }
 
@@ -122,45 +134,6 @@ func (r *PageLandingPageService) Get(ctx context.Context, objectID string, query
 	return res, err
 }
 
-// Retrieve the full draft version of a landing page, specified by page ID.
-func (r *PageLandingPageService) GetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/draft", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
-}
-
-// Take any changes from the draft version of the Landing Page and apply them to
-// the live version.
-func (r *PageLandingPageService) PushDraftLive(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/draft/push-live", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
-	return err
-}
-
-// Discards any edits and resets the draft to match the live version.
-func (r *PageLandingPageService) ResetDraft(ctx context.Context, objectID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/draft/reset", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, nil, opts...)
-	return err
-}
-
 // Schedule a landing page to be published.
 func (r *PageLandingPageService) Schedule(ctx context.Context, body PageLandingPageScheduleParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
@@ -168,19 +141,6 @@ func (r *PageLandingPageService) Schedule(ctx context.Context, body PageLandingP
 	path := "cms/pages/2026-03/landing-pages/schedule"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, nil, opts...)
 	return err
-}
-
-// Partially updates the draft version of a single landing page, specified by its
-// ID. You only need to specify the column values that you are modifying.
-func (r *PageLandingPageService) UpdateDraft(ctx context.Context, objectID string, body PageLandingPageUpdateDraftParams, opts ...option.RequestOption) (res *PagesPage, err error) {
-	opts = slices.Concat(r.options, opts)
-	if objectID == "" {
-		err = errors.New("missing required objectId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("cms/pages/2026-03/landing-pages/%s/draft", url.PathEscape(objectID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
 }
 
 type PageLandingPageNewParams struct {
@@ -307,17 +267,5 @@ func (r PageLandingPageScheduleParams) MarshalJSON() (data []byte, err error) {
 	return shimjson.Marshal(r.ContentScheduleRequestVNext)
 }
 func (r *PageLandingPageScheduleParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PageLandingPageUpdateDraftParams struct {
-	PagesPage PagesPageParam
-	paramObj
-}
-
-func (r PageLandingPageUpdateDraftParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PagesPage)
-}
-func (r *PageLandingPageUpdateDraftParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }

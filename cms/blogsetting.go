@@ -1136,7 +1136,8 @@ type BlogLanguageCloneRequestVNextParam struct {
 	// Language of primary blog to clone.
 	PrimaryLanguage param.Opt[string] `json:"primaryLanguage,omitzero"`
 	// Path to this blog.
-	Slug param.Opt[string] `json:"slug,omitzero"`
+	Slug         param.Opt[string] `json:"slug,omitzero"`
+	UsePublished param.Opt[bool]   `json:"usePublished,omitzero"`
 	paramObj
 }
 

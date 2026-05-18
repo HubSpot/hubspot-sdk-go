@@ -16,7 +16,7 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/shared"
 )
 
-func TestPageFolderNew(t *testing.T) {
+func TestPageLandingPageFolderNew(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -29,7 +29,7 @@ func TestPageFolderNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.New(context.TODO(), cms.PageFolderNewParams{
+	_, err := client.Cms.Pages.LandingPages.Folders.New(context.TODO(), cms.PageLandingPageFolderNewParams{
 		ContentFolder: cms.ContentFolderParam{
 			ID:             "id",
 			Category:       0,
@@ -49,7 +49,7 @@ func TestPageFolderNew(t *testing.T) {
 	}
 }
 
-func TestPageFolderUpdateWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderUpdateWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -62,10 +62,10 @@ func TestPageFolderUpdateWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.Update(
+	_, err := client.Cms.Pages.LandingPages.Folders.Update(
 		context.TODO(),
 		"objectId",
-		cms.PageFolderUpdateParams{
+		cms.PageLandingPageFolderUpdateParams{
 			ContentFolder: cms.ContentFolderParam{
 				ID:             "id",
 				Category:       0,
@@ -87,7 +87,7 @@ func TestPageFolderUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderListWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderListWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -100,7 +100,7 @@ func TestPageFolderListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.List(context.TODO(), cms.PageFolderListParams{
+	_, err := client.Cms.Pages.LandingPages.Folders.List(context.TODO(), cms.PageLandingPageFolderListParams{
 		After:         hubspotsdk.String("after"),
 		Archived:      hubspotsdk.Bool(true),
 		CreatedAfter:  hubspotsdk.Time(time.Now()),
@@ -122,7 +122,7 @@ func TestPageFolderListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderDeleteWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderDeleteWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -135,10 +135,10 @@ func TestPageFolderDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	err := client.Cms.Pages.Folders.Delete(
+	err := client.Cms.Pages.LandingPages.Folders.Delete(
 		context.TODO(),
 		"objectId",
-		cms.PageFolderDeleteParams{
+		cms.PageLandingPageFolderDeleteParams{
 			Archived: hubspotsdk.Bool(true),
 		},
 	)
@@ -151,7 +151,7 @@ func TestPageFolderDeleteWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderBatchGetWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderBatchGetWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -164,7 +164,7 @@ func TestPageFolderBatchGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.BatchGet(context.TODO(), cms.PageFolderBatchGetParams{
+	_, err := client.Cms.Pages.LandingPages.Folders.BatchGet(context.TODO(), cms.PageLandingPageFolderBatchGetParams{
 		BatchInputString: shared.BatchInputStringParam{
 			Inputs: []string{"string"},
 		},
@@ -179,7 +179,7 @@ func TestPageFolderBatchGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderGetWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderNewFolders(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -192,10 +192,72 @@ func TestPageFolderGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.Get(
+	_, err := client.Cms.Pages.LandingPages.Folders.NewFolders(context.TODO(), cms.PageLandingPageFolderNewFoldersParams{
+		BatchInputContentFolder: cms.BatchInputContentFolderParam{
+			Inputs: []cms.ContentFolderParam{{
+				ID:             "id",
+				Category:       0,
+				Created:        time.Now(),
+				DeletedAt:      time.Now(),
+				Name:           "name",
+				ParentFolderID: 0,
+				Updated:        time.Now(),
+			}},
+		},
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestPageLandingPageFolderDeleteFolders(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	err := client.Cms.Pages.LandingPages.Folders.DeleteFolders(context.TODO(), cms.PageLandingPageFolderDeleteFoldersParams{
+		BatchInputString: shared.BatchInputStringParam{
+			Inputs: []string{"string"},
+		},
+	})
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestPageLandingPageFolderGetWithOptionalParams(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	_, err := client.Cms.Pages.LandingPages.Folders.Get(
 		context.TODO(),
 		"objectId",
-		cms.PageFolderGetParams{
+		cms.PageLandingPageFolderGetParams{
 			Archived: hubspotsdk.Bool(true),
 			Property: hubspotsdk.String("property"),
 		},
@@ -209,7 +271,7 @@ func TestPageFolderGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderGetRevision(t *testing.T) {
+func TestPageLandingPageFolderGetRevision(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -222,10 +284,10 @@ func TestPageFolderGetRevision(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.GetRevision(
+	_, err := client.Cms.Pages.LandingPages.Folders.GetRevision(
 		context.TODO(),
 		"revisionId",
-		cms.PageFolderGetRevisionParams{
+		cms.PageLandingPageFolderGetRevisionParams{
 			ObjectID: "objectId",
 		},
 	)
@@ -238,7 +300,7 @@ func TestPageFolderGetRevision(t *testing.T) {
 	}
 }
 
-func TestPageFolderListRevisionsWithOptionalParams(t *testing.T) {
+func TestPageLandingPageFolderListRevisionsWithOptionalParams(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -251,10 +313,10 @@ func TestPageFolderListRevisionsWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.ListRevisions(
+	_, err := client.Cms.Pages.LandingPages.Folders.ListRevisions(
 		context.TODO(),
 		"objectId",
-		cms.PageFolderListRevisionsParams{
+		cms.PageLandingPageFolderListRevisionsParams{
 			After:  hubspotsdk.String("after"),
 			Before: hubspotsdk.String("before"),
 			Limit:  hubspotsdk.Int(0),
@@ -269,7 +331,7 @@ func TestPageFolderListRevisionsWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPageFolderRestoreRevision(t *testing.T) {
+func TestPageLandingPageFolderRestoreRevision(t *testing.T) {
 	t.Skip("Mock server tests are disabled")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -282,13 +344,41 @@ func TestPageFolderRestoreRevision(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAccessToken("My Access Token"),
 	)
-	_, err := client.Cms.Pages.Folders.RestoreRevision(
+	_, err := client.Cms.Pages.LandingPages.Folders.RestoreRevision(
 		context.TODO(),
 		"revisionId",
-		cms.PageFolderRestoreRevisionParams{
+		cms.PageLandingPageFolderRestoreRevisionParams{
 			ObjectID: "objectId",
 		},
 	)
+	if err != nil {
+		var apierr *hubspotsdk.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestPageLandingPageFolderUpdateFoldersWithOptionalParams(t *testing.T) {
+	t.Skip("Mock server tests are disabled")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := hubspotsdk.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAccessToken("My Access Token"),
+	)
+	_, err := client.Cms.Pages.LandingPages.Folders.UpdateFolders(context.TODO(), cms.PageLandingPageFolderUpdateFoldersParams{
+		BatchInputJsonNode: cms.BatchInputJsonNodeParam{
+			Inputs: []any{map[string]any{}},
+		},
+		Archived: hubspotsdk.Bool(true),
+	})
 	if err != nil {
 		var apierr *hubspotsdk.Error
 		if errors.As(err, &apierr) {

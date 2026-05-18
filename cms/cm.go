@@ -54,7 +54,7 @@ func NewCmService(opts ...option.RequestOption) (r CmService) {
 type Angle struct {
 	// The unit of measurement for the angle.
 	//
-	// Any of "deg", "grad", "rad", "turn".
+	// Any of "DEGREES", "GRADIANS", "RADIANS", "TURNS".
 	Units AngleUnits `json:"units" api:"required"`
 	// The numerical representation of the angle.
 	Value float64 `json:"value" api:"required"`
@@ -86,17 +86,17 @@ func (r Angle) ToParam() AngleParam {
 type AngleUnits string
 
 const (
-	AngleUnitsDeg  AngleUnits = "deg"
-	AngleUnitsGrad AngleUnits = "grad"
-	AngleUnitsRad  AngleUnits = "rad"
-	AngleUnitsTurn AngleUnits = "turn"
+	AngleUnitsDegrees  AngleUnits = "DEGREES"
+	AngleUnitsGradians AngleUnits = "GRADIANS"
+	AngleUnitsRadians  AngleUnits = "RADIANS"
+	AngleUnitsTurns    AngleUnits = "TURNS"
 )
 
 // The properties Units, Value are required.
 type AngleParam struct {
 	// The unit of measurement for the angle.
 	//
-	// Any of "deg", "grad", "rad", "turn".
+	// Any of "DEGREES", "GRADIANS", "RADIANS", "TURNS".
 	Units AngleUnits `json:"units,omitzero" api:"required"`
 	// The numerical representation of the angle.
 	Value float64 `json:"value" api:"required"`
@@ -2754,8 +2754,8 @@ func (r *SideOrCornerParam) UnmarshalJSON(data []byte) error {
 }
 
 type Size struct {
-	// Any of "%", "ch", "cm", "em", "ex", "in", "lh", "mm", "pc", "pt", "px", "Q",
-	// "rem", "vh", "vmax", "vmin", "vw".
+	// Any of "CH", "CM", "EM", "EX", "IN", "LH", "MM", "PC", "PERCENTAGE", "PT", "PX",
+	// "Q", "REM", "VH", "VMAX", "VMIN", "VW".
 	Units SizeUnits `json:"units" api:"required"`
 	Value float64   `json:"value" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -2785,29 +2785,29 @@ func (r Size) ToParam() SizeParam {
 type SizeUnits string
 
 const (
-	SizeUnitsPercent SizeUnits = "%"
-	SizeUnitsCh      SizeUnits = "ch"
-	SizeUnitsCm      SizeUnits = "cm"
-	SizeUnitsEm      SizeUnits = "em"
-	SizeUnitsEx      SizeUnits = "ex"
-	SizeUnitsIn      SizeUnits = "in"
-	SizeUnitsLh      SizeUnits = "lh"
-	SizeUnitsMm      SizeUnits = "mm"
-	SizeUnitsPc      SizeUnits = "pc"
-	SizeUnitsPt      SizeUnits = "pt"
-	SizeUnitsPx      SizeUnits = "px"
-	SizeUnitsQ       SizeUnits = "Q"
-	SizeUnitsRem     SizeUnits = "rem"
-	SizeUnitsVh      SizeUnits = "vh"
-	SizeUnitsVmax    SizeUnits = "vmax"
-	SizeUnitsVmin    SizeUnits = "vmin"
-	SizeUnitsVw      SizeUnits = "vw"
+	SizeUnitsCh         SizeUnits = "CH"
+	SizeUnitsCm         SizeUnits = "CM"
+	SizeUnitsEm         SizeUnits = "EM"
+	SizeUnitsEx         SizeUnits = "EX"
+	SizeUnitsIn         SizeUnits = "IN"
+	SizeUnitsLh         SizeUnits = "LH"
+	SizeUnitsMm         SizeUnits = "MM"
+	SizeUnitsPc         SizeUnits = "PC"
+	SizeUnitsPercentage SizeUnits = "PERCENTAGE"
+	SizeUnitsPt         SizeUnits = "PT"
+	SizeUnitsPx         SizeUnits = "PX"
+	SizeUnitsQ          SizeUnits = "Q"
+	SizeUnitsRem        SizeUnits = "REM"
+	SizeUnitsVh         SizeUnits = "VH"
+	SizeUnitsVmax       SizeUnits = "VMAX"
+	SizeUnitsVmin       SizeUnits = "VMIN"
+	SizeUnitsVw         SizeUnits = "VW"
 )
 
 // The properties Units, Value are required.
 type SizeParam struct {
-	// Any of "%", "ch", "cm", "em", "ex", "in", "lh", "mm", "pc", "pt", "px", "Q",
-	// "rem", "vh", "vmax", "vmin", "vw".
+	// Any of "CH", "CM", "EM", "EX", "IN", "LH", "MM", "PC", "PERCENTAGE", "PT", "PX",
+	// "Q", "REM", "VH", "VMAX", "VMIN", "VW".
 	Units SizeUnits `json:"units,omitzero" api:"required"`
 	Value float64   `json:"value" api:"required"`
 	paramObj

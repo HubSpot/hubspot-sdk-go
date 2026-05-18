@@ -4983,10 +4983,10 @@ func (r *EmailNewAbTestVariationParams) UnmarshalJSON(data []byte) error {
 }
 
 type EmailGetParams struct {
-	EndTimestamp   param.Opt[string] `query:"endTimestamp,omitzero" json:"-"`
-	Property       param.Opt[string] `query:"property,omitzero" json:"-"`
-	StartTimestamp param.Opt[string] `query:"startTimestamp,omitzero" json:"-"`
-	EmailIDs       []int64           `query:"emailIds,omitzero" json:"-"`
+	EndTimestamp   param.Opt[time.Time] `query:"endTimestamp,omitzero" format:"date-time" json:"-"`
+	Property       param.Opt[string]    `query:"property,omitzero" json:"-"`
+	StartTimestamp param.Opt[time.Time] `query:"startTimestamp,omitzero" format:"date-time" json:"-"`
+	EmailIDs       []int64              `query:"emailIds,omitzero" json:"-"`
 	paramObj
 }
 
@@ -5019,9 +5019,9 @@ func (r EmailGetAbTestVariationParams) URLQuery() (v url.Values, err error) {
 }
 
 type EmailGetHistogramParams struct {
-	EndTimestamp   param.Opt[string] `query:"endTimestamp,omitzero" json:"-"`
-	StartTimestamp param.Opt[string] `query:"startTimestamp,omitzero" json:"-"`
-	EmailIDs       []int64           `query:"emailIds,omitzero" json:"-"`
+	EndTimestamp   param.Opt[time.Time] `query:"endTimestamp,omitzero" format:"date-time" json:"-"`
+	StartTimestamp param.Opt[time.Time] `query:"startTimestamp,omitzero" format:"date-time" json:"-"`
+	EmailIDs       []int64              `query:"emailIds,omitzero" json:"-"`
 	// Any of "DAY", "HOUR", "MINUTE", "MONTH", "QUARTER", "QUARTER_HOUR", "SECOND",
 	// "WEEK", "YEAR".
 	Interval EmailGetHistogramParamsInterval `query:"interval,omitzero" json:"-"`

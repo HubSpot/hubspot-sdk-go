@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/HubSpot/hubspot-sdk-go"
 	"github.com/HubSpot/hubspot-sdk-go/crm"
@@ -711,8 +712,8 @@ func TestListGetSizeAndEditsHistoryBetweenWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"listId",
 		crm.ListGetSizeAndEditsHistoryBetweenParams{
-			EndDate:   hubspotsdk.String("endDate"),
-			StartDate: hubspotsdk.String("startDate"),
+			EndDate:   hubspotsdk.Time(time.Now()),
+			StartDate: hubspotsdk.Time(time.Now()),
 		},
 	)
 	if err != nil {

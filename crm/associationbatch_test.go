@@ -30,11 +30,23 @@ func TestAssociationBatchNew(t *testing.T) {
 	)
 	_, err := client.Crm.Associations.Batch.New(
 		context.TODO(),
-		"toObjectId",
+		"toObjectType",
 		crm.AssociationBatchNewParams{
 			FromObjectType: "fromObjectType",
-			FromObjectID:   "fromObjectId",
-			ToObjectType:   "toObjectType",
+			BatchInputPublicAssociationMultiPost: crm.BatchInputPublicAssociationMultiPostParam{
+				Inputs: []crm.PublicAssociationMultiPostParam{{
+					From: shared.PublicObjectIDParam{
+						ID: "id",
+					},
+					To: shared.PublicObjectIDParam{
+						ID: "id",
+					},
+					Types: []shared.AssociationSpecParam{{
+						AssociationCategory: shared.AssociationSpecAssociationCategoryHubSpotDefined,
+						AssociationTypeID:   0,
+					}},
+				}},
+			},
 		},
 	)
 	if err != nil {

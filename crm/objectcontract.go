@@ -10,9 +10,7 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
 	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
-	shimjson "github.com/HubSpot/hubspot-sdk-go/internal/encoding/json"
 	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
 	"github.com/HubSpot/hubspot-sdk-go/option"
 	"github.com/HubSpot/hubspot-sdk-go/packages/pagination"
@@ -40,34 +38,6 @@ func NewObjectContractService(opts ...option.RequestOption) (r ObjectContractSer
 	return
 }
 
-// Create a contract with the given properties and return a copy of the object,
-// including the ID. Documentation and examples for creating standard contracts is
-// provided.
-func (r *ObjectContractService) New(ctx context.Context, body ObjectContractNewParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	path := "crm/objects/2026-03/contracts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-// Perform a partial update of an Object identified by `{contractId}`or optionally
-// a unique property value as specified by the `idProperty` query param.
-// `{contractId}` refers to the internal object ID by default, and the `idProperty`
-// query param refers to a property whose values are unique for the object.
-// Provided property values will be overwritten. Read-only and non-existent
-// properties will result in an error. Properties values can be cleared by passing
-// an empty string.
-func (r *ObjectContractService) Update(ctx context.Context, contractID string, params ObjectContractUpdateParams, opts ...option.RequestOption) (res *SimplePublicObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	if contractID == "" {
-		err = errors.New("missing required contractId parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("crm/objects/2026-03/contracts/%s", url.PathEscape(contractID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
-	return res, err
-}
-
 // Read a page of contracts. Control what is returned via the `properties` query
 // param.
 func (r *ObjectContractService) List(ctx context.Context, query ObjectContractListParams, opts ...option.RequestOption) (res *pagination.Page[SimplePublicObjectWithAssociations], err error) {
@@ -93,19 +63,6 @@ func (r *ObjectContractService) ListAutoPaging(ctx context.Context, query Object
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Move an Object identified by `{contractId}` to the recycling bin.
-func (r *ObjectContractService) Delete(ctx context.Context, contractID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if contractID == "" {
-		err = errors.New("missing required contractId parameter")
-		return err
-	}
-	path := fmt.Sprintf("crm/objects/2026-03/contracts/%s", url.PathEscape(contractID))
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
-}
-
 // Read an Object identified by `{contractId}`. `{contractId}` refers to the
 // internal object ID by default, or optionally any unique property value as
 // specified by the `idProperty` query param. Control what is returned via the
@@ -119,56 +76,6 @@ func (r *ObjectContractService) Get(ctx context.Context, contractID string, quer
 	path := fmt.Sprintf("crm/objects/2026-03/contracts/%s", url.PathEscape(contractID))
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
-}
-
-// Execute a search query to find contracts based on defined filters, properties,
-// and sorting options. This allows for retrieving specific contract records that
-// match the search criteria.
-func (r *ObjectContractService) Search(ctx context.Context, body ObjectContractSearchParams, opts ...option.RequestOption) (res *CollectionResponseWithTotalSimplePublicObject, err error) {
-	opts = slices.Concat(r.options, opts)
-	path := "crm/objects/2026-03/contracts/search"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
-}
-
-type ObjectContractNewParams struct {
-	// Is the input object used to create a new CRM object, containing the properties
-	// to be set and optional associations to link the new record with other CRM
-	// objects.
-	SimplePublicObjectInputForCreate SimplePublicObjectInputForCreateParam
-	paramObj
-}
-
-func (r ObjectContractNewParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.SimplePublicObjectInputForCreate)
-}
-func (r *ObjectContractNewParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ObjectContractUpdateParams struct {
-	// Represents the input required to create or update a CRM object, containing an
-	// object with property names and their corresponding values.
-	SimplePublicObjectInput SimplePublicObjectInputParam
-	// The name of a property whose values are unique for this object type
-	IDProperty param.Opt[string] `query:"idProperty,omitzero" json:"-"`
-	paramObj
-}
-
-func (r ObjectContractUpdateParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.SimplePublicObjectInput)
-}
-func (r *ObjectContractUpdateParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// URLQuery serializes [ObjectContractUpdateParams]'s query parameters as
-// `url.Values`.
-func (r ObjectContractUpdateParams) URLQuery() (v url.Values, err error) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
 }
 
 type ObjectContractListParams struct {
@@ -230,17 +137,4 @@ func (r ObjectContractGetParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
-}
-
-type ObjectContractSearchParams struct {
-	// Describes a search request
-	PublicObjectSearchRequest PublicObjectSearchRequestParam
-	paramObj
-}
-
-func (r ObjectContractSearchParams) MarshalJSON() (data []byte, err error) {
-	return shimjson.Marshal(r.PublicObjectSearchRequest)
-}
-func (r *ObjectContractSearchParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
 }

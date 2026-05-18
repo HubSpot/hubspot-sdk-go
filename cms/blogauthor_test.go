@@ -283,6 +283,7 @@ func TestBlogAuthorNewLanguageVariationWithOptionalParams(t *testing.T) {
 			},
 			Language:        hubspotsdk.String("language"),
 			PrimaryLanguage: hubspotsdk.String("primaryLanguage"),
+			UsePublished:    hubspotsdk.Bool(true),
 		},
 	})
 	if err != nil {

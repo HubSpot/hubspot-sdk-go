@@ -247,6 +247,7 @@ func TestBlogTagNewLangVariationWithOptionalParams(t *testing.T) {
 			Name:            "name",
 			Language:        hubspotsdk.String("language"),
 			PrimaryLanguage: hubspotsdk.String("primaryLanguage"),
+			UsePublished:    hubspotsdk.Bool(true),
 		},
 	})
 	if err != nil {
