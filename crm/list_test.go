@@ -50,35 +50,15 @@ func TestListNewWithOptionalParams(t *testing.T) {
 														OfUnifiedEvents: &crm.PublicUnifiedEventsFilterBranchParam{
 															EventTypeID: "eventTypeId",
 															FilterBranches: []crm.PublicUnifiedEventsFilterBranchFilterBranchUnionParam{{
-																OfPropertyAssociation: &crm.PublicPropertyAssociationFilterBranchParam{
-																	FilterBranches: []crm.PublicPropertyAssociationFilterBranchFilterBranchUnionParam{{
-																		OfAssociation: &crm.PublicAssociationFilterBranchParam{
-																			AssociationCategory: "associationCategory",
-																			AssociationTypeID:   0,
-																			FilterBranches: []crm.PublicAssociationFilterBranchFilterBranchUnionParam{{
-																				OfOr: &crm.PublicOrFilterBranchParam{
-																					FilterBranches:       []crm.PublicOrFilterBranchFilterBranchUnionParam{},
-																					FilterBranchOperator: "filterBranchOperator",
-																					FilterBranchType:     crm.PublicOrFilterBranchFilterBranchTypeOr,
-																					Filters: []crm.PublicOrFilterBranchFilterUnionParam{{
-																						OfProperty: &crm.PublicPropertyFilterParam{
-																							FilterType: crm.PublicPropertyFilterFilterTypeProperty,
-																							Operation: crm.PublicPropertyFilterOperationUnionParam{
-																								OfBool: &crm.PublicBoolPropertyOperationParam{
-																									IncludeObjectsWithNoValueSet: true,
-																									OperationType:                crm.PublicBoolPropertyOperationOperationTypeBool,
-																									Operator:                     "operator",
-																									Value:                        true,
-																								},
-																							},
-																							Property: "property",
-																						},
-																					}},
-																				},
-																			}},
+																OfAssociation: &crm.PublicAssociationFilterBranchParam{
+																	AssociationCategory: "associationCategory",
+																	AssociationTypeID:   0,
+																	FilterBranches: []crm.PublicAssociationFilterBranchFilterBranchUnionParam{{
+																		OfOr: &crm.PublicOrFilterBranchParam{
+																			FilterBranches:       []crm.PublicOrFilterBranchFilterBranchUnionParam{},
 																			FilterBranchOperator: "filterBranchOperator",
-																			FilterBranchType:     crm.PublicAssociationFilterBranchFilterBranchTypeAssociation,
-																			Filters: []crm.PublicAssociationFilterBranchFilterUnionParam{{
+																			FilterBranchType:     crm.PublicOrFilterBranchFilterBranchTypeOr,
+																			Filters: []crm.PublicOrFilterBranchFilterUnionParam{{
 																				OfProperty: &crm.PublicPropertyFilterParam{
 																					FilterType: crm.PublicPropertyFilterFilterTypeProperty,
 																					Operation: crm.PublicPropertyFilterOperationUnionParam{
@@ -92,13 +72,11 @@ func TestListNewWithOptionalParams(t *testing.T) {
 																					Property: "property",
 																				},
 																			}},
-																			ObjectTypeID: "objectTypeId",
-																			Operator:     "operator",
 																		},
 																	}},
 																	FilterBranchOperator: "filterBranchOperator",
-																	FilterBranchType:     crm.PublicPropertyAssociationFilterBranchFilterBranchTypePropertyAssociation,
-																	Filters: []crm.PublicPropertyAssociationFilterBranchFilterUnionParam{{
+																	FilterBranchType:     crm.PublicAssociationFilterBranchFilterBranchTypeAssociation,
+																	Filters: []crm.PublicAssociationFilterBranchFilterUnionParam{{
 																		OfProperty: &crm.PublicPropertyFilterParam{
 																			FilterType: crm.PublicPropertyFilterFilterTypeProperty,
 																			Operation: crm.PublicPropertyFilterOperationUnionParam{
@@ -112,9 +90,8 @@ func TestListNewWithOptionalParams(t *testing.T) {
 																			Property: "property",
 																		},
 																	}},
-																	ObjectTypeID:         "objectTypeId",
-																	Operator:             "operator",
-																	PropertyWithObjectID: "propertyWithObjectId",
+																	ObjectTypeID: "objectTypeId",
+																	Operator:     "operator",
 																},
 															}},
 															FilterBranchOperator: "filterBranchOperator",
@@ -1008,35 +985,15 @@ func TestListUpdateListFiltersWithOptionalParams(t *testing.T) {
 															OfUnifiedEvents: &crm.PublicUnifiedEventsFilterBranchParam{
 																EventTypeID: "eventTypeId",
 																FilterBranches: []crm.PublicUnifiedEventsFilterBranchFilterBranchUnionParam{{
-																	OfPropertyAssociation: &crm.PublicPropertyAssociationFilterBranchParam{
-																		FilterBranches: []crm.PublicPropertyAssociationFilterBranchFilterBranchUnionParam{{
-																			OfAssociation: &crm.PublicAssociationFilterBranchParam{
-																				AssociationCategory: "associationCategory",
-																				AssociationTypeID:   0,
-																				FilterBranches: []crm.PublicAssociationFilterBranchFilterBranchUnionParam{{
-																					OfOr: &crm.PublicOrFilterBranchParam{
-																						FilterBranches:       []crm.PublicOrFilterBranchFilterBranchUnionParam{},
-																						FilterBranchOperator: "filterBranchOperator",
-																						FilterBranchType:     crm.PublicOrFilterBranchFilterBranchTypeOr,
-																						Filters: []crm.PublicOrFilterBranchFilterUnionParam{{
-																							OfProperty: &crm.PublicPropertyFilterParam{
-																								FilterType: crm.PublicPropertyFilterFilterTypeProperty,
-																								Operation: crm.PublicPropertyFilterOperationUnionParam{
-																									OfBool: &crm.PublicBoolPropertyOperationParam{
-																										IncludeObjectsWithNoValueSet: true,
-																										OperationType:                crm.PublicBoolPropertyOperationOperationTypeBool,
-																										Operator:                     "operator",
-																										Value:                        true,
-																									},
-																								},
-																								Property: "property",
-																							},
-																						}},
-																					},
-																				}},
+																	OfAssociation: &crm.PublicAssociationFilterBranchParam{
+																		AssociationCategory: "associationCategory",
+																		AssociationTypeID:   0,
+																		FilterBranches: []crm.PublicAssociationFilterBranchFilterBranchUnionParam{{
+																			OfOr: &crm.PublicOrFilterBranchParam{
+																				FilterBranches:       []crm.PublicOrFilterBranchFilterBranchUnionParam{},
 																				FilterBranchOperator: "filterBranchOperator",
-																				FilterBranchType:     crm.PublicAssociationFilterBranchFilterBranchTypeAssociation,
-																				Filters: []crm.PublicAssociationFilterBranchFilterUnionParam{{
+																				FilterBranchType:     crm.PublicOrFilterBranchFilterBranchTypeOr,
+																				Filters: []crm.PublicOrFilterBranchFilterUnionParam{{
 																					OfProperty: &crm.PublicPropertyFilterParam{
 																						FilterType: crm.PublicPropertyFilterFilterTypeProperty,
 																						Operation: crm.PublicPropertyFilterOperationUnionParam{
@@ -1050,13 +1007,11 @@ func TestListUpdateListFiltersWithOptionalParams(t *testing.T) {
 																						Property: "property",
 																					},
 																				}},
-																				ObjectTypeID: "objectTypeId",
-																				Operator:     "operator",
 																			},
 																		}},
 																		FilterBranchOperator: "filterBranchOperator",
-																		FilterBranchType:     crm.PublicPropertyAssociationFilterBranchFilterBranchTypePropertyAssociation,
-																		Filters: []crm.PublicPropertyAssociationFilterBranchFilterUnionParam{{
+																		FilterBranchType:     crm.PublicAssociationFilterBranchFilterBranchTypeAssociation,
+																		Filters: []crm.PublicAssociationFilterBranchFilterUnionParam{{
 																			OfProperty: &crm.PublicPropertyFilterParam{
 																				FilterType: crm.PublicPropertyFilterFilterTypeProperty,
 																				Operation: crm.PublicPropertyFilterOperationUnionParam{
@@ -1070,9 +1025,8 @@ func TestListUpdateListFiltersWithOptionalParams(t *testing.T) {
 																				Property: "property",
 																			},
 																		}},
-																		ObjectTypeID:         "objectTypeId",
-																		Operator:             "operator",
-																		PropertyWithObjectID: "propertyWithObjectId",
+																		ObjectTypeID: "objectTypeId",
+																		Operator:     "operator",
 																	},
 																}},
 																FilterBranchOperator: "filterBranchOperator",
@@ -1259,7 +1213,7 @@ func TestListUpdateScheduleConversion(t *testing.T) {
 		"listId",
 		crm.ListUpdateScheduleConversionParams{
 			PublicListConversionTime: crm.PublicListConversionTimeUnionParam{
-				OfConversionDate: &crm.PublicListConversionDateParam{
+				OfPublicListConversionDate: &crm.PublicListConversionDateParam{
 					ConversionType: crm.PublicListConversionDateConversionTypeConversionDate,
 					Day:            0,
 					Month:          0,

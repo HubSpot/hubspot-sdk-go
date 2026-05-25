@@ -288,21 +288,21 @@ type ExternalCalendarMeetingEventResponseProperties struct {
 	// "ASSISTS", "ASSOCIATIONS", "AUTO_ASSOCIATE_BY_DOMAIN", "AUTOMATION_JOURNEY",
 	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
 	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
-	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
-	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS",
-	// "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB", "CONTENT_MEMBERSHIP",
-	// "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS", "CRM_PROCESSES_PLATFORM",
-	// "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT", "DATA_ENRICHMENT",
-	// "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT", "DELETE_OBJECTS", "EMAIL",
-	// "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION",
-	// "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM",
-	// "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK",
-	// "HELP_DESK_AI", "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM",
-	// "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING", "LEADIN",
-	// "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE", "MARKETS",
-	// "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS", "MERGE_OBJECTS",
-	// "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
-	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "BOT", "BREEZE_AGENT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT",
+	// "CLONE_OBJECTS", "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES",
+	// "COMPANY_INSIGHTS", "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB",
+	// "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS",
+	// "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT",
+	// "DATA_ENRICHMENT", "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT",
+	// "DELETE_OBJECTS", "DI_WRITE_TO_CRM", "EMAIL", "EMAIL_INBOX_IMPORT",
+	// "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER",
+	// "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM", "FORWARD_TO_CRM",
+	// "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK", "HELP_DESK_AI",
+	// "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT",
+	// "INTERNAL_PROCESSING", "LEADIN", "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING",
+	// "MARKETPLACE", "MARKETS", "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS",
+	// "MERGE_OBJECTS", "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION",
+	// "MOBILE_ANDROID", "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
 	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
 	// "PRIMARY_AUTOMATION", "PROPERTY_DEFAULT_VALUE", "PROPERTY_RESTORE",
 	// "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS", "QUOTES", "RECYCLING_BIN",
@@ -410,6 +410,7 @@ const (
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBiden                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BIDEN"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBilling                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BILLING"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBot                         ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BOT"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceBreezeAgent                 ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "BREEZE_AGENT"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCalculated                  ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CALCULATED"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceCentralExchangeRates        ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CENTRAL_EXCHANGE_RATES"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceChatspot                    ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "CHATSPOT"
@@ -434,6 +435,7 @@ const (
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDeals                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEALS"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDefault                     ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DEFAULT"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDeleteObjects               ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DELETE_OBJECTS"
+	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceDiWriteToCrm                ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "DI_WRITE_TO_CRM"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmail                       ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailInboxImport            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INBOX_IMPORT"
 	ExternalCalendarMeetingEventResponsePropertiesHsEngagementSourceEmailIntegration            ExternalCalendarMeetingEventResponsePropertiesHsEngagementSource = "EMAIL_INTEGRATION"

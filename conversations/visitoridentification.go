@@ -46,10 +46,11 @@ func (r *VisitorIdentificationService) GenerateToken(ctx context.Context, body V
 	return res, err
 }
 
-// The property Email is required.
+// The properties Email, HsCustomerAgentContext are required.
 type IdentificationTokenGenerationRequestParam struct {
 	// The email of the visitor that you wish to identify
-	Email string `json:"email" api:"required"`
+	Email                  string            `json:"email" api:"required"`
+	HsCustomerAgentContext map[string]string `json:"hsCustomerAgentContext,omitzero" api:"required"`
 	// The first name of the visitor that you wish to identify. This value will only be
 	// set in HubSpot for new contacts and existing contacts where first name is
 	// unknown. Optional.

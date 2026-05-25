@@ -67,8 +67,8 @@ func TestWebhookNewCrmSnapshots(t *testing.T) {
 		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Webhooks.NewCrmSnapshots(context.TODO(), webhooks.WebhookNewCrmSnapshotsParams{
-		CrmObjectSnapshotBatchRequest: webhooks.CrmObjectSnapshotBatchRequestParam{
-			SnapshotRequests: []webhooks.CrmObjectSnapshotRequestParam{{
+		CrmObjectSnapshotBatchRequest: shared.CrmObjectSnapshotBatchRequestParam{
+			SnapshotRequests: []shared.CrmObjectSnapshotRequestParam{{
 				ObjectID:     0,
 				ObjectTypeID: "objectTypeId",
 				PortalID:     0,
@@ -134,14 +134,14 @@ func TestWebhookNewJournalSubscription(t *testing.T) {
 		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Webhooks.NewJournalSubscription(context.TODO(), webhooks.WebhookNewJournalSubscriptionParams{
-		SubscriptionUpsertRequest: webhooks.SubscriptionUpsertRequestUnionParam{
-			OfObjectSubscriptionUpsertRequest: &webhooks.ObjectSubscriptionUpsertRequestParam{
+		SubscriptionUpsertRequest: shared.SubscriptionUpsertRequestUnionParam{
+			OfObjectSubscriptionUpsertRequest: &shared.ObjectSubscriptionUpsertRequestParam{
 				Actions:          []string{"CREATE"},
 				ObjectIDs:        []int64{0},
 				ObjectTypeID:     "objectTypeId",
 				PortalID:         0,
 				Properties:       []string{"string"},
-				SubscriptionType: webhooks.ObjectSubscriptionUpsertRequestSubscriptionTypeObject,
+				SubscriptionType: shared.ObjectSubscriptionUpsertRequestSubscriptionTypeObject,
 			},
 		},
 	})
@@ -168,11 +168,11 @@ func TestWebhookNewSubscriptionFilter(t *testing.T) {
 		option.WithAccessToken("My Access Token"),
 	)
 	_, err := client.Webhooks.NewSubscriptionFilter(context.TODO(), webhooks.WebhookNewSubscriptionFilterParams{
-		FilterCreateRequest: webhooks.FilterCreateRequestParam{
-			Filter: webhooks.FilterParam{
-				Conditions: []webhooks.ConditionParam{{
-					FilterType: webhooks.ConditionFilterTypeCrmObjectProperty,
-					Operator:   webhooks.ConditionOperatorContains,
+		FilterCreateRequest: shared.FilterCreateRequestParam{
+			Filter: shared.FilterParam{
+				Conditions: []shared.ConditionParam{{
+					FilterType: shared.ConditionFilterTypeCrmObjectProperty,
+					Operator:   shared.ConditionOperatorContains,
 					Property:   "property",
 					Value:      hubspotsdk.String("value"),
 					Values:     []string{"string"},

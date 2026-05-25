@@ -532,14 +532,13 @@ func (r *ListCreateRequestParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type ListCreateRequestFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -550,7 +549,6 @@ func (u ListCreateRequestFilterBranchUnionParam) MarshalJSON() ([]byte, error) {
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *ListCreateRequestFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -566,7 +564,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -622,14 +619,13 @@ func (r *ListFilterUpdateRequestParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type ListFilterUpdateRequestFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -640,7 +636,6 @@ func (u ListFilterUpdateRequestFilterBranchUnionParam) MarshalJSON() ([]byte, er
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *ListFilterUpdateRequestFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -656,7 +651,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -1478,7 +1472,7 @@ func (r PublicAndFilterBranch) ToParam() PublicAndFilterBranchParam {
 // values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicAndFilterBranchFilterBranchUnion.AsAny] method to switch on the
 // variant.
@@ -1491,19 +1485,17 @@ type PublicAndFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicAndFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                               `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicAndFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -1513,14 +1505,13 @@ type PublicAndFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -1529,10 +1520,9 @@ type PublicAndFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -1544,14 +1534,13 @@ type anyPublicAndFilterBranchFilterBranch interface {
 	implPublicAndFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicAndFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicAndFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicAndFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicAndFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicAndFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicAndFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicAndFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicAndFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicAndFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicAndFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicAndFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicAndFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicAndFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicAndFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicAndFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -1562,7 +1551,6 @@ func (PublicAssociationFilterBranch) implPublicAndFilterBranchFilterBranchUnion(
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -1581,8 +1569,6 @@ func (u PublicAndFilterBranchFilterBranchUnion) AsAny() anyPublicAndFilterBranch
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -1619,11 +1605,6 @@ func (u PublicAndFilterBranchFilterBranchUnion) AsUnifiedEvents() (v PublicUnifi
 	return
 }
 
-func (u PublicAndFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAndFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -1650,7 +1631,6 @@ func (r *PublicAndFilterBranchFilterBranchUnion) UnmarshalJSON(data []byte) erro
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicAndFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -1672,21 +1652,17 @@ type PublicAndFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -1706,7 +1682,6 @@ func (r *PublicAndFilterBranchFilterBranchUnionFilterBranches) UnmarshalJSON(dat
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicAndFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -1728,21 +1703,17 @@ type PublicAndFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -1763,12 +1734,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicAndFilterBranchFilterUnion.AsAny] method to switch on the
 // variant.
@@ -1777,31 +1746,31 @@ const (
 type PublicAndFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicAndFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                             `json:"listId"`
 	Operator           string                                             `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -1836,9 +1805,7 @@ type PublicAndFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -1869,59 +1836,55 @@ type PublicAndFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -1942,7 +1905,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicAndFilterBranchFilterUnion()  
 func (PublicIntegrationEventFilter) implPublicAndFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicAndFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicAndFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicAndFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicAndFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicAndFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicAndFilterBranchFilterUnion()                   {}
@@ -1951,9 +1913,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicAndFilterBranchFilterUnion()      
 func (PublicAdsSearchFilter) implPublicAndFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicAndFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicAndFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicAndFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicAndFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicAndFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicAndFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -1969,7 +1929,6 @@ func (PublicConstantFilter) implPublicAndFilterBranchFilterUnion()              
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -1978,9 +1937,7 @@ func (PublicConstantFilter) implPublicAndFilterBranchFilterUnion()              
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -2007,8 +1964,6 @@ func (u PublicAndFilterBranchFilterUnion) AsAny() anyPublicAndFilterBranchFilter
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -2025,12 +1980,8 @@ func (u PublicAndFilterBranchFilterUnion) AsAny() anyPublicAndFilterBranchFilter
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -2087,11 +2038,6 @@ func (u PublicAndFilterBranchFilterUnion) AsCommunicationSubscription() (v Publi
 	return
 }
 
-func (u PublicAndFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAndFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -2132,17 +2078,7 @@ func (u PublicAndFilterBranchFilterUnion) AsInList() (v PublicInListFilter) {
 	return
 }
 
-func (u PublicAndFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAndFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicAndFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -2175,9 +2111,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2186,9 +2120,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2197,9 +2129,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -2209,9 +2139,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2220,9 +2148,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -2232,9 +2158,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2243,9 +2167,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2254,9 +2176,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2265,9 +2185,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -2279,9 +2197,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2290,9 +2206,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -2302,9 +2216,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2313,9 +2225,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2324,9 +2234,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -2335,9 +2243,7 @@ type PublicAndFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -2602,14 +2508,13 @@ func (r *PublicAndFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicAndFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -2620,7 +2525,6 @@ func (u PublicAndFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byte, erro
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicAndFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -2636,7 +2540,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -2655,7 +2558,6 @@ type PublicAndFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -2664,9 +2566,7 @@ type PublicAndFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -2682,7 +2582,6 @@ func (u PublicAndFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) {
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -2691,9 +2590,7 @@ func (u PublicAndFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) {
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicAndFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -2713,7 +2610,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -2722,9 +2618,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -2783,7 +2677,7 @@ func (r PublicAssociationFilterBranch) ToParam() PublicAssociationFilterBranchPa
 // and values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicAssociationFilterBranchFilterBranchUnion.AsAny] method to switch
 // on the variant.
@@ -2796,19 +2690,17 @@ type PublicAssociationFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicAssociationFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                                       `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicAssociationFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -2818,14 +2710,13 @@ type PublicAssociationFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -2834,10 +2725,9 @@ type PublicAssociationFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -2849,14 +2739,13 @@ type anyPublicAssociationFilterBranchFilterBranch interface {
 	implPublicAssociationFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicAssociationFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -2867,7 +2756,6 @@ func (PublicAssociationFilterBranch) implPublicAssociationFilterBranchFilterBran
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -2886,8 +2774,6 @@ func (u PublicAssociationFilterBranchFilterBranchUnion) AsAny() anyPublicAssocia
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -2924,11 +2810,6 @@ func (u PublicAssociationFilterBranchFilterBranchUnion) AsUnifiedEvents() (v Pub
 	return
 }
 
-func (u PublicAssociationFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAssociationFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -2955,7 +2836,6 @@ func (r *PublicAssociationFilterBranchFilterBranchUnion) UnmarshalJSON(data []by
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicAssociationFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -2977,21 +2857,17 @@ type PublicAssociationFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -3011,7 +2887,6 @@ func (r *PublicAssociationFilterBranchFilterBranchUnionFilterBranches) Unmarshal
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicAssociationFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -3033,21 +2908,17 @@ type PublicAssociationFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -3068,12 +2939,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicAssociationFilterBranchFilterUnion.AsAny] method to switch on the
 // variant.
@@ -3082,31 +2951,31 @@ const (
 type PublicAssociationFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicAssociationFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                                     `json:"listId"`
 	Operator           string                                                     `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -3141,9 +3010,7 @@ type PublicAssociationFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -3174,59 +3041,55 @@ type PublicAssociationFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -3247,7 +3110,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicAssociationFilterBranchFilterU
 func (PublicIntegrationEventFilter) implPublicAssociationFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicAssociationFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicAssociationFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicAssociationFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicAssociationFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicAssociationFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicAssociationFilterBranchFilterUnion()                   {}
@@ -3256,9 +3118,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicAssociationFilterBranchFilterUnion
 func (PublicAdsSearchFilter) implPublicAssociationFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicAssociationFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicAssociationFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicAssociationFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicAssociationFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicAssociationFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicAssociationFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -3274,7 +3134,6 @@ func (PublicConstantFilter) implPublicAssociationFilterBranchFilterUnion()      
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -3283,9 +3142,7 @@ func (PublicConstantFilter) implPublicAssociationFilterBranchFilterUnion()      
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -3312,8 +3169,6 @@ func (u PublicAssociationFilterBranchFilterUnion) AsAny() anyPublicAssociationFi
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -3330,12 +3185,8 @@ func (u PublicAssociationFilterBranchFilterUnion) AsAny() anyPublicAssociationFi
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -3392,11 +3243,6 @@ func (u PublicAssociationFilterBranchFilterUnion) AsCommunicationSubscription() 
 	return
 }
 
-func (u PublicAssociationFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAssociationFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -3437,17 +3283,7 @@ func (u PublicAssociationFilterBranchFilterUnion) AsInList() (v PublicInListFilt
 	return
 }
 
-func (u PublicAssociationFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicAssociationFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicAssociationFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -3480,9 +3316,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3491,9 +3325,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3502,9 +3334,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -3514,9 +3344,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3525,9 +3353,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -3537,9 +3363,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3548,9 +3372,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3559,9 +3381,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3570,9 +3390,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -3584,9 +3402,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3595,9 +3411,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -3607,9 +3421,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3618,9 +3430,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3629,9 +3439,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -3640,9 +3448,7 @@ type PublicAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -3919,14 +3725,13 @@ func (r *PublicAssociationFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicAssociationFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -3937,7 +3742,6 @@ func (u PublicAssociationFilterBranchFilterBranchUnionParam) MarshalJSON() ([]by
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicAssociationFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -3953,7 +3757,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -3972,7 +3775,6 @@ type PublicAssociationFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -3981,9 +3783,7 @@ type PublicAssociationFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -3999,7 +3799,6 @@ func (u PublicAssociationFilterBranchFilterUnionParam) MarshalJSON() ([]byte, er
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -4008,9 +3807,7 @@ func (u PublicAssociationFilterBranchFilterUnionParam) MarshalJSON() ([]byte, er
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicAssociationFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -4030,7 +3827,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -4039,9 +3835,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -4498,64 +4292,6 @@ func (r PublicCalendarDatePropertyOperationParam) MarshalJSON() (data []byte, er
 	return param.MarshalObject(r, (*shadow)(&r))
 }
 func (r *PublicCalendarDatePropertyOperationParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicCampaignInfluencedFilter struct {
-	// The ID of the campaign that influences the filter.
-	CampaignID string `json:"campaignId" api:"required"`
-	// Indicates the type of filter (CAMPAIGN_INFLUENCED).
-	//
-	// Any of "CAMPAIGN_INFLUENCED".
-	FilterType PublicCampaignInfluencedFilterFilterType `json:"filterType" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CampaignID  respjson.Field
-		FilterType  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicCampaignInfluencedFilter) RawJSON() string { return r.JSON.raw }
-func (r *PublicCampaignInfluencedFilter) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicCampaignInfluencedFilter to a
-// PublicCampaignInfluencedFilterParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicCampaignInfluencedFilterParam.Overrides()
-func (r PublicCampaignInfluencedFilter) ToParam() PublicCampaignInfluencedFilterParam {
-	return param.Override[PublicCampaignInfluencedFilterParam](json.RawMessage(r.RawJSON()))
-}
-
-// Indicates the type of filter (CAMPAIGN_INFLUENCED).
-type PublicCampaignInfluencedFilterFilterType string
-
-const (
-	PublicCampaignInfluencedFilterFilterTypeCampaignInfluenced PublicCampaignInfluencedFilterFilterType = "CAMPAIGN_INFLUENCED"
-)
-
-// The properties CampaignID, FilterType are required.
-type PublicCampaignInfluencedFilterParam struct {
-	// The ID of the campaign that influences the filter.
-	CampaignID string `json:"campaignId" api:"required"`
-	// Indicates the type of filter (CAMPAIGN_INFLUENCED).
-	//
-	// Any of "CAMPAIGN_INFLUENCED".
-	FilterType PublicCampaignInfluencedFilterFilterType `json:"filterType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r PublicCampaignInfluencedFilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicCampaignInfluencedFilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicCampaignInfluencedFilterParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -8229,12 +7965,12 @@ type PublicListConversionResponseRequestedConversionTimeUnion struct {
 	} `json:"-"`
 }
 
-func (u PublicListConversionResponseRequestedConversionTimeUnion) AsConversionDate() (v PublicListConversionDate) {
+func (u PublicListConversionResponseRequestedConversionTimeUnion) AsPublicListConversionDate() (v PublicListConversionDate) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u PublicListConversionResponseRequestedConversionTimeUnion) AsInactivity() (v PublicListConversionInactivity) {
+func (u PublicListConversionResponseRequestedConversionTimeUnion) AsPublicListConversionInactivity() (v PublicListConversionInactivity) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -8246,25 +7982,25 @@ func (r *PublicListConversionResponseRequestedConversionTimeUnion) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func PublicListConversionTimeParamOfInactivity(conversionType PublicListConversionInactivityConversionType, offset int64, timeUnit PublicListConversionInactivityTimeUnit) PublicListConversionTimeUnionParam {
+func PublicListConversionTimeParamOfPublicListConversionInactivity(conversionType PublicListConversionInactivityConversionType, offset int64, timeUnit PublicListConversionInactivityTimeUnit) PublicListConversionTimeUnionParam {
 	var variant PublicListConversionInactivityParam
 	variant.ConversionType = conversionType
 	variant.Offset = offset
 	variant.TimeUnit = timeUnit
-	return PublicListConversionTimeUnionParam{OfInactivity: &variant}
+	return PublicListConversionTimeUnionParam{OfPublicListConversionInactivity: &variant}
 }
 
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicListConversionTimeUnionParam struct {
-	OfConversionDate *PublicListConversionDateParam       `json:",omitzero,inline"`
-	OfInactivity     *PublicListConversionInactivityParam `json:",omitzero,inline"`
+	OfPublicListConversionDate       *PublicListConversionDateParam       `json:",omitzero,inline"`
+	OfPublicListConversionInactivity *PublicListConversionInactivityParam `json:",omitzero,inline"`
 	paramUnion
 }
 
 func (u PublicListConversionTimeUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfConversionDate, u.OfInactivity)
+	return param.MarshalUnion(u, u.OfPublicListConversionDate, u.OfPublicListConversionInactivity)
 }
 func (u *PublicListConversionTimeUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
@@ -8608,7 +8344,7 @@ func (r PublicNotAllFilterBranch) ToParam() PublicNotAllFilterBranchParam {
 // values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicNotAllFilterBranchFilterBranchUnion.AsAny] method to switch on
 // the variant.
@@ -8621,19 +8357,17 @@ type PublicNotAllFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicNotAllFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                                  `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicNotAllFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -8643,14 +8377,13 @@ type PublicNotAllFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -8659,10 +8392,9 @@ type PublicNotAllFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -8674,14 +8406,13 @@ type anyPublicNotAllFilterBranchFilterBranch interface {
 	implPublicNotAllFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicNotAllFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -8692,7 +8423,6 @@ func (PublicAssociationFilterBranch) implPublicNotAllFilterBranchFilterBranchUni
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -8711,8 +8441,6 @@ func (u PublicNotAllFilterBranchFilterBranchUnion) AsAny() anyPublicNotAllFilter
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -8749,11 +8477,6 @@ func (u PublicNotAllFilterBranchFilterBranchUnion) AsUnifiedEvents() (v PublicUn
 	return
 }
 
-func (u PublicNotAllFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAllFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -8780,7 +8503,6 @@ func (r *PublicNotAllFilterBranchFilterBranchUnion) UnmarshalJSON(data []byte) e
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicNotAllFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -8802,21 +8524,17 @@ type PublicNotAllFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -8836,7 +8554,6 @@ func (r *PublicNotAllFilterBranchFilterBranchUnionFilterBranches) UnmarshalJSON(
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicNotAllFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -8858,21 +8575,17 @@ type PublicNotAllFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -8893,12 +8606,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicNotAllFilterBranchFilterUnion.AsAny] method to switch on the
 // variant.
@@ -8907,31 +8618,31 @@ const (
 type PublicNotAllFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicNotAllFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                                `json:"listId"`
 	Operator           string                                                `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -8966,9 +8677,7 @@ type PublicNotAllFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -8999,59 +8708,55 @@ type PublicNotAllFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -9072,7 +8777,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicNotAllFilterBranchFilterUnion(
 func (PublicIntegrationEventFilter) implPublicNotAllFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicNotAllFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicNotAllFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicNotAllFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicNotAllFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicNotAllFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicNotAllFilterBranchFilterUnion()                   {}
@@ -9081,9 +8785,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicNotAllFilterBranchFilterUnion()   
 func (PublicAdsSearchFilter) implPublicNotAllFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicNotAllFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicNotAllFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicNotAllFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicNotAllFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicNotAllFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicNotAllFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -9099,7 +8801,6 @@ func (PublicConstantFilter) implPublicNotAllFilterBranchFilterUnion()           
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -9108,9 +8809,7 @@ func (PublicConstantFilter) implPublicNotAllFilterBranchFilterUnion()           
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -9137,8 +8836,6 @@ func (u PublicNotAllFilterBranchFilterUnion) AsAny() anyPublicNotAllFilterBranch
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -9155,12 +8852,8 @@ func (u PublicNotAllFilterBranchFilterUnion) AsAny() anyPublicNotAllFilterBranch
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -9217,11 +8910,6 @@ func (u PublicNotAllFilterBranchFilterUnion) AsCommunicationSubscription() (v Pu
 	return
 }
 
-func (u PublicNotAllFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAllFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -9262,17 +8950,7 @@ func (u PublicNotAllFilterBranchFilterUnion) AsInList() (v PublicInListFilter) {
 	return
 }
 
-func (u PublicNotAllFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAllFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNotAllFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -9305,9 +8983,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9316,9 +8992,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9327,9 +9001,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -9339,9 +9011,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9350,9 +9020,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -9362,9 +9030,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9373,9 +9039,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9384,9 +9048,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9395,9 +9057,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -9409,9 +9069,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9420,9 +9078,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -9432,9 +9088,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9443,9 +9097,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9454,9 +9106,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -9465,9 +9115,7 @@ type PublicNotAllFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -9733,14 +9381,13 @@ func (r *PublicNotAllFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicNotAllFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -9751,7 +9398,6 @@ func (u PublicNotAllFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byte, e
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicNotAllFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -9767,7 +9413,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -9786,7 +9431,6 @@ type PublicNotAllFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -9795,9 +9439,7 @@ type PublicNotAllFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -9813,7 +9455,6 @@ func (u PublicNotAllFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) 
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -9822,9 +9463,7 @@ func (u PublicNotAllFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) 
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicNotAllFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -9844,7 +9483,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -9853,9 +9491,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -9901,7 +9537,7 @@ func (r PublicNotAnyFilterBranch) ToParam() PublicNotAnyFilterBranchParam {
 // values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicNotAnyFilterBranchFilterBranchUnion.AsAny] method to switch on
 // the variant.
@@ -9914,19 +9550,17 @@ type PublicNotAnyFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicNotAnyFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                                  `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicNotAnyFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -9936,14 +9570,13 @@ type PublicNotAnyFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -9952,10 +9585,9 @@ type PublicNotAnyFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -9967,14 +9599,13 @@ type anyPublicNotAnyFilterBranchFilterBranch interface {
 	implPublicNotAnyFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicNotAnyFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -9985,7 +9616,6 @@ func (PublicAssociationFilterBranch) implPublicNotAnyFilterBranchFilterBranchUni
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -10004,8 +9634,6 @@ func (u PublicNotAnyFilterBranchFilterBranchUnion) AsAny() anyPublicNotAnyFilter
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -10042,11 +9670,6 @@ func (u PublicNotAnyFilterBranchFilterBranchUnion) AsUnifiedEvents() (v PublicUn
 	return
 }
 
-func (u PublicNotAnyFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAnyFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -10073,7 +9696,6 @@ func (r *PublicNotAnyFilterBranchFilterBranchUnion) UnmarshalJSON(data []byte) e
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicNotAnyFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -10095,21 +9717,17 @@ type PublicNotAnyFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -10129,7 +9747,6 @@ func (r *PublicNotAnyFilterBranchFilterBranchUnionFilterBranches) UnmarshalJSON(
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicNotAnyFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -10151,21 +9768,17 @@ type PublicNotAnyFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -10186,12 +9799,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicNotAnyFilterBranchFilterUnion.AsAny] method to switch on the
 // variant.
@@ -10200,31 +9811,31 @@ const (
 type PublicNotAnyFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                                `json:"listId"`
 	Operator           string                                                `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -10259,9 +9870,7 @@ type PublicNotAnyFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -10292,59 +9901,55 @@ type PublicNotAnyFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -10365,7 +9970,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicNotAnyFilterBranchFilterUnion(
 func (PublicIntegrationEventFilter) implPublicNotAnyFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicNotAnyFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicNotAnyFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicNotAnyFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicNotAnyFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicNotAnyFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicNotAnyFilterBranchFilterUnion()                   {}
@@ -10374,9 +9978,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicNotAnyFilterBranchFilterUnion()   
 func (PublicAdsSearchFilter) implPublicNotAnyFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicNotAnyFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicNotAnyFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicNotAnyFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicNotAnyFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicNotAnyFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicNotAnyFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -10392,7 +9994,6 @@ func (PublicConstantFilter) implPublicNotAnyFilterBranchFilterUnion()           
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -10401,9 +10002,7 @@ func (PublicConstantFilter) implPublicNotAnyFilterBranchFilterUnion()           
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -10430,8 +10029,6 @@ func (u PublicNotAnyFilterBranchFilterUnion) AsAny() anyPublicNotAnyFilterBranch
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -10448,12 +10045,8 @@ func (u PublicNotAnyFilterBranchFilterUnion) AsAny() anyPublicNotAnyFilterBranch
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -10510,11 +10103,6 @@ func (u PublicNotAnyFilterBranchFilterUnion) AsCommunicationSubscription() (v Pu
 	return
 }
 
-func (u PublicNotAnyFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAnyFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -10555,17 +10143,7 @@ func (u PublicNotAnyFilterBranchFilterUnion) AsInList() (v PublicInListFilter) {
 	return
 }
 
-func (u PublicNotAnyFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicNotAnyFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNotAnyFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -10598,9 +10176,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10609,9 +10185,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10620,9 +10194,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -10632,9 +10204,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10643,9 +10213,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -10655,9 +10223,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10666,9 +10232,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10677,9 +10241,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10688,9 +10250,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -10702,9 +10262,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10713,9 +10271,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -10725,9 +10281,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10736,9 +10290,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10747,9 +10299,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -10758,9 +10308,7 @@ type PublicNotAnyFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -11027,14 +10575,13 @@ func (r *PublicNotAnyFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicNotAnyFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -11045,7 +10592,6 @@ func (u PublicNotAnyFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byte, e
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicNotAnyFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -11061,7 +10607,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -11080,7 +10625,6 @@ type PublicNotAnyFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -11089,9 +10633,7 @@ type PublicNotAnyFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -11107,7 +10649,6 @@ func (u PublicNotAnyFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) 
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -11116,9 +10657,7 @@ func (u PublicNotAnyFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) 
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicNotAnyFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -11138,7 +10677,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -11147,9 +10685,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -11224,234 +10760,6 @@ func (r PublicNowReferenceParam) MarshalJSON() (data []byte, err error) {
 }
 func (r *PublicNowReferenceParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicNumAssociationsFilter struct {
-	// Defines the category of the association (HUBSPOT_DEFINED, USER_DEFINED,
-	// INTEGRATOR_DEFINED, WORK).
-	AssociationCategory string `json:"associationCategory" api:"required"`
-	// The ID representing the type of association being filtered.
-	AssociationTypeID int64 `json:"associationTypeId" api:"required"`
-	// Specifies the criteria for refining the association filter.
-	CoalescingRefineBy PublicNumAssociationsFilterCoalescingRefineByUnion `json:"coalescingRefineBy" api:"required"`
-	// Indicates the type of filter being applied (NUM_ASSOCIATIONS).
-	//
-	// Any of "NUM_ASSOCIATIONS".
-	FilterType PublicNumAssociationsFilterFilterType `json:"filterType" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		AssociationCategory respjson.Field
-		AssociationTypeID   respjson.Field
-		CoalescingRefineBy  respjson.Field
-		FilterType          respjson.Field
-		ExtraFields         map[string]respjson.Field
-		raw                 string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicNumAssociationsFilter) RawJSON() string { return r.JSON.raw }
-func (r *PublicNumAssociationsFilter) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicNumAssociationsFilter to a
-// PublicNumAssociationsFilterParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicNumAssociationsFilterParam.Overrides()
-func (r PublicNumAssociationsFilter) ToParam() PublicNumAssociationsFilterParam {
-	return param.Override[PublicNumAssociationsFilterParam](json.RawMessage(r.RawJSON()))
-}
-
-// PublicNumAssociationsFilterCoalescingRefineByUnion contains all possible
-// properties and values from [PublicNumOccurrencesRefineBy],
-// [PublicSetOccurrencesRefineBy], [PublicRelativeComparativeTimestampRefineBy],
-// [PublicRelativeRangedTimestampRefineBy],
-// [PublicAbsoluteComparativeTimestampRefineBy],
-// [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
-// [PublicTimePointOperation], [PublicRangedTimeOperation].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PublicNumAssociationsFilterCoalescingRefineByUnion struct {
-	Type string `json:"type"`
-	// This field is from variant [PublicNumOccurrencesRefineBy].
-	MaxOccurrences int64 `json:"maxOccurrences"`
-	// This field is from variant [PublicNumOccurrencesRefineBy].
-	MinOccurrences int64 `json:"minOccurrences"`
-	// This field is from variant [PublicSetOccurrencesRefineBy].
-	SetType    string `json:"setType"`
-	Comparison string `json:"comparison"`
-	// This field is from variant [PublicRelativeComparativeTimestampRefineBy].
-	TimeOffset PublicTimeOffset `json:"timeOffset"`
-	// This field is from variant [PublicRelativeRangedTimestampRefineBy].
-	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
-	RangeType        string           `json:"rangeType"`
-	// This field is from variant [PublicRelativeRangedTimestampRefineBy].
-	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
-	// This field is from variant [PublicAbsoluteComparativeTimestampRefineBy].
-	Timestamp int64 `json:"timestamp"`
-	// This field is from variant [PublicAbsoluteRangedTimestampRefineBy].
-	LowerTimestamp int64 `json:"lowerTimestamp"`
-	// This field is from variant [PublicAbsoluteRangedTimestampRefineBy].
-	UpperTimestamp               int64  `json:"upperTimestamp"`
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
-	// This field is from variant [PublicTimePointOperation].
-	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
-	// This field is from variant [PublicTimePointOperation].
-	EndpointBehavior string `json:"endpointBehavior"`
-	PropertyParser   string `json:"propertyParser"`
-	// This field is from variant [PublicRangedTimeOperation].
-	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
-	// This field is from variant [PublicRangedTimeOperation].
-	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
-	// This field is from variant [PublicRangedTimeOperation].
-	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
-	// This field is from variant [PublicRangedTimeOperation].
-	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
-	JSON                       struct {
-		Type                         respjson.Field
-		MaxOccurrences               respjson.Field
-		MinOccurrences               respjson.Field
-		SetType                      respjson.Field
-		Comparison                   respjson.Field
-		TimeOffset                   respjson.Field
-		LowerBoundOffset             respjson.Field
-		RangeType                    respjson.Field
-		UpperBoundOffset             respjson.Field
-		Timestamp                    respjson.Field
-		LowerTimestamp               respjson.Field
-		UpperTimestamp               respjson.Field
-		IncludeObjectsWithNoValueSet respjson.Field
-		OperationType                respjson.Field
-		Operator                     respjson.Field
-		TimePoint                    respjson.Field
-		EndpointBehavior             respjson.Field
-		PropertyParser               respjson.Field
-		LowerBoundTimePoint          respjson.Field
-		UpperBoundTimePoint          respjson.Field
-		LowerBoundEndpointBehavior   respjson.Field
-		UpperBoundEndpointBehavior   respjson.Field
-		raw                          string
-	} `json:"-"`
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsNumOccurrences() (v PublicNumOccurrencesRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsSetOccurrences() (v PublicSetOccurrencesRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsRelativeComparative() (v PublicRelativeComparativeTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsRelativeRanged() (v PublicRelativeRangedTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsAbsoluteComparative() (v PublicAbsoluteComparativeTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsAbsoluteRanged() (v PublicAbsoluteRangedTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsAllHistory() (v PublicAllHistoryRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsTimePoint() (v PublicTimePointOperation) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) AsTimeRanged() (v PublicRangedTimeOperation) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PublicNumAssociationsFilterCoalescingRefineByUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *PublicNumAssociationsFilterCoalescingRefineByUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Indicates the type of filter being applied (NUM_ASSOCIATIONS).
-type PublicNumAssociationsFilterFilterType string
-
-const (
-	PublicNumAssociationsFilterFilterTypeNumAssociations PublicNumAssociationsFilterFilterType = "NUM_ASSOCIATIONS"
-)
-
-// The properties AssociationCategory, AssociationTypeID, CoalescingRefineBy,
-// FilterType are required.
-type PublicNumAssociationsFilterParam struct {
-	// Defines the category of the association (HUBSPOT_DEFINED, USER_DEFINED,
-	// INTEGRATOR_DEFINED, WORK).
-	AssociationCategory string `json:"associationCategory" api:"required"`
-	// The ID representing the type of association being filtered.
-	AssociationTypeID int64 `json:"associationTypeId" api:"required"`
-	// Specifies the criteria for refining the association filter.
-	CoalescingRefineBy PublicNumAssociationsFilterCoalescingRefineByUnionParam `json:"coalescingRefineBy,omitzero" api:"required"`
-	// Indicates the type of filter being applied (NUM_ASSOCIATIONS).
-	//
-	// Any of "NUM_ASSOCIATIONS".
-	FilterType PublicNumAssociationsFilterFilterType `json:"filterType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r PublicNumAssociationsFilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicNumAssociationsFilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicNumAssociationsFilterParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type PublicNumAssociationsFilterCoalescingRefineByUnionParam struct {
-	OfNumOccurrences      *PublicNumOccurrencesRefineByParam               `json:",omitzero,inline"`
-	OfSetOccurrences      *PublicSetOccurrencesRefineByParam               `json:",omitzero,inline"`
-	OfRelativeComparative *PublicRelativeComparativeTimestampRefineByParam `json:",omitzero,inline"`
-	OfRelativeRanged      *PublicRelativeRangedTimestampRefineByParam      `json:",omitzero,inline"`
-	OfAbsoluteComparative *PublicAbsoluteComparativeTimestampRefineByParam `json:",omitzero,inline"`
-	OfAbsoluteRanged      *PublicAbsoluteRangedTimestampRefineByParam      `json:",omitzero,inline"`
-	OfAllHistory          *PublicAllHistoryRefineByParam                   `json:",omitzero,inline"`
-	OfTimePoint           *PublicTimePointOperationParam                   `json:",omitzero,inline"`
-	OfTimeRanged          *PublicRangedTimeOperationParam                  `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u PublicNumAssociationsFilterCoalescingRefineByUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfNumOccurrences,
-		u.OfSetOccurrences,
-		u.OfRelativeComparative,
-		u.OfRelativeRanged,
-		u.OfAbsoluteComparative,
-		u.OfAbsoluteRanged,
-		u.OfAllHistory,
-		u.OfTimePoint,
-		u.OfTimeRanged)
-}
-func (u *PublicNumAssociationsFilterCoalescingRefineByUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
 }
 
 type PublicNumOccurrencesRefineBy struct {
@@ -11659,7 +10967,7 @@ func (r *PublicObjectList) UnmarshalJSON(data []byte) error {
 // from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicObjectListFilterBranchUnion.AsAny] method to switch on the
 // variant.
@@ -11672,19 +10980,17 @@ type PublicObjectListFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicObjectListFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                          `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicObjectListFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -11694,14 +11000,13 @@ type PublicObjectListFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -11710,10 +11015,9 @@ type PublicObjectListFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -11725,14 +11029,13 @@ type anyPublicObjectListFilterBranch interface {
 	implPublicObjectListFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicObjectListFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicObjectListFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicObjectListFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicObjectListFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicObjectListFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicObjectListFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicObjectListFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicObjectListFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicObjectListFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicObjectListFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicObjectListFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicObjectListFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicObjectListFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicObjectListFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicObjectListFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -11743,7 +11046,6 @@ func (PublicAssociationFilterBranch) implPublicObjectListFilterBranchUnion()    
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -11762,8 +11064,6 @@ func (u PublicObjectListFilterBranchUnion) AsAny() anyPublicObjectListFilterBran
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -11800,11 +11100,6 @@ func (u PublicObjectListFilterBranchUnion) AsUnifiedEvents() (v PublicUnifiedEve
 	return
 }
 
-func (u PublicObjectListFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicObjectListFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -11831,7 +11126,6 @@ func (r *PublicObjectListFilterBranchUnion) UnmarshalJSON(data []byte) error {
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicObjectListFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -11853,21 +11147,17 @@ type PublicObjectListFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -11886,7 +11176,6 @@ func (r *PublicObjectListFilterBranchUnionFilterBranches) UnmarshalJSON(data []b
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicObjectListFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -11908,21 +11197,17 @@ type PublicObjectListFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -12023,7 +11308,7 @@ func (r PublicOrFilterBranch) ToParam() PublicOrFilterBranchParam {
 // values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicOrFilterBranchFilterBranchUnion.AsAny] method to switch on the
 // variant.
@@ -12036,19 +11321,17 @@ type PublicOrFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicOrFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                              `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicOrFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -12058,14 +11341,13 @@ type PublicOrFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -12074,10 +11356,9 @@ type PublicOrFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -12089,14 +11370,13 @@ type anyPublicOrFilterBranchFilterBranch interface {
 	implPublicOrFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicOrFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicOrFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicOrFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicOrFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicOrFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicOrFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicOrFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicOrFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicOrFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicOrFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicOrFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicOrFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicOrFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicOrFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicOrFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -12107,7 +11387,6 @@ func (PublicAssociationFilterBranch) implPublicOrFilterBranchFilterBranchUnion()
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -12126,8 +11405,6 @@ func (u PublicOrFilterBranchFilterBranchUnion) AsAny() anyPublicOrFilterBranchFi
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -12164,11 +11441,6 @@ func (u PublicOrFilterBranchFilterBranchUnion) AsUnifiedEvents() (v PublicUnifie
 	return
 }
 
-func (u PublicOrFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicOrFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -12195,7 +11467,6 @@ func (r *PublicOrFilterBranchFilterBranchUnion) UnmarshalJSON(data []byte) error
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicOrFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -12217,21 +11488,17 @@ type PublicOrFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -12251,7 +11518,6 @@ func (r *PublicOrFilterBranchFilterBranchUnionFilterBranches) UnmarshalJSON(data
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicOrFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -12273,21 +11539,17 @@ type PublicOrFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -12308,12 +11570,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicOrFilterBranchFilterUnion.AsAny] method to switch on the variant.
 //
@@ -12321,31 +11581,31 @@ const (
 type PublicOrFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicOrFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                            `json:"listId"`
 	Operator           string                                            `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -12380,9 +11640,7 @@ type PublicOrFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -12413,59 +11671,55 @@ type PublicOrFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -12486,7 +11740,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicOrFilterBranchFilterUnion()   
 func (PublicIntegrationEventFilter) implPublicOrFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicOrFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicOrFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicOrFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicOrFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicOrFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicOrFilterBranchFilterUnion()                   {}
@@ -12495,9 +11748,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicOrFilterBranchFilterUnion()       
 func (PublicAdsSearchFilter) implPublicOrFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicOrFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicOrFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicOrFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicOrFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicOrFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicOrFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -12513,7 +11764,6 @@ func (PublicConstantFilter) implPublicOrFilterBranchFilterUnion()               
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -12522,9 +11772,7 @@ func (PublicConstantFilter) implPublicOrFilterBranchFilterUnion()               
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -12551,8 +11799,6 @@ func (u PublicOrFilterBranchFilterUnion) AsAny() anyPublicOrFilterBranchFilter {
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -12569,12 +11815,8 @@ func (u PublicOrFilterBranchFilterUnion) AsAny() anyPublicOrFilterBranchFilter {
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -12631,11 +11873,6 @@ func (u PublicOrFilterBranchFilterUnion) AsCommunicationSubscription() (v Public
 	return
 }
 
-func (u PublicOrFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicOrFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -12676,17 +11913,7 @@ func (u PublicOrFilterBranchFilterUnion) AsInList() (v PublicInListFilter) {
 	return
 }
 
-func (u PublicOrFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicOrFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicOrFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -12719,9 +11946,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12730,9 +11955,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12741,9 +11964,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -12753,9 +11974,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12764,9 +11983,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -12776,9 +11993,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12787,9 +12002,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12798,9 +12011,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12809,9 +12020,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -12823,9 +12032,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12834,9 +12041,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -12846,9 +12051,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12857,9 +12060,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12868,9 +12069,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -12879,9 +12078,7 @@ type PublicOrFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -13146,14 +12343,13 @@ func (r *PublicOrFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicOrFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -13164,7 +12360,6 @@ func (u PublicOrFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byte, error
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicOrFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -13180,7 +12375,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -13199,7 +12393,6 @@ type PublicOrFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -13208,9 +12401,7 @@ type PublicOrFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -13226,7 +12417,6 @@ func (u PublicOrFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) {
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -13235,9 +12425,7 @@ func (u PublicOrFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) {
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicOrFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -13257,7 +12445,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -13266,9 +12453,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -13732,1557 +12917,6 @@ func (r PublicPrivacyAnalyticsFilterParam) MarshalJSON() (data []byte, err error
 }
 func (r *PublicPrivacyAnalyticsFilterParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
-}
-
-type PublicPropertyAssociationFilterBranch struct {
-	FilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:"filterBranches" api:"required"`
-	// The logical operator used to combine filters within the branch.
-	FilterBranchOperator string `json:"filterBranchOperator" api:"required"`
-	// The type of the filter branch (PROPERTY_ASSOCIATION).
-	//
-	// Any of "PROPERTY_ASSOCIATION".
-	FilterBranchType PublicPropertyAssociationFilterBranchFilterBranchType `json:"filterBranchType" api:"required"`
-	Filters          []PublicPropertyAssociationFilterBranchFilterUnion    `json:"filters" api:"required"`
-	// The ID representing the type of object associated with the filter branch.
-	ObjectTypeID string `json:"objectTypeId" api:"required"`
-	// Defines the operation to be applied within the filter branch (IN_LIST,
-	// NOT_IN_LIST).
-	Operator string `json:"operator" api:"required"`
-	// The property that is associated with the object ID in the filter branch.
-	PropertyWithObjectID string `json:"propertyWithObjectId" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FilterBranches       respjson.Field
-		FilterBranchOperator respjson.Field
-		FilterBranchType     respjson.Field
-		Filters              respjson.Field
-		ObjectTypeID         respjson.Field
-		Operator             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ExtraFields          map[string]respjson.Field
-		raw                  string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicPropertyAssociationFilterBranch) RawJSON() string { return r.JSON.raw }
-func (r *PublicPropertyAssociationFilterBranch) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicPropertyAssociationFilterBranch to a
-// PublicPropertyAssociationFilterBranchParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicPropertyAssociationFilterBranchParam.Overrides()
-func (r PublicPropertyAssociationFilterBranch) ToParam() PublicPropertyAssociationFilterBranchParam {
-	return param.Override[PublicPropertyAssociationFilterBranchParam](json.RawMessage(r.RawJSON()))
-}
-
-// PublicPropertyAssociationFilterBranchFilterBranchUnion contains all possible
-// properties and values from [PublicOrFilterBranch], [PublicAndFilterBranch],
-// [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
-// [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
-//
-// Use the [PublicPropertyAssociationFilterBranchFilterBranchUnion.AsAny] method to
-// switch on the variant.
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PublicPropertyAssociationFilterBranchFilterBranchUnion struct {
-	// This field is a union of [[]PublicOrFilterBranchFilterBranchUnion],
-	// [[]PublicAndFilterBranchFilterBranchUnion],
-	// [[]PublicNotAllFilterBranchFilterBranchUnion],
-	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
-	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
-	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
-	// [[]PublicAssociationFilterBranchFilterBranchUnion]
-	FilterBranches       PublicPropertyAssociationFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
-	FilterBranchOperator string                                                               `json:"filterBranchOperator"`
-	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
-	FilterBranchType string `json:"filterBranchType"`
-	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
-	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
-	// [[]PublicNotAnyFilterBranchFilterUnion],
-	// [[]PublicRestrictedFilterBranchFilterUnion],
-	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
-	// [[]PublicAssociationFilterBranchFilterUnion]
-	Filters PublicPropertyAssociationFilterBranchFilterBranchUnionFilters `json:"filters"`
-	// This field is from variant [PublicUnifiedEventsFilterBranch].
-	EventTypeID string `json:"eventTypeId"`
-	Operator    string `json:"operator"`
-	// This field is from variant [PublicUnifiedEventsFilterBranch].
-	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
-	// This field is from variant [PublicUnifiedEventsFilterBranch].
-	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
-	// This field is from variant [PublicAssociationFilterBranch].
-	AssociationCategory string `json:"associationCategory"`
-	// This field is from variant [PublicAssociationFilterBranch].
-	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
-		FilterBranches       respjson.Field
-		FilterBranchOperator respjson.Field
-		FilterBranchType     respjson.Field
-		Filters              respjson.Field
-		EventTypeID          respjson.Field
-		Operator             respjson.Field
-		CoalescingRefineBy   respjson.Field
-		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		raw                  string
-	} `json:"-"`
-}
-
-// anyPublicPropertyAssociationFilterBranchFilterBranch is implemented by each
-// variant of [PublicPropertyAssociationFilterBranchFilterBranchUnion] to add type
-// safety for the return type of
-// [PublicPropertyAssociationFilterBranchFilterBranchUnion.AsAny]
-type anyPublicPropertyAssociationFilterBranchFilterBranch interface {
-	implPublicPropertyAssociationFilterBranchFilterBranchUnion()
-}
-
-func (PublicOrFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion()            {}
-func (PublicAndFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion()           {}
-func (PublicNotAllFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion()        {}
-func (PublicNotAnyFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion()        {}
-func (PublicRestrictedFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion()    {}
-func (PublicUnifiedEventsFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion() {}
-func (PublicPropertyAssociationFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion() {
-}
-func (PublicAssociationFilterBranch) implPublicPropertyAssociationFilterBranchFilterBranchUnion() {}
-
-// Use the following switch statement to find the correct variant
-//
-//	switch variant := PublicPropertyAssociationFilterBranchFilterBranchUnion.AsAny().(type) {
-//	case crm.PublicOrFilterBranch:
-//	case crm.PublicAndFilterBranch:
-//	case crm.PublicNotAllFilterBranch:
-//	case crm.PublicNotAnyFilterBranch:
-//	case crm.PublicRestrictedFilterBranch:
-//	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
-//	case crm.PublicAssociationFilterBranch:
-//	default:
-//	  fmt.Errorf("no variant present")
-//	}
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsAny() anyPublicPropertyAssociationFilterBranchFilterBranch {
-	switch u.FilterBranchType {
-	case "OR":
-		return u.AsOr()
-	case "AND":
-		return u.AsAnd()
-	case "NOT_ALL":
-		return u.AsNotAll()
-	case "NOT_ANY":
-		return u.AsNotAny()
-	case "RESTRICTED":
-		return u.AsRestricted()
-	case "UNIFIED_EVENTS":
-		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
-	case "ASSOCIATION":
-		return u.AsAssociation()
-	}
-	return nil
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsOr() (v PublicOrFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsAnd() (v PublicAndFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsNotAll() (v PublicNotAllFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsNotAny() (v PublicNotAnyFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsRestricted() (v PublicRestrictedFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *PublicPropertyAssociationFilterBranchFilterBranchUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicPropertyAssociationFilterBranchFilterBranchUnionFilterBranches is an
-// implicit subunion of [PublicPropertyAssociationFilterBranchFilterBranchUnion].
-// PublicPropertyAssociationFilterBranchFilterBranchUnionFilterBranches provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicPropertyAssociationFilterBranchFilterBranchUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfPublicOrFilterBranchFilterBranches
-// OfPublicAndFilterBranchFilterBranches OfPublicNotAllFilterBranchFilterBranches
-// OfPublicNotAnyFilterBranchFilterBranches
-// OfPublicRestrictedFilterBranchFilterBranches
-// OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
-// OfPublicAssociationFilterBranchFilterBranches]
-type PublicPropertyAssociationFilterBranchFilterBranchUnionFilterBranches struct {
-	// This field will be present if the value is a
-	// [[]PublicOrFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicOrFilterBranchFilterBranches []PublicOrFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicAndFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicAndFilterBranchFilterBranches []PublicAndFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicNotAllFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicNotAllFilterBranchFilterBranches []PublicNotAllFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicNotAnyFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicNotAnyFilterBranchFilterBranches []PublicNotAnyFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicRestrictedFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicRestrictedFilterBranchFilterBranches []PublicRestrictedFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
-	} `json:"-"`
-}
-
-func (r *PublicPropertyAssociationFilterBranchFilterBranchUnionFilterBranches) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicPropertyAssociationFilterBranchFilterBranchUnionFilters is an implicit
-// subunion of [PublicPropertyAssociationFilterBranchFilterBranchUnion].
-// PublicPropertyAssociationFilterBranchFilterBranchUnionFilters provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicPropertyAssociationFilterBranchFilterBranchUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
-// OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
-// OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
-// OfPublicAssociationFilterBranchFilters]
-type PublicPropertyAssociationFilterBranchFilterBranchUnionFilters struct {
-	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
-	// instead of an object.
-	OfPublicOrFilterBranchFilters []PublicOrFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicAndFilterBranchFilterUnion] instead of an object.
-	OfPublicAndFilterBranchFilters []PublicAndFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicNotAllFilterBranchFilterUnion] instead of an object.
-	OfPublicNotAllFilterBranchFilters []PublicNotAllFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicNotAnyFilterBranchFilterUnion] instead of an object.
-	OfPublicNotAnyFilterBranchFilters []PublicNotAnyFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicRestrictedFilterBranchFilterUnion] instead of an object.
-	OfPublicRestrictedFilterBranchFilters []PublicRestrictedFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
-	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
-	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
-	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
-	} `json:"-"`
-}
-
-func (r *PublicPropertyAssociationFilterBranchFilterBranchUnionFilters) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The type of the filter branch (PROPERTY_ASSOCIATION).
-type PublicPropertyAssociationFilterBranchFilterBranchType string
-
-const (
-	PublicPropertyAssociationFilterBranchFilterBranchTypePropertyAssociation PublicPropertyAssociationFilterBranchFilterBranchType = "PROPERTY_ASSOCIATION"
-)
-
-// PublicPropertyAssociationFilterBranchFilterUnion contains all possible
-// properties and values from [PublicPropertyFilter],
-// [PublicAssociationInListFilter], [PublicPageViewAnalyticsFilter],
-// [PublicCtaAnalyticsFilter], [PublicEventAnalyticsFilter],
-// [PublicFormSubmissionFilter], [PublicFormSubmissionOnPageFilter],
-// [PublicIntegrationEventFilter], [PublicEmailSubscriptionFilter],
-// [PublicCommunicationSubscriptionFilter], [PublicCampaignInfluencedFilter],
-// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
-// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
-// [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
-//
-// Use the [PublicPropertyAssociationFilterBranchFilterUnion.AsAny] method to
-// switch on the variant.
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PublicPropertyAssociationFilterBranchFilterUnion struct {
-	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
-	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
-	FilterType string `json:"filterType"`
-	// This field is from variant [PublicPropertyFilter].
-	Operation PublicPropertyFilterOperationUnion `json:"operation"`
-	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
-	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
-	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
-	CoalescingRefineBy PublicPropertyAssociationFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
-	ListID             string                                                             `json:"listId"`
-	Operator           string                                                             `json:"operator"`
-	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
-	ToObjectTypeID string `json:"toObjectTypeId"`
-	// This field is from variant [PublicPageViewAnalyticsFilter].
-	PageURL string `json:"pageUrl"`
-	// This field is from variant [PublicPageViewAnalyticsFilter].
-	EnableTracking bool `json:"enableTracking"`
-	// This field is a union of [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion]
-	PruningRefineBy PublicPropertyAssociationFilterBranchFilterUnionPruningRefineBy `json:"pruningRefineBy"`
-	// This field is from variant [PublicCtaAnalyticsFilter].
-	CtaName string `json:"ctaName"`
-	// This field is from variant [PublicEventAnalyticsFilter].
-	EventID string `json:"eventId"`
-	FormID  string `json:"formId"`
-	// This field is from variant [PublicFormSubmissionOnPageFilter].
-	PageID string `json:"pageId"`
-	// This field is a union of [int64], [string]
-	EventTypeID PublicPropertyAssociationFilterBranchFilterUnionEventTypeID `json:"eventTypeId"`
-	FilterLines []PublicEventFilterMetadata                                 `json:"filterLines"`
-	// This field is from variant [PublicEmailSubscriptionFilter].
-	AcceptedStatuses []string `json:"acceptedStatuses"`
-	SubscriptionIDs  []string `json:"subscriptionIds"`
-	SubscriptionType string   `json:"subscriptionType"`
-	// This field is from variant [PublicCommunicationSubscriptionFilter].
-	AcceptedOptStates []string `json:"acceptedOptStates"`
-	// This field is from variant [PublicCommunicationSubscriptionFilter].
-	Channel string `json:"channel"`
-	// This field is from variant [PublicCommunicationSubscriptionFilter].
-	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
-	// This field is from variant [PublicSurveyMonkeyValueFilter].
-	SurveyQuestion string `json:"surveyQuestion"`
-	// This field is from variant [PublicSurveyMonkeyValueFilter].
-	ValueComparison PublicSurveyMonkeyValueFilterValueComparisonUnion `json:"valueComparison"`
-	// This field is from variant [PublicSurveyMonkeyValueFilter].
-	SurveyAnswerColID string `json:"surveyAnswerColId"`
-	// This field is from variant [PublicSurveyMonkeyValueFilter].
-	SurveyAnswerRowID string `json:"surveyAnswerRowId"`
-	// This field is from variant [PublicWebinarFilter].
-	WebinarID string `json:"webinarId"`
-	// This field is from variant [PublicEmailEventFilter].
-	AppID string `json:"appId"`
-	// This field is from variant [PublicEmailEventFilter].
-	EmailID string `json:"emailId"`
-	// This field is from variant [PublicEmailEventFilter].
-	Level string `json:"level"`
-	// This field is from variant [PublicEmailEventFilter].
-	ClickURL string `json:"clickUrl"`
-	// This field is from variant [PublicPrivacyAnalyticsFilter].
-	PrivacyName string `json:"privacyName"`
-	// This field is from variant [PublicAdsSearchFilter].
-	AdNetwork string `json:"adNetwork"`
-	// This field is from variant [PublicAdsSearchFilter].
-	EntityType string `json:"entityType"`
-	// This field is from variant [PublicAdsSearchFilter].
-	SearchTerms []string `json:"searchTerms"`
-	// This field is from variant [PublicAdsSearchFilter].
-	SearchTermType string `json:"searchTermType"`
-	// This field is from variant [PublicInListFilter].
-	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
-	// This field is from variant [PublicConstantFilter].
-	ShouldAccept bool `json:"shouldAccept"`
-	// This field is from variant [PublicConstantFilter].
-	Source string `json:"source"`
-	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
-	} `json:"-"`
-}
-
-// anyPublicPropertyAssociationFilterBranchFilter is implemented by each variant of
-// [PublicPropertyAssociationFilterBranchFilterUnion] to add type safety for the
-// return type of [PublicPropertyAssociationFilterBranchFilterUnion.AsAny]
-type anyPublicPropertyAssociationFilterBranchFilter interface {
-	implPublicPropertyAssociationFilterBranchFilterUnion()
-}
-
-func (PublicPropertyFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                  {}
-func (PublicAssociationInListFilter) implPublicPropertyAssociationFilterBranchFilterUnion()         {}
-func (PublicPageViewAnalyticsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()         {}
-func (PublicCtaAnalyticsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()              {}
-func (PublicEventAnalyticsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()            {}
-func (PublicFormSubmissionFilter) implPublicPropertyAssociationFilterBranchFilterUnion()            {}
-func (PublicFormSubmissionOnPageFilter) implPublicPropertyAssociationFilterBranchFilterUnion()      {}
-func (PublicIntegrationEventFilter) implPublicPropertyAssociationFilterBranchFilterUnion()          {}
-func (PublicEmailSubscriptionFilter) implPublicPropertyAssociationFilterBranchFilterUnion()         {}
-func (PublicCommunicationSubscriptionFilter) implPublicPropertyAssociationFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicPropertyAssociationFilterBranchFilterUnion()        {}
-func (PublicSurveyMonkeyFilter) implPublicPropertyAssociationFilterBranchFilterUnion()              {}
-func (PublicSurveyMonkeyValueFilter) implPublicPropertyAssociationFilterBranchFilterUnion()         {}
-func (PublicWebinarFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                   {}
-func (PublicEmailEventFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                {}
-func (PublicPrivacyAnalyticsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()          {}
-func (PublicAdsSearchFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                 {}
-func (PublicAdsTimeFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                   {}
-func (PublicInListFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()           {}
-func (PublicUnifiedEventsFilter) implPublicPropertyAssociationFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicPropertyAssociationFilterBranchFilterUnion() {}
-func (PublicConstantFilter) implPublicPropertyAssociationFilterBranchFilterUnion()                  {}
-
-// Use the following switch statement to find the correct variant
-//
-//	switch variant := PublicPropertyAssociationFilterBranchFilterUnion.AsAny().(type) {
-//	case crm.PublicPropertyFilter:
-//	case crm.PublicAssociationInListFilter:
-//	case crm.PublicPageViewAnalyticsFilter:
-//	case crm.PublicCtaAnalyticsFilter:
-//	case crm.PublicEventAnalyticsFilter:
-//	case crm.PublicFormSubmissionFilter:
-//	case crm.PublicFormSubmissionOnPageFilter:
-//	case crm.PublicIntegrationEventFilter:
-//	case crm.PublicEmailSubscriptionFilter:
-//	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
-//	case crm.PublicSurveyMonkeyFilter:
-//	case crm.PublicSurveyMonkeyValueFilter:
-//	case crm.PublicWebinarFilter:
-//	case crm.PublicEmailEventFilter:
-//	case crm.PublicPrivacyAnalyticsFilter:
-//	case crm.PublicAdsSearchFilter:
-//	case crm.PublicAdsTimeFilter:
-//	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
-//	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
-//	case crm.PublicConstantFilter:
-//	default:
-//	  fmt.Errorf("no variant present")
-//	}
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsAny() anyPublicPropertyAssociationFilterBranchFilter {
-	switch u.FilterType {
-	case "PROPERTY":
-		return u.AsProperty()
-	case "ASSOCIATION":
-		return u.AsAssociation()
-	case "PAGE_VIEW":
-		return u.AsPageView()
-	case "CTA":
-		return u.AsCta()
-	case "EVENT":
-		return u.AsEvent()
-	case "FORM_SUBMISSION":
-		return u.AsFormSubmission()
-	case "FORM_SUBMISSION_ON_PAGE":
-		return u.AsFormSubmissionOnPage()
-	case "INTEGRATION_EVENT":
-		return u.AsIntegrationEvent()
-	case "EMAIL_SUBSCRIPTION":
-		return u.AsEmailSubscription()
-	case "COMMUNICATION_SUBSCRIPTION":
-		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
-	case "SURVEY_MONKEY":
-		return u.AsSurveyMonkey()
-	case "SURVEY_MONKEY_VALUE":
-		return u.AsSurveyMonkeyValue()
-	case "WEBINAR":
-		return u.AsWebinar()
-	case "EMAIL_EVENT":
-		return u.AsEmailEvent()
-	case "PRIVACY":
-		return u.AsPrivacy()
-	case "ADS_SEARCH":
-		return u.AsAdsSearch()
-	case "ADS_TIME":
-		return u.AsAdsTime()
-	case "IN_LIST":
-		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
-	case "UNIFIED_EVENTS":
-		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
-	case "CONSTANT":
-		return u.AsConstant()
-	}
-	return nil
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsProperty() (v PublicPropertyFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsAssociation() (v PublicAssociationInListFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsPageView() (v PublicPageViewAnalyticsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsCta() (v PublicCtaAnalyticsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsEvent() (v PublicEventAnalyticsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsFormSubmission() (v PublicFormSubmissionFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsFormSubmissionOnPage() (v PublicFormSubmissionOnPageFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsIntegrationEvent() (v PublicIntegrationEventFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsEmailSubscription() (v PublicEmailSubscriptionFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsCommunicationSubscription() (v PublicCommunicationSubscriptionFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsSurveyMonkeyValue() (v PublicSurveyMonkeyValueFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsWebinar() (v PublicWebinarFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsEmailEvent() (v PublicEmailEventFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsPrivacy() (v PublicPrivacyAnalyticsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsAdsSearch() (v PublicAdsSearchFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsAdsTime() (v PublicAdsTimeFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsInList() (v PublicInListFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnion) AsConstant() (v PublicConstantFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PublicPropertyAssociationFilterBranchFilterUnion) RawJSON() string { return u.JSON.raw }
-
-func (r *PublicPropertyAssociationFilterBranchFilterUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicPropertyAssociationFilterBranchFilterUnionCoalescingRefineBy is an
-// implicit subunion of [PublicPropertyAssociationFilterBranchFilterUnion].
-// PublicPropertyAssociationFilterBranchFilterUnionCoalescingRefineBy provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicPropertyAssociationFilterBranchFilterUnion].
-type PublicPropertyAssociationFilterBranchFilterUnionCoalescingRefineBy struct {
-	Type string `json:"type"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	MaxOccurrences int64 `json:"maxOccurrences"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	MinOccurrences int64 `json:"minOccurrences"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	SetType    string `json:"setType"`
-	Comparison string `json:"comparison"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	TimeOffset PublicTimeOffset `json:"timeOffset"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
-	RangeType        string           `json:"rangeType"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	Timestamp int64 `json:"timestamp"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	LowerTimestamp int64 `json:"lowerTimestamp"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	UpperTimestamp               int64  `json:"upperTimestamp"`
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	EndpointBehavior string `json:"endpointBehavior"`
-	PropertyParser   string `json:"propertyParser"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
-	// This field is from variant
-	// [PublicAssociationInListFilterCoalescingRefineByUnion],
-	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
-	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
-	JSON                       struct {
-		Type                         respjson.Field
-		MaxOccurrences               respjson.Field
-		MinOccurrences               respjson.Field
-		SetType                      respjson.Field
-		Comparison                   respjson.Field
-		TimeOffset                   respjson.Field
-		LowerBoundOffset             respjson.Field
-		RangeType                    respjson.Field
-		UpperBoundOffset             respjson.Field
-		Timestamp                    respjson.Field
-		LowerTimestamp               respjson.Field
-		UpperTimestamp               respjson.Field
-		IncludeObjectsWithNoValueSet respjson.Field
-		OperationType                respjson.Field
-		Operator                     respjson.Field
-		TimePoint                    respjson.Field
-		EndpointBehavior             respjson.Field
-		PropertyParser               respjson.Field
-		LowerBoundTimePoint          respjson.Field
-		UpperBoundTimePoint          respjson.Field
-		LowerBoundEndpointBehavior   respjson.Field
-		UpperBoundEndpointBehavior   respjson.Field
-		raw                          string
-	} `json:"-"`
-}
-
-func (r *PublicPropertyAssociationFilterBranchFilterUnionCoalescingRefineBy) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicPropertyAssociationFilterBranchFilterUnionPruningRefineBy is an implicit
-// subunion of [PublicPropertyAssociationFilterBranchFilterUnion].
-// PublicPropertyAssociationFilterBranchFilterUnionPruningRefineBy provides
-// convenient access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicPropertyAssociationFilterBranchFilterUnion].
-type PublicPropertyAssociationFilterBranchFilterUnionPruningRefineBy struct {
-	Type string `json:"type"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	MaxOccurrences int64 `json:"maxOccurrences"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	MinOccurrences int64 `json:"minOccurrences"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	SetType    string `json:"setType"`
-	Comparison string `json:"comparison"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	TimeOffset PublicTimeOffset `json:"timeOffset"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
-	RangeType        string           `json:"rangeType"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	Timestamp int64 `json:"timestamp"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	LowerTimestamp int64 `json:"lowerTimestamp"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	UpperTimestamp               int64  `json:"upperTimestamp"`
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	EndpointBehavior string `json:"endpointBehavior"`
-	PropertyParser   string `json:"propertyParser"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
-	// This field is from variant [PublicPageViewAnalyticsFilterPruningRefineByUnion],
-	// [PublicCtaAnalyticsFilterPruningRefineByUnion],
-	// [PublicEventAnalyticsFilterPruningRefineByUnion],
-	// [PublicFormSubmissionFilterPruningRefineByUnion],
-	// [PublicFormSubmissionOnPageFilterPruningRefineByUnion],
-	// [PublicEmailEventFilterPruningRefineByUnion],
-	// [PublicAdsTimeFilterPruningRefineByUnion],
-	// [PublicUnifiedEventsFilterPruningRefineByUnion].
-	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
-	JSON                       struct {
-		Type                         respjson.Field
-		MaxOccurrences               respjson.Field
-		MinOccurrences               respjson.Field
-		SetType                      respjson.Field
-		Comparison                   respjson.Field
-		TimeOffset                   respjson.Field
-		LowerBoundOffset             respjson.Field
-		RangeType                    respjson.Field
-		UpperBoundOffset             respjson.Field
-		Timestamp                    respjson.Field
-		LowerTimestamp               respjson.Field
-		UpperTimestamp               respjson.Field
-		IncludeObjectsWithNoValueSet respjson.Field
-		OperationType                respjson.Field
-		Operator                     respjson.Field
-		TimePoint                    respjson.Field
-		EndpointBehavior             respjson.Field
-		PropertyParser               respjson.Field
-		LowerBoundTimePoint          respjson.Field
-		UpperBoundTimePoint          respjson.Field
-		LowerBoundEndpointBehavior   respjson.Field
-		UpperBoundEndpointBehavior   respjson.Field
-		raw                          string
-	} `json:"-"`
-}
-
-func (r *PublicPropertyAssociationFilterBranchFilterUnionPruningRefineBy) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// PublicPropertyAssociationFilterBranchFilterUnionEventTypeID is an implicit
-// subunion of [PublicPropertyAssociationFilterBranchFilterUnion].
-// PublicPropertyAssociationFilterBranchFilterUnionEventTypeID provides convenient
-// access to the sub-properties of the union.
-//
-// For type safety it is recommended to directly use a variant of the
-// [PublicPropertyAssociationFilterBranchFilterUnion].
-//
-// If the underlying value is not a json object, one of the following properties
-// will be valid: OfInt OfString]
-type PublicPropertyAssociationFilterBranchFilterUnionEventTypeID struct {
-	// This field will be present if the value is a [int64] instead of an object.
-	OfInt int64 `json:",inline"`
-	// This field will be present if the value is a [string] instead of an object.
-	OfString string `json:",inline"`
-	JSON     struct {
-		OfInt    respjson.Field
-		OfString respjson.Field
-		raw      string
-	} `json:"-"`
-}
-
-func (r *PublicPropertyAssociationFilterBranchFilterUnionEventTypeID) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties FilterBranches, FilterBranchOperator, FilterBranchType, Filters,
-// ObjectTypeID, Operator, PropertyWithObjectID are required.
-type PublicPropertyAssociationFilterBranchParam struct {
-	FilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnionParam `json:"filterBranches,omitzero" api:"required"`
-	// The logical operator used to combine filters within the branch.
-	FilterBranchOperator string `json:"filterBranchOperator" api:"required"`
-	// The type of the filter branch (PROPERTY_ASSOCIATION).
-	//
-	// Any of "PROPERTY_ASSOCIATION".
-	FilterBranchType PublicPropertyAssociationFilterBranchFilterBranchType   `json:"filterBranchType,omitzero" api:"required"`
-	Filters          []PublicPropertyAssociationFilterBranchFilterUnionParam `json:"filters,omitzero" api:"required"`
-	// The ID representing the type of object associated with the filter branch.
-	ObjectTypeID string `json:"objectTypeId" api:"required"`
-	// Defines the operation to be applied within the filter branch (IN_LIST,
-	// NOT_IN_LIST).
-	Operator string `json:"operator" api:"required"`
-	// The property that is associated with the object ID in the filter branch.
-	PropertyWithObjectID string `json:"propertyWithObjectId" api:"required"`
-	paramObj
-}
-
-func (r PublicPropertyAssociationFilterBranchParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicPropertyAssociationFilterBranchParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicPropertyAssociationFilterBranchParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type PublicPropertyAssociationFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfOr,
-		u.OfAnd,
-		u.OfNotAll,
-		u.OfNotAny,
-		u.OfRestricted,
-		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
-		u.OfAssociation)
-}
-func (u *PublicPropertyAssociationFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func init() {
-	apijson.RegisterUnion[PublicPropertyAssociationFilterBranchFilterBranchUnionParam](
-		"filterBranchType",
-		apijson.Discriminator[PublicOrFilterBranchParam]("OR"),
-		apijson.Discriminator[PublicAndFilterBranchParam]("AND"),
-		apijson.Discriminator[PublicNotAllFilterBranchParam]("NOT_ALL"),
-		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
-		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
-		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
-		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
-	)
-}
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type PublicPropertyAssociationFilterBranchFilterUnionParam struct {
-	OfProperty                  *PublicPropertyFilterParam                  `json:",omitzero,inline"`
-	OfAssociation               *PublicAssociationInListFilterParam         `json:",omitzero,inline"`
-	OfPageView                  *PublicPageViewAnalyticsFilterParam         `json:",omitzero,inline"`
-	OfCta                       *PublicCtaAnalyticsFilterParam              `json:",omitzero,inline"`
-	OfEvent                     *PublicEventAnalyticsFilterParam            `json:",omitzero,inline"`
-	OfFormSubmission            *PublicFormSubmissionFilterParam            `json:",omitzero,inline"`
-	OfFormSubmissionOnPage      *PublicFormSubmissionOnPageFilterParam      `json:",omitzero,inline"`
-	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
-	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
-	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
-	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
-	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
-	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
-	OfEmailEvent                *PublicEmailEventFilterParam                `json:",omitzero,inline"`
-	OfPrivacy                   *PublicPrivacyAnalyticsFilterParam          `json:",omitzero,inline"`
-	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
-	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
-	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
-	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
-	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u PublicPropertyAssociationFilterBranchFilterUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfProperty,
-		u.OfAssociation,
-		u.OfPageView,
-		u.OfCta,
-		u.OfEvent,
-		u.OfFormSubmission,
-		u.OfFormSubmissionOnPage,
-		u.OfIntegrationEvent,
-		u.OfEmailSubscription,
-		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
-		u.OfSurveyMonkey,
-		u.OfSurveyMonkeyValue,
-		u.OfWebinar,
-		u.OfEmailEvent,
-		u.OfPrivacy,
-		u.OfAdsSearch,
-		u.OfAdsTime,
-		u.OfInList,
-		u.OfNumAssociations,
-		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
-		u.OfConstant)
-}
-func (u *PublicPropertyAssociationFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
-func init() {
-	apijson.RegisterUnion[PublicPropertyAssociationFilterBranchFilterUnionParam](
-		"filterType",
-		apijson.Discriminator[PublicPropertyFilterParam]("PROPERTY"),
-		apijson.Discriminator[PublicAssociationInListFilterParam]("ASSOCIATION"),
-		apijson.Discriminator[PublicPageViewAnalyticsFilterParam]("PAGE_VIEW"),
-		apijson.Discriminator[PublicCtaAnalyticsFilterParam]("CTA"),
-		apijson.Discriminator[PublicEventAnalyticsFilterParam]("EVENT"),
-		apijson.Discriminator[PublicFormSubmissionFilterParam]("FORM_SUBMISSION"),
-		apijson.Discriminator[PublicFormSubmissionOnPageFilterParam]("FORM_SUBMISSION_ON_PAGE"),
-		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
-		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
-		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
-		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
-		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
-		apijson.Discriminator[PublicEmailEventFilterParam]("EMAIL_EVENT"),
-		apijson.Discriminator[PublicPrivacyAnalyticsFilterParam]("PRIVACY"),
-		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
-		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
-		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
-		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
-		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
-	)
-}
-
-type PublicPropertyAssociationInListFilter struct {
-	// Specifies the criteria for refining the filter by coalescing.
-	CoalescingRefineBy PublicPropertyAssociationInListFilterCoalescingRefineByUnion `json:"coalescingRefineBy" api:"required"`
-	// Indicates the type of filter being applied (PROPERTY_ASSOCIATION).
-	//
-	// Any of "PROPERTY_ASSOCIATION".
-	FilterType PublicPropertyAssociationInListFilterFilterType `json:"filterType" api:"required"`
-	// The ID of the list used in the property association filter.
-	ListID string `json:"listId" api:"required"`
-	// Defines the operation to be applied by the filter (IN_LIST, NOT_IN_LIST).
-	Operator string `json:"operator" api:"required"`
-	// The property associated with the object ID in the filter.
-	PropertyWithObjectID string `json:"propertyWithObjectId" api:"required"`
-	// The ID representing the type of object that the property association filter is
-	// targeting.
-	ToObjectTypeID string `json:"toObjectTypeId"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CoalescingRefineBy   respjson.Field
-		FilterType           respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ToObjectTypeID       respjson.Field
-		ExtraFields          map[string]respjson.Field
-		raw                  string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r PublicPropertyAssociationInListFilter) RawJSON() string { return r.JSON.raw }
-func (r *PublicPropertyAssociationInListFilter) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this PublicPropertyAssociationInListFilter to a
-// PublicPropertyAssociationInListFilterParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// PublicPropertyAssociationInListFilterParam.Overrides()
-func (r PublicPropertyAssociationInListFilter) ToParam() PublicPropertyAssociationInListFilterParam {
-	return param.Override[PublicPropertyAssociationInListFilterParam](json.RawMessage(r.RawJSON()))
-}
-
-// PublicPropertyAssociationInListFilterCoalescingRefineByUnion contains all
-// possible properties and values from [PublicNumOccurrencesRefineBy],
-// [PublicSetOccurrencesRefineBy], [PublicRelativeComparativeTimestampRefineBy],
-// [PublicRelativeRangedTimestampRefineBy],
-// [PublicAbsoluteComparativeTimestampRefineBy],
-// [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
-// [PublicTimePointOperation], [PublicRangedTimeOperation].
-//
-// Use the methods beginning with 'As' to cast the union to one of its variants.
-type PublicPropertyAssociationInListFilterCoalescingRefineByUnion struct {
-	Type string `json:"type"`
-	// This field is from variant [PublicNumOccurrencesRefineBy].
-	MaxOccurrences int64 `json:"maxOccurrences"`
-	// This field is from variant [PublicNumOccurrencesRefineBy].
-	MinOccurrences int64 `json:"minOccurrences"`
-	// This field is from variant [PublicSetOccurrencesRefineBy].
-	SetType    string `json:"setType"`
-	Comparison string `json:"comparison"`
-	// This field is from variant [PublicRelativeComparativeTimestampRefineBy].
-	TimeOffset PublicTimeOffset `json:"timeOffset"`
-	// This field is from variant [PublicRelativeRangedTimestampRefineBy].
-	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
-	RangeType        string           `json:"rangeType"`
-	// This field is from variant [PublicRelativeRangedTimestampRefineBy].
-	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
-	// This field is from variant [PublicAbsoluteComparativeTimestampRefineBy].
-	Timestamp int64 `json:"timestamp"`
-	// This field is from variant [PublicAbsoluteRangedTimestampRefineBy].
-	LowerTimestamp int64 `json:"lowerTimestamp"`
-	// This field is from variant [PublicAbsoluteRangedTimestampRefineBy].
-	UpperTimestamp               int64  `json:"upperTimestamp"`
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
-	// This field is from variant [PublicTimePointOperation].
-	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
-	// This field is from variant [PublicTimePointOperation].
-	EndpointBehavior string `json:"endpointBehavior"`
-	PropertyParser   string `json:"propertyParser"`
-	// This field is from variant [PublicRangedTimeOperation].
-	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
-	// This field is from variant [PublicRangedTimeOperation].
-	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
-	// This field is from variant [PublicRangedTimeOperation].
-	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
-	// This field is from variant [PublicRangedTimeOperation].
-	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
-	JSON                       struct {
-		Type                         respjson.Field
-		MaxOccurrences               respjson.Field
-		MinOccurrences               respjson.Field
-		SetType                      respjson.Field
-		Comparison                   respjson.Field
-		TimeOffset                   respjson.Field
-		LowerBoundOffset             respjson.Field
-		RangeType                    respjson.Field
-		UpperBoundOffset             respjson.Field
-		Timestamp                    respjson.Field
-		LowerTimestamp               respjson.Field
-		UpperTimestamp               respjson.Field
-		IncludeObjectsWithNoValueSet respjson.Field
-		OperationType                respjson.Field
-		Operator                     respjson.Field
-		TimePoint                    respjson.Field
-		EndpointBehavior             respjson.Field
-		PropertyParser               respjson.Field
-		LowerBoundTimePoint          respjson.Field
-		UpperBoundTimePoint          respjson.Field
-		LowerBoundEndpointBehavior   respjson.Field
-		UpperBoundEndpointBehavior   respjson.Field
-		raw                          string
-	} `json:"-"`
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsNumOccurrences() (v PublicNumOccurrencesRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsSetOccurrences() (v PublicSetOccurrencesRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsRelativeComparative() (v PublicRelativeComparativeTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsRelativeRanged() (v PublicRelativeRangedTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsAbsoluteComparative() (v PublicAbsoluteComparativeTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsAbsoluteRanged() (v PublicAbsoluteRangedTimestampRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsAllHistory() (v PublicAllHistoryRefineBy) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsTimePoint() (v PublicTimePointOperation) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) AsTimeRanged() (v PublicRangedTimeOperation) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-// Returns the unmodified JSON received from the API
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnion) RawJSON() string {
-	return u.JSON.raw
-}
-
-func (r *PublicPropertyAssociationInListFilterCoalescingRefineByUnion) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Indicates the type of filter being applied (PROPERTY_ASSOCIATION).
-type PublicPropertyAssociationInListFilterFilterType string
-
-const (
-	PublicPropertyAssociationInListFilterFilterTypePropertyAssociation PublicPropertyAssociationInListFilterFilterType = "PROPERTY_ASSOCIATION"
-)
-
-// The properties CoalescingRefineBy, FilterType, ListID, Operator,
-// PropertyWithObjectID are required.
-type PublicPropertyAssociationInListFilterParam struct {
-	// Specifies the criteria for refining the filter by coalescing.
-	CoalescingRefineBy PublicPropertyAssociationInListFilterCoalescingRefineByUnionParam `json:"coalescingRefineBy,omitzero" api:"required"`
-	// Indicates the type of filter being applied (PROPERTY_ASSOCIATION).
-	//
-	// Any of "PROPERTY_ASSOCIATION".
-	FilterType PublicPropertyAssociationInListFilterFilterType `json:"filterType,omitzero" api:"required"`
-	// The ID of the list used in the property association filter.
-	ListID string `json:"listId" api:"required"`
-	// Defines the operation to be applied by the filter (IN_LIST, NOT_IN_LIST).
-	Operator string `json:"operator" api:"required"`
-	// The property associated with the object ID in the filter.
-	PropertyWithObjectID string `json:"propertyWithObjectId" api:"required"`
-	// The ID representing the type of object that the property association filter is
-	// targeting.
-	ToObjectTypeID param.Opt[string] `json:"toObjectTypeId,omitzero"`
-	paramObj
-}
-
-func (r PublicPropertyAssociationInListFilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow PublicPropertyAssociationInListFilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *PublicPropertyAssociationInListFilterParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type PublicPropertyAssociationInListFilterCoalescingRefineByUnionParam struct {
-	OfNumOccurrences      *PublicNumOccurrencesRefineByParam               `json:",omitzero,inline"`
-	OfSetOccurrences      *PublicSetOccurrencesRefineByParam               `json:",omitzero,inline"`
-	OfRelativeComparative *PublicRelativeComparativeTimestampRefineByParam `json:",omitzero,inline"`
-	OfRelativeRanged      *PublicRelativeRangedTimestampRefineByParam      `json:",omitzero,inline"`
-	OfAbsoluteComparative *PublicAbsoluteComparativeTimestampRefineByParam `json:",omitzero,inline"`
-	OfAbsoluteRanged      *PublicAbsoluteRangedTimestampRefineByParam      `json:",omitzero,inline"`
-	OfAllHistory          *PublicAllHistoryRefineByParam                   `json:",omitzero,inline"`
-	OfTimePoint           *PublicTimePointOperationParam                   `json:",omitzero,inline"`
-	OfTimeRanged          *PublicRangedTimeOperationParam                  `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u PublicPropertyAssociationInListFilterCoalescingRefineByUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfNumOccurrences,
-		u.OfSetOccurrences,
-		u.OfRelativeComparative,
-		u.OfRelativeRanged,
-		u.OfAbsoluteComparative,
-		u.OfAbsoluteRanged,
-		u.OfAllHistory,
-		u.OfTimePoint,
-		u.OfTimeRanged)
-}
-func (u *PublicPropertyAssociationInListFilterCoalescingRefineByUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
 }
 
 type PublicPropertyFilter struct {
@@ -16498,7 +14132,7 @@ func (r PublicRestrictedFilterBranch) ToParam() PublicRestrictedFilterBranchPara
 // and values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicRestrictedFilterBranchFilterBranchUnion.AsAny] method to switch
 // on the variant.
@@ -16511,19 +14145,17 @@ type PublicRestrictedFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicRestrictedFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                                      `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicRestrictedFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -16533,14 +14165,13 @@ type PublicRestrictedFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -16549,10 +14180,9 @@ type PublicRestrictedFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -16564,14 +14194,13 @@ type anyPublicRestrictedFilterBranchFilterBranch interface {
 	implPublicRestrictedFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicRestrictedFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -16582,7 +14211,6 @@ func (PublicAssociationFilterBranch) implPublicRestrictedFilterBranchFilterBranc
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -16601,8 +14229,6 @@ func (u PublicRestrictedFilterBranchFilterBranchUnion) AsAny() anyPublicRestrict
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -16639,11 +14265,6 @@ func (u PublicRestrictedFilterBranchFilterBranchUnion) AsUnifiedEvents() (v Publ
 	return
 }
 
-func (u PublicRestrictedFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicRestrictedFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -16670,7 +14291,6 @@ func (r *PublicRestrictedFilterBranchFilterBranchUnion) UnmarshalJSON(data []byt
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicRestrictedFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -16692,21 +14312,17 @@ type PublicRestrictedFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -16726,7 +14342,6 @@ func (r *PublicRestrictedFilterBranchFilterBranchUnionFilterBranches) UnmarshalJ
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicRestrictedFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -16748,21 +14363,17 @@ type PublicRestrictedFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -16783,12 +14394,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicRestrictedFilterBranchFilterUnion.AsAny] method to switch on the
 // variant.
@@ -16797,31 +14406,31 @@ const (
 type PublicRestrictedFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                                    `json:"listId"`
 	Operator           string                                                    `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -16856,9 +14465,7 @@ type PublicRestrictedFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -16889,59 +14496,55 @@ type PublicRestrictedFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -16962,7 +14565,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicRestrictedFilterBranchFilterUn
 func (PublicIntegrationEventFilter) implPublicRestrictedFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicRestrictedFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicRestrictedFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicRestrictedFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicRestrictedFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicRestrictedFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicRestrictedFilterBranchFilterUnion()                   {}
@@ -16971,9 +14573,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicRestrictedFilterBranchFilterUnion(
 func (PublicAdsSearchFilter) implPublicRestrictedFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicRestrictedFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicRestrictedFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicRestrictedFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicRestrictedFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicRestrictedFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicRestrictedFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -16989,7 +14589,6 @@ func (PublicConstantFilter) implPublicRestrictedFilterBranchFilterUnion()       
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -16998,9 +14597,7 @@ func (PublicConstantFilter) implPublicRestrictedFilterBranchFilterUnion()       
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -17027,8 +14624,6 @@ func (u PublicRestrictedFilterBranchFilterUnion) AsAny() anyPublicRestrictedFilt
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -17045,12 +14640,8 @@ func (u PublicRestrictedFilterBranchFilterUnion) AsAny() anyPublicRestrictedFilt
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -17107,11 +14698,6 @@ func (u PublicRestrictedFilterBranchFilterUnion) AsCommunicationSubscription() (
 	return
 }
 
-func (u PublicRestrictedFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicRestrictedFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -17152,17 +14738,7 @@ func (u PublicRestrictedFilterBranchFilterUnion) AsInList() (v PublicInListFilte
 	return
 }
 
-func (u PublicRestrictedFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicRestrictedFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicRestrictedFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -17195,9 +14771,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17206,9 +14780,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17217,9 +14789,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -17229,9 +14799,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17240,9 +14808,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -17252,9 +14818,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17263,9 +14827,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17274,9 +14836,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17285,9 +14845,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -17299,9 +14857,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17310,9 +14866,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -17322,9 +14876,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17333,9 +14885,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17344,9 +14894,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -17355,9 +14903,7 @@ type PublicRestrictedFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -17624,14 +15170,13 @@ func (r *PublicRestrictedFilterBranchParam) UnmarshalJSON(data []byte) error {
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicRestrictedFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -17642,7 +15187,6 @@ func (u PublicRestrictedFilterBranchFilterBranchUnionParam) MarshalJSON() ([]byt
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicRestrictedFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -17658,7 +15202,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -17677,7 +15220,6 @@ type PublicRestrictedFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -17686,9 +15228,7 @@ type PublicRestrictedFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -17704,7 +15244,6 @@ func (u PublicRestrictedFilterBranchFilterUnionParam) MarshalJSON() ([]byte, err
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -17713,9 +15252,7 @@ func (u PublicRestrictedFilterBranchFilterUnionParam) MarshalJSON() ([]byte, err
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicRestrictedFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -17735,7 +15272,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -17744,9 +15280,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
@@ -19190,7 +16724,7 @@ func (r PublicUnifiedEventsFilterBranch) ToParam() PublicUnifiedEventsFilterBran
 // properties and values from [PublicOrFilterBranch], [PublicAndFilterBranch],
 // [PublicNotAllFilterBranch], [PublicNotAnyFilterBranch],
 // [PublicRestrictedFilterBranch], [PublicUnifiedEventsFilterBranch],
-// [PublicPropertyAssociationFilterBranch], [PublicAssociationFilterBranch].
+// [PublicAssociationFilterBranch].
 //
 // Use the [PublicUnifiedEventsFilterBranchFilterBranchUnion.AsAny] method to
 // switch on the variant.
@@ -19203,19 +16737,17 @@ type PublicUnifiedEventsFilterBranchFilterBranchUnion struct {
 	// [[]PublicNotAnyFilterBranchFilterBranchUnion],
 	// [[]PublicRestrictedFilterBranchFilterBranchUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion],
 	// [[]PublicAssociationFilterBranchFilterBranchUnion]
 	FilterBranches       PublicUnifiedEventsFilterBranchFilterBranchUnionFilterBranches `json:"filterBranches"`
 	FilterBranchOperator string                                                         `json:"filterBranchOperator"`
 	// Any of "OR", "AND", "NOT_ALL", "NOT_ANY", "RESTRICTED", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "ASSOCIATION".
+	// "ASSOCIATION".
 	FilterBranchType string `json:"filterBranchType"`
 	// This field is a union of [[]PublicOrFilterBranchFilterUnion],
 	// [[]PublicAndFilterBranchFilterUnion], [[]PublicNotAllFilterBranchFilterUnion],
 	// [[]PublicNotAnyFilterBranchFilterUnion],
 	// [[]PublicRestrictedFilterBranchFilterUnion],
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion],
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion],
 	// [[]PublicAssociationFilterBranchFilterUnion]
 	Filters PublicUnifiedEventsFilterBranchFilterBranchUnionFilters `json:"filters"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
@@ -19225,14 +16757,13 @@ type PublicUnifiedEventsFilterBranchFilterBranchUnion struct {
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchCoalescingRefineByUnion `json:"coalescingRefineBy"`
 	// This field is from variant [PublicUnifiedEventsFilterBranch].
 	PruningRefineBy PublicUnifiedEventsFilterBranchPruningRefineByUnion `json:"pruningRefineBy"`
-	ObjectTypeID    string                                              `json:"objectTypeId"`
-	// This field is from variant [PublicPropertyAssociationFilterBranch].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationCategory string `json:"associationCategory"`
 	// This field is from variant [PublicAssociationFilterBranch].
 	AssociationTypeID int64 `json:"associationTypeId"`
-	JSON              struct {
+	// This field is from variant [PublicAssociationFilterBranch].
+	ObjectTypeID string `json:"objectTypeId"`
+	JSON         struct {
 		FilterBranches       respjson.Field
 		FilterBranchOperator respjson.Field
 		FilterBranchType     respjson.Field
@@ -19241,10 +16772,9 @@ type PublicUnifiedEventsFilterBranchFilterBranchUnion struct {
 		Operator             respjson.Field
 		CoalescingRefineBy   respjson.Field
 		PruningRefineBy      respjson.Field
-		ObjectTypeID         respjson.Field
-		PropertyWithObjectID respjson.Field
 		AssociationCategory  respjson.Field
 		AssociationTypeID    respjson.Field
+		ObjectTypeID         respjson.Field
 		raw                  string
 	} `json:"-"`
 }
@@ -19256,14 +16786,13 @@ type anyPublicUnifiedEventsFilterBranchFilterBranch interface {
 	implPublicUnifiedEventsFilterBranchFilterBranchUnion()
 }
 
-func (PublicOrFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()                  {}
-func (PublicAndFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()                 {}
-func (PublicNotAllFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()              {}
-func (PublicNotAnyFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()              {}
-func (PublicRestrictedFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()          {}
-func (PublicUnifiedEventsFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()       {}
-func (PublicPropertyAssociationFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion() {}
-func (PublicAssociationFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()         {}
+func (PublicOrFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()            {}
+func (PublicAndFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()           {}
+func (PublicNotAllFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()        {}
+func (PublicNotAnyFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()        {}
+func (PublicRestrictedFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()    {}
+func (PublicUnifiedEventsFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion() {}
+func (PublicAssociationFilterBranch) implPublicUnifiedEventsFilterBranchFilterBranchUnion()   {}
 
 // Use the following switch statement to find the correct variant
 //
@@ -19274,7 +16803,6 @@ func (PublicAssociationFilterBranch) implPublicUnifiedEventsFilterBranchFilterBr
 //	case crm.PublicNotAnyFilterBranch:
 //	case crm.PublicRestrictedFilterBranch:
 //	case crm.PublicUnifiedEventsFilterBranch:
-//	case crm.PublicPropertyAssociationFilterBranch:
 //	case crm.PublicAssociationFilterBranch:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -19293,8 +16821,6 @@ func (u PublicUnifiedEventsFilterBranchFilterBranchUnion) AsAny() anyPublicUnifi
 		return u.AsRestricted()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "ASSOCIATION":
 		return u.AsAssociation()
 	}
@@ -19331,11 +16857,6 @@ func (u PublicUnifiedEventsFilterBranchFilterBranchUnion) AsUnifiedEvents() (v P
 	return
 }
 
-func (u PublicUnifiedEventsFilterBranchFilterBranchUnion) AsPropertyAssociation() (v PublicPropertyAssociationFilterBranch) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicUnifiedEventsFilterBranchFilterBranchUnion) AsAssociation() (v PublicAssociationFilterBranch) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -19362,7 +16883,6 @@ func (r *PublicUnifiedEventsFilterBranchFilterBranchUnion) UnmarshalJSON(data []
 // OfPublicNotAnyFilterBranchFilterBranches
 // OfPublicRestrictedFilterBranchFilterBranches
 // OfPublicUnifiedEventsFilterBranchFilterBranches
-// OfPublicPropertyAssociationFilterBranchFilterBranches
 // OfPublicAssociationFilterBranchFilterBranches]
 type PublicUnifiedEventsFilterBranchFilterBranchUnionFilterBranches struct {
 	// This field will be present if the value is a
@@ -19384,21 +16904,17 @@ type PublicUnifiedEventsFilterBranchFilterBranchUnionFilterBranches struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilterBranches []PublicUnifiedEventsFilterBranchFilterBranchUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterBranchUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilterBranches []PublicPropertyAssociationFilterBranchFilterBranchUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterBranchUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilterBranches []PublicAssociationFilterBranchFilterBranchUnion `json:",inline"`
 	JSON                                          struct {
-		OfPublicOrFilterBranchFilterBranches                  respjson.Field
-		OfPublicAndFilterBranchFilterBranches                 respjson.Field
-		OfPublicNotAllFilterBranchFilterBranches              respjson.Field
-		OfPublicNotAnyFilterBranchFilterBranches              respjson.Field
-		OfPublicRestrictedFilterBranchFilterBranches          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilterBranches       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilterBranches respjson.Field
-		OfPublicAssociationFilterBranchFilterBranches         respjson.Field
-		raw                                                   string
+		OfPublicOrFilterBranchFilterBranches            respjson.Field
+		OfPublicAndFilterBranchFilterBranches           respjson.Field
+		OfPublicNotAllFilterBranchFilterBranches        respjson.Field
+		OfPublicNotAnyFilterBranchFilterBranches        respjson.Field
+		OfPublicRestrictedFilterBranchFilterBranches    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilterBranches respjson.Field
+		OfPublicAssociationFilterBranchFilterBranches   respjson.Field
+		raw                                             string
 	} `json:"-"`
 }
 
@@ -19418,7 +16934,6 @@ func (r *PublicUnifiedEventsFilterBranchFilterBranchUnionFilterBranches) Unmarsh
 // will be valid: OfPublicOrFilterBranchFilters OfPublicAndFilterBranchFilters
 // OfPublicNotAllFilterBranchFilters OfPublicNotAnyFilterBranchFilters
 // OfPublicRestrictedFilterBranchFilters OfPublicUnifiedEventsFilterBranchFilters
-// OfPublicPropertyAssociationFilterBranchFilters
 // OfPublicAssociationFilterBranchFilters]
 type PublicUnifiedEventsFilterBranchFilterBranchUnionFilters struct {
 	// This field will be present if the value is a [[]PublicOrFilterBranchFilterUnion]
@@ -19440,21 +16955,17 @@ type PublicUnifiedEventsFilterBranchFilterBranchUnionFilters struct {
 	// [[]PublicUnifiedEventsFilterBranchFilterUnion] instead of an object.
 	OfPublicUnifiedEventsFilterBranchFilters []PublicUnifiedEventsFilterBranchFilterUnion `json:",inline"`
 	// This field will be present if the value is a
-	// [[]PublicPropertyAssociationFilterBranchFilterUnion] instead of an object.
-	OfPublicPropertyAssociationFilterBranchFilters []PublicPropertyAssociationFilterBranchFilterUnion `json:",inline"`
-	// This field will be present if the value is a
 	// [[]PublicAssociationFilterBranchFilterUnion] instead of an object.
 	OfPublicAssociationFilterBranchFilters []PublicAssociationFilterBranchFilterUnion `json:",inline"`
 	JSON                                   struct {
-		OfPublicOrFilterBranchFilters                  respjson.Field
-		OfPublicAndFilterBranchFilters                 respjson.Field
-		OfPublicNotAllFilterBranchFilters              respjson.Field
-		OfPublicNotAnyFilterBranchFilters              respjson.Field
-		OfPublicRestrictedFilterBranchFilters          respjson.Field
-		OfPublicUnifiedEventsFilterBranchFilters       respjson.Field
-		OfPublicPropertyAssociationFilterBranchFilters respjson.Field
-		OfPublicAssociationFilterBranchFilters         respjson.Field
-		raw                                            string
+		OfPublicOrFilterBranchFilters            respjson.Field
+		OfPublicAndFilterBranchFilters           respjson.Field
+		OfPublicNotAllFilterBranchFilters        respjson.Field
+		OfPublicNotAnyFilterBranchFilters        respjson.Field
+		OfPublicRestrictedFilterBranchFilters    respjson.Field
+		OfPublicUnifiedEventsFilterBranchFilters respjson.Field
+		OfPublicAssociationFilterBranchFilters   respjson.Field
+		raw                                      string
 	} `json:"-"`
 }
 
@@ -19475,12 +16986,10 @@ const (
 // [PublicEventAnalyticsFilter], [PublicFormSubmissionFilter],
 // [PublicFormSubmissionOnPageFilter], [PublicIntegrationEventFilter],
 // [PublicEmailSubscriptionFilter], [PublicCommunicationSubscriptionFilter],
-// [PublicCampaignInfluencedFilter], [PublicSurveyMonkeyFilter],
-// [PublicSurveyMonkeyValueFilter], [PublicWebinarFilter],
-// [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
+// [PublicSurveyMonkeyFilter], [PublicSurveyMonkeyValueFilter],
+// [PublicWebinarFilter], [PublicEmailEventFilter], [PublicPrivacyAnalyticsFilter],
 // [PublicAdsSearchFilter], [PublicAdsTimeFilter], [PublicInListFilter],
-// [PublicNumAssociationsFilter], [PublicUnifiedEventsFilter],
-// [PublicPropertyAssociationInListFilter], [PublicConstantFilter].
+// [PublicUnifiedEventsFilter], [PublicConstantFilter].
 //
 // Use the [PublicUnifiedEventsFilterBranchFilterUnion.AsAny] method to switch on
 // the variant.
@@ -19489,31 +16998,31 @@ const (
 type PublicUnifiedEventsFilterBranchFilterUnion struct {
 	// Any of "PROPERTY", "ASSOCIATION", "PAGE_VIEW", "CTA", "EVENT",
 	// "FORM_SUBMISSION", "FORM_SUBMISSION_ON_PAGE", "INTEGRATION_EVENT",
-	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "CAMPAIGN_INFLUENCED",
-	// "SURVEY_MONKEY", "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY",
-	// "ADS_SEARCH", "ADS_TIME", "IN_LIST", "NUM_ASSOCIATIONS", "UNIFIED_EVENTS",
-	// "PROPERTY_ASSOCIATION", "CONSTANT".
+	// "EMAIL_SUBSCRIPTION", "COMMUNICATION_SUBSCRIPTION", "SURVEY_MONKEY",
+	// "SURVEY_MONKEY_VALUE", "WEBINAR", "EMAIL_EVENT", "PRIVACY", "ADS_SEARCH",
+	// "ADS_TIME", "IN_LIST", "UNIFIED_EVENTS", "CONSTANT".
 	FilterType string `json:"filterType"`
 	// This field is from variant [PublicPropertyFilter].
 	Operation PublicPropertyFilterOperationUnion `json:"operation"`
 	// This field is from variant [PublicPropertyFilter].
-	Property            string `json:"property"`
+	Property string `json:"property"`
+	// This field is from variant [PublicAssociationInListFilter].
 	AssociationCategory string `json:"associationCategory"`
-	AssociationTypeID   int64  `json:"associationTypeId"`
+	// This field is from variant [PublicAssociationInListFilter].
+	AssociationTypeID int64 `json:"associationTypeId"`
 	// This field is a union of [PublicAssociationInListFilterCoalescingRefineByUnion],
 	// [PublicPageViewAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicCtaAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion]
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion]
 	CoalescingRefineBy PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy `json:"coalescingRefineBy"`
 	ListID             string                                                       `json:"listId"`
 	Operator           string                                                       `json:"operator"`
 	// This field is from variant [PublicAssociationInListFilter].
-	ToObjectType   string `json:"toObjectType"`
+	ToObjectType string `json:"toObjectType"`
+	// This field is from variant [PublicAssociationInListFilter].
 	ToObjectTypeID string `json:"toObjectTypeId"`
 	// This field is from variant [PublicPageViewAnalyticsFilter].
 	PageURL string `json:"pageUrl"`
@@ -19548,9 +17057,7 @@ type PublicUnifiedEventsFilterBranchFilterUnion struct {
 	Channel string `json:"channel"`
 	// This field is from variant [PublicCommunicationSubscriptionFilter].
 	BusinessUnitID string `json:"businessUnitId"`
-	// This field is from variant [PublicCampaignInfluencedFilter].
-	CampaignID string `json:"campaignId"`
-	SurveyID   string `json:"surveyId"`
+	SurveyID       string `json:"surveyId"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
 	SurveyQuestion string `json:"surveyQuestion"`
 	// This field is from variant [PublicSurveyMonkeyValueFilter].
@@ -19581,59 +17088,55 @@ type PublicUnifiedEventsFilterBranchFilterUnion struct {
 	SearchTermType string `json:"searchTermType"`
 	// This field is from variant [PublicInListFilter].
 	Metadata PublicInListFilterMetadata `json:"metadata"`
-	// This field is from variant [PublicPropertyAssociationInListFilter].
-	PropertyWithObjectID string `json:"propertyWithObjectId"`
 	// This field is from variant [PublicConstantFilter].
 	ShouldAccept bool `json:"shouldAccept"`
 	// This field is from variant [PublicConstantFilter].
 	Source string `json:"source"`
 	JSON   struct {
-		FilterType           respjson.Field
-		Operation            respjson.Field
-		Property             respjson.Field
-		AssociationCategory  respjson.Field
-		AssociationTypeID    respjson.Field
-		CoalescingRefineBy   respjson.Field
-		ListID               respjson.Field
-		Operator             respjson.Field
-		ToObjectType         respjson.Field
-		ToObjectTypeID       respjson.Field
-		PageURL              respjson.Field
-		EnableTracking       respjson.Field
-		PruningRefineBy      respjson.Field
-		CtaName              respjson.Field
-		EventID              respjson.Field
-		FormID               respjson.Field
-		PageID               respjson.Field
-		EventTypeID          respjson.Field
-		FilterLines          respjson.Field
-		AcceptedStatuses     respjson.Field
-		SubscriptionIDs      respjson.Field
-		SubscriptionType     respjson.Field
-		AcceptedOptStates    respjson.Field
-		Channel              respjson.Field
-		BusinessUnitID       respjson.Field
-		CampaignID           respjson.Field
-		SurveyID             respjson.Field
-		SurveyQuestion       respjson.Field
-		ValueComparison      respjson.Field
-		SurveyAnswerColID    respjson.Field
-		SurveyAnswerRowID    respjson.Field
-		WebinarID            respjson.Field
-		AppID                respjson.Field
-		EmailID              respjson.Field
-		Level                respjson.Field
-		ClickURL             respjson.Field
-		PrivacyName          respjson.Field
-		AdNetwork            respjson.Field
-		EntityType           respjson.Field
-		SearchTerms          respjson.Field
-		SearchTermType       respjson.Field
-		Metadata             respjson.Field
-		PropertyWithObjectID respjson.Field
-		ShouldAccept         respjson.Field
-		Source               respjson.Field
-		raw                  string
+		FilterType          respjson.Field
+		Operation           respjson.Field
+		Property            respjson.Field
+		AssociationCategory respjson.Field
+		AssociationTypeID   respjson.Field
+		CoalescingRefineBy  respjson.Field
+		ListID              respjson.Field
+		Operator            respjson.Field
+		ToObjectType        respjson.Field
+		ToObjectTypeID      respjson.Field
+		PageURL             respjson.Field
+		EnableTracking      respjson.Field
+		PruningRefineBy     respjson.Field
+		CtaName             respjson.Field
+		EventID             respjson.Field
+		FormID              respjson.Field
+		PageID              respjson.Field
+		EventTypeID         respjson.Field
+		FilterLines         respjson.Field
+		AcceptedStatuses    respjson.Field
+		SubscriptionIDs     respjson.Field
+		SubscriptionType    respjson.Field
+		AcceptedOptStates   respjson.Field
+		Channel             respjson.Field
+		BusinessUnitID      respjson.Field
+		SurveyID            respjson.Field
+		SurveyQuestion      respjson.Field
+		ValueComparison     respjson.Field
+		SurveyAnswerColID   respjson.Field
+		SurveyAnswerRowID   respjson.Field
+		WebinarID           respjson.Field
+		AppID               respjson.Field
+		EmailID             respjson.Field
+		Level               respjson.Field
+		ClickURL            respjson.Field
+		PrivacyName         respjson.Field
+		AdNetwork           respjson.Field
+		EntityType          respjson.Field
+		SearchTerms         respjson.Field
+		SearchTermType      respjson.Field
+		Metadata            respjson.Field
+		ShouldAccept        respjson.Field
+		Source              respjson.Field
+		raw                 string
 	} `json:"-"`
 }
 
@@ -19654,7 +17157,6 @@ func (PublicFormSubmissionOnPageFilter) implPublicUnifiedEventsFilterBranchFilte
 func (PublicIntegrationEventFilter) implPublicUnifiedEventsFilterBranchFilterUnion()          {}
 func (PublicEmailSubscriptionFilter) implPublicUnifiedEventsFilterBranchFilterUnion()         {}
 func (PublicCommunicationSubscriptionFilter) implPublicUnifiedEventsFilterBranchFilterUnion() {}
-func (PublicCampaignInfluencedFilter) implPublicUnifiedEventsFilterBranchFilterUnion()        {}
 func (PublicSurveyMonkeyFilter) implPublicUnifiedEventsFilterBranchFilterUnion()              {}
 func (PublicSurveyMonkeyValueFilter) implPublicUnifiedEventsFilterBranchFilterUnion()         {}
 func (PublicWebinarFilter) implPublicUnifiedEventsFilterBranchFilterUnion()                   {}
@@ -19663,9 +17165,7 @@ func (PublicPrivacyAnalyticsFilter) implPublicUnifiedEventsFilterBranchFilterUni
 func (PublicAdsSearchFilter) implPublicUnifiedEventsFilterBranchFilterUnion()                 {}
 func (PublicAdsTimeFilter) implPublicUnifiedEventsFilterBranchFilterUnion()                   {}
 func (PublicInListFilter) implPublicUnifiedEventsFilterBranchFilterUnion()                    {}
-func (PublicNumAssociationsFilter) implPublicUnifiedEventsFilterBranchFilterUnion()           {}
 func (PublicUnifiedEventsFilter) implPublicUnifiedEventsFilterBranchFilterUnion()             {}
-func (PublicPropertyAssociationInListFilter) implPublicUnifiedEventsFilterBranchFilterUnion() {}
 func (PublicConstantFilter) implPublicUnifiedEventsFilterBranchFilterUnion()                  {}
 
 // Use the following switch statement to find the correct variant
@@ -19681,7 +17181,6 @@ func (PublicConstantFilter) implPublicUnifiedEventsFilterBranchFilterUnion()    
 //	case crm.PublicIntegrationEventFilter:
 //	case crm.PublicEmailSubscriptionFilter:
 //	case crm.PublicCommunicationSubscriptionFilter:
-//	case crm.PublicCampaignInfluencedFilter:
 //	case crm.PublicSurveyMonkeyFilter:
 //	case crm.PublicSurveyMonkeyValueFilter:
 //	case crm.PublicWebinarFilter:
@@ -19690,9 +17189,7 @@ func (PublicConstantFilter) implPublicUnifiedEventsFilterBranchFilterUnion()    
 //	case crm.PublicAdsSearchFilter:
 //	case crm.PublicAdsTimeFilter:
 //	case crm.PublicInListFilter:
-//	case crm.PublicNumAssociationsFilter:
 //	case crm.PublicUnifiedEventsFilter:
-//	case crm.PublicPropertyAssociationInListFilter:
 //	case crm.PublicConstantFilter:
 //	default:
 //	  fmt.Errorf("no variant present")
@@ -19719,8 +17216,6 @@ func (u PublicUnifiedEventsFilterBranchFilterUnion) AsAny() anyPublicUnifiedEven
 		return u.AsEmailSubscription()
 	case "COMMUNICATION_SUBSCRIPTION":
 		return u.AsCommunicationSubscription()
-	case "CAMPAIGN_INFLUENCED":
-		return u.AsCampaignInfluenced()
 	case "SURVEY_MONKEY":
 		return u.AsSurveyMonkey()
 	case "SURVEY_MONKEY_VALUE":
@@ -19737,12 +17232,8 @@ func (u PublicUnifiedEventsFilterBranchFilterUnion) AsAny() anyPublicUnifiedEven
 		return u.AsAdsTime()
 	case "IN_LIST":
 		return u.AsInList()
-	case "NUM_ASSOCIATIONS":
-		return u.AsNumAssociations()
 	case "UNIFIED_EVENTS":
 		return u.AsUnifiedEvents()
-	case "PROPERTY_ASSOCIATION":
-		return u.AsPropertyAssociation()
 	case "CONSTANT":
 		return u.AsConstant()
 	}
@@ -19799,11 +17290,6 @@ func (u PublicUnifiedEventsFilterBranchFilterUnion) AsCommunicationSubscription(
 	return
 }
 
-func (u PublicUnifiedEventsFilterBranchFilterUnion) AsCampaignInfluenced() (v PublicCampaignInfluencedFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicUnifiedEventsFilterBranchFilterUnion) AsSurveyMonkey() (v PublicSurveyMonkeyFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
@@ -19844,17 +17330,7 @@ func (u PublicUnifiedEventsFilterBranchFilterUnion) AsInList() (v PublicInListFi
 	return
 }
 
-func (u PublicUnifiedEventsFilterBranchFilterUnion) AsNumAssociations() (v PublicNumAssociationsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
 func (u PublicUnifiedEventsFilterBranchFilterUnion) AsUnifiedEvents() (v PublicUnifiedEventsFilter) {
-	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
-	return
-}
-
-func (u PublicUnifiedEventsFilterBranchFilterUnion) AsPropertyAssociation() (v PublicPropertyAssociationInListFilter) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -19887,9 +17363,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MaxOccurrences int64 `json:"maxOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19898,9 +17372,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	MinOccurrences int64 `json:"minOccurrences"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19909,9 +17381,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	SetType    string `json:"setType"`
 	Comparison string `json:"comparison"`
 	// This field is from variant
@@ -19921,9 +17391,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimeOffset PublicTimeOffset `json:"timeOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19932,9 +17400,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundOffset PublicTimeOffset `json:"lowerBoundOffset"`
 	RangeType        string           `json:"rangeType"`
 	// This field is from variant
@@ -19944,9 +17410,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundOffset PublicTimeOffset `json:"upperBoundOffset"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19955,9 +17419,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	Timestamp int64 `json:"timestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19966,9 +17428,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerTimestamp int64 `json:"lowerTimestamp"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -19977,9 +17437,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperTimestamp               int64  `json:"upperTimestamp"`
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
@@ -19991,9 +17449,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	TimePoint PublicTimePointOperationTimePointUnion `json:"timePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -20002,9 +17458,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	EndpointBehavior string `json:"endpointBehavior"`
 	PropertyParser   string `json:"propertyParser"`
 	// This field is from variant
@@ -20014,9 +17468,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundTimePoint PublicRangedTimeOperationLowerBoundTimePointUnion `json:"lowerBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -20025,9 +17477,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundTimePoint PublicRangedTimeOperationUpperBoundTimePointUnion `json:"upperBoundTimePoint"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -20036,9 +17486,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	LowerBoundEndpointBehavior string `json:"lowerBoundEndpointBehavior"`
 	// This field is from variant
 	// [PublicAssociationInListFilterCoalescingRefineByUnion],
@@ -20047,9 +17495,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionCoalescingRefineBy struct {
 	// [PublicEventAnalyticsFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionFilterCoalescingRefineByUnion],
 	// [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion],
-	// [PublicNumAssociationsFilterCoalescingRefineByUnion],
-	// [PublicUnifiedEventsFilterCoalescingRefineByUnion],
-	// [PublicPropertyAssociationInListFilterCoalescingRefineByUnion].
+	// [PublicUnifiedEventsFilterCoalescingRefineByUnion].
 	UpperBoundEndpointBehavior string `json:"upperBoundEndpointBehavior"`
 	JSON                       struct {
 		Type                         respjson.Field
@@ -20586,14 +18032,13 @@ func (r *PublicUnifiedEventsFilterBranchParam) UnmarshalJSON(data []byte) error 
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicUnifiedEventsFilterBranchFilterBranchUnionParam struct {
-	OfOr                  *PublicOrFilterBranchParam                  `json:",omitzero,inline"`
-	OfAnd                 *PublicAndFilterBranchParam                 `json:",omitzero,inline"`
-	OfNotAll              *PublicNotAllFilterBranchParam              `json:",omitzero,inline"`
-	OfNotAny              *PublicNotAnyFilterBranchParam              `json:",omitzero,inline"`
-	OfRestricted          *PublicRestrictedFilterBranchParam          `json:",omitzero,inline"`
-	OfUnifiedEvents       *PublicUnifiedEventsFilterBranchParam       `json:",omitzero,inline"`
-	OfPropertyAssociation *PublicPropertyAssociationFilterBranchParam `json:",omitzero,inline"`
-	OfAssociation         *PublicAssociationFilterBranchParam         `json:",omitzero,inline"`
+	OfOr            *PublicOrFilterBranchParam            `json:",omitzero,inline"`
+	OfAnd           *PublicAndFilterBranchParam           `json:",omitzero,inline"`
+	OfNotAll        *PublicNotAllFilterBranchParam        `json:",omitzero,inline"`
+	OfNotAny        *PublicNotAnyFilterBranchParam        `json:",omitzero,inline"`
+	OfRestricted    *PublicRestrictedFilterBranchParam    `json:",omitzero,inline"`
+	OfUnifiedEvents *PublicUnifiedEventsFilterBranchParam `json:",omitzero,inline"`
+	OfAssociation   *PublicAssociationFilterBranchParam   `json:",omitzero,inline"`
 	paramUnion
 }
 
@@ -20604,7 +18049,6 @@ func (u PublicUnifiedEventsFilterBranchFilterBranchUnionParam) MarshalJSON() ([]
 		u.OfNotAny,
 		u.OfRestricted,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfAssociation)
 }
 func (u *PublicUnifiedEventsFilterBranchFilterBranchUnionParam) UnmarshalJSON(data []byte) error {
@@ -20620,7 +18064,6 @@ func init() {
 		apijson.Discriminator[PublicNotAnyFilterBranchParam]("NOT_ANY"),
 		apijson.Discriminator[PublicRestrictedFilterBranchParam]("RESTRICTED"),
 		apijson.Discriminator[PublicUnifiedEventsFilterBranchParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationFilterBranchParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicAssociationFilterBranchParam]("ASSOCIATION"),
 	)
 }
@@ -20639,7 +18082,6 @@ type PublicUnifiedEventsFilterBranchFilterUnionParam struct {
 	OfIntegrationEvent          *PublicIntegrationEventFilterParam          `json:",omitzero,inline"`
 	OfEmailSubscription         *PublicEmailSubscriptionFilterParam         `json:",omitzero,inline"`
 	OfCommunicationSubscription *PublicCommunicationSubscriptionFilterParam `json:",omitzero,inline"`
-	OfCampaignInfluenced        *PublicCampaignInfluencedFilterParam        `json:",omitzero,inline"`
 	OfSurveyMonkey              *PublicSurveyMonkeyFilterParam              `json:",omitzero,inline"`
 	OfSurveyMonkeyValue         *PublicSurveyMonkeyValueFilterParam         `json:",omitzero,inline"`
 	OfWebinar                   *PublicWebinarFilterParam                   `json:",omitzero,inline"`
@@ -20648,9 +18090,7 @@ type PublicUnifiedEventsFilterBranchFilterUnionParam struct {
 	OfAdsSearch                 *PublicAdsSearchFilterParam                 `json:",omitzero,inline"`
 	OfAdsTime                   *PublicAdsTimeFilterParam                   `json:",omitzero,inline"`
 	OfInList                    *PublicInListFilterParam                    `json:",omitzero,inline"`
-	OfNumAssociations           *PublicNumAssociationsFilterParam           `json:",omitzero,inline"`
 	OfUnifiedEvents             *PublicUnifiedEventsFilterParam             `json:",omitzero,inline"`
-	OfPropertyAssociation       *PublicPropertyAssociationInListFilterParam `json:",omitzero,inline"`
 	OfConstant                  *PublicConstantFilterParam                  `json:",omitzero,inline"`
 	paramUnion
 }
@@ -20666,7 +18106,6 @@ func (u PublicUnifiedEventsFilterBranchFilterUnionParam) MarshalJSON() ([]byte, 
 		u.OfIntegrationEvent,
 		u.OfEmailSubscription,
 		u.OfCommunicationSubscription,
-		u.OfCampaignInfluenced,
 		u.OfSurveyMonkey,
 		u.OfSurveyMonkeyValue,
 		u.OfWebinar,
@@ -20675,9 +18114,7 @@ func (u PublicUnifiedEventsFilterBranchFilterUnionParam) MarshalJSON() ([]byte, 
 		u.OfAdsSearch,
 		u.OfAdsTime,
 		u.OfInList,
-		u.OfNumAssociations,
 		u.OfUnifiedEvents,
-		u.OfPropertyAssociation,
 		u.OfConstant)
 }
 func (u *PublicUnifiedEventsFilterBranchFilterUnionParam) UnmarshalJSON(data []byte) error {
@@ -20697,7 +18134,6 @@ func init() {
 		apijson.Discriminator[PublicIntegrationEventFilterParam]("INTEGRATION_EVENT"),
 		apijson.Discriminator[PublicEmailSubscriptionFilterParam]("EMAIL_SUBSCRIPTION"),
 		apijson.Discriminator[PublicCommunicationSubscriptionFilterParam]("COMMUNICATION_SUBSCRIPTION"),
-		apijson.Discriminator[PublicCampaignInfluencedFilterParam]("CAMPAIGN_INFLUENCED"),
 		apijson.Discriminator[PublicSurveyMonkeyFilterParam]("SURVEY_MONKEY"),
 		apijson.Discriminator[PublicSurveyMonkeyValueFilterParam]("SURVEY_MONKEY_VALUE"),
 		apijson.Discriminator[PublicWebinarFilterParam]("WEBINAR"),
@@ -20706,9 +18142,7 @@ func init() {
 		apijson.Discriminator[PublicAdsSearchFilterParam]("ADS_SEARCH"),
 		apijson.Discriminator[PublicAdsTimeFilterParam]("ADS_TIME"),
 		apijson.Discriminator[PublicInListFilterParam]("IN_LIST"),
-		apijson.Discriminator[PublicNumAssociationsFilterParam]("NUM_ASSOCIATIONS"),
 		apijson.Discriminator[PublicUnifiedEventsFilterParam]("UNIFIED_EVENTS"),
-		apijson.Discriminator[PublicPropertyAssociationInListFilterParam]("PROPERTY_ASSOCIATION"),
 		apijson.Discriminator[PublicConstantFilterParam]("CONSTANT"),
 	)
 }
