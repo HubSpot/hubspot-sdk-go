@@ -1,14 +1,24 @@
 # Shared Params Types
 
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AbTestCreateRequestVNextParam">AbTestCreateRequestVNextParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AppLifecycleEventSubscriptionUpsertRequestParam">AppLifecycleEventSubscriptionUpsertRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AssociationDefinitionEggParam">AssociationDefinitionEggParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AssociationSpecParam">AssociationSpecParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AssociationSubscriptionUpsertRequestParam">AssociationSubscriptionUpsertRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AutomationActionsOptionParam">AutomationActionsOptionParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchInputPropertyCreateParam">BatchInputPropertyCreateParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchInputPropertyNameParam">BatchInputPropertyNameParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchInputPublicObjectIDParam">BatchInputPublicObjectIDParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchInputStringParam">BatchInputStringParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchReadInputPropertyNameParam">BatchReadInputPropertyNameParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ConditionParam">ConditionParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#CrmObjectSnapshotBatchRequestParam">CrmObjectSnapshotBatchRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#CrmObjectSnapshotRequestParam">CrmObjectSnapshotRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#FilterParam">FilterParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#FilterCreateRequestParam">FilterCreateRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#GdprPrivacyDeletionSubscriptionUpsertRequestParam">GdprPrivacyDeletionSubscriptionUpsertRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ListMembershipSubscriptionUpsertRequestParam">ListMembershipSubscriptionUpsertRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ObjectSubscriptionUpsertRequestParam">ObjectSubscriptionUpsertRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ObjectTypeDefinitionLabelsParam">ObjectTypeDefinitionLabelsParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ObjectTypeDefinitionPatchParam">ObjectTypeDefinitionPatchParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#OptionInputParam">OptionInputParam</a>
@@ -18,17 +28,27 @@
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PropertyNameParam">PropertyNameParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PropertyValueParam">PropertyValueParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PublicObjectIDParam">PublicObjectIDParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#SubscriptionUpsertRequestUnionParam">SubscriptionUpsertRequestUnionParam</a>
 
 # Shared Response Types
 
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ActionOverrideRequest">ActionOverrideRequest</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ActionResponse">ActionResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AssociationDefinition">AssociationDefinition</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AssociationSpec">AssociationSpec</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#AutomationActionsOption">AutomationActionsOption</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#BatchResponseJournalFetchResponse">BatchResponseJournalFetchResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#CollectionResponsePropertyGroupNoPaging">CollectionResponsePropertyGroupNoPaging</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#Condition">Condition</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#CrmObjectSnapshotBatchResponse">CrmObjectSnapshotBatchResponse</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#CrmObjectSnapshotResponse">CrmObjectSnapshotResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ErrorData">ErrorData</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ErrorDetail">ErrorDetail</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#Filter">Filter</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#FilterCreateResponse">FilterCreateResponse</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#FilterResponse">FilterResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ForwardPaging">ForwardPaging</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#JournalFetchResponse">JournalFetchResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#NextPage">NextPage</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ObjectTypeDefinition">ObjectTypeDefinition</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#ObjectTypeDefinitionLabels">ObjectTypeDefinitionLabels</a>
@@ -40,6 +60,7 @@
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PropertyModificationMetadata">PropertyModificationMetadata</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PropertyValue">PropertyValue</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#PublicObjectID">PublicObjectID</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#SnapshotStatusResponse">SnapshotStatusResponse</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#StandardError">StandardError</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#TaskLocator">TaskLocator</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared">shared</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/shared#VersionUser">VersionUser</a>
@@ -73,3 +94,5 @@
 # [Settings](settings/api.md)
 
 # [Webhooks](webhooks/api.md)
+
+# [WebhooksJournal](webhooks_journal/api.md)

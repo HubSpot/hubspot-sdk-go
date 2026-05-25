@@ -117,7 +117,7 @@ const (
 // The properties FilterGroups, Filters, Sorts are required.
 type PublicCrmSearchRequestParam struct {
 	FilterGroups []FilterGroupParam `json:"filterGroups,omitzero" api:"required"`
-	Filters      []FilterParam      `json:"filters,omitzero" api:"required"`
+	Filters      []CrmFilterParam   `json:"filters,omitzero" api:"required"`
 	// Defines the order in which the CRM records should be returned.
 	Sorts []string `json:"sorts,omitzero" api:"required"`
 	// The search query string, to filter CRM records.
@@ -145,12 +145,15 @@ type PublicExportListRequestParam struct {
 	ExportName                  string   `json:"exportName" api:"required"`
 	// Any of "LIST".
 	ExportType PublicExportListRequestExportType `json:"exportType,omitzero" api:"required"`
-	// Any of "XLS", "XLSX", "CSV".
+	// Any of "CSV", "XLS", "XLSX".
 	Format                                            PublicExportListRequestFormat `json:"format,omitzero" api:"required"`
 	IncludeLabeledAssociations                        bool                          `json:"includeLabeledAssociations" api:"required"`
 	IncludePrimaryDisplayPropertyForAssociatedObjects bool                          `json:"includePrimaryDisplayPropertyForAssociatedObjects" api:"required"`
-	// Any of "EN", "DE", "ES", "FR", "JA", "NL", "PT_BR", "IT", "PL", "SV", "FI",
-	// "ZH_TW", "DA_DK", "NO", "KO_KR", "TH", "ZH_CN".
+	// Any of "AF_ZA", "AR_EG", "BG", "BN", "CA_ES", "CS", "DA_DK", "DE", "EL_GR",
+	// "EN", "EN_GB", "ES", "ES_MX", "ET_EE", "FI", "FR", "FR_CA", "HE_IL", "HI_IN",
+	// "HR", "HU", "ID", "IT", "JA", "KO_KR", "LT_LT", "MS", "NL", "NO", "PL", "PT_BR",
+	// "PT_PT", "RO", "RU", "SK_SK", "SL", "SV", "TH", "TL", "TR", "UK", "VI_VN",
+	// "ZH_CN", "ZH_HK", "ZH_TW".
 	Language                                          PublicExportListRequestLanguage `json:"language,omitzero" api:"required"`
 	ListID                                            string                          `json:"listId" api:"required"`
 	ObjectProperties                                  []string                        `json:"objectProperties,omitzero" api:"required"`
@@ -176,31 +179,59 @@ const (
 type PublicExportListRequestFormat string
 
 const (
+	PublicExportListRequestFormatCsv  PublicExportListRequestFormat = "CSV"
 	PublicExportListRequestFormatXls  PublicExportListRequestFormat = "XLS"
 	PublicExportListRequestFormatXlsx PublicExportListRequestFormat = "XLSX"
-	PublicExportListRequestFormatCsv  PublicExportListRequestFormat = "CSV"
 )
 
 type PublicExportListRequestLanguage string
 
 const (
-	PublicExportListRequestLanguageEn   PublicExportListRequestLanguage = "EN"
-	PublicExportListRequestLanguageDe   PublicExportListRequestLanguage = "DE"
-	PublicExportListRequestLanguageEs   PublicExportListRequestLanguage = "ES"
-	PublicExportListRequestLanguageFr   PublicExportListRequestLanguage = "FR"
-	PublicExportListRequestLanguageJa   PublicExportListRequestLanguage = "JA"
-	PublicExportListRequestLanguageNl   PublicExportListRequestLanguage = "NL"
-	PublicExportListRequestLanguagePtBr PublicExportListRequestLanguage = "PT_BR"
-	PublicExportListRequestLanguageIt   PublicExportListRequestLanguage = "IT"
-	PublicExportListRequestLanguagePl   PublicExportListRequestLanguage = "PL"
-	PublicExportListRequestLanguageSv   PublicExportListRequestLanguage = "SV"
-	PublicExportListRequestLanguageFi   PublicExportListRequestLanguage = "FI"
-	PublicExportListRequestLanguageZhTw PublicExportListRequestLanguage = "ZH_TW"
+	PublicExportListRequestLanguageAfZa PublicExportListRequestLanguage = "AF_ZA"
+	PublicExportListRequestLanguageArEg PublicExportListRequestLanguage = "AR_EG"
+	PublicExportListRequestLanguageBg   PublicExportListRequestLanguage = "BG"
+	PublicExportListRequestLanguageBn   PublicExportListRequestLanguage = "BN"
+	PublicExportListRequestLanguageCaEs PublicExportListRequestLanguage = "CA_ES"
+	PublicExportListRequestLanguageCs   PublicExportListRequestLanguage = "CS"
 	PublicExportListRequestLanguageDaDk PublicExportListRequestLanguage = "DA_DK"
-	PublicExportListRequestLanguageNo   PublicExportListRequestLanguage = "NO"
+	PublicExportListRequestLanguageDe   PublicExportListRequestLanguage = "DE"
+	PublicExportListRequestLanguageElGr PublicExportListRequestLanguage = "EL_GR"
+	PublicExportListRequestLanguageEn   PublicExportListRequestLanguage = "EN"
+	PublicExportListRequestLanguageEnGB PublicExportListRequestLanguage = "EN_GB"
+	PublicExportListRequestLanguageEs   PublicExportListRequestLanguage = "ES"
+	PublicExportListRequestLanguageEsMx PublicExportListRequestLanguage = "ES_MX"
+	PublicExportListRequestLanguageEtEe PublicExportListRequestLanguage = "ET_EE"
+	PublicExportListRequestLanguageFi   PublicExportListRequestLanguage = "FI"
+	PublicExportListRequestLanguageFr   PublicExportListRequestLanguage = "FR"
+	PublicExportListRequestLanguageFrCa PublicExportListRequestLanguage = "FR_CA"
+	PublicExportListRequestLanguageHeIl PublicExportListRequestLanguage = "HE_IL"
+	PublicExportListRequestLanguageHiIn PublicExportListRequestLanguage = "HI_IN"
+	PublicExportListRequestLanguageHr   PublicExportListRequestLanguage = "HR"
+	PublicExportListRequestLanguageHu   PublicExportListRequestLanguage = "HU"
+	PublicExportListRequestLanguageID   PublicExportListRequestLanguage = "ID"
+	PublicExportListRequestLanguageIt   PublicExportListRequestLanguage = "IT"
+	PublicExportListRequestLanguageJa   PublicExportListRequestLanguage = "JA"
 	PublicExportListRequestLanguageKoKr PublicExportListRequestLanguage = "KO_KR"
+	PublicExportListRequestLanguageLtLt PublicExportListRequestLanguage = "LT_LT"
+	PublicExportListRequestLanguageMs   PublicExportListRequestLanguage = "MS"
+	PublicExportListRequestLanguageNl   PublicExportListRequestLanguage = "NL"
+	PublicExportListRequestLanguageNo   PublicExportListRequestLanguage = "NO"
+	PublicExportListRequestLanguagePl   PublicExportListRequestLanguage = "PL"
+	PublicExportListRequestLanguagePtBr PublicExportListRequestLanguage = "PT_BR"
+	PublicExportListRequestLanguagePtPt PublicExportListRequestLanguage = "PT_PT"
+	PublicExportListRequestLanguageRo   PublicExportListRequestLanguage = "RO"
+	PublicExportListRequestLanguageRu   PublicExportListRequestLanguage = "RU"
+	PublicExportListRequestLanguageSkSk PublicExportListRequestLanguage = "SK_SK"
+	PublicExportListRequestLanguageSl   PublicExportListRequestLanguage = "SL"
+	PublicExportListRequestLanguageSv   PublicExportListRequestLanguage = "SV"
 	PublicExportListRequestLanguageTh   PublicExportListRequestLanguage = "TH"
+	PublicExportListRequestLanguageTl   PublicExportListRequestLanguage = "TL"
+	PublicExportListRequestLanguageTr   PublicExportListRequestLanguage = "TR"
+	PublicExportListRequestLanguageUk   PublicExportListRequestLanguage = "UK"
+	PublicExportListRequestLanguageViVn PublicExportListRequestLanguage = "VI_VN"
 	PublicExportListRequestLanguageZhCn PublicExportListRequestLanguage = "ZH_CN"
+	PublicExportListRequestLanguageZhHk PublicExportListRequestLanguage = "ZH_HK"
+	PublicExportListRequestLanguageZhTw PublicExportListRequestLanguage = "ZH_TW"
 )
 
 // Only one field can be non-zero.
@@ -299,12 +330,15 @@ type PublicExportViewRequestParam struct {
 	ExportName                  string   `json:"exportName" api:"required"`
 	// Any of "VIEW".
 	ExportType PublicExportViewRequestExportType `json:"exportType,omitzero" api:"required"`
-	// Any of "XLS", "XLSX", "CSV".
+	// Any of "CSV", "XLS", "XLSX".
 	Format                                            PublicExportViewRequestFormat `json:"format,omitzero" api:"required"`
 	IncludeLabeledAssociations                        bool                          `json:"includeLabeledAssociations" api:"required"`
 	IncludePrimaryDisplayPropertyForAssociatedObjects bool                          `json:"includePrimaryDisplayPropertyForAssociatedObjects" api:"required"`
-	// Any of "EN", "DE", "ES", "FR", "JA", "NL", "PT_BR", "IT", "PL", "SV", "FI",
-	// "ZH_TW", "DA_DK", "NO", "KO_KR", "TH", "ZH_CN".
+	// Any of "AF_ZA", "AR_EG", "BG", "BN", "CA_ES", "CS", "DA_DK", "DE", "EL_GR",
+	// "EN", "EN_GB", "ES", "ES_MX", "ET_EE", "FI", "FR", "FR_CA", "HE_IL", "HI_IN",
+	// "HR", "HU", "ID", "IT", "JA", "KO_KR", "LT_LT", "MS", "NL", "NO", "PL", "PT_BR",
+	// "PT_PT", "RO", "RU", "SK_SK", "SL", "SV", "TH", "TL", "TR", "UK", "VI_VN",
+	// "ZH_CN", "ZH_HK", "ZH_TW".
 	Language                                          PublicExportViewRequestLanguage `json:"language,omitzero" api:"required"`
 	ObjectProperties                                  []string                        `json:"objectProperties,omitzero" api:"required"`
 	ObjectType                                        string                          `json:"objectType" api:"required"`
@@ -330,31 +364,59 @@ const (
 type PublicExportViewRequestFormat string
 
 const (
+	PublicExportViewRequestFormatCsv  PublicExportViewRequestFormat = "CSV"
 	PublicExportViewRequestFormatXls  PublicExportViewRequestFormat = "XLS"
 	PublicExportViewRequestFormatXlsx PublicExportViewRequestFormat = "XLSX"
-	PublicExportViewRequestFormatCsv  PublicExportViewRequestFormat = "CSV"
 )
 
 type PublicExportViewRequestLanguage string
 
 const (
-	PublicExportViewRequestLanguageEn   PublicExportViewRequestLanguage = "EN"
-	PublicExportViewRequestLanguageDe   PublicExportViewRequestLanguage = "DE"
-	PublicExportViewRequestLanguageEs   PublicExportViewRequestLanguage = "ES"
-	PublicExportViewRequestLanguageFr   PublicExportViewRequestLanguage = "FR"
-	PublicExportViewRequestLanguageJa   PublicExportViewRequestLanguage = "JA"
-	PublicExportViewRequestLanguageNl   PublicExportViewRequestLanguage = "NL"
-	PublicExportViewRequestLanguagePtBr PublicExportViewRequestLanguage = "PT_BR"
-	PublicExportViewRequestLanguageIt   PublicExportViewRequestLanguage = "IT"
-	PublicExportViewRequestLanguagePl   PublicExportViewRequestLanguage = "PL"
-	PublicExportViewRequestLanguageSv   PublicExportViewRequestLanguage = "SV"
-	PublicExportViewRequestLanguageFi   PublicExportViewRequestLanguage = "FI"
-	PublicExportViewRequestLanguageZhTw PublicExportViewRequestLanguage = "ZH_TW"
+	PublicExportViewRequestLanguageAfZa PublicExportViewRequestLanguage = "AF_ZA"
+	PublicExportViewRequestLanguageArEg PublicExportViewRequestLanguage = "AR_EG"
+	PublicExportViewRequestLanguageBg   PublicExportViewRequestLanguage = "BG"
+	PublicExportViewRequestLanguageBn   PublicExportViewRequestLanguage = "BN"
+	PublicExportViewRequestLanguageCaEs PublicExportViewRequestLanguage = "CA_ES"
+	PublicExportViewRequestLanguageCs   PublicExportViewRequestLanguage = "CS"
 	PublicExportViewRequestLanguageDaDk PublicExportViewRequestLanguage = "DA_DK"
-	PublicExportViewRequestLanguageNo   PublicExportViewRequestLanguage = "NO"
+	PublicExportViewRequestLanguageDe   PublicExportViewRequestLanguage = "DE"
+	PublicExportViewRequestLanguageElGr PublicExportViewRequestLanguage = "EL_GR"
+	PublicExportViewRequestLanguageEn   PublicExportViewRequestLanguage = "EN"
+	PublicExportViewRequestLanguageEnGB PublicExportViewRequestLanguage = "EN_GB"
+	PublicExportViewRequestLanguageEs   PublicExportViewRequestLanguage = "ES"
+	PublicExportViewRequestLanguageEsMx PublicExportViewRequestLanguage = "ES_MX"
+	PublicExportViewRequestLanguageEtEe PublicExportViewRequestLanguage = "ET_EE"
+	PublicExportViewRequestLanguageFi   PublicExportViewRequestLanguage = "FI"
+	PublicExportViewRequestLanguageFr   PublicExportViewRequestLanguage = "FR"
+	PublicExportViewRequestLanguageFrCa PublicExportViewRequestLanguage = "FR_CA"
+	PublicExportViewRequestLanguageHeIl PublicExportViewRequestLanguage = "HE_IL"
+	PublicExportViewRequestLanguageHiIn PublicExportViewRequestLanguage = "HI_IN"
+	PublicExportViewRequestLanguageHr   PublicExportViewRequestLanguage = "HR"
+	PublicExportViewRequestLanguageHu   PublicExportViewRequestLanguage = "HU"
+	PublicExportViewRequestLanguageID   PublicExportViewRequestLanguage = "ID"
+	PublicExportViewRequestLanguageIt   PublicExportViewRequestLanguage = "IT"
+	PublicExportViewRequestLanguageJa   PublicExportViewRequestLanguage = "JA"
 	PublicExportViewRequestLanguageKoKr PublicExportViewRequestLanguage = "KO_KR"
+	PublicExportViewRequestLanguageLtLt PublicExportViewRequestLanguage = "LT_LT"
+	PublicExportViewRequestLanguageMs   PublicExportViewRequestLanguage = "MS"
+	PublicExportViewRequestLanguageNl   PublicExportViewRequestLanguage = "NL"
+	PublicExportViewRequestLanguageNo   PublicExportViewRequestLanguage = "NO"
+	PublicExportViewRequestLanguagePl   PublicExportViewRequestLanguage = "PL"
+	PublicExportViewRequestLanguagePtBr PublicExportViewRequestLanguage = "PT_BR"
+	PublicExportViewRequestLanguagePtPt PublicExportViewRequestLanguage = "PT_PT"
+	PublicExportViewRequestLanguageRo   PublicExportViewRequestLanguage = "RO"
+	PublicExportViewRequestLanguageRu   PublicExportViewRequestLanguage = "RU"
+	PublicExportViewRequestLanguageSkSk PublicExportViewRequestLanguage = "SK_SK"
+	PublicExportViewRequestLanguageSl   PublicExportViewRequestLanguage = "SL"
+	PublicExportViewRequestLanguageSv   PublicExportViewRequestLanguage = "SV"
 	PublicExportViewRequestLanguageTh   PublicExportViewRequestLanguage = "TH"
+	PublicExportViewRequestLanguageTl   PublicExportViewRequestLanguage = "TL"
+	PublicExportViewRequestLanguageTr   PublicExportViewRequestLanguage = "TR"
+	PublicExportViewRequestLanguageUk   PublicExportViewRequestLanguage = "UK"
+	PublicExportViewRequestLanguageViVn PublicExportViewRequestLanguage = "VI_VN"
 	PublicExportViewRequestLanguageZhCn PublicExportViewRequestLanguage = "ZH_CN"
+	PublicExportViewRequestLanguageZhHk PublicExportViewRequestLanguage = "ZH_HK"
+	PublicExportViewRequestLanguageZhTw PublicExportViewRequestLanguage = "ZH_TW"
 )
 
 type ExportNewAsyncParams struct {

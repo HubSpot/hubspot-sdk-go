@@ -190,8 +190,8 @@ func TestObjectListingSearchWithOptionalParams(t *testing.T) {
 		PublicObjectSearchRequest: crm.PublicObjectSearchRequestParam{
 			After: "after",
 			FilterGroups: []crm.FilterGroupParam{{
-				Filters: []crm.FilterParam{{
-					Operator:     crm.FilterOperatorBetween,
+				Filters: []crm.CrmFilterParam{{
+					Operator:     crm.CrmFilterOperatorBetween,
 					PropertyName: "propertyName",
 					HighValue:    hubspotsdk.String("highValue"),
 					Value:        hubspotsdk.String("value"),

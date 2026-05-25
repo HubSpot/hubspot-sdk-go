@@ -34,25 +34,25 @@ func TestExportNewAsyncWithOptionalParams(t *testing.T) {
 				ExportInternalValuesOptions: []string{"NAMES"},
 				ExportName:                  "exportName",
 				ExportType:                  crm.PublicExportViewRequestExportTypeView,
-				Format:                      crm.PublicExportViewRequestFormatXls,
+				Format:                      crm.PublicExportViewRequestFormatCsv,
 				IncludeLabeledAssociations:  true,
 				IncludePrimaryDisplayPropertyForAssociatedObjects: true,
-				Language:         crm.PublicExportViewRequestLanguageEn,
+				Language:         crm.PublicExportViewRequestLanguageAfZa,
 				ObjectProperties: []string{"string"},
 				ObjectType:       "objectType",
 				OverrideAssociatedObjectsPerDefinitionPerRowLimit: true,
 				PublicCrmSearchRequest: crm.PublicCrmSearchRequestParam{
 					FilterGroups: []crm.FilterGroupParam{{
-						Filters: []crm.FilterParam{{
-							Operator:     crm.FilterOperatorBetween,
+						Filters: []crm.CrmFilterParam{{
+							Operator:     crm.CrmFilterOperatorBetween,
 							PropertyName: "propertyName",
 							HighValue:    hubspotsdk.String("highValue"),
 							Value:        hubspotsdk.String("value"),
 							Values:       []string{"string"},
 						}},
 					}},
-					Filters: []crm.FilterParam{{
-						Operator:     crm.FilterOperatorBetween,
+					Filters: []crm.CrmFilterParam{{
+						Operator:     crm.CrmFilterOperatorBetween,
 						PropertyName: "propertyName",
 						HighValue:    hubspotsdk.String("highValue"),
 						Value:        hubspotsdk.String("value"),

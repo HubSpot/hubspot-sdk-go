@@ -35,9 +35,8 @@ func NewOAuthService(opts ...option.RequestOption) (r OAuthService) {
 }
 
 // Authenticates a client and returns access and refresh tokens.
-func (r *OAuthService) NewToken(ctx context.Context, body OAuthNewTokenParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *OAuthService) NewToken(ctx context.Context, body OAuthNewTokenParams, opts ...option.RequestOption) (res *TokenResponseIfUnion, err error) {
 	opts = slices.Concat(r.options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "oauth/2026-03/token"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
@@ -59,6 +58,82 @@ func (r *OAuthService) RevokeToken(ctx context.Context, body OAuthRevokeTokenPar
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
+
+type AccessTokenResponse struct {
+	AccessToken  string `json:"access_token" api:"required"`
+	ExpiresIn    int64  `json:"expires_in" api:"required"`
+	RefreshToken string `json:"refresh_token" api:"required"`
+	TokenType    string `json:"token_type" api:"required"`
+	// Any of "access_token".
+	TokenUse AccessTokenResponseTokenUse `json:"token_use" api:"required"`
+	HubID    int64                       `json:"hub_id"`
+	IDToken  string                      `json:"id_token"`
+	Scopes   []string                    `json:"scopes"`
+	UserID   int64                       `json:"user_id"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		AccessToken  respjson.Field
+		ExpiresIn    respjson.Field
+		RefreshToken respjson.Field
+		TokenType    respjson.Field
+		TokenUse     respjson.Field
+		HubID        respjson.Field
+		IDToken      respjson.Field
+		Scopes       respjson.Field
+		UserID       respjson.Field
+		ExtraFields  map[string]respjson.Field
+		raw          string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r AccessTokenResponse) RawJSON() string { return r.JSON.raw }
+func (r *AccessTokenResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AccessTokenResponseTokenUse string
+
+const (
+	AccessTokenResponseTokenUseAccessToken AccessTokenResponseTokenUse = "access_token"
+)
+
+type ClientCredentialsTokenResponse struct {
+	AccessToken string `json:"access_token" api:"required"`
+	ExpiresIn   int64  `json:"expires_in" api:"required"`
+	TokenType   string `json:"token_type" api:"required"`
+	// Any of "client_credentials".
+	TokenUse ClientCredentialsTokenResponseTokenUse `json:"token_use" api:"required"`
+	HubID    int64                                  `json:"hub_id"`
+	IDToken  string                                 `json:"id_token"`
+	Scopes   []string                               `json:"scopes"`
+	UserID   int64                                  `json:"user_id"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		AccessToken respjson.Field
+		ExpiresIn   respjson.Field
+		TokenType   respjson.Field
+		TokenUse    respjson.Field
+		HubID       respjson.Field
+		IDToken     respjson.Field
+		Scopes      respjson.Field
+		UserID      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ClientCredentialsTokenResponse) RawJSON() string { return r.JSON.raw }
+func (r *ClientCredentialsTokenResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ClientCredentialsTokenResponseTokenUse string
+
+const (
+	ClientCredentialsTokenResponseTokenUseClientCredentials ClientCredentialsTokenResponseTokenUse = "client_credentials"
+)
 
 type PublicAccessTokenInfoResponse struct {
 	Token                 string            `json:"token" api:"required"`
@@ -254,6 +329,52 @@ func (r *TokenInfoResponseBaseIfUnion) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// TokenResponseIfUnion contains all possible properties and values from
+// [AccessTokenResponse], [ClientCredentialsTokenResponse].
+//
+// Use the methods beginning with 'As' to cast the union to one of its variants.
+type TokenResponseIfUnion struct {
+	AccessToken string `json:"access_token"`
+	ExpiresIn   int64  `json:"expires_in"`
+	// This field is from variant [AccessTokenResponse].
+	RefreshToken string   `json:"refresh_token"`
+	TokenType    string   `json:"token_type"`
+	TokenUse     string   `json:"token_use"`
+	HubID        int64    `json:"hub_id"`
+	IDToken      string   `json:"id_token"`
+	Scopes       []string `json:"scopes"`
+	UserID       int64    `json:"user_id"`
+	JSON         struct {
+		AccessToken  respjson.Field
+		ExpiresIn    respjson.Field
+		RefreshToken respjson.Field
+		TokenType    respjson.Field
+		TokenUse     respjson.Field
+		HubID        respjson.Field
+		IDToken      respjson.Field
+		Scopes       respjson.Field
+		UserID       respjson.Field
+		raw          string
+	} `json:"-"`
+}
+
+func (u TokenResponseIfUnion) AsAccessTokenResponse() (v AccessTokenResponse) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+func (u TokenResponseIfUnion) AsClientCredentialsTokenResponse() (v ClientCredentialsTokenResponse) {
+	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
+	return
+}
+
+// Returns the unmodified JSON received from the API
+func (u TokenResponseIfUnion) RawJSON() string { return u.JSON.raw }
+
+func (r *TokenResponseIfUnion) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type OAuthNewTokenParams struct {
 	ClientID     param.Opt[string] `json:"client_id,omitzero"`
 	ClientSecret param.Opt[string] `json:"client_secret,omitzero"`
@@ -262,7 +383,7 @@ type OAuthNewTokenParams struct {
 	RedirectUri  param.Opt[string] `json:"redirect_uri,omitzero"`
 	RefreshToken param.Opt[string] `json:"refresh_token,omitzero"`
 	Scope        param.Opt[string] `json:"scope,omitzero"`
-	// Any of "authorization_code", "refresh_token".
+	// Any of "authorization_code", "client_credentials", "refresh_token".
 	GrantType OAuthNewTokenParamsGrantType `json:"grant_type,omitzero"`
 	paramObj
 }
@@ -279,6 +400,7 @@ type OAuthNewTokenParamsGrantType string
 
 const (
 	OAuthNewTokenParamsGrantTypeAuthorizationCode OAuthNewTokenParamsGrantType = "authorization_code"
+	OAuthNewTokenParamsGrantTypeClientCredentials OAuthNewTokenParamsGrantType = "client_credentials"
 	OAuthNewTokenParamsGrantTypeRefreshToken      OAuthNewTokenParamsGrantType = "refresh_token"
 )
 

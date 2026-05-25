@@ -34,6 +34,36 @@ func (r *AbTestCreateRequestVNextParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type ActionOverrideRequest struct {
+	// An array of strings, each representing an associated object type ID relevant to
+	// the action override.
+	AssociatedObjectTypeIDs []string `json:"associatedObjectTypeIds"`
+	// An array of integers representing list IDs that are associated with the action
+	// override. The integers are in int64 format.
+	ListIDs []int64 `json:"listIds"`
+	// An array of integers, each representing an object ID for which the action
+	// override is applicable. The integers are in int64 format.
+	ObjectIDs []int64 `json:"objectIds"`
+	// An array of strings representing the properties to be overridden in the action.
+	// Each string corresponds to a property name.
+	Properties []string `json:"properties"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		AssociatedObjectTypeIDs respjson.Field
+		ListIDs                 respjson.Field
+		ObjectIDs               respjson.Field
+		Properties              respjson.Field
+		ExtraFields             map[string]respjson.Field
+		raw                     string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r ActionOverrideRequest) RawJSON() string { return r.JSON.raw }
+func (r *ActionOverrideRequest) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type ActionResponse struct {
 	// The timestamp indicating when the action was completed.
 	CompletedAt time.Time `json:"completedAt" api:"required" format:"date-time"`
@@ -76,6 +106,29 @@ const (
 	ActionResponseStatusComplete   ActionResponseStatus = "COMPLETE"
 	ActionResponseStatusPending    ActionResponseStatus = "PENDING"
 	ActionResponseStatusProcessing ActionResponseStatus = "PROCESSING"
+)
+
+// The properties EventTypeID, Properties, SubscriptionType are required.
+type AppLifecycleEventSubscriptionUpsertRequestParam struct {
+	EventTypeID string   `json:"eventTypeId" api:"required"`
+	Properties  []string `json:"properties,omitzero" api:"required"`
+	// Any of "APP_LIFECYCLE_EVENT".
+	SubscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
+	paramObj
+}
+
+func (r AppLifecycleEventSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow AppLifecycleEventSubscriptionUpsertRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AppLifecycleEventSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AppLifecycleEventSubscriptionUpsertRequestSubscriptionType string
+
+const (
+	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
 )
 
 // The definition of an association
@@ -192,6 +245,36 @@ func (r AssociationSpecParam) MarshalJSON() (data []byte, err error) {
 func (r *AssociationSpecParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// The properties Actions, AssociatedObjectTypeIDs, ObjectIDs, ObjectTypeID,
+// PortalID, SubscriptionType are required.
+type AssociationSubscriptionUpsertRequestParam struct {
+	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
+	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
+	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
+	Actions                 []string `json:"actions,omitzero" api:"required"`
+	AssociatedObjectTypeIDs []string `json:"associatedObjectTypeIds,omitzero" api:"required"`
+	ObjectIDs               []int64  `json:"objectIds,omitzero" api:"required"`
+	ObjectTypeID            string   `json:"objectTypeId" api:"required"`
+	PortalID                int64    `json:"portalId" api:"required"`
+	// Any of "ASSOCIATION".
+	SubscriptionType AssociationSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
+	paramObj
+}
+
+func (r AssociationSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow AssociationSubscriptionUpsertRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *AssociationSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type AssociationSubscriptionUpsertRequestSubscriptionType string
+
+const (
+	AssociationSubscriptionUpsertRequestSubscriptionTypeAssociation AssociationSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
+)
 
 // A HubSpot property option
 type AutomationActionsOption struct {
@@ -351,6 +434,53 @@ const (
 	BatchReadInputPropertyNameDataSensitivitySensitive       BatchReadInputPropertyNameDataSensitivity = "sensitive"
 )
 
+type BatchResponseJournalFetchResponse struct {
+	// The date and time when the batch operation was completed, in ISO 8601 format.
+	CompletedAt time.Time `json:"completedAt" api:"required" format:"date-time"`
+	// An array of results from the batch operation, each represented as a
+	// JournalFetchResponse object.
+	Results []JournalFetchResponse `json:"results" api:"required"`
+	// The date and time when the batch operation started, in ISO 8601 format.
+	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
+	// The current status of the batch operation. Valid values include 'PENDING',
+	// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+	//
+	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
+	Status BatchResponseJournalFetchResponseStatus `json:"status" api:"required"`
+	// A map of link names to associated URIs related to the batch operation.
+	Links map[string]string `json:"links"`
+	// The date and time when the batch operation was requested, in ISO 8601 format.
+	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		CompletedAt respjson.Field
+		Results     respjson.Field
+		StartedAt   respjson.Field
+		Status      respjson.Field
+		Links       respjson.Field
+		RequestedAt respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r BatchResponseJournalFetchResponse) RawJSON() string { return r.JSON.raw }
+func (r *BatchResponseJournalFetchResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The current status of the batch operation. Valid values include 'PENDING',
+// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+type BatchResponseJournalFetchResponseStatus string
+
+const (
+	BatchResponseJournalFetchResponseStatusCanceled   BatchResponseJournalFetchResponseStatus = "CANCELED"
+	BatchResponseJournalFetchResponseStatusComplete   BatchResponseJournalFetchResponseStatus = "COMPLETE"
+	BatchResponseJournalFetchResponseStatusPending    BatchResponseJournalFetchResponseStatus = "PENDING"
+	BatchResponseJournalFetchResponseStatusProcessing BatchResponseJournalFetchResponseStatus = "PROCESSING"
+)
+
 type CollectionResponsePropertyGroupNoPaging struct {
 	Results []PropertyGroup `json:"results" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -364,6 +494,207 @@ type CollectionResponsePropertyGroupNoPaging struct {
 // Returns the unmodified JSON received from the API
 func (r CollectionResponsePropertyGroupNoPaging) RawJSON() string { return r.JSON.raw }
 func (r *CollectionResponsePropertyGroupNoPaging) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type Condition struct {
+	// A string indicating the type of filter being applied. Valid value is
+	// 'CRM_OBJECT_PROPERTY'.
+	//
+	// Any of "CRM_OBJECT_PROPERTY".
+	FilterType ConditionFilterType `json:"filterType" api:"required"`
+	// A string specifying the operation to be performed in the condition. Valid values
+	// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
+	// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
+	//
+	// Any of "CONTAINS", "ENDS_WITH", "EQ", "GT", "GTE", "IN", "IS_EMPTY",
+	// "IS_NOT_EMPTY", "LT", "LTE", "N_EQ", "NOT_IN", "STARTS_WITH".
+	Operator ConditionOperator `json:"operator" api:"required"`
+	// A string representing the specific property of the CRM object that the condition
+	// applies to.
+	Property string `json:"property" api:"required"`
+	// A string representing the value to be compared against the specified property
+	// when using single-value operators.
+	Value string `json:"value"`
+	// An array of strings used to specify multiple values for comparison when using
+	// operators that support multiple values, such as 'IN' or 'NOT_IN'.
+	Values []string `json:"values"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		FilterType  respjson.Field
+		Operator    respjson.Field
+		Property    respjson.Field
+		Value       respjson.Field
+		Values      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r Condition) RawJSON() string { return r.JSON.raw }
+func (r *Condition) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this Condition to a ConditionParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// ConditionParam.Overrides()
+func (r Condition) ToParam() ConditionParam {
+	return param.Override[ConditionParam](json.RawMessage(r.RawJSON()))
+}
+
+// A string indicating the type of filter being applied. Valid value is
+// 'CRM_OBJECT_PROPERTY'.
+type ConditionFilterType string
+
+const (
+	ConditionFilterTypeCrmObjectProperty ConditionFilterType = "CRM_OBJECT_PROPERTY"
+)
+
+// A string specifying the operation to be performed in the condition. Valid values
+// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
+// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
+type ConditionOperator string
+
+const (
+	ConditionOperatorContains   ConditionOperator = "CONTAINS"
+	ConditionOperatorEndsWith   ConditionOperator = "ENDS_WITH"
+	ConditionOperatorEq         ConditionOperator = "EQ"
+	ConditionOperatorGt         ConditionOperator = "GT"
+	ConditionOperatorGte        ConditionOperator = "GTE"
+	ConditionOperatorIn         ConditionOperator = "IN"
+	ConditionOperatorIsEmpty    ConditionOperator = "IS_EMPTY"
+	ConditionOperatorIsNotEmpty ConditionOperator = "IS_NOT_EMPTY"
+	ConditionOperatorLt         ConditionOperator = "LT"
+	ConditionOperatorLte        ConditionOperator = "LTE"
+	ConditionOperatorNEq        ConditionOperator = "N_EQ"
+	ConditionOperatorNotIn      ConditionOperator = "NOT_IN"
+	ConditionOperatorStartsWith ConditionOperator = "STARTS_WITH"
+)
+
+// The properties FilterType, Operator, Property are required.
+type ConditionParam struct {
+	// A string indicating the type of filter being applied. Valid value is
+	// 'CRM_OBJECT_PROPERTY'.
+	//
+	// Any of "CRM_OBJECT_PROPERTY".
+	FilterType ConditionFilterType `json:"filterType,omitzero" api:"required"`
+	// A string specifying the operation to be performed in the condition. Valid values
+	// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
+	// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
+	//
+	// Any of "CONTAINS", "ENDS_WITH", "EQ", "GT", "GTE", "IN", "IS_EMPTY",
+	// "IS_NOT_EMPTY", "LT", "LTE", "N_EQ", "NOT_IN", "STARTS_WITH".
+	Operator ConditionOperator `json:"operator,omitzero" api:"required"`
+	// A string representing the specific property of the CRM object that the condition
+	// applies to.
+	Property string `json:"property" api:"required"`
+	// A string representing the value to be compared against the specified property
+	// when using single-value operators.
+	Value param.Opt[string] `json:"value,omitzero"`
+	// An array of strings used to specify multiple values for comparison when using
+	// operators that support multiple values, such as 'IN' or 'NOT_IN'.
+	Values []string `json:"values,omitzero"`
+	paramObj
+}
+
+func (r ConditionParam) MarshalJSON() (data []byte, err error) {
+	type shadow ConditionParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *ConditionParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The property SnapshotRequests is required.
+type CrmObjectSnapshotBatchRequestParam struct {
+	// An array of CrmObjectSnapshotRequest objects, each representing a request to
+	// create a snapshot for a specific CRM object. This property is required.
+	SnapshotRequests []CrmObjectSnapshotRequestParam `json:"snapshotRequests,omitzero" api:"required"`
+	paramObj
+}
+
+func (r CrmObjectSnapshotBatchRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow CrmObjectSnapshotBatchRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *CrmObjectSnapshotBatchRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type CrmObjectSnapshotBatchResponse struct {
+	// An array of CrmObjectSnapshotResponse objects, each representing the result of a
+	// snapshot operation for a specific CRM object. This property is required.
+	SnapshotResponses []CrmObjectSnapshotResponse `json:"snapshotResponses" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		SnapshotResponses respjson.Field
+		ExtraFields       map[string]respjson.Field
+		raw               string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CrmObjectSnapshotBatchResponse) RawJSON() string { return r.JSON.raw }
+func (r *CrmObjectSnapshotBatchResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties ObjectID, ObjectTypeID, PortalID, Properties are required.
+type CrmObjectSnapshotRequestParam struct {
+	// An integer representing the unique identifier of the CRM object for which the
+	// snapshot is requested.
+	ObjectID int64 `json:"objectId" api:"required"`
+	// A string representing the type identifier of the CRM object, specifying what
+	// kind of object it is within HubSpot.
+	ObjectTypeID string `json:"objectTypeId" api:"required"`
+	// An integer representing the unique identifier of the HubSpot account (portal)
+	// where the CRM object resides.
+	PortalID int64 `json:"portalId" api:"required"`
+	// An array of strings, each representing a property of the CRM object that should
+	// be included in the snapshot.
+	Properties []string `json:"properties,omitzero" api:"required"`
+	paramObj
+}
+
+func (r CrmObjectSnapshotRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow CrmObjectSnapshotRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *CrmObjectSnapshotRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type CrmObjectSnapshotResponse struct {
+	// An integer representing the unique identifier of the CRM object for which the
+	// snapshot is taken.
+	ObjectID int64 `json:"objectId" api:"required"`
+	// A string indicating the type of the CRM object, such as contact, company, or
+	// deal.
+	ObjectTypeID string `json:"objectTypeId" api:"required"`
+	// An integer representing the unique identifier of the HubSpot portal associated
+	// with the CRM object.
+	PortalID int64 `json:"portalId" api:"required"`
+	// A UUID string representing the status identifier of the snapshot request,
+	// indicating the current state of the snapshot process.
+	SnapshotStatusID string `json:"snapshotStatusId" api:"required" format:"uuid"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ObjectID         respjson.Field
+		ObjectTypeID     respjson.Field
+		PortalID         respjson.Field
+		SnapshotStatusID respjson.Field
+		ExtraFields      map[string]respjson.Field
+		raw              string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r CrmObjectSnapshotResponse) RawJSON() string { return r.JSON.raw }
+func (r *CrmObjectSnapshotResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -435,6 +766,119 @@ func (r *ErrorDetail) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Defines a single condition for searching CRM objects, specifying the property to
+// filter on, the operator to use (such as equals, greater than, or contains), and
+// the value(s) to compare against.
+type Filter struct {
+	// An array of conditions that define the criteria for the filter. Each condition
+	// specifies a property, an operator, and optionally a value or values.
+	Conditions []Condition `json:"conditions" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		Conditions  respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r Filter) RawJSON() string { return r.JSON.raw }
+func (r *Filter) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// ToParam converts this Filter to a FilterParam.
+//
+// Warning: the fields of the param type will not be present. ToParam should only
+// be used at the last possible moment before sending a request. Test for this with
+// FilterParam.Overrides()
+func (r Filter) ToParam() FilterParam {
+	return param.Override[FilterParam](json.RawMessage(r.RawJSON()))
+}
+
+// Defines a single condition for searching CRM objects, specifying the property to
+// filter on, the operator to use (such as equals, greater than, or contains), and
+// the value(s) to compare against.
+//
+// The property Conditions is required.
+type FilterParam struct {
+	// An array of conditions that define the criteria for the filter. Each condition
+	// specifies a property, an operator, and optionally a value or values.
+	Conditions []ConditionParam `json:"conditions,omitzero" api:"required"`
+	paramObj
+}
+
+func (r FilterParam) MarshalJSON() (data []byte, err error) {
+	type shadow FilterParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *FilterParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties Filter, SubscriptionID are required.
+type FilterCreateRequestParam struct {
+	// Defines a single condition for searching CRM objects, specifying the property to
+	// filter on, the operator to use (such as equals, greater than, or contains), and
+	// the value(s) to compare against.
+	Filter FilterParam `json:"filter,omitzero" api:"required"`
+	// The unique identifier of the subscription to which the filter will be applied.
+	// It is an integer formatted as int64.
+	SubscriptionID int64 `json:"subscriptionId" api:"required"`
+	paramObj
+}
+
+func (r FilterCreateRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow FilterCreateRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *FilterCreateRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type FilterCreateResponse struct {
+	// The unique identifier for the created filter. It is an integer formatted as
+	// int64.
+	FilterID int64 `json:"filterId" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		FilterID    respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r FilterCreateResponse) RawJSON() string { return r.JSON.raw }
+func (r *FilterCreateResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type FilterResponse struct {
+	// The unique identifier for the filter. It is an integer in int64 format.
+	ID int64 `json:"id" api:"required"`
+	// A Unix timestamp in milliseconds indicating when the filter was created.
+	CreatedAt int64 `json:"createdAt" api:"required"`
+	// Defines a single condition for searching CRM objects, specifying the property to
+	// filter on, the operator to use (such as equals, greater than, or contains), and
+	// the value(s) to compare against.
+	Filter Filter `json:"filter" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		CreatedAt   respjson.Field
+		Filter      respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r FilterResponse) RawJSON() string { return r.JSON.raw }
+func (r *FilterResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
 type ForwardPaging struct {
 	// Specifies the paging information needed to retrieve the next set of results in a
 	// paginated API response
@@ -452,6 +896,86 @@ func (r ForwardPaging) RawJSON() string { return r.JSON.raw }
 func (r *ForwardPaging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// The properties Actions, ObjectTypeID, PortalID, SubscriptionType are required.
+type GdprPrivacyDeletionSubscriptionUpsertRequestParam struct {
+	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
+	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
+	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
+	Actions      []string `json:"actions,omitzero" api:"required"`
+	ObjectTypeID string   `json:"objectTypeId" api:"required"`
+	PortalID     int64    `json:"portalId" api:"required"`
+	// Any of "GDPR_PRIVACY_DELETION".
+	SubscriptionType GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
+	paramObj
+}
+
+func (r GdprPrivacyDeletionSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow GdprPrivacyDeletionSubscriptionUpsertRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *GdprPrivacyDeletionSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType string
+
+const (
+	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
+)
+
+type JournalFetchResponse struct {
+	// The unique identifier for the current offset of the journal entry, formatted as
+	// a UUID.
+	CurrentOffset string `json:"currentOffset" api:"required" format:"uuid"`
+	// The date and time when the URL will expire, in ISO 8601 format.
+	ExpiresAt time.Time `json:"expiresAt" api:"required" format:"date-time"`
+	// The URL where the journal entry can be accessed. It is a string.
+	URL string `json:"url" api:"required"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		CurrentOffset respjson.Field
+		ExpiresAt     respjson.Field
+		URL           respjson.Field
+		ExtraFields   map[string]respjson.Field
+		raw           string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r JournalFetchResponse) RawJSON() string { return r.JSON.raw }
+func (r *JournalFetchResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The properties Actions, ListIDs, ObjectIDs, PortalID, SubscriptionType are
+// required.
+type ListMembershipSubscriptionUpsertRequestParam struct {
+	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
+	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
+	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
+	Actions   []string `json:"actions,omitzero" api:"required"`
+	ListIDs   []int64  `json:"listIds,omitzero" api:"required"`
+	ObjectIDs []int64  `json:"objectIds,omitzero" api:"required"`
+	PortalID  int64    `json:"portalId" api:"required"`
+	// Any of "LIST_MEMBERSHIP".
+	SubscriptionType ListMembershipSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
+	paramObj
+}
+
+func (r ListMembershipSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow ListMembershipSubscriptionUpsertRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *ListMembershipSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ListMembershipSubscriptionUpsertRequestSubscriptionType string
+
+const (
+	ListMembershipSubscriptionUpsertRequestSubscriptionTypeListMembership ListMembershipSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
+)
 
 // Specifies the paging information needed to retrieve the next set of results in a
 // paginated API response
@@ -474,6 +998,36 @@ func (r NextPage) RawJSON() string { return r.JSON.raw }
 func (r *NextPage) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// The properties Actions, ObjectIDs, ObjectTypeID, PortalID, Properties,
+// SubscriptionType are required.
+type ObjectSubscriptionUpsertRequestParam struct {
+	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
+	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
+	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
+	Actions      []string `json:"actions,omitzero" api:"required"`
+	ObjectIDs    []int64  `json:"objectIds,omitzero" api:"required"`
+	ObjectTypeID string   `json:"objectTypeId" api:"required"`
+	PortalID     int64    `json:"portalId" api:"required"`
+	Properties   []string `json:"properties,omitzero" api:"required"`
+	// Any of "OBJECT".
+	SubscriptionType ObjectSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
+	paramObj
+}
+
+func (r ObjectSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
+	type shadow ObjectSubscriptionUpsertRequestParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *ObjectSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+type ObjectSubscriptionUpsertRequestSubscriptionType string
+
+const (
+	ObjectSubscriptionUpsertRequestSubscriptionTypeObject ObjectSubscriptionUpsertRequestSubscriptionType = "OBJECT"
+)
 
 type ObjectTypeDefinition struct {
 	ID                         string                     `json:"id" api:"required"`
@@ -1041,21 +1595,21 @@ type PropertyValue struct {
 	// "ASSISTS", "ASSOCIATIONS", "AUTO_ASSOCIATE_BY_DOMAIN", "AUTOMATION_JOURNEY",
 	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
 	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
-	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
-	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS",
-	// "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB", "CONTENT_MEMBERSHIP",
-	// "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS", "CRM_PROCESSES_PLATFORM",
-	// "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT", "DATA_ENRICHMENT",
-	// "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT", "DELETE_OBJECTS", "EMAIL",
-	// "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION",
-	// "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM",
-	// "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK",
-	// "HELP_DESK_AI", "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM",
-	// "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING", "LEADIN",
-	// "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE", "MARKETS",
-	// "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS", "MERGE_OBJECTS",
-	// "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
-	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "BOT", "BREEZE_AGENT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT",
+	// "CLONE_OBJECTS", "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES",
+	// "COMPANY_INSIGHTS", "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB",
+	// "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS",
+	// "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT",
+	// "DATA_ENRICHMENT", "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT",
+	// "DELETE_OBJECTS", "DI_WRITE_TO_CRM", "EMAIL", "EMAIL_INBOX_IMPORT",
+	// "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER",
+	// "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM", "FORWARD_TO_CRM",
+	// "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK", "HELP_DESK_AI",
+	// "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT",
+	// "INTERNAL_PROCESSING", "LEADIN", "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING",
+	// "MARKETPLACE", "MARKETS", "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS",
+	// "MERGE_OBJECTS", "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION",
+	// "MOBILE_ANDROID", "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
 	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
 	// "PRIMARY_AUTOMATION", "PROPERTY_DEFAULT_VALUE", "PROPERTY_RESTORE",
 	// "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS", "QUOTES", "RECYCLING_BIN",
@@ -1161,6 +1715,7 @@ const (
 	PropertyValueSourceBiden                       PropertyValueSource = "BIDEN"
 	PropertyValueSourceBilling                     PropertyValueSource = "BILLING"
 	PropertyValueSourceBot                         PropertyValueSource = "BOT"
+	PropertyValueSourceBreezeAgent                 PropertyValueSource = "BREEZE_AGENT"
 	PropertyValueSourceCalculated                  PropertyValueSource = "CALCULATED"
 	PropertyValueSourceCentralExchangeRates        PropertyValueSource = "CENTRAL_EXCHANGE_RATES"
 	PropertyValueSourceChatspot                    PropertyValueSource = "CHATSPOT"
@@ -1185,6 +1740,7 @@ const (
 	PropertyValueSourceDeals                       PropertyValueSource = "DEALS"
 	PropertyValueSourceDefault                     PropertyValueSource = "DEFAULT"
 	PropertyValueSourceDeleteObjects               PropertyValueSource = "DELETE_OBJECTS"
+	PropertyValueSourceDiWriteToCrm                PropertyValueSource = "DI_WRITE_TO_CRM"
 	PropertyValueSourceEmail                       PropertyValueSource = "EMAIL"
 	PropertyValueSourceEmailInboxImport            PropertyValueSource = "EMAIL_INBOX_IMPORT"
 	PropertyValueSourceEmailIntegration            PropertyValueSource = "EMAIL_INTEGRATION"
@@ -1292,21 +1848,21 @@ type PropertyValueParam struct {
 	// "ASSISTS", "ASSOCIATIONS", "AUTO_ASSOCIATE_BY_DOMAIN", "AUTOMATION_JOURNEY",
 	// "AUTOMATION_PLATFORM", "AVATARS_SERVICE", "BATCH_UPDATE", "BCC_TO_CRM",
 	// "BEHAVIORAL_EVENTS", "BET_ASSIGNMENT", "BET_CRM_CONNECTOR", "BIDEN", "BILLING",
-	// "BOT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT", "CLONE_OBJECTS",
-	// "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES", "COMPANY_INSIGHTS",
-	// "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB", "CONTENT_MEMBERSHIP",
-	// "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS", "CRM_PROCESSES_PLATFORM",
-	// "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT", "DATA_ENRICHMENT",
-	// "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT", "DELETE_OBJECTS", "EMAIL",
-	// "EMAIL_INBOX_IMPORT", "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION",
-	// "FILE_MANAGER", "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM",
-	// "FORWARD_TO_CRM", "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK",
-	// "HELP_DESK_AI", "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM",
-	// "INTEGRATIONS_SYNC", "INTENT", "INTERNAL_PROCESSING", "LEADIN",
-	// "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING", "MARKETPLACE", "MARKETS",
-	// "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS", "MERGE_OBJECTS",
-	// "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION", "MOBILE_ANDROID",
-	// "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
+	// "BOT", "BREEZE_AGENT", "CALCULATED", "CENTRAL_EXCHANGE_RATES", "CHATSPOT",
+	// "CLONE_OBJECTS", "COMMUNICATOR", "COMPANIES", "COMPANY_FAMILIES",
+	// "COMPANY_INSIGHTS", "CONNECTED_ACCOUNT", "CONTACTS", "CONTACTS_WEB",
+	// "CONTENT_MEMBERSHIP", "CONVERSATIONAL_ENRICHMENT", "CONVERSATIONS",
+	// "CRM_PROCESSES_PLATFORM", "CRM_UI", "CRM_UI_BULK_ACTION", "CUSTOMER_AGENT",
+	// "DATA_ENRICHMENT", "DATA_QUALITY", "DATASET", "DEALS", "DEFAULT",
+	// "DELETE_OBJECTS", "DI_WRITE_TO_CRM", "EMAIL", "EMAIL_INBOX_IMPORT",
+	// "EMAIL_INTEGRATION", "ENGAGEMENTS", "EXTENSION", "FILE_MANAGER",
+	// "FLYWHEEL_PRODUCT_DATA_SYNC", "FORECASTING", "FORM", "FORWARD_TO_CRM",
+	// "GMAIL_INTEGRATION", "GOALS", "HEISENBERG", "HELP_DESK", "HELP_DESK_AI",
+	// "IMPORT", "INTEGRATION", "INTEGRATIONS_PLATFORM", "INTEGRATIONS_SYNC", "INTENT",
+	// "INTERNAL_PROCESSING", "LEADIN", "LEGAL_BASIS_REMEDIATION", "MARKET_SOURCING",
+	// "MARKETPLACE", "MARKETS", "MEETINGS", "MERGE_COMPANIES", "MERGE_CONTACTS",
+	// "MERGE_OBJECTS", "MERGE_REVERT_OBJECTS", "MICROAPPS", "MIGRATION",
+	// "MOBILE_ANDROID", "MOBILE_IOS", "PAYMENTS", "PIPELINE_SETTINGS", "PLAYBOOKS",
 	// "PORTAL_OBJECT_SYNC", "PORTAL_USER_ASSOCIATOR", "PRESENTATIONS",
 	// "PRIMARY_AUTOMATION", "PROPERTY_DEFAULT_VALUE", "PROPERTY_RESTORE",
 	// "PROPERTY_SETTINGS", "PROSPECTING_AGENT", "QUOTAS", "QUOTES", "RECYCLING_BIN",
@@ -1389,6 +1945,70 @@ func (r *PublicObjectIDParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type SnapshotStatusResponse struct {
+	// The unique identifier for the snapshot operation, represented as a UUID.
+	ID string `json:"id" api:"required" format:"uuid"`
+	// The timestamp indicating when the snapshot operation was initiated, represented
+	// as a Unix timestamp in milliseconds.
+	InitiatedAt int64 `json:"initiatedAt" api:"required"`
+	// The current status of the snapshot. Valid values include 'PENDING',
+	// 'IN_PROGRESS', 'COMPLETED', 'FAILED', and 'EXPIRED'.
+	//
+	// Any of "COMPLETED", "EXPIRED", "FAILED", "IN_PROGRESS", "PENDING".
+	Status SnapshotStatusResponseStatus `json:"status" api:"required"`
+	// The timestamp indicating when the snapshot operation was completed, represented
+	// as a Unix timestamp in milliseconds.
+	CompletedAt int64 `json:"completedAt"`
+	// A code representing the error that occurred, if any. Possible values are
+	// 'TIMEOUT', 'VALIDATION_ERROR', 'INTERNAL_ERROR', and 'PERMISSION_DENIED'.
+	//
+	// Any of "INTERNAL_ERROR", "PERMISSION_DENIED", "TIMEOUT", "VALIDATION_ERROR".
+	ErrorCode SnapshotStatusResponseErrorCode `json:"errorCode"`
+	// A descriptive message providing additional information about the snapshot
+	// operation or error.
+	Message string `json:"message"`
+	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
+	JSON struct {
+		ID          respjson.Field
+		InitiatedAt respjson.Field
+		Status      respjson.Field
+		CompletedAt respjson.Field
+		ErrorCode   respjson.Field
+		Message     respjson.Field
+		ExtraFields map[string]respjson.Field
+		raw         string
+	} `json:"-"`
+}
+
+// Returns the unmodified JSON received from the API
+func (r SnapshotStatusResponse) RawJSON() string { return r.JSON.raw }
+func (r *SnapshotStatusResponse) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The current status of the snapshot. Valid values include 'PENDING',
+// 'IN_PROGRESS', 'COMPLETED', 'FAILED', and 'EXPIRED'.
+type SnapshotStatusResponseStatus string
+
+const (
+	SnapshotStatusResponseStatusCompleted  SnapshotStatusResponseStatus = "COMPLETED"
+	SnapshotStatusResponseStatusExpired    SnapshotStatusResponseStatus = "EXPIRED"
+	SnapshotStatusResponseStatusFailed     SnapshotStatusResponseStatus = "FAILED"
+	SnapshotStatusResponseStatusInProgress SnapshotStatusResponseStatus = "IN_PROGRESS"
+	SnapshotStatusResponseStatusPending    SnapshotStatusResponseStatus = "PENDING"
+)
+
+// A code representing the error that occurred, if any. Possible values are
+// 'TIMEOUT', 'VALIDATION_ERROR', 'INTERNAL_ERROR', and 'PERMISSION_DENIED'.
+type SnapshotStatusResponseErrorCode string
+
+const (
+	SnapshotStatusResponseErrorCodeInternalError    SnapshotStatusResponseErrorCode = "INTERNAL_ERROR"
+	SnapshotStatusResponseErrorCodePermissionDenied SnapshotStatusResponseErrorCode = "PERMISSION_DENIED"
+	SnapshotStatusResponseErrorCodeTimeout          SnapshotStatusResponseErrorCode = "TIMEOUT"
+	SnapshotStatusResponseErrorCodeValidationError  SnapshotStatusResponseErrorCode = "VALIDATION_ERROR"
+)
+
 // Ye olde error
 type StandardError struct {
 	// Error category.
@@ -1426,6 +2046,37 @@ type StandardError struct {
 func (r StandardError) RawJSON() string { return r.JSON.raw }
 func (r *StandardError) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func SubscriptionUpsertRequestParamOfAppLifecycleEventSubscriptionUpsertRequest(eventTypeID string, properties []string, subscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType) SubscriptionUpsertRequestUnionParam {
+	var variant AppLifecycleEventSubscriptionUpsertRequestParam
+	variant.EventTypeID = eventTypeID
+	variant.Properties = properties
+	variant.SubscriptionType = subscriptionType
+	return SubscriptionUpsertRequestUnionParam{OfAppLifecycleEventSubscriptionUpsertRequest: &variant}
+}
+
+// Only one field can be non-zero.
+//
+// Use [param.IsOmitted] to confirm if a field is set.
+type SubscriptionUpsertRequestUnionParam struct {
+	OfObjectSubscriptionUpsertRequest              *ObjectSubscriptionUpsertRequestParam              `json:",omitzero,inline"`
+	OfAssociationSubscriptionUpsertRequest         *AssociationSubscriptionUpsertRequestParam         `json:",omitzero,inline"`
+	OfAppLifecycleEventSubscriptionUpsertRequest   *AppLifecycleEventSubscriptionUpsertRequestParam   `json:",omitzero,inline"`
+	OfListMembershipSubscriptionUpsertRequest      *ListMembershipSubscriptionUpsertRequestParam      `json:",omitzero,inline"`
+	OfGdprPrivacyDeletionSubscriptionUpsertRequest *GdprPrivacyDeletionSubscriptionUpsertRequestParam `json:",omitzero,inline"`
+	paramUnion
+}
+
+func (u SubscriptionUpsertRequestUnionParam) MarshalJSON() ([]byte, error) {
+	return param.MarshalUnion(u, u.OfObjectSubscriptionUpsertRequest,
+		u.OfAssociationSubscriptionUpsertRequest,
+		u.OfAppLifecycleEventSubscriptionUpsertRequest,
+		u.OfListMembershipSubscriptionUpsertRequest,
+		u.OfGdprPrivacyDeletionSubscriptionUpsertRequest)
+}
+func (u *SubscriptionUpsertRequestUnionParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, u)
 }
 
 type TaskLocator struct {

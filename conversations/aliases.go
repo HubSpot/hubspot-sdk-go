@@ -20,6 +20,9 @@ type Error = apierror.Error
 type AbTestCreateRequestVNextParam = shared.AbTestCreateRequestVNextParam
 
 // This is an alias to an internal type.
+type ActionOverrideRequest = shared.ActionOverrideRequest
+
+// This is an alias to an internal type.
 type ActionResponse = shared.ActionResponse
 
 // The current status of the action, with possible values: CANCELED, COMPLETE,
@@ -39,6 +42,15 @@ const ActionResponseStatusPending = shared.ActionResponseStatusPending
 
 // Equals "PROCESSING"
 const ActionResponseStatusProcessing = shared.ActionResponseStatusProcessing
+
+// This is an alias to an internal type.
+type AppLifecycleEventSubscriptionUpsertRequestParam = shared.AppLifecycleEventSubscriptionUpsertRequestParam
+
+// This is an alias to an internal type.
+type AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = shared.AppLifecycleEventSubscriptionUpsertRequestSubscriptionType
+
+// Equals "APP_LIFECYCLE_EVENT"
+const AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent = shared.AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent
 
 // The definition of an association
 //
@@ -76,6 +88,15 @@ const AssociationSpecAssociationCategoryWork = shared.AssociationSpecAssociation
 //
 // This is an alias to an internal type.
 type AssociationSpecParam = shared.AssociationSpecParam
+
+// This is an alias to an internal type.
+type AssociationSubscriptionUpsertRequestParam = shared.AssociationSubscriptionUpsertRequestParam
+
+// This is an alias to an internal type.
+type AssociationSubscriptionUpsertRequestSubscriptionType = shared.AssociationSubscriptionUpsertRequestSubscriptionType
+
+// Equals "ASSOCIATION"
+const AssociationSubscriptionUpsertRequestSubscriptionTypeAssociation = shared.AssociationSubscriptionUpsertRequestSubscriptionTypeAssociation
 
 // A HubSpot property option
 //
@@ -115,7 +136,101 @@ const BatchReadInputPropertyNameDataSensitivityNonSensitive = shared.BatchReadIn
 const BatchReadInputPropertyNameDataSensitivitySensitive = shared.BatchReadInputPropertyNameDataSensitivitySensitive
 
 // This is an alias to an internal type.
+type BatchResponseJournalFetchResponse = shared.BatchResponseJournalFetchResponse
+
+// The current status of the batch operation. Valid values include 'PENDING',
+// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
+//
+// This is an alias to an internal type.
+type BatchResponseJournalFetchResponseStatus = shared.BatchResponseJournalFetchResponseStatus
+
+// Equals "CANCELED"
+const BatchResponseJournalFetchResponseStatusCanceled = shared.BatchResponseJournalFetchResponseStatusCanceled
+
+// Equals "COMPLETE"
+const BatchResponseJournalFetchResponseStatusComplete = shared.BatchResponseJournalFetchResponseStatusComplete
+
+// Equals "PENDING"
+const BatchResponseJournalFetchResponseStatusPending = shared.BatchResponseJournalFetchResponseStatusPending
+
+// Equals "PROCESSING"
+const BatchResponseJournalFetchResponseStatusProcessing = shared.BatchResponseJournalFetchResponseStatusProcessing
+
+// This is an alias to an internal type.
 type CollectionResponsePropertyGroupNoPaging = shared.CollectionResponsePropertyGroupNoPaging
+
+// This is an alias to an internal type.
+type Condition = shared.Condition
+
+// A string indicating the type of filter being applied. Valid value is
+// 'CRM_OBJECT_PROPERTY'.
+//
+// This is an alias to an internal type.
+type ConditionFilterType = shared.ConditionFilterType
+
+// Equals "CRM_OBJECT_PROPERTY"
+const ConditionFilterTypeCrmObjectProperty = shared.ConditionFilterTypeCrmObjectProperty
+
+// A string specifying the operation to be performed in the condition. Valid values
+// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
+// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
+//
+// This is an alias to an internal type.
+type ConditionOperator = shared.ConditionOperator
+
+// Equals "CONTAINS"
+const ConditionOperatorContains = shared.ConditionOperatorContains
+
+// Equals "ENDS_WITH"
+const ConditionOperatorEndsWith = shared.ConditionOperatorEndsWith
+
+// Equals "EQ"
+const ConditionOperatorEq = shared.ConditionOperatorEq
+
+// Equals "GT"
+const ConditionOperatorGt = shared.ConditionOperatorGt
+
+// Equals "GTE"
+const ConditionOperatorGte = shared.ConditionOperatorGte
+
+// Equals "IN"
+const ConditionOperatorIn = shared.ConditionOperatorIn
+
+// Equals "IS_EMPTY"
+const ConditionOperatorIsEmpty = shared.ConditionOperatorIsEmpty
+
+// Equals "IS_NOT_EMPTY"
+const ConditionOperatorIsNotEmpty = shared.ConditionOperatorIsNotEmpty
+
+// Equals "LT"
+const ConditionOperatorLt = shared.ConditionOperatorLt
+
+// Equals "LTE"
+const ConditionOperatorLte = shared.ConditionOperatorLte
+
+// Equals "N_EQ"
+const ConditionOperatorNEq = shared.ConditionOperatorNEq
+
+// Equals "NOT_IN"
+const ConditionOperatorNotIn = shared.ConditionOperatorNotIn
+
+// Equals "STARTS_WITH"
+const ConditionOperatorStartsWith = shared.ConditionOperatorStartsWith
+
+// This is an alias to an internal type.
+type ConditionParam = shared.ConditionParam
+
+// This is an alias to an internal type.
+type CrmObjectSnapshotBatchRequestParam = shared.CrmObjectSnapshotBatchRequestParam
+
+// This is an alias to an internal type.
+type CrmObjectSnapshotBatchResponse = shared.CrmObjectSnapshotBatchResponse
+
+// This is an alias to an internal type.
+type CrmObjectSnapshotRequestParam = shared.CrmObjectSnapshotRequestParam
+
+// This is an alias to an internal type.
+type CrmObjectSnapshotResponse = shared.CrmObjectSnapshotResponse
 
 // This is an alias to an internal type.
 type ErrorData = shared.ErrorData
@@ -123,14 +238,67 @@ type ErrorData = shared.ErrorData
 // This is an alias to an internal type.
 type ErrorDetail = shared.ErrorDetail
 
+// Defines a single condition for searching CRM objects, specifying the property to
+// filter on, the operator to use (such as equals, greater than, or contains), and
+// the value(s) to compare against.
+//
+// This is an alias to an internal type.
+type Filter = shared.Filter
+
+// Defines a single condition for searching CRM objects, specifying the property to
+// filter on, the operator to use (such as equals, greater than, or contains), and
+// the value(s) to compare against.
+//
+// This is an alias to an internal type.
+type FilterParam = shared.FilterParam
+
+// This is an alias to an internal type.
+type FilterCreateRequestParam = shared.FilterCreateRequestParam
+
+// This is an alias to an internal type.
+type FilterCreateResponse = shared.FilterCreateResponse
+
+// This is an alias to an internal type.
+type FilterResponse = shared.FilterResponse
+
 // This is an alias to an internal type.
 type ForwardPaging = shared.ForwardPaging
+
+// This is an alias to an internal type.
+type GdprPrivacyDeletionSubscriptionUpsertRequestParam = shared.GdprPrivacyDeletionSubscriptionUpsertRequestParam
+
+// This is an alias to an internal type.
+type GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = shared.GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType
+
+// Equals "GDPR_PRIVACY_DELETION"
+const GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion = shared.GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion
+
+// This is an alias to an internal type.
+type JournalFetchResponse = shared.JournalFetchResponse
+
+// This is an alias to an internal type.
+type ListMembershipSubscriptionUpsertRequestParam = shared.ListMembershipSubscriptionUpsertRequestParam
+
+// This is an alias to an internal type.
+type ListMembershipSubscriptionUpsertRequestSubscriptionType = shared.ListMembershipSubscriptionUpsertRequestSubscriptionType
+
+// Equals "LIST_MEMBERSHIP"
+const ListMembershipSubscriptionUpsertRequestSubscriptionTypeListMembership = shared.ListMembershipSubscriptionUpsertRequestSubscriptionTypeListMembership
 
 // Specifies the paging information needed to retrieve the next set of results in a
 // paginated API response
 //
 // This is an alias to an internal type.
 type NextPage = shared.NextPage
+
+// This is an alias to an internal type.
+type ObjectSubscriptionUpsertRequestParam = shared.ObjectSubscriptionUpsertRequestParam
+
+// This is an alias to an internal type.
+type ObjectSubscriptionUpsertRequestSubscriptionType = shared.ObjectSubscriptionUpsertRequestSubscriptionType
+
+// Equals "OBJECT"
+const ObjectSubscriptionUpsertRequestSubscriptionTypeObject = shared.ObjectSubscriptionUpsertRequestSubscriptionTypeObject
 
 // This is an alias to an internal type.
 type ObjectTypeDefinition = shared.ObjectTypeDefinition
@@ -434,6 +602,9 @@ const PropertyValueSourceBilling = shared.PropertyValueSourceBilling
 // Equals "BOT"
 const PropertyValueSourceBot = shared.PropertyValueSourceBot
 
+// Equals "BREEZE_AGENT"
+const PropertyValueSourceBreezeAgent = shared.PropertyValueSourceBreezeAgent
+
 // Equals "CALCULATED"
 const PropertyValueSourceCalculated = shared.PropertyValueSourceCalculated
 
@@ -505,6 +676,9 @@ const PropertyValueSourceDefault = shared.PropertyValueSourceDefault
 
 // Equals "DELETE_OBJECTS"
 const PropertyValueSourceDeleteObjects = shared.PropertyValueSourceDeleteObjects
+
+// Equals "DI_WRITE_TO_CRM"
+const PropertyValueSourceDiWriteToCrm = shared.PropertyValueSourceDiWriteToCrm
 
 // Equals "EMAIL"
 const PropertyValueSourceEmail = shared.PropertyValueSourceEmail
@@ -730,10 +904,55 @@ type PublicObjectID = shared.PublicObjectID
 // This is an alias to an internal type.
 type PublicObjectIDParam = shared.PublicObjectIDParam
 
+// This is an alias to an internal type.
+type SnapshotStatusResponse = shared.SnapshotStatusResponse
+
+// The current status of the snapshot. Valid values include 'PENDING',
+// 'IN_PROGRESS', 'COMPLETED', 'FAILED', and 'EXPIRED'.
+//
+// This is an alias to an internal type.
+type SnapshotStatusResponseStatus = shared.SnapshotStatusResponseStatus
+
+// Equals "COMPLETED"
+const SnapshotStatusResponseStatusCompleted = shared.SnapshotStatusResponseStatusCompleted
+
+// Equals "EXPIRED"
+const SnapshotStatusResponseStatusExpired = shared.SnapshotStatusResponseStatusExpired
+
+// Equals "FAILED"
+const SnapshotStatusResponseStatusFailed = shared.SnapshotStatusResponseStatusFailed
+
+// Equals "IN_PROGRESS"
+const SnapshotStatusResponseStatusInProgress = shared.SnapshotStatusResponseStatusInProgress
+
+// Equals "PENDING"
+const SnapshotStatusResponseStatusPending = shared.SnapshotStatusResponseStatusPending
+
+// A code representing the error that occurred, if any. Possible values are
+// 'TIMEOUT', 'VALIDATION_ERROR', 'INTERNAL_ERROR', and 'PERMISSION_DENIED'.
+//
+// This is an alias to an internal type.
+type SnapshotStatusResponseErrorCode = shared.SnapshotStatusResponseErrorCode
+
+// Equals "INTERNAL_ERROR"
+const SnapshotStatusResponseErrorCodeInternalError = shared.SnapshotStatusResponseErrorCodeInternalError
+
+// Equals "PERMISSION_DENIED"
+const SnapshotStatusResponseErrorCodePermissionDenied = shared.SnapshotStatusResponseErrorCodePermissionDenied
+
+// Equals "TIMEOUT"
+const SnapshotStatusResponseErrorCodeTimeout = shared.SnapshotStatusResponseErrorCodeTimeout
+
+// Equals "VALIDATION_ERROR"
+const SnapshotStatusResponseErrorCodeValidationError = shared.SnapshotStatusResponseErrorCodeValidationError
+
 // Ye olde error
 //
 // This is an alias to an internal type.
 type StandardError = shared.StandardError
+
+// This is an alias to an internal type.
+type SubscriptionUpsertRequestUnionParam = shared.SubscriptionUpsertRequestUnionParam
 
 // This is an alias to an internal type.
 type TaskLocator = shared.TaskLocator

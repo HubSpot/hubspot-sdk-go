@@ -29,7 +29,10 @@ func TestVisitorIdentificationGenerateTokenWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Conversations.VisitorIdentification.GenerateToken(context.TODO(), conversations.VisitorIdentificationGenerateTokenParams{
 		IdentificationTokenGenerationRequest: conversations.IdentificationTokenGenerationRequestParam{
-			Email:     "email",
+			Email: "email",
+			HsCustomerAgentContext: map[string]string{
+				"foo": "string",
+			},
 			FirstName: hubspotsdk.String("firstName"),
 			LastName:  hubspotsdk.String("lastName"),
 		},

@@ -6,7 +6,7 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#BatchInputPublicAssociationMultiPostParam">BatchInputPublicAssociationMultiPostParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#BatchInputPublicDefaultAssociationMultiPostParam">BatchInputPublicDefaultAssociationMultiPostParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#BatchInputPublicFetchAssociationsBatchRequestParam">BatchInputPublicFetchAssociationsBatchRequestParam</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#FilterParam">FilterParam</a>
+- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#CrmFilterParam">CrmFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#FilterGroupParam">FilterGroupParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicAssociationMultiArchiveParam">PublicAssociationMultiArchiveParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicAssociationMultiPostParam">PublicAssociationMultiPostParam</a>
@@ -375,7 +375,6 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicAssociationInListFilterParam">PublicAssociationInListFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicBoolPropertyOperationParam">PublicBoolPropertyOperationParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCalendarDatePropertyOperationParam">PublicCalendarDatePropertyOperationParam</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCampaignInfluencedFilterParam">PublicCampaignInfluencedFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCommunicationSubscriptionFilterParam">PublicCommunicationSubscriptionFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicComparativeDatePropertyOperationParam">PublicComparativeDatePropertyOperationParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicComparativePropertyUpdatedOperationParam">PublicComparativePropertyUpdatedOperationParam</a>
@@ -408,14 +407,11 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNotAllFilterBranchParam">PublicNotAllFilterBranchParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNotAnyFilterBranchParam">PublicNotAnyFilterBranchParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNowReferenceParam">PublicNowReferenceParam</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumAssociationsFilterParam">PublicNumAssociationsFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumOccurrencesRefineByParam">PublicNumOccurrencesRefineByParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumberPropertyOperationParam">PublicNumberPropertyOperationParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicOrFilterBranchParam">PublicOrFilterBranchParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPageViewAnalyticsFilterParam">PublicPageViewAnalyticsFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPrivacyAnalyticsFilterParam">PublicPrivacyAnalyticsFilterParam</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyAssociationFilterBranchParam">PublicPropertyAssociationFilterBranchParam</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyAssociationInListFilterParam">PublicPropertyAssociationInListFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyFilterParam">PublicPropertyFilterParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyReferencedTimeParam">PublicPropertyReferencedTimeParam</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicQuarterReferenceParam">PublicQuarterReferenceParam</a>
@@ -469,7 +465,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicBatchMigrationMapping">PublicBatchMigrationMapping</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicBoolPropertyOperation">PublicBoolPropertyOperation</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCalendarDatePropertyOperation">PublicCalendarDatePropertyOperation</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCampaignInfluencedFilter">PublicCampaignInfluencedFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicCommunicationSubscriptionFilter">PublicCommunicationSubscriptionFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicComparativeDatePropertyOperation">PublicComparativeDatePropertyOperation</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicComparativePropertyUpdatedOperation">PublicComparativePropertyUpdatedOperation</a>
@@ -504,7 +499,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNotAllFilterBranch">PublicNotAllFilterBranch</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNotAnyFilterBranch">PublicNotAnyFilterBranch</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNowReference">PublicNowReference</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumAssociationsFilter">PublicNumAssociationsFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumOccurrencesRefineBy">PublicNumOccurrencesRefineBy</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicNumberPropertyOperation">PublicNumberPropertyOperation</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicObjectList">PublicObjectList</a>
@@ -512,8 +506,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicOrFilterBranch">PublicOrFilterBranch</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPageViewAnalyticsFilter">PublicPageViewAnalyticsFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPrivacyAnalyticsFilter">PublicPrivacyAnalyticsFilter</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyAssociationFilterBranch">PublicPropertyAssociationFilterBranch</a>
-- <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyAssociationInListFilter">PublicPropertyAssociationInListFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyFilter">PublicPropertyFilter</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicPropertyReferencedTime">PublicPropertyReferencedTime</a>
 - <a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm">crm</a>.<a href="https://pkg.go.dev/github.com/HubSpot/hubspot-sdk-go/crm#PublicQuarterReference">PublicQuarterReference</a>

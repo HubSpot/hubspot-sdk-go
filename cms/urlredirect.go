@@ -107,6 +107,22 @@ func (r *URLRedirectService) Delete(ctx context.Context, urlRedirectID string, o
 	return err
 }
 
+func (r *URLRedirectService) NewURLMapping(ctx context.Context, body URLRedirectNewURLMappingParams, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/url-redirects/2026-03/url-mappings"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return res, err
+}
+
+func (r *URLRedirectService) DeleteURLMapping(ctx context.Context, id int64, opts ...option.RequestOption) (err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := fmt.Sprintf("cms/url-redirects/2026-03/url-mappings/%v", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return err
+}
+
 // Returns the details for a single existing URL redirect by ID.
 func (r *URLRedirectService) Get(ctx context.Context, urlRedirectID string, opts ...option.RequestOption) (res *URLMapping, err error) {
 	opts = slices.Concat(r.options, opts)
@@ -115,6 +131,22 @@ func (r *URLRedirectService) Get(ctx context.Context, urlRedirectID string, opts
 		return nil, err
 	}
 	path := fmt.Sprintf("cms/url-redirects/2026-03/%s", url.PathEscape(urlRedirectID))
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return res, err
+}
+
+func (r *URLRedirectService) GetURLMapping(ctx context.Context, id int64, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := fmt.Sprintf("cms/url-redirects/2026-03/url-mappings/%v", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return res, err
+}
+
+func (r *URLRedirectService) ListURLMappings(ctx context.Context, opts ...option.RequestOption) (res *http.Response, err error) {
+	opts = slices.Concat(r.options, opts)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+	path := "cms/url-redirects/2026-03/url-mappings"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
@@ -347,4 +379,16 @@ func (r URLRedirectListParams) URLQuery() (v url.Values, err error) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
+}
+
+type URLRedirectNewURLMappingParams struct {
+	URLMapping URLMappingParam
+	paramObj
+}
+
+func (r URLRedirectNewURLMappingParams) MarshalJSON() (data []byte, err error) {
+	return shimjson.Marshal(r.URLMapping)
+}
+func (r *URLRedirectNewURLMappingParams) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
 }
