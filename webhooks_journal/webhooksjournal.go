@@ -38,10 +38,10 @@ func NewWebhooksJournalService(opts ...option.RequestOption) (r WebhooksJournalS
 	return
 }
 
-type CollectionResponseSubscriptionResponseNoPaging struct {
+type JournalCollectionResponseSubscriptionResponseNoPaging struct {
 	// An array of subscription responses, where each item contains details about a
 	// specific subscription. Each item follows the SubscriptionResponse schema.
-	Results []SubscriptionResponse `json:"results" api:"required"`
+	Results []JournalSubscriptionResponse `json:"results" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Results     respjson.Field
@@ -51,12 +51,12 @@ type CollectionResponseSubscriptionResponseNoPaging struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r CollectionResponseSubscriptionResponseNoPaging) RawJSON() string { return r.JSON.raw }
-func (r *CollectionResponseSubscriptionResponseNoPaging) UnmarshalJSON(data []byte) error {
+func (r JournalCollectionResponseSubscriptionResponseNoPaging) RawJSON() string { return r.JSON.raw }
+func (r *JournalCollectionResponseSubscriptionResponseNoPaging) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type SubscriptionResponse struct {
+type JournalSubscriptionResponse struct {
 	// The unique identifier for the subscription, represented as an integer.
 	ID int64 `json:"id" api:"required"`
 	// An array of actions associated with the subscription. Valid actions include
@@ -82,7 +82,7 @@ type SubscriptionResponse struct {
 	//
 	// Any of "APP_LIFECYCLE_EVENT", "ASSOCIATION", "EVENT", "GDPR_PRIVACY_DELETION",
 	// "LIST_MEMBERSHIP", "OBJECT".
-	SubscriptionType SubscriptionResponseSubscriptionType `json:"subscriptionType" api:"required"`
+	SubscriptionType JournalSubscriptionResponseSubscriptionType `json:"subscriptionType" api:"required"`
 	// The date and time when the subscription was last updated, in ISO 8601 format.
 	UpdatedAt time.Time `json:"updatedAt" api:"required" format:"date-time"`
 	// An object containing overrides for actions, where each key is an action and the
@@ -131,21 +131,21 @@ type SubscriptionResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r SubscriptionResponse) RawJSON() string { return r.JSON.raw }
-func (r *SubscriptionResponse) UnmarshalJSON(data []byte) error {
+func (r JournalSubscriptionResponse) RawJSON() string { return r.JSON.raw }
+func (r *JournalSubscriptionResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 // The type of subscription, indicating the nature of events it pertains to. Valid
 // values include 'OBJECT', 'ASSOCIATION', 'EVENT', 'APP_LIFECYCLE_EVENT',
 // 'LIST_MEMBERSHIP', and 'GDPR_PRIVACY_DELETION'.
-type SubscriptionResponseSubscriptionType string
+type JournalSubscriptionResponseSubscriptionType string
 
 const (
-	SubscriptionResponseSubscriptionTypeAppLifecycleEvent   SubscriptionResponseSubscriptionType = "APP_LIFECYCLE_EVENT"
-	SubscriptionResponseSubscriptionTypeAssociation         SubscriptionResponseSubscriptionType = "ASSOCIATION"
-	SubscriptionResponseSubscriptionTypeEvent               SubscriptionResponseSubscriptionType = "EVENT"
-	SubscriptionResponseSubscriptionTypeGdprPrivacyDeletion SubscriptionResponseSubscriptionType = "GDPR_PRIVACY_DELETION"
-	SubscriptionResponseSubscriptionTypeListMembership      SubscriptionResponseSubscriptionType = "LIST_MEMBERSHIP"
-	SubscriptionResponseSubscriptionTypeObject              SubscriptionResponseSubscriptionType = "OBJECT"
+	JournalSubscriptionResponseSubscriptionTypeAppLifecycleEvent   JournalSubscriptionResponseSubscriptionType = "APP_LIFECYCLE_EVENT"
+	JournalSubscriptionResponseSubscriptionTypeAssociation         JournalSubscriptionResponseSubscriptionType = "ASSOCIATION"
+	JournalSubscriptionResponseSubscriptionTypeEvent               JournalSubscriptionResponseSubscriptionType = "EVENT"
+	JournalSubscriptionResponseSubscriptionTypeGdprPrivacyDeletion JournalSubscriptionResponseSubscriptionType = "GDPR_PRIVACY_DELETION"
+	JournalSubscriptionResponseSubscriptionTypeListMembership      JournalSubscriptionResponseSubscriptionType = "LIST_MEMBERSHIP"
+	JournalSubscriptionResponseSubscriptionTypeObject              JournalSubscriptionResponseSubscriptionType = "OBJECT"
 )

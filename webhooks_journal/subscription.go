@@ -42,7 +42,7 @@ func NewSubscriptionService(opts ...option.RequestOption) (r SubscriptionService
 // subscriptions, including object, association, event, app lifecycle event, list
 // membership, and GDPR privacy deletion. Ensure that all required fields are
 // included in the request to successfully create a subscription.
-func (r *SubscriptionService) New(ctx context.Context, body SubscriptionNewParams, opts ...option.RequestOption) (res *SubscriptionResponse, err error) {
+func (r *SubscriptionService) New(ctx context.Context, body SubscriptionNewParams, opts ...option.RequestOption) (res *JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -53,7 +53,7 @@ func (r *SubscriptionService) New(ctx context.Context, body SubscriptionNewParam
 // endpoint allows you to view all active subscriptions without pagination. It is
 // useful for monitoring and managing webhook subscriptions in your HubSpot
 // account.
-func (r *SubscriptionService) List(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseSubscriptionResponseNoPaging, err error) {
+func (r *SubscriptionService) List(ctx context.Context, opts ...option.RequestOption) (res *JournalCollectionResponseSubscriptionResponseNoPaging, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -86,7 +86,7 @@ func (r *SubscriptionService) DeleteForPortal(ctx context.Context, portalID int6
 // Retrieve details of a specific webhook subscription using its unique identifier.
 // This endpoint is useful for obtaining information about a particular
 // subscription, such as its actions, object type, and associated properties.
-func (r *SubscriptionService) Get(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *SubscriptionResponse, err error) {
+func (r *SubscriptionService) Get(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/subscriptions/2026-03/%v", subscriptionID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
