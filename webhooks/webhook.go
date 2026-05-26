@@ -75,7 +75,7 @@ func (r *WebhookService) NewEventSubscription(ctx context.Context, appID int64, 
 // subscriptions, including object, association, event, app lifecycle event, list
 // membership, and GDPR privacy deletion. Ensure that all required fields are
 // included in the request to successfully create a subscription.
-func (r *WebhookService) NewJournalSubscription(ctx context.Context, body WebhookNewJournalSubscriptionParams, opts ...option.RequestOption) (res *webhooks_journal.SubscriptionResponse, err error) {
+func (r *WebhookService) NewJournalSubscription(ctx context.Context, body WebhookNewJournalSubscriptionParams, opts ...option.RequestOption) (res *webhooks_journal.JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -242,7 +242,7 @@ func (r *WebhookService) GetJournalStatus(ctx context.Context, statusID string, 
 // Retrieve details of a specific webhook subscription using its unique identifier.
 // This endpoint is useful for obtaining information about a particular
 // subscription, such as its actions, object type, and associated properties.
-func (r *WebhookService) GetJournalSubscription(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *webhooks_journal.SubscriptionResponse, err error) {
+func (r *WebhookService) GetJournalSubscription(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *webhooks_journal.JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/subscriptions/2026-03/%v", subscriptionID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -395,7 +395,7 @@ func (r *WebhookService) ListEventSubscriptions(ctx context.Context, appID int64
 // endpoint allows you to view all active subscriptions without pagination. It is
 // useful for monitoring and managing webhook subscriptions in your HubSpot
 // account.
-func (r *WebhookService) ListJournalSubscriptions(ctx context.Context, opts ...option.RequestOption) (res *webhooks_journal.CollectionResponseSubscriptionResponseNoPaging, err error) {
+func (r *WebhookService) ListJournalSubscriptions(ctx context.Context, opts ...option.RequestOption) (res *webhooks_journal.JournalCollectionResponseSubscriptionResponseNoPaging, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)

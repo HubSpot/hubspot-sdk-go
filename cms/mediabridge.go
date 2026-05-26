@@ -1023,13 +1023,13 @@ type InboundDBObjectType struct {
 	SingularForm                       string                               `json:"singularForm"`
 	// Any of "Deprecated", "In development", "Live".
 	Status InboundDBObjectTypeStatus `json:"status"`
-	// Any of "Customer-facing", "Internal only", "Customer-facing UI",
-	// "Customer-facing public API".
-	Visibilities []string `json:"visibilities"`
 	// Any of "Customer-facing", "Customer-facing public API", "Customer-facing UI",
 	// "Internal only".
-	Visibility     InboundDBObjectTypeVisibility `json:"visibility"`
-	WriteScopeName string                        `json:"writeScopeName"`
+	Visibility InboundDBObjectTypeVisibility `json:"visibility"`
+	// Any of "Customer-facing", "Internal only", "Customer-facing UI",
+	// "Customer-facing public API".
+	VisibilityValues []string `json:"visibility_values"`
+	WriteScopeName   string   `json:"writeScopeName"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID                                 respjson.Field
@@ -1070,8 +1070,8 @@ type InboundDBObjectType struct {
 		ReadScopeName                      respjson.Field
 		SingularForm                       respjson.Field
 		Status                             respjson.Field
-		Visibilities                       respjson.Field
 		Visibility                         respjson.Field
+		VisibilityValues                   respjson.Field
 		WriteScopeName                     respjson.Field
 		ExtraFields                        map[string]respjson.Field
 		raw                                string
