@@ -26,6 +26,7 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/scheduler"
 	"github.com/HubSpot/hubspot-sdk-go/settings"
 	"github.com/HubSpot/hubspot-sdk-go/webhooks"
+	"github.com/HubSpot/hubspot-sdk-go/webhooks_journal"
 )
 
 // Client creates a struct with services and top level methods that help with
@@ -48,6 +49,7 @@ type Client struct {
 	Scheduler                scheduler.SchedulerService
 	Settings                 settings.SettingService
 	Webhooks                 webhooks.WebhookService
+	WebhooksJournal          webhooks_journal.WebhooksJournalService
 }
 
 // DefaultClientOptions read from the environment (HUBSPOT_BASE_URL). This should
@@ -92,6 +94,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 	r.Scheduler = scheduler.NewSchedulerService(opts...)
 	r.Settings = settings.NewSettingService(opts...)
 	r.Webhooks = webhooks.NewWebhookService(opts...)
+	r.WebhooksJournal = webhooks_journal.NewWebhooksJournalService(opts...)
 
 	return
 }

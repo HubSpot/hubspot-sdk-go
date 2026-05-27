@@ -348,6 +348,55 @@ func (r *CollectionResponseWithTotalSimplePublicObject) UnmarshalJSON(data []byt
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Defines a single condition for searching CRM objects, specifying the property to
+// filter on, the operator to use (such as equals, greater than, or contains), and
+// the value(s) to compare against.
+//
+// The properties Operator, PropertyName are required.
+type CrmFilterParam struct {
+	// The comparison operator used in the filter, such as "EQ" or "GT".
+	//
+	// Any of "BETWEEN", "CONTAINS_TOKEN", "EQ", "GT", "GTE", "HAS_PROPERTY", "IN",
+	// "LT", "LTE", "NEQ", "NOT_CONTAINS_TOKEN", "NOT_HAS_PROPERTY", "NOT_IN".
+	Operator CrmFilterOperator `json:"operator,omitzero" api:"required"`
+	// The name of the property to apply the filter to.
+	PropertyName string `json:"propertyName" api:"required"`
+	// The upper boundary value when using ranged-based filters.
+	HighValue param.Opt[string] `json:"highValue,omitzero"`
+	// The value to match against the property.
+	Value param.Opt[string] `json:"value,omitzero"`
+	// The values to match against the property.
+	Values []string `json:"values,omitzero"`
+	paramObj
+}
+
+func (r CrmFilterParam) MarshalJSON() (data []byte, err error) {
+	type shadow CrmFilterParam
+	return param.MarshalObject(r, (*shadow)(&r))
+}
+func (r *CrmFilterParam) UnmarshalJSON(data []byte) error {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The comparison operator used in the filter, such as "EQ" or "GT".
+type CrmFilterOperator string
+
+const (
+	CrmFilterOperatorBetween          CrmFilterOperator = "BETWEEN"
+	CrmFilterOperatorContainsToken    CrmFilterOperator = "CONTAINS_TOKEN"
+	CrmFilterOperatorEq               CrmFilterOperator = "EQ"
+	CrmFilterOperatorGt               CrmFilterOperator = "GT"
+	CrmFilterOperatorGte              CrmFilterOperator = "GTE"
+	CrmFilterOperatorHasProperty      CrmFilterOperator = "HAS_PROPERTY"
+	CrmFilterOperatorIn               CrmFilterOperator = "IN"
+	CrmFilterOperatorLt               CrmFilterOperator = "LT"
+	CrmFilterOperatorLte              CrmFilterOperator = "LTE"
+	CrmFilterOperatorNeq              CrmFilterOperator = "NEQ"
+	CrmFilterOperatorNotContainsToken CrmFilterOperator = "NOT_CONTAINS_TOKEN"
+	CrmFilterOperatorNotHasProperty   CrmFilterOperator = "NOT_HAS_PROPERTY"
+	CrmFilterOperatorNotIn            CrmFilterOperator = "NOT_IN"
+)
+
 type DateTime struct {
 	// Indicates whether the DateTime value represents only a date without a time
 	// component.
@@ -373,58 +422,9 @@ func (r *DateTime) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Defines a single condition for searching CRM objects, specifying the property to
-// filter on, the operator to use (such as equals, greater than, or contains), and
-// the value(s) to compare against.
-//
-// The properties Operator, PropertyName are required.
-type FilterParam struct {
-	// The comparison operator used in the filter, such as "EQ" or "GT".
-	//
-	// Any of "BETWEEN", "CONTAINS_TOKEN", "EQ", "GT", "GTE", "HAS_PROPERTY", "IN",
-	// "LT", "LTE", "NEQ", "NOT_CONTAINS_TOKEN", "NOT_HAS_PROPERTY", "NOT_IN".
-	Operator FilterOperator `json:"operator,omitzero" api:"required"`
-	// The name of the property to apply the filter to.
-	PropertyName string `json:"propertyName" api:"required"`
-	// The upper boundary value when using ranged-based filters.
-	HighValue param.Opt[string] `json:"highValue,omitzero"`
-	// The value to match against the property.
-	Value param.Opt[string] `json:"value,omitzero"`
-	// The values to match against the property.
-	Values []string `json:"values,omitzero"`
-	paramObj
-}
-
-func (r FilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow FilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *FilterParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The comparison operator used in the filter, such as "EQ" or "GT".
-type FilterOperator string
-
-const (
-	FilterOperatorBetween          FilterOperator = "BETWEEN"
-	FilterOperatorContainsToken    FilterOperator = "CONTAINS_TOKEN"
-	FilterOperatorEq               FilterOperator = "EQ"
-	FilterOperatorGt               FilterOperator = "GT"
-	FilterOperatorGte              FilterOperator = "GTE"
-	FilterOperatorHasProperty      FilterOperator = "HAS_PROPERTY"
-	FilterOperatorIn               FilterOperator = "IN"
-	FilterOperatorLt               FilterOperator = "LT"
-	FilterOperatorLte              FilterOperator = "LTE"
-	FilterOperatorNeq              FilterOperator = "NEQ"
-	FilterOperatorNotContainsToken FilterOperator = "NOT_CONTAINS_TOKEN"
-	FilterOperatorNotHasProperty   FilterOperator = "NOT_HAS_PROPERTY"
-	FilterOperatorNotIn            FilterOperator = "NOT_IN"
-)
-
 // The property Filters is required.
 type FilterGroupParam struct {
-	Filters []FilterParam `json:"filters,omitzero" api:"required"`
+	Filters []CrmFilterParam `json:"filters,omitzero" api:"required"`
 	paramObj
 }
 

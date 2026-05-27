@@ -20,6 +20,7 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/packages/param"
 	"github.com/HubSpot/hubspot-sdk-go/packages/respjson"
 	"github.com/HubSpot/hubspot-sdk-go/shared"
+	"github.com/HubSpot/hubspot-sdk-go/webhooks_journal"
 )
 
 // WebhookService contains methods and other services that help with interacting
@@ -49,12 +50,11 @@ func (r *WebhookService) NewBatchEventSubscriptions(ctx context.Context, appID i
 	return res, err
 }
 
-// Create a batch of CRM object snapshots for the specified portal. This endpoint
-// allows you to capture the state of CRM objects at a specific point in time,
-// which can be useful for auditing or historical analysis. The request requires a
-// list of CRM object snapshot requests, each specifying the portal ID, object ID,
-// object type ID, and properties to include in the snapshot.
-func (r *WebhookService) NewCrmSnapshots(ctx context.Context, body WebhookNewCrmSnapshotsParams, opts ...option.RequestOption) (res *CrmObjectSnapshotBatchResponse, err error) {
+// Create a batch of CRM object snapshots in HubSpot. This endpoint is used to
+// capture the current state of specified CRM objects for later reference or
+// analysis. It requires a JSON payload containing the details of the CRM objects
+// to snapshot. This operation is exempt from daily and ten-secondly rate limits.
+func (r *WebhookService) NewCrmSnapshots(ctx context.Context, body WebhookNewCrmSnapshotsParams, opts ...option.RequestOption) (res *shared.CrmObjectSnapshotBatchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/snapshots/2026-03/crm"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -69,23 +69,24 @@ func (r *WebhookService) NewEventSubscription(ctx context.Context, appID int64, 
 	return res, err
 }
 
-// Create a new webhook subscription for the specified portal in the HubSpot
-// account. This endpoint allows you to define the subscription details, including
-// the types of events you want to subscribe to. The request body must include the
-// necessary subscription information as defined by the SubscriptionUpsertRequest
-// schema.
-func (r *WebhookService) NewJournalSubscription(ctx context.Context, body WebhookNewJournalSubscriptionParams, opts ...option.RequestOption) (res *SubscriptionResponse1, err error) {
+// Create a new subscription in the Webhooks Journal for the specified version.
+// This endpoint allows you to define the subscription details by providing the
+// necessary information in the request body. It supports various types of
+// subscriptions, including object, association, event, app lifecycle event, list
+// membership, and GDPR privacy deletion. Ensure that all required fields are
+// included in the request to successfully create a subscription.
+func (r *WebhookService) NewJournalSubscription(ctx context.Context, body WebhookNewJournalSubscriptionParams, opts ...option.RequestOption) (res *webhooks_journal.JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return res, err
 }
 
-// Create a new filter for a webhook subscription in your HubSpot account. This
-// endpoint allows you to define specific conditions that a webhook event must meet
-// to trigger the subscription. It is useful for managing and customizing the
-// behavior of webhook subscriptions based on specific criteria.
-func (r *WebhookService) NewSubscriptionFilter(ctx context.Context, body WebhookNewSubscriptionFilterParams, opts ...option.RequestOption) (res *FilterCreateResponse, err error) {
+// Create a new filter for a specific webhook subscription in the HubSpot account.
+// This endpoint allows you to define conditions that determine when a webhook
+// should be triggered. The filter is associated with a subscription identified by
+// its ID, and the request must include the filter details.
+func (r *WebhookService) NewSubscriptionFilter(ctx context.Context, body WebhookNewSubscriptionFilterParams, opts ...option.RequestOption) (res *shared.FilterCreateResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03/filters"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -103,7 +104,7 @@ func (r *WebhookService) DeleteEventSubscription(ctx context.Context, subscripti
 
 // Delete a specific webhook journal subscription using its unique identifier. This
 // operation is useful for managing and cleaning up subscriptions that are no
-// longer needed or relevant.
+// longer needed in your HubSpot account.
 func (r *WebhookService) DeleteJournalSubscription(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -113,8 +114,9 @@ func (r *WebhookService) DeleteJournalSubscription(ctx context.Context, subscrip
 }
 
 // Delete a webhook journal subscription for a specific portal. This operation
-// removes the subscription associated with the given portalId, and no content is
-// returned upon successful deletion.
+// removes the subscription associated with the given portalId, ensuring that no
+// further webhook events are sent for this portal. Use this endpoint to manage and
+// clean up subscriptions that are no longer needed.
 func (r *WebhookService) DeleteJournalSubscriptionForPortal(ctx context.Context, portalID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -133,10 +135,9 @@ func (r *WebhookService) DeleteSettings(ctx context.Context, appID int64, opts .
 	return err
 }
 
-// Delete a specific filter associated with a webhook journal subscription. This
-// operation is useful for managing and cleaning up filters that are no longer
-// needed in your subscription setup. The endpoint requires the unique identifier
-// of the filter to be deleted.
+// Remove a specific filter from the webhooks journal subscriptions. This operation
+// is useful for managing and cleaning up filters that are no longer needed. Once
+// deleted, the filter cannot be recovered.
 func (r *WebhookService) DeleteSubscriptionFilter(ctx context.Context, filterID int64, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -145,19 +146,20 @@ func (r *WebhookService) DeleteSubscriptionFilter(ctx context.Context, filterID 
 	return err
 }
 
-// Retrieve the earliest batch of webhook journal entries up to the specified
-// count. This endpoint is useful for fetching historical webhook data in batches,
-// allowing you to process or analyze the earliest entries first.
-func (r *WebhookService) GetEarliestJournalBatch(ctx context.Context, count int64, query WebhookGetEarliestJournalBatchParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Retrieve the earliest batch of webhook journal entries for a specified count.
+// This endpoint is useful for accessing historical webhook data in batches,
+// allowing you to process or analyze older entries. The number of entries
+// retrieved is determined by the count parameter.
+func (r *WebhookService) GetEarliestJournalBatch(ctx context.Context, count int64, query WebhookGetEarliestJournalBatchParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/journal/2026-03/batch/earliest/%v", count)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
-// Retrieve the earliest entry from the webhooks journal for the specified version.
-// This endpoint is useful for accessing the oldest records available in the
-// journal, which can be helpful for auditing or historical data analysis.
+// Retrieve the earliest entry from the webhooks journal for the specified portal.
+// This endpoint is useful for accessing the first recorded webhook event in the
+// journal, which can be helpful for auditing or debugging purposes.
 func (r *WebhookService) GetEarliestJournalEntry(ctx context.Context, query WebhookGetEarliestJournalEntryParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -166,19 +168,20 @@ func (r *WebhookService) GetEarliestJournalEntry(ctx context.Context, query Webh
 	return res, err
 }
 
-// Retrieve the earliest batch of webhook journal entries based on the specified
-// count. This endpoint is useful for fetching a specific number of the earliest
-// entries in the webhook journal for analysis or processing.
-func (r *WebhookService) GetEarliestLocalJournalBatch(ctx context.Context, count int64, query WebhookGetEarliestLocalJournalBatchParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Retrieve the earliest batch of webhook journal entries. This endpoint is useful
+// for accessing the oldest available data in the webhook journal, allowing users
+// to process or analyze historical webhook events. The number of entries to fetch
+// is specified by the 'count' path parameter.
+func (r *WebhookService) GetEarliestLocalJournalBatch(ctx context.Context, count int64, query WebhookGetEarliestLocalJournalBatchParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/journal-local/2026-03/batch/earliest/%v", count)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return res, err
 }
 
-// Retrieve the earliest entry from the webhooks journal for the specified portal.
-// This endpoint is useful for accessing the oldest records in the journal, which
-// can be helpful for auditing or tracking purposes.
+// Retrieve the earliest webhook journal entries for the specified portal. This
+// endpoint can be used to access the oldest records available in the webhook
+// journal, which may be useful for auditing or historical analysis.
 func (r *WebhookService) GetEarliestLocalJournalEntry(ctx context.Context, query WebhookGetEarliestLocalJournalEntryParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -195,11 +198,12 @@ func (r *WebhookService) GetEventSubscription(ctx context.Context, subscriptionI
 	return res, err
 }
 
-// Perform a batch read operation on the webhooks journal for the specified date.
-// This endpoint allows you to retrieve multiple entries from the webhooks journal
-// in a single request, which can be useful for processing large amounts of data
-// efficiently.
-func (r *WebhookService) GetJournalBatchByRequest(ctx context.Context, params WebhookGetJournalBatchByRequestParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Execute a batch read operation on the webhooks journal for the specified date,
+// 2026-03. This endpoint allows you to retrieve multiple entries from the webhooks
+// journal in a single request, which can be useful for processing large amounts of
+// data efficiently. Ensure that the request body is provided in the required
+// format.
+func (r *WebhookService) GetJournalBatchByRequest(ctx context.Context, params WebhookGetJournalBatchByRequestParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/journal/2026-03/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
@@ -207,9 +211,9 @@ func (r *WebhookService) GetJournalBatchByRequest(ctx context.Context, params We
 }
 
 // Retrieve a batch of webhook journal entries starting from a specified offset.
-// This endpoint allows you to fetch a specified number of entries, making it
-// useful for paginating through large sets of webhook journal data.
-func (r *WebhookService) GetJournalBatchFromOffset(ctx context.Context, count int64, params WebhookGetJournalBatchFromOffsetParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// This endpoint allows you to fetch a defined number of entries, which can be
+// useful for processing large datasets in manageable chunks.
+func (r *WebhookService) GetJournalBatchFromOffset(ctx context.Context, count int64, params WebhookGetJournalBatchFromOffsetParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	if params.Offset == "" {
 		err = errors.New("missing required offset parameter")
@@ -220,10 +224,11 @@ func (r *WebhookService) GetJournalBatchFromOffset(ctx context.Context, count in
 	return res, err
 }
 
-// Retrieve the status of a specific webhook journal entry using its status ID.
-// This endpoint is useful for checking the current state of a webhook process,
-// such as whether it is pending, in progress, completed, failed, or expired.
-func (r *WebhookService) GetJournalStatus(ctx context.Context, statusID string, opts ...option.RequestOption) (res *SnapshotStatusResponse, err error) {
+// Retrieve the status of a specific webhook journal entry using its unique status
+// ID. This endpoint provides detailed information about the status, including
+// whether it is pending, in progress, completed, failed, or expired. It is useful
+// for monitoring and managing the state of webhook journal entries.
+func (r *WebhookService) GetJournalStatus(ctx context.Context, statusID string, opts ...option.RequestOption) (res *shared.SnapshotStatusResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	if statusID == "" {
 		err = errors.New("missing required statusId parameter")
@@ -236,18 +241,19 @@ func (r *WebhookService) GetJournalStatus(ctx context.Context, statusID string, 
 
 // Retrieve details of a specific webhook subscription using its unique identifier.
 // This endpoint is useful for obtaining information about a particular
-// subscription's configuration and status within the HubSpot account.
-func (r *WebhookService) GetJournalSubscription(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *SubscriptionResponse1, err error) {
+// subscription, such as its actions, object type, and associated properties.
+func (r *WebhookService) GetJournalSubscription(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *webhooks_journal.JournalSubscriptionResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/subscriptions/2026-03/%v", subscriptionID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-// Retrieve the latest batch of webhook journal entries. This endpoint allows you
-// to specify the number of entries to fetch, providing a way to access recent
-// webhook activity within your HubSpot account.
-func (r *WebhookService) GetLatestJournalBatch(ctx context.Context, count int64, query WebhookGetLatestJournalBatchParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Retrieve the latest batch of webhook journal entries up to the specified count.
+// This endpoint is useful for fetching recent webhook data for analysis or
+// processing. The count parameter determines the maximum number of entries to
+// return.
+func (r *WebhookService) GetLatestJournalBatch(ctx context.Context, count int64, query WebhookGetLatestJournalBatchParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/journal/2026-03/batch/latest/%v", count)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -255,9 +261,8 @@ func (r *WebhookService) GetLatestJournalBatch(ctx context.Context, count int64,
 }
 
 // Retrieve the latest entries from the webhooks journal for the specified portal.
-// This endpoint is useful for accessing the most recent webhook events processed
-// by your HubSpot account. It allows you to filter the results by the portal ID to
-// ensure you are retrieving data relevant to a specific installation.
+// This endpoint is useful for accessing the most recent webhook events and their
+// statuses, allowing you to monitor and debug webhook activity effectively.
 func (r *WebhookService) GetLatestJournalEntry(ctx context.Context, query WebhookGetLatestJournalEntryParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -266,10 +271,10 @@ func (r *WebhookService) GetLatestJournalEntry(ctx context.Context, query Webhoo
 	return res, err
 }
 
-// Retrieve the latest batch of webhook journal entries. This endpoint is useful
-// for accessing the most recent data entries processed by the webhook journal. It
-// requires specifying the number of entries to retrieve.
-func (r *WebhookService) GetLatestLocalJournalBatch(ctx context.Context, count int64, query WebhookGetLatestLocalJournalBatchParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Retrieve the latest batch of webhook journal entries. This endpoint allows you
+// to specify the number of entries to fetch, providing a way to access the most
+// recent webhook events processed by your HubSpot account.
+func (r *WebhookService) GetLatestLocalJournalBatch(ctx context.Context, count int64, query WebhookGetLatestLocalJournalBatchParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/journal-local/2026-03/batch/latest/%v", count)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -278,7 +283,8 @@ func (r *WebhookService) GetLatestLocalJournalBatch(ctx context.Context, count i
 
 // Retrieve the latest entries from the webhooks journal for the specified portal.
 // This endpoint is useful for accessing the most recent webhook events that have
-// been logged, allowing you to process or analyze them as needed.
+// been logged, allowing for real-time monitoring or debugging of webhook
+// activities.
 func (r *WebhookService) GetLatestLocalJournalEntry(ctx context.Context, query WebhookGetLatestLocalJournalEntryParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -287,12 +293,11 @@ func (r *WebhookService) GetLatestLocalJournalEntry(ctx context.Context, query W
 	return res, err
 }
 
-// Perform a batch read operation on the webhooks journal. This endpoint allows you
-// to read multiple entries from the journal in a single request. It requires a
-// JSON request body specifying the inputs to be read. The response includes the
-// results of the batch read operation, and may return multiple statuses if there
-// are errors.
-func (r *WebhookService) GetLocalJournalBatchByRequest(ctx context.Context, params WebhookGetLocalJournalBatchByRequestParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// Execute a batch read operation on the webhooks journal. This endpoint allows you
+// to retrieve a batch of webhook journal entries by providing the necessary input
+// data. It is useful for processing multiple records in a single request,
+// streamlining data retrieval tasks.
+func (r *WebhookService) GetLocalJournalBatchByRequest(ctx context.Context, params WebhookGetLocalJournalBatchByRequestParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/journal-local/2026-03/batch/read"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
@@ -300,9 +305,9 @@ func (r *WebhookService) GetLocalJournalBatchByRequest(ctx context.Context, para
 }
 
 // Retrieve a batch of webhook journal entries starting from a specified offset.
-// This endpoint allows you to fetch a defined number of entries, facilitating the
-// processing of webhook data in manageable chunks.
-func (r *WebhookService) GetLocalJournalBatchFromOffset(ctx context.Context, count int64, params WebhookGetLocalJournalBatchFromOffsetParams, opts ...option.RequestOption) (res *BatchResponseJournalFetchResponse, err error) {
+// This endpoint is useful for paginating through large sets of webhook data. The
+// number of entries returned is determined by the 'count' parameter.
+func (r *WebhookService) GetLocalJournalBatchFromOffset(ctx context.Context, count int64, params WebhookGetLocalJournalBatchFromOffsetParams, opts ...option.RequestOption) (res *shared.BatchResponseJournalFetchResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	if params.Offset == "" {
 		err = errors.New("missing required offset parameter")
@@ -314,9 +319,10 @@ func (r *WebhookService) GetLocalJournalBatchFromOffset(ctx context.Context, cou
 }
 
 // Retrieve the status of a specific webhook journal entry using its unique status
-// ID. This endpoint is useful for monitoring the progress or completion of webhook
-// processing tasks.
-func (r *WebhookService) GetLocalJournalStatus(ctx context.Context, statusID string, opts ...option.RequestOption) (res *SnapshotStatusResponse, err error) {
+// ID. This endpoint is useful for monitoring the progress or outcome of webhook
+// journal entries, allowing you to check if an entry is pending, in progress,
+// completed, failed, or expired.
+func (r *WebhookService) GetLocalJournalStatus(ctx context.Context, statusID string, opts ...option.RequestOption) (res *shared.SnapshotStatusResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	if statusID == "" {
 		err = errors.New("missing required statusId parameter")
@@ -327,9 +333,9 @@ func (r *WebhookService) GetLocalJournalStatus(ctx context.Context, statusID str
 	return res, err
 }
 
-// Retrieve the next batch of webhook journal entries starting from a specified
-// offset. This endpoint is useful for paginating through large sets of webhook
-// data, allowing you to continue fetching entries from where you last left off.
+// Retrieve the next set of entries from the webhooks journal starting from a
+// specified offset. This endpoint is useful for paginating through journal entries
+// to process or analyze webhook events sequentially.
 func (r *WebhookService) GetNextJournalEntries(ctx context.Context, offset string, query WebhookGetNextJournalEntriesParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -343,8 +349,8 @@ func (r *WebhookService) GetNextJournalEntries(ctx context.Context, offset strin
 }
 
 // Retrieve the next set of webhook journal entries starting from a specified
-// offset. This endpoint is useful for paginating through webhook journal data in a
-// sequential manner, allowing you to fetch entries beyond a given point.
+// offset. This endpoint is useful for paginating through large sets of webhook
+// data, allowing you to continue from where a previous request left off.
 func (r *WebhookService) GetNextLocalJournalEntries(ctx context.Context, offset string, query WebhookGetNextLocalJournalEntriesParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	opts = slices.Concat(r.options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
@@ -366,10 +372,11 @@ func (r *WebhookService) GetSettings(ctx context.Context, appID int64, opts ...o
 	return res, err
 }
 
-// Retrieve details of a specific filter associated with a webhook subscription in
-// the HubSpot account. This endpoint is useful for accessing the configuration and
-// conditions of a filter by its unique identifier.
-func (r *WebhookService) GetSubscriptionFilter(ctx context.Context, filterID int64, opts ...option.RequestOption) (res *FilterResponse, err error) {
+// Retrieve a specific filter associated with a webhook journal subscription. This
+// endpoint allows you to access the details of the filter identified by the
+// filterId, which is useful for managing and understanding the conditions applied
+// to webhook events.
+func (r *WebhookService) GetSubscriptionFilter(ctx context.Context, filterID int64, opts ...option.RequestOption) (res *shared.FilterResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/subscriptions/2026-03/filters/%v", filterID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -384,22 +391,21 @@ func (r *WebhookService) ListEventSubscriptions(ctx context.Context, appID int64
 	return res, err
 }
 
-// Retrieve a list of webhook journal subscriptions for the specified API version.
-// This endpoint provides details about each subscription, including actions,
-// object types, and associated properties. It is useful for managing and reviewing
-// current webhook subscriptions.
-func (r *WebhookService) ListJournalSubscriptions(ctx context.Context, opts ...option.RequestOption) (res *CollectionResponseSubscriptionResponseNoPaging, err error) {
+// Retrieve a list of webhook journal subscriptions for the specified version. This
+// endpoint allows you to view all active subscriptions without pagination. It is
+// useful for monitoring and managing webhook subscriptions in your HubSpot
+// account.
+func (r *WebhookService) ListJournalSubscriptions(ctx context.Context, opts ...option.RequestOption) (res *webhooks_journal.JournalCollectionResponseSubscriptionResponseNoPaging, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := "webhooks-journal/subscriptions/2026-03"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-// Retrieve the filters associated with a specific webhook subscription in the
-// HubSpot account. This endpoint is useful for obtaining detailed information
-// about the filters applied to a given subscription, identified by its
-// subscription ID.
-func (r *WebhookService) ListSubscriptionFilters(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *[]FilterResponse, err error) {
+// Retrieve the filters associated with a specific webhook subscription. This
+// endpoint allows you to view the filters applied to a subscription, which can
+// help in managing and understanding the conditions set for webhook events.
+func (r *WebhookService) ListSubscriptionFilters(ctx context.Context, subscriptionID int64, opts ...option.RequestOption) (res *[]shared.FilterResponse, err error) {
 	opts = slices.Concat(r.options, opts)
 	path := fmt.Sprintf("webhooks-journal/subscriptions/2026-03/filters/subscription/%v", subscriptionID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -422,101 +428,6 @@ func (r *WebhookService) UpdateSettings(ctx context.Context, appID int64, body W
 	return res, err
 }
 
-type ActionOverrideRequest struct {
-	// An array of strings, each representing an associated object type ID relevant to
-	// the action override.
-	AssociatedObjectTypeIDs []string `json:"associatedObjectTypeIds"`
-	// An array of integers representing list IDs that are associated with the action
-	// override. The integers are in int64 format.
-	ListIDs []int64 `json:"listIds"`
-	// An array of integers, each representing an object ID for which the action
-	// override is applicable. The integers are in int64 format.
-	ObjectIDs []int64 `json:"objectIds"`
-	// An array of strings representing the properties to be overridden in the action.
-	// Each string corresponds to a property name.
-	Properties []string `json:"properties"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		AssociatedObjectTypeIDs respjson.Field
-		ListIDs                 respjson.Field
-		ObjectIDs               respjson.Field
-		Properties              respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r ActionOverrideRequest) RawJSON() string { return r.JSON.raw }
-func (r *ActionOverrideRequest) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties EventTypeID, Properties, SubscriptionType are required.
-type AppLifecycleEventSubscriptionUpsertRequestParam struct {
-	EventTypeID string   `json:"eventTypeId" api:"required"`
-	Properties  []string `json:"properties,omitzero" api:"required"`
-	// Any of "OBJECT", "ASSOCIATION", "EVENT", "APP_LIFECYCLE_EVENT",
-	// "LIST_MEMBERSHIP", "GDPR_PRIVACY_DELETION".
-	SubscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r AppLifecycleEventSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow AppLifecycleEventSubscriptionUpsertRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AppLifecycleEventSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AppLifecycleEventSubscriptionUpsertRequestSubscriptionType string
-
-const (
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeObject              AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "OBJECT"
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeAssociation         AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeEvent               AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "EVENT"
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent   AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeListMembership      AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
-	AppLifecycleEventSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion AppLifecycleEventSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
-)
-
-// The properties Actions, AssociatedObjectTypeIDs, ObjectIDs, ObjectTypeID,
-// PortalID, SubscriptionType are required.
-type AssociationSubscriptionUpsertRequestParam struct {
-	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
-	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
-	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
-	Actions                 []string `json:"actions,omitzero" api:"required"`
-	AssociatedObjectTypeIDs []string `json:"associatedObjectTypeIds,omitzero" api:"required"`
-	ObjectIDs               []int64  `json:"objectIds,omitzero" api:"required"`
-	ObjectTypeID            string   `json:"objectTypeId" api:"required"`
-	PortalID                int64    `json:"portalId" api:"required"`
-	// Any of "OBJECT", "ASSOCIATION", "EVENT", "APP_LIFECYCLE_EVENT",
-	// "LIST_MEMBERSHIP", "GDPR_PRIVACY_DELETION".
-	SubscriptionType AssociationSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r AssociationSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow AssociationSubscriptionUpsertRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *AssociationSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type AssociationSubscriptionUpsertRequestSubscriptionType string
-
-const (
-	AssociationSubscriptionUpsertRequestSubscriptionTypeObject              AssociationSubscriptionUpsertRequestSubscriptionType = "OBJECT"
-	AssociationSubscriptionUpsertRequestSubscriptionTypeAssociation         AssociationSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
-	AssociationSubscriptionUpsertRequestSubscriptionTypeEvent               AssociationSubscriptionUpsertRequestSubscriptionType = "EVENT"
-	AssociationSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent   AssociationSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
-	AssociationSubscriptionUpsertRequestSubscriptionTypeListMembership      AssociationSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
-	AssociationSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion AssociationSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
-)
-
 // The property Inputs is required.
 type BatchInputSubscriptionBatchUpdateRequestParam struct {
 	// An array of SubscriptionBatchUpdateRequest objects, each representing a
@@ -532,53 +443,6 @@ func (r BatchInputSubscriptionBatchUpdateRequestParam) MarshalJSON() (data []byt
 func (r *BatchInputSubscriptionBatchUpdateRequestParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type BatchResponseJournalFetchResponse struct {
-	// The date and time when the batch operation was completed, in ISO 8601 format.
-	CompletedAt time.Time `json:"completedAt" api:"required" format:"date-time"`
-	// An array of results from the batch operation, each represented as a
-	// JournalFetchResponse object.
-	Results []JournalFetchResponse `json:"results" api:"required"`
-	// The date and time when the batch operation started, in ISO 8601 format.
-	StartedAt time.Time `json:"startedAt" api:"required" format:"date-time"`
-	// The current status of the batch operation. Valid values include 'PENDING',
-	// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
-	//
-	// Any of "CANCELED", "COMPLETE", "PENDING", "PROCESSING".
-	Status BatchResponseJournalFetchResponseStatus `json:"status" api:"required"`
-	// A map of link names to associated URIs related to the batch operation.
-	Links map[string]string `json:"links"`
-	// The date and time when the batch operation was requested, in ISO 8601 format.
-	RequestedAt time.Time `json:"requestedAt" format:"date-time"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CompletedAt respjson.Field
-		Results     respjson.Field
-		StartedAt   respjson.Field
-		Status      respjson.Field
-		Links       respjson.Field
-		RequestedAt respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r BatchResponseJournalFetchResponse) RawJSON() string { return r.JSON.raw }
-func (r *BatchResponseJournalFetchResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The current status of the batch operation. Valid values include 'PENDING',
-// 'PROCESSING', 'CANCELED', and 'COMPLETE'.
-type BatchResponseJournalFetchResponseStatus string
-
-const (
-	BatchResponseJournalFetchResponseStatusCanceled   BatchResponseJournalFetchResponseStatus = "CANCELED"
-	BatchResponseJournalFetchResponseStatusComplete   BatchResponseJournalFetchResponseStatus = "COMPLETE"
-	BatchResponseJournalFetchResponseStatusPending    BatchResponseJournalFetchResponseStatus = "PENDING"
-	BatchResponseJournalFetchResponseStatusProcessing BatchResponseJournalFetchResponseStatus = "PROCESSING"
-)
 
 type BatchResponseSubscriptionResponse struct {
 	// The date and time when the batch operation was completed, in ISO 8601 format.
@@ -628,466 +492,6 @@ const (
 	BatchResponseSubscriptionResponseStatusProcessing BatchResponseSubscriptionResponseStatus = "PROCESSING"
 )
 
-type CollectionResponseSubscriptionResponseNoPaging struct {
-	// An array of SubscriptionResponse objects, each representing a subscription's
-	// details such as actions, appId, createdAt, and other relevant properties.
-	Results []SubscriptionResponse1 `json:"results" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Results     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CollectionResponseSubscriptionResponseNoPaging) RawJSON() string { return r.JSON.raw }
-func (r *CollectionResponseSubscriptionResponseNoPaging) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type Condition struct {
-	// A string indicating the type of filter being applied. Valid value is
-	// 'CRM_OBJECT_PROPERTY'.
-	//
-	// Any of "CRM_OBJECT_PROPERTY".
-	FilterType ConditionFilterType `json:"filterType" api:"required"`
-	// A string specifying the operation to be performed in the condition. Valid values
-	// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
-	// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
-	//
-	// Any of "CONTAINS", "ENDS_WITH", "EQ", "GT", "GTE", "IN", "IS_EMPTY",
-	// "IS_NOT_EMPTY", "LT", "LTE", "N_EQ", "NOT_IN", "STARTS_WITH".
-	Operator ConditionOperator `json:"operator" api:"required"`
-	// A string representing the specific property of the CRM object that the condition
-	// applies to.
-	Property string `json:"property" api:"required"`
-	// A string representing the value to be compared against the specified property
-	// when using single-value operators.
-	Value string `json:"value"`
-	// An array of strings used to specify multiple values for comparison when using
-	// operators that support multiple values, such as 'IN' or 'NOT_IN'.
-	Values []string `json:"values"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FilterType  respjson.Field
-		Operator    respjson.Field
-		Property    respjson.Field
-		Value       respjson.Field
-		Values      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r Condition) RawJSON() string { return r.JSON.raw }
-func (r *Condition) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this Condition to a ConditionParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// ConditionParam.Overrides()
-func (r Condition) ToParam() ConditionParam {
-	return param.Override[ConditionParam](json.RawMessage(r.RawJSON()))
-}
-
-// A string indicating the type of filter being applied. Valid value is
-// 'CRM_OBJECT_PROPERTY'.
-type ConditionFilterType string
-
-const (
-	ConditionFilterTypeCrmObjectProperty ConditionFilterType = "CRM_OBJECT_PROPERTY"
-)
-
-// A string specifying the operation to be performed in the condition. Valid values
-// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
-// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
-type ConditionOperator string
-
-const (
-	ConditionOperatorContains   ConditionOperator = "CONTAINS"
-	ConditionOperatorEndsWith   ConditionOperator = "ENDS_WITH"
-	ConditionOperatorEq         ConditionOperator = "EQ"
-	ConditionOperatorGt         ConditionOperator = "GT"
-	ConditionOperatorGte        ConditionOperator = "GTE"
-	ConditionOperatorIn         ConditionOperator = "IN"
-	ConditionOperatorIsEmpty    ConditionOperator = "IS_EMPTY"
-	ConditionOperatorIsNotEmpty ConditionOperator = "IS_NOT_EMPTY"
-	ConditionOperatorLt         ConditionOperator = "LT"
-	ConditionOperatorLte        ConditionOperator = "LTE"
-	ConditionOperatorNEq        ConditionOperator = "N_EQ"
-	ConditionOperatorNotIn      ConditionOperator = "NOT_IN"
-	ConditionOperatorStartsWith ConditionOperator = "STARTS_WITH"
-)
-
-// The properties FilterType, Operator, Property are required.
-type ConditionParam struct {
-	// A string indicating the type of filter being applied. Valid value is
-	// 'CRM_OBJECT_PROPERTY'.
-	//
-	// Any of "CRM_OBJECT_PROPERTY".
-	FilterType ConditionFilterType `json:"filterType,omitzero" api:"required"`
-	// A string specifying the operation to be performed in the condition. Valid values
-	// include 'EQ', 'N_EQ', 'LT', 'GT', 'LTE', 'GTE', 'CONTAINS', 'STARTS_WITH',
-	// 'ENDS_WITH', 'IN', 'NOT_IN', 'IS_EMPTY', and 'IS_NOT_EMPTY'.
-	//
-	// Any of "CONTAINS", "ENDS_WITH", "EQ", "GT", "GTE", "IN", "IS_EMPTY",
-	// "IS_NOT_EMPTY", "LT", "LTE", "N_EQ", "NOT_IN", "STARTS_WITH".
-	Operator ConditionOperator `json:"operator,omitzero" api:"required"`
-	// A string representing the specific property of the CRM object that the condition
-	// applies to.
-	Property string `json:"property" api:"required"`
-	// A string representing the value to be compared against the specified property
-	// when using single-value operators.
-	Value param.Opt[string] `json:"value,omitzero"`
-	// An array of strings used to specify multiple values for comparison when using
-	// operators that support multiple values, such as 'IN' or 'NOT_IN'.
-	Values []string `json:"values,omitzero"`
-	paramObj
-}
-
-func (r ConditionParam) MarshalJSON() (data []byte, err error) {
-	type shadow ConditionParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ConditionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The property SnapshotRequests is required.
-type CrmObjectSnapshotBatchRequestParam struct {
-	// An array of CrmObjectSnapshotRequest objects, each representing a request to
-	// create a snapshot for a specific CRM object. This property is required.
-	SnapshotRequests []CrmObjectSnapshotRequestParam `json:"snapshotRequests,omitzero" api:"required"`
-	paramObj
-}
-
-func (r CrmObjectSnapshotBatchRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow CrmObjectSnapshotBatchRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *CrmObjectSnapshotBatchRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type CrmObjectSnapshotBatchResponse struct {
-	// An array of CrmObjectSnapshotResponse objects, each representing the result of a
-	// snapshot operation for a specific CRM object. This property is required.
-	SnapshotResponses []CrmObjectSnapshotResponse `json:"snapshotResponses" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		SnapshotResponses respjson.Field
-		ExtraFields       map[string]respjson.Field
-		raw               string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CrmObjectSnapshotBatchResponse) RawJSON() string { return r.JSON.raw }
-func (r *CrmObjectSnapshotBatchResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties ObjectID, ObjectTypeID, PortalID, Properties are required.
-type CrmObjectSnapshotRequestParam struct {
-	// An integer representing the unique identifier of the CRM object for which the
-	// snapshot is requested.
-	ObjectID int64 `json:"objectId" api:"required"`
-	// A string representing the type identifier of the CRM object, specifying what
-	// kind of object it is within HubSpot.
-	ObjectTypeID string `json:"objectTypeId" api:"required"`
-	// An integer representing the unique identifier of the HubSpot account (portal)
-	// where the CRM object resides.
-	PortalID int64 `json:"portalId" api:"required"`
-	// An array of strings, each representing a property of the CRM object that should
-	// be included in the snapshot.
-	Properties []string `json:"properties,omitzero" api:"required"`
-	paramObj
-}
-
-func (r CrmObjectSnapshotRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow CrmObjectSnapshotRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *CrmObjectSnapshotRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type CrmObjectSnapshotResponse struct {
-	// An integer representing the unique identifier of the CRM object for which the
-	// snapshot is taken.
-	ObjectID int64 `json:"objectId" api:"required"`
-	// A string indicating the type of the CRM object, such as contact, company, or
-	// deal.
-	ObjectTypeID string `json:"objectTypeId" api:"required"`
-	// An integer representing the unique identifier of the HubSpot portal associated
-	// with the CRM object.
-	PortalID int64 `json:"portalId" api:"required"`
-	// A UUID string representing the status identifier of the snapshot request,
-	// indicating the current state of the snapshot process.
-	SnapshotStatusID string `json:"snapshotStatusId" api:"required" format:"uuid"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ObjectID         respjson.Field
-		ObjectTypeID     respjson.Field
-		PortalID         respjson.Field
-		SnapshotStatusID respjson.Field
-		ExtraFields      map[string]respjson.Field
-		raw              string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r CrmObjectSnapshotResponse) RawJSON() string { return r.JSON.raw }
-func (r *CrmObjectSnapshotResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// Defines a single condition for searching CRM objects, specifying the property to
-// filter on, the operator to use (such as equals, greater than, or contains), and
-// the value(s) to compare against.
-type Filter struct {
-	// An array of conditions that define the criteria for the filter. Each condition
-	// specifies a property, an operator, and optionally a value or values.
-	Conditions []Condition `json:"conditions" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		Conditions  respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r Filter) RawJSON() string { return r.JSON.raw }
-func (r *Filter) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// ToParam converts this Filter to a FilterParam.
-//
-// Warning: the fields of the param type will not be present. ToParam should only
-// be used at the last possible moment before sending a request. Test for this with
-// FilterParam.Overrides()
-func (r Filter) ToParam() FilterParam {
-	return param.Override[FilterParam](json.RawMessage(r.RawJSON()))
-}
-
-// Defines a single condition for searching CRM objects, specifying the property to
-// filter on, the operator to use (such as equals, greater than, or contains), and
-// the value(s) to compare against.
-//
-// The property Conditions is required.
-type FilterParam struct {
-	// An array of conditions that define the criteria for the filter. Each condition
-	// specifies a property, an operator, and optionally a value or values.
-	Conditions []ConditionParam `json:"conditions,omitzero" api:"required"`
-	paramObj
-}
-
-func (r FilterParam) MarshalJSON() (data []byte, err error) {
-	type shadow FilterParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *FilterParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Filter, SubscriptionID are required.
-type FilterCreateRequestParam struct {
-	// Defines a single condition for searching CRM objects, specifying the property to
-	// filter on, the operator to use (such as equals, greater than, or contains), and
-	// the value(s) to compare against.
-	Filter FilterParam `json:"filter,omitzero" api:"required"`
-	// The unique identifier of the subscription to which the filter will be applied.
-	// It is an integer formatted as int64.
-	SubscriptionID int64 `json:"subscriptionId" api:"required"`
-	paramObj
-}
-
-func (r FilterCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow FilterCreateRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *FilterCreateRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type FilterCreateResponse struct {
-	// The unique identifier for the created filter. It is an integer formatted as
-	// int64.
-	FilterID int64 `json:"filterId" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		FilterID    respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r FilterCreateResponse) RawJSON() string { return r.JSON.raw }
-func (r *FilterCreateResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type FilterResponse struct {
-	// The unique identifier for the filter. It is an integer in int64 format.
-	ID int64 `json:"id" api:"required"`
-	// A Unix timestamp in milliseconds indicating when the filter was created.
-	CreatedAt int64 `json:"createdAt" api:"required"`
-	// Defines a single condition for searching CRM objects, specifying the property to
-	// filter on, the operator to use (such as equals, greater than, or contains), and
-	// the value(s) to compare against.
-	Filter Filter `json:"filter" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		CreatedAt   respjson.Field
-		Filter      respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r FilterResponse) RawJSON() string { return r.JSON.raw }
-func (r *FilterResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Actions, ObjectTypeID, PortalID, SubscriptionType are required.
-type GdprPrivacyDeletionSubscriptionUpsertRequestParam struct {
-	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
-	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
-	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
-	Actions      []string `json:"actions,omitzero" api:"required"`
-	ObjectTypeID string   `json:"objectTypeId" api:"required"`
-	PortalID     int64    `json:"portalId" api:"required"`
-	// Any of "OBJECT", "ASSOCIATION", "EVENT", "APP_LIFECYCLE_EVENT",
-	// "LIST_MEMBERSHIP", "GDPR_PRIVACY_DELETION".
-	SubscriptionType GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r GdprPrivacyDeletionSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow GdprPrivacyDeletionSubscriptionUpsertRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *GdprPrivacyDeletionSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType string
-
-const (
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeObject              GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "OBJECT"
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeAssociation         GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeEvent               GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "EVENT"
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent   GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeListMembership      GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
-	GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion GdprPrivacyDeletionSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
-)
-
-type JournalFetchResponse struct {
-	// The unique identifier for the current offset of the journal entry, formatted as
-	// a UUID.
-	CurrentOffset string `json:"currentOffset" api:"required" format:"uuid"`
-	// The date and time when the URL will expire, in ISO 8601 format.
-	ExpiresAt time.Time `json:"expiresAt" api:"required" format:"date-time"`
-	// The URL where the journal entry can be accessed. It is a string.
-	URL string `json:"url" api:"required"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		CurrentOffset respjson.Field
-		ExpiresAt     respjson.Field
-		URL           respjson.Field
-		ExtraFields   map[string]respjson.Field
-		raw           string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r JournalFetchResponse) RawJSON() string { return r.JSON.raw }
-func (r *JournalFetchResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The properties Actions, ListIDs, ObjectIDs, PortalID, SubscriptionType are
-// required.
-type ListMembershipSubscriptionUpsertRequestParam struct {
-	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
-	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
-	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
-	Actions   []string `json:"actions,omitzero" api:"required"`
-	ListIDs   []int64  `json:"listIds,omitzero" api:"required"`
-	ObjectIDs []int64  `json:"objectIds,omitzero" api:"required"`
-	PortalID  int64    `json:"portalId" api:"required"`
-	// Any of "OBJECT", "ASSOCIATION", "EVENT", "APP_LIFECYCLE_EVENT",
-	// "LIST_MEMBERSHIP", "GDPR_PRIVACY_DELETION".
-	SubscriptionType ListMembershipSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r ListMembershipSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow ListMembershipSubscriptionUpsertRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ListMembershipSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ListMembershipSubscriptionUpsertRequestSubscriptionType string
-
-const (
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeObject              ListMembershipSubscriptionUpsertRequestSubscriptionType = "OBJECT"
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeAssociation         ListMembershipSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeEvent               ListMembershipSubscriptionUpsertRequestSubscriptionType = "EVENT"
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent   ListMembershipSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeListMembership      ListMembershipSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
-	ListMembershipSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion ListMembershipSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
-)
-
-// The properties Actions, ObjectIDs, ObjectTypeID, PortalID, Properties,
-// SubscriptionType are required.
-type ObjectSubscriptionUpsertRequestParam struct {
-	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
-	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
-	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
-	Actions      []string `json:"actions,omitzero" api:"required"`
-	ObjectIDs    []int64  `json:"objectIds,omitzero" api:"required"`
-	ObjectTypeID string   `json:"objectTypeId" api:"required"`
-	PortalID     int64    `json:"portalId" api:"required"`
-	Properties   []string `json:"properties,omitzero" api:"required"`
-	// Any of "OBJECT", "ASSOCIATION", "EVENT", "APP_LIFECYCLE_EVENT",
-	// "LIST_MEMBERSHIP", "GDPR_PRIVACY_DELETION".
-	SubscriptionType ObjectSubscriptionUpsertRequestSubscriptionType `json:"subscriptionType,omitzero" api:"required"`
-	paramObj
-}
-
-func (r ObjectSubscriptionUpsertRequestParam) MarshalJSON() (data []byte, err error) {
-	type shadow ObjectSubscriptionUpsertRequestParam
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *ObjectSubscriptionUpsertRequestParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ObjectSubscriptionUpsertRequestSubscriptionType string
-
-const (
-	ObjectSubscriptionUpsertRequestSubscriptionTypeObject              ObjectSubscriptionUpsertRequestSubscriptionType = "OBJECT"
-	ObjectSubscriptionUpsertRequestSubscriptionTypeAssociation         ObjectSubscriptionUpsertRequestSubscriptionType = "ASSOCIATION"
-	ObjectSubscriptionUpsertRequestSubscriptionTypeEvent               ObjectSubscriptionUpsertRequestSubscriptionType = "EVENT"
-	ObjectSubscriptionUpsertRequestSubscriptionTypeAppLifecycleEvent   ObjectSubscriptionUpsertRequestSubscriptionType = "APP_LIFECYCLE_EVENT"
-	ObjectSubscriptionUpsertRequestSubscriptionTypeListMembership      ObjectSubscriptionUpsertRequestSubscriptionType = "LIST_MEMBERSHIP"
-	ObjectSubscriptionUpsertRequestSubscriptionTypeGdprPrivacyDeletion ObjectSubscriptionUpsertRequestSubscriptionType = "GDPR_PRIVACY_DELETION"
-)
-
 // The properties TargetURL, Throttling are required.
 type SettingsChangeRequestParam struct {
 	// The URL to which webhook events will be sent. It is a string.
@@ -1129,70 +533,6 @@ func (r SettingsResponse) RawJSON() string { return r.JSON.raw }
 func (r *SettingsResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-type SnapshotStatusResponse struct {
-	// The unique identifier for the snapshot operation, represented as a UUID.
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The timestamp indicating when the snapshot operation was initiated, represented
-	// as a Unix timestamp in milliseconds.
-	InitiatedAt int64 `json:"initiatedAt" api:"required"`
-	// The current status of the snapshot. Valid values include 'PENDING',
-	// 'IN_PROGRESS', 'COMPLETED', 'FAILED', and 'EXPIRED'.
-	//
-	// Any of "COMPLETED", "EXPIRED", "FAILED", "IN_PROGRESS", "PENDING".
-	Status SnapshotStatusResponseStatus `json:"status" api:"required"`
-	// The timestamp indicating when the snapshot operation was completed, represented
-	// as a Unix timestamp in milliseconds.
-	CompletedAt int64 `json:"completedAt"`
-	// A code representing the error that occurred, if any. Possible values are
-	// 'TIMEOUT', 'VALIDATION_ERROR', 'INTERNAL_ERROR', and 'PERMISSION_DENIED'.
-	//
-	// Any of "INTERNAL_ERROR", "PERMISSION_DENIED", "TIMEOUT", "VALIDATION_ERROR".
-	ErrorCode SnapshotStatusResponseErrorCode `json:"errorCode"`
-	// A descriptive message providing additional information about the snapshot
-	// operation or error.
-	Message string `json:"message"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID          respjson.Field
-		InitiatedAt respjson.Field
-		Status      respjson.Field
-		CompletedAt respjson.Field
-		ErrorCode   respjson.Field
-		Message     respjson.Field
-		ExtraFields map[string]respjson.Field
-		raw         string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SnapshotStatusResponse) RawJSON() string { return r.JSON.raw }
-func (r *SnapshotStatusResponse) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The current status of the snapshot. Valid values include 'PENDING',
-// 'IN_PROGRESS', 'COMPLETED', 'FAILED', and 'EXPIRED'.
-type SnapshotStatusResponseStatus string
-
-const (
-	SnapshotStatusResponseStatusCompleted  SnapshotStatusResponseStatus = "COMPLETED"
-	SnapshotStatusResponseStatusExpired    SnapshotStatusResponseStatus = "EXPIRED"
-	SnapshotStatusResponseStatusFailed     SnapshotStatusResponseStatus = "FAILED"
-	SnapshotStatusResponseStatusInProgress SnapshotStatusResponseStatus = "IN_PROGRESS"
-	SnapshotStatusResponseStatusPending    SnapshotStatusResponseStatus = "PENDING"
-)
-
-// A code representing the error that occurred, if any. Possible values are
-// 'TIMEOUT', 'VALIDATION_ERROR', 'INTERNAL_ERROR', and 'PERMISSION_DENIED'.
-type SnapshotStatusResponseErrorCode string
-
-const (
-	SnapshotStatusResponseErrorCodeInternalError    SnapshotStatusResponseErrorCode = "INTERNAL_ERROR"
-	SnapshotStatusResponseErrorCodePermissionDenied SnapshotStatusResponseErrorCode = "PERMISSION_DENIED"
-	SnapshotStatusResponseErrorCodeTimeout          SnapshotStatusResponseErrorCode = "TIMEOUT"
-	SnapshotStatusResponseErrorCodeValidationError  SnapshotStatusResponseErrorCode = "VALIDATION_ERROR"
-)
 
 // The properties ID, Active are required.
 type SubscriptionBatchUpdateRequestParam struct {
@@ -1458,131 +798,6 @@ const (
 	SubscriptionResponseEventTypeTicketRestore               SubscriptionResponseEventType = "ticket.restore"
 )
 
-type SubscriptionResponse1 struct {
-	// The unique identifier for the subscription. It is an integer formatted as int64.
-	ID int64 `json:"id" api:"required"`
-	// A list of actions that trigger the subscription. Possible values include
-	// 'CREATE', 'UPDATE', 'DELETE', 'MERGE', 'RESTORE', 'ASSOCIATION_ADDED',
-	// 'ASSOCIATION_REMOVED', 'SNAPSHOT', 'APP_INSTALL', 'APP_UNINSTALL',
-	// 'ADDED_TO_LIST', 'REMOVED_FROM_LIST', and 'GDPR_DELETE'.
-	//
-	// Any of "CREATE", "UPDATE", "DELETE", "MERGE", "RESTORE", "ASSOCIATION_ADDED",
-	// "ASSOCIATION_REMOVED", "SNAPSHOT", "APP_INSTALL", "APP_UNINSTALL",
-	// "ADDED_TO_LIST", "REMOVED_FROM_LIST", "GDPR_DELETE".
-	Actions []string `json:"actions" api:"required"`
-	// The unique identifier for the app associated with the subscription. It is an
-	// integer formatted as int64.
-	AppID int64 `json:"appId" api:"required"`
-	// The date and time when the subscription was created, in ISO 8601 format.
-	CreatedAt time.Time `json:"createdAt" api:"required" format:"date-time"`
-	// The identifier for the object type associated with the subscription. It is a
-	// string.
-	ObjectTypeID string `json:"objectTypeId" api:"required"`
-	// The type of subscription, which can be one of the following: 'OBJECT',
-	// 'ASSOCIATION', 'EVENT', 'APP_LIFECYCLE_EVENT', 'LIST_MEMBERSHIP', or
-	// 'GDPR_PRIVACY_DELETION'.
-	//
-	// Any of "APP_LIFECYCLE_EVENT", "ASSOCIATION", "EVENT", "GDPR_PRIVACY_DELETION",
-	// "LIST_MEMBERSHIP", "OBJECT".
-	SubscriptionType SubscriptionResponse1SubscriptionType `json:"subscriptionType" api:"required"`
-	// The date and time when the subscription was last updated, in ISO 8601 format.
-	UpdatedAt time.Time `json:"updatedAt" api:"required" format:"date-time"`
-	// An object containing action overrides, where each key is an action and the value
-	// is an ActionOverrideRequest object.
-	ActionOverrides map[string]ActionOverrideRequest `json:"actionOverrides"`
-	// A list of associated object type IDs. Each ID is a string.
-	AssociatedObjectTypeIDs []string `json:"associatedObjectTypeIds"`
-	// The ID of the user who created the subscription. It is an integer formatted as
-	// int64.
-	CreatedBy int64 `json:"createdBy"`
-	// The date and time when the subscription was deleted, in ISO 8601 format, if
-	// applicable.
-	DeletedAt time.Time `json:"deletedAt" format:"date-time"`
-	// A list of list IDs associated with the subscription. Each ID is an integer
-	// formatted as int64.
-	ListIDs []int64 `json:"listIds"`
-	// A list of object IDs associated with the subscription. Each ID is an integer
-	// formatted as int64.
-	ObjectIDs []int64 `json:"objectIds"`
-	// The unique identifier for the portal associated with the subscription. It is an
-	// integer formatted as int64.
-	PortalID int64 `json:"portalId"`
-	// A list of property names associated with the subscription. Each property is a
-	// string.
-	Properties []string `json:"properties"`
-	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
-	JSON struct {
-		ID                      respjson.Field
-		Actions                 respjson.Field
-		AppID                   respjson.Field
-		CreatedAt               respjson.Field
-		ObjectTypeID            respjson.Field
-		SubscriptionType        respjson.Field
-		UpdatedAt               respjson.Field
-		ActionOverrides         respjson.Field
-		AssociatedObjectTypeIDs respjson.Field
-		CreatedBy               respjson.Field
-		DeletedAt               respjson.Field
-		ListIDs                 respjson.Field
-		ObjectIDs               respjson.Field
-		PortalID                respjson.Field
-		Properties              respjson.Field
-		ExtraFields             map[string]respjson.Field
-		raw                     string
-	} `json:"-"`
-}
-
-// Returns the unmodified JSON received from the API
-func (r SubscriptionResponse1) RawJSON() string { return r.JSON.raw }
-func (r *SubscriptionResponse1) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The type of subscription, which can be one of the following: 'OBJECT',
-// 'ASSOCIATION', 'EVENT', 'APP_LIFECYCLE_EVENT', 'LIST_MEMBERSHIP', or
-// 'GDPR_PRIVACY_DELETION'.
-type SubscriptionResponse1SubscriptionType string
-
-const (
-	SubscriptionResponse1SubscriptionTypeAppLifecycleEvent   SubscriptionResponse1SubscriptionType = "APP_LIFECYCLE_EVENT"
-	SubscriptionResponse1SubscriptionTypeAssociation         SubscriptionResponse1SubscriptionType = "ASSOCIATION"
-	SubscriptionResponse1SubscriptionTypeEvent               SubscriptionResponse1SubscriptionType = "EVENT"
-	SubscriptionResponse1SubscriptionTypeGdprPrivacyDeletion SubscriptionResponse1SubscriptionType = "GDPR_PRIVACY_DELETION"
-	SubscriptionResponse1SubscriptionTypeListMembership      SubscriptionResponse1SubscriptionType = "LIST_MEMBERSHIP"
-	SubscriptionResponse1SubscriptionTypeObject              SubscriptionResponse1SubscriptionType = "OBJECT"
-)
-
-func SubscriptionUpsertRequestParamOfAppLifecycleEventSubscriptionUpsertRequest(eventTypeID string, properties []string, subscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType) SubscriptionUpsertRequestUnionParam {
-	var variant AppLifecycleEventSubscriptionUpsertRequestParam
-	variant.EventTypeID = eventTypeID
-	variant.Properties = properties
-	variant.SubscriptionType = subscriptionType
-	return SubscriptionUpsertRequestUnionParam{OfAppLifecycleEventSubscriptionUpsertRequest: &variant}
-}
-
-// Only one field can be non-zero.
-//
-// Use [param.IsOmitted] to confirm if a field is set.
-type SubscriptionUpsertRequestUnionParam struct {
-	OfObjectSubscriptionUpsertRequest              *ObjectSubscriptionUpsertRequestParam              `json:",omitzero,inline"`
-	OfAssociationSubscriptionUpsertRequest         *AssociationSubscriptionUpsertRequestParam         `json:",omitzero,inline"`
-	OfAppLifecycleEventSubscriptionUpsertRequest   *AppLifecycleEventSubscriptionUpsertRequestParam   `json:",omitzero,inline"`
-	OfListMembershipSubscriptionUpsertRequest      *ListMembershipSubscriptionUpsertRequestParam      `json:",omitzero,inline"`
-	OfGdprPrivacyDeletionSubscriptionUpsertRequest *GdprPrivacyDeletionSubscriptionUpsertRequestParam `json:",omitzero,inline"`
-	paramUnion
-}
-
-func (u SubscriptionUpsertRequestUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfObjectSubscriptionUpsertRequest,
-		u.OfAssociationSubscriptionUpsertRequest,
-		u.OfAppLifecycleEventSubscriptionUpsertRequest,
-		u.OfListMembershipSubscriptionUpsertRequest,
-		u.OfGdprPrivacyDeletionSubscriptionUpsertRequest)
-}
-func (u *SubscriptionUpsertRequestUnionParam) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, u)
-}
-
 type ThrottlingSettings struct {
 	// The maximum number of concurrent requests allowed. This is an integer value.
 	MaxConcurrentRequests int64 `json:"maxConcurrentRequests" api:"required"`
@@ -1637,7 +852,7 @@ func (r *WebhookNewBatchEventSubscriptionsParams) UnmarshalJSON(data []byte) err
 }
 
 type WebhookNewCrmSnapshotsParams struct {
-	CrmObjectSnapshotBatchRequest CrmObjectSnapshotBatchRequestParam
+	CrmObjectSnapshotBatchRequest shared.CrmObjectSnapshotBatchRequestParam
 	paramObj
 }
 
@@ -1661,7 +876,7 @@ func (r *WebhookNewEventSubscriptionParams) UnmarshalJSON(data []byte) error {
 }
 
 type WebhookNewJournalSubscriptionParams struct {
-	SubscriptionUpsertRequest SubscriptionUpsertRequestUnionParam
+	SubscriptionUpsertRequest shared.SubscriptionUpsertRequestUnionParam
 	paramObj
 }
 
@@ -1673,7 +888,7 @@ func (r *WebhookNewJournalSubscriptionParams) UnmarshalJSON(data []byte) error {
 }
 
 type WebhookNewSubscriptionFilterParams struct {
-	FilterCreateRequest FilterCreateRequestParam
+	FilterCreateRequest shared.FilterCreateRequestParam
 	paramObj
 }
 
@@ -1690,8 +905,8 @@ type WebhookDeleteEventSubscriptionParams struct {
 }
 
 type WebhookGetEarliestJournalBatchParams struct {
-	// The ID of the portal installation to filter the webhook journal entries by. This
-	// is an integer value.
+	// The ID of the portal installation. This is an integer value that specifies which
+	// portal's data to access.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1706,8 +921,8 @@ func (r WebhookGetEarliestJournalBatchParams) URLQuery() (v url.Values, err erro
 }
 
 type WebhookGetEarliestJournalEntryParams struct {
-	// The ID of the portal installation to filter the journal entries. It is an
-	// integer.
+	// The ID of the portal installation to filter the journal entries by. This is an
+	// integer value.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1722,7 +937,8 @@ func (r WebhookGetEarliestJournalEntryParams) URLQuery() (v url.Values, err erro
 }
 
 type WebhookGetEarliestLocalJournalBatchParams struct {
-	// The ID of the portal where the webhooks are installed. This is an integer value.
+	// The ID of the portal installation to filter the webhook journal entries. This is
+	// an optional integer parameter.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1737,8 +953,8 @@ func (r WebhookGetEarliestLocalJournalBatchParams) URLQuery() (v url.Values, err
 }
 
 type WebhookGetEarliestLocalJournalEntryParams struct {
-	// The ID of the portal installation to filter the journal entries by. This
-	// parameter is optional and should be an integer.
+	// The ID of the portal for which to retrieve the earliest webhook journal entries.
+	// This parameter is optional and should be an integer.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1759,7 +975,8 @@ type WebhookGetEventSubscriptionParams struct {
 
 type WebhookGetJournalBatchByRequestParams struct {
 	BatchInputString shared.BatchInputStringParam
-	// The ID of the portal where the webhooks are installed. This is an integer value.
+	// An integer representing the ID of the portal installation for which the webhooks
+	// journal data should be retrieved.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1782,8 +999,7 @@ func (r WebhookGetJournalBatchByRequestParams) URLQuery() (v url.Values, err err
 
 type WebhookGetJournalBatchFromOffsetParams struct {
 	Offset string `path:"offset" api:"required" json:"-"`
-	// The ID of the portal installation. This is an integer value used to specify the
-	// portal context for the request.
+	// The ID of the portal installation. This is an integer value.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1798,8 +1014,8 @@ func (r WebhookGetJournalBatchFromOffsetParams) URLQuery() (v url.Values, err er
 }
 
 type WebhookGetLatestJournalBatchParams struct {
-	// The ID of the portal installation. This is an integer value used to identify the
-	// specific portal.
+	// The ID of the portal installation. This is an integer value used to specify the
+	// portal context for the request.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1814,8 +1030,8 @@ func (r WebhookGetLatestJournalBatchParams) URLQuery() (v url.Values, err error)
 }
 
 type WebhookGetLatestJournalEntryParams struct {
-	// The ID of the portal installation to filter the journal entries. It is an
-	// integer value.
+	// The unique identifier of the portal installation for which to retrieve the
+	// latest journal entries. This parameter is optional and should be an integer.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1830,8 +1046,8 @@ func (r WebhookGetLatestJournalEntryParams) URLQuery() (v url.Values, err error)
 }
 
 type WebhookGetLatestLocalJournalBatchParams struct {
-	// The ID of the portal installation. This parameter is optional and used to filter
-	// the journal entries by a specific portal.
+	// The ID of the portal where the webhook journal is installed. This parameter is
+	// optional and used to specify the target portal.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1846,8 +1062,8 @@ func (r WebhookGetLatestLocalJournalBatchParams) URLQuery() (v url.Values, err e
 }
 
 type WebhookGetLatestLocalJournalEntryParams struct {
-	// The ID of the portal for which to retrieve the latest journal entries. This
-	// parameter is optional and should be an integer.
+	// The ID of the portal for which to retrieve the latest journal entries. This is
+	// an integer value.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1864,7 +1080,7 @@ func (r WebhookGetLatestLocalJournalEntryParams) URLQuery() (v url.Values, err e
 type WebhookGetLocalJournalBatchByRequestParams struct {
 	BatchInputString shared.BatchInputStringParam
 	// The ID of the portal where the webhooks are installed. This parameter is
-	// optional and is used to specify the target portal.
+	// optional and is used to specify the target portal for the operation.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1887,8 +1103,8 @@ func (r WebhookGetLocalJournalBatchByRequestParams) URLQuery() (v url.Values, er
 
 type WebhookGetLocalJournalBatchFromOffsetParams struct {
 	Offset string `path:"offset" api:"required" json:"-"`
-	// The ID of the portal installation. This is an integer value used to specify the
-	// portal context for the request.
+	// The ID of the portal where the webhooks are installed. This is an optional
+	// parameter.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1903,8 +1119,7 @@ func (r WebhookGetLocalJournalBatchFromOffsetParams) URLQuery() (v url.Values, e
 }
 
 type WebhookGetNextJournalEntriesParams struct {
-	// The ID of the portal installation to filter the webhook journal entries. This is
-	// an optional parameter.
+	// The ID of the portal where the webhooks are installed. This is an integer value.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }
@@ -1919,7 +1134,8 @@ func (r WebhookGetNextJournalEntriesParams) URLQuery() (v url.Values, err error)
 }
 
 type WebhookGetNextLocalJournalEntriesParams struct {
-	// The ID of the portal where the webhook is installed. This is an integer value.
+	// The ID of the portal installation to filter the webhook journal entries. This is
+	// an integer value.
 	InstallPortalID param.Opt[int64] `query:"installPortalId,omitzero" json:"-"`
 	paramObj
 }

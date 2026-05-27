@@ -867,12 +867,12 @@ type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union struct {
 	} `json:"-"`
 }
 
-func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsRandomAccess() (v RandomAccessCollectionResponseWithTotalHubDBTableRowV3) {
+func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsRandomAccessCollectionResponseWithTotalHubDBTableRowV3() (v RandomAccessCollectionResponseWithTotalHubDBTableRowV3) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsStreaming() (v StreamingCollectionResponseWithTotalHubDBTableRowV3) {
+func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsStreamingCollectionResponseWithTotalHubDBTableRowV3() (v StreamingCollectionResponseWithTotalHubDBTableRowV3) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
