@@ -317,8 +317,12 @@ func (r *CompletedThirdPartyCallResponse) UnmarshalJSON(data []byte) error {
 // CompletedThirdPartyCallResponseCallerIDMatchUnion contains all possible
 // properties and values from [ContactCallerID], [CompanyCallerID].
 //
+// Use the [CompletedThirdPartyCallResponseCallerIDMatchUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type CompletedThirdPartyCallResponseCallerIDMatchUnion struct {
+	// Any of "CONTACT", "COMPANY".
 	CallerIDType string `json:"callerIdType"`
 	// This field is from variant [ContactCallerID].
 	ObjectCoordinates ObjectCoordinates `json:"objectCoordinates"`
@@ -339,6 +343,34 @@ type CompletedThirdPartyCallResponseCallerIDMatchUnion struct {
 		Name              respjson.Field
 		raw               string
 	} `json:"-"`
+}
+
+// anyCompletedThirdPartyCallResponseCallerIDMatch is implemented by each variant
+// of [CompletedThirdPartyCallResponseCallerIDMatchUnion] to add type safety for
+// the return type of [CompletedThirdPartyCallResponseCallerIDMatchUnion.AsAny]
+type anyCompletedThirdPartyCallResponseCallerIDMatch interface {
+	implCompletedThirdPartyCallResponseCallerIDMatchUnion()
+}
+
+func (ContactCallerID) implCompletedThirdPartyCallResponseCallerIDMatchUnion() {}
+func (CompanyCallerID) implCompletedThirdPartyCallResponseCallerIDMatchUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := CompletedThirdPartyCallResponseCallerIDMatchUnion.AsAny().(type) {
+//	case crm.ContactCallerID:
+//	case crm.CompanyCallerID:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u CompletedThirdPartyCallResponseCallerIDMatchUnion) AsAny() anyCompletedThirdPartyCallResponseCallerIDMatch {
+	switch u.CallerIDType {
+	case "CONTACT":
+		return u.AsContact()
+	case "COMPANY":
+		return u.AsCompany()
+	}
+	return nil
 }
 
 func (u CompletedThirdPartyCallResponseCallerIDMatchUnion) AsContact() (v ContactCallerID) {

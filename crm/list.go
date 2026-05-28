@@ -1148,8 +1148,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicAdsTimeFilterPruningRefineByUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicAdsTimeFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -1314,6 +1320,21 @@ func (u PublicAdsTimeFilterPruningRefineByUnionParam) MarshalJSON() ([]byte, err
 }
 func (u *PublicAdsTimeFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicAdsTimeFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicAllHistoryRefineBy struct {
@@ -3900,8 +3921,14 @@ func (r PublicAssociationInListFilter) ToParam() PublicAssociationInListFilterPa
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicAssociationInListFilterCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicAssociationInListFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -4088,6 +4115,21 @@ func (u PublicAssociationInListFilterCoalescingRefineByUnionParam) MarshalJSON()
 }
 func (u *PublicAssociationInListFilterCoalescingRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicAssociationInListFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicBatchMigrationMapping struct {
@@ -4655,8 +4697,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicCtaAnalyticsFilterCoalescingRefineByUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicCtaAnalyticsFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -4781,8 +4829,14 @@ func (r *PublicCtaAnalyticsFilterCoalescingRefineByUnion) UnmarshalJSON(data []b
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicCtaAnalyticsFilterPruningRefineByUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicCtaAnalyticsFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -4958,6 +5012,21 @@ func (u *PublicCtaAnalyticsFilterCoalescingRefineByUnionParam) UnmarshalJSON(dat
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicCtaAnalyticsFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -4987,6 +5056,21 @@ func (u PublicCtaAnalyticsFilterPruningRefineByUnionParam) MarshalJSON() ([]byte
 }
 func (u *PublicCtaAnalyticsFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicCtaAnalyticsFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicDatePoint struct {
@@ -5338,8 +5422,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicEmailEventFilterPruningRefineByUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicEmailEventFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -5522,6 +5612,21 @@ func (u PublicEmailEventFilterPruningRefineByUnionParam) MarshalJSON() ([]byte, 
 }
 func (u *PublicEmailEventFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicEmailEventFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicEmailSubscriptionFilter struct {
@@ -5724,8 +5829,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicEventAnalyticsFilterCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicEventAnalyticsFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -5850,8 +5961,14 @@ func (r *PublicEventAnalyticsFilterCoalescingRefineByUnion) UnmarshalJSON(data [
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicEventAnalyticsFilterPruningRefineByUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicEventAnalyticsFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -6025,6 +6142,21 @@ func (u *PublicEventAnalyticsFilterCoalescingRefineByUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicEventAnalyticsFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -6054,6 +6186,21 @@ func (u PublicEventAnalyticsFilterPruningRefineByUnionParam) MarshalJSON() ([]by
 }
 func (u *PublicEventAnalyticsFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicEventAnalyticsFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicEventFilterMetadata struct {
@@ -6099,11 +6246,18 @@ func (r PublicEventFilterMetadata) ToParam() PublicEventFilterMetadataParam {
 // [PublicCalendarDatePropertyOperation], [PublicTimePointOperation],
 // [PublicRangedTimeOperation].
 //
+// Use the [PublicEventFilterMetadataOperationUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicEventFilterMetadataOperationUnion struct {
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
+	IncludeObjectsWithNoValueSet bool `json:"includeObjectsWithNoValueSet"`
+	// Any of "BOOL", "NUMBER", "STRING", "DATETIME", "RANGED_DATE",
+	// "COMPARATIVE_PROPERTY_UPDATED", "COMPARATIVE_DATE", "ROLLING_DATE_RANGE",
+	// "ROLLING_PROPERTY_UPDATED", "ENUMERATION", "ALL_PROPERTY", "NUMBER_RANGED",
+	// "MULTISTRING", "DATE", "CALENDAR_DATE", "TIME_POINT", "TIME_RANGED".
+	OperationType string `json:"operationType"`
+	Operator      string `json:"operator"`
 	// This field is a union of [bool], [float64], [string]
 	Value                      PublicEventFilterMetadataOperationUnionValue `json:"value"`
 	RequiresTimeZoneConversion bool                                         `json:"requiresTimeZoneConversion"`
@@ -6173,6 +6327,94 @@ type PublicEventFilterMetadataOperationUnion struct {
 		UpperBoundEndpointBehavior   respjson.Field
 		raw                          string
 	} `json:"-"`
+}
+
+// anyPublicEventFilterMetadataOperation is implemented by each variant of
+// [PublicEventFilterMetadataOperationUnion] to add type safety for the return type
+// of [PublicEventFilterMetadataOperationUnion.AsAny]
+type anyPublicEventFilterMetadataOperation interface {
+	implPublicEventFilterMetadataOperationUnion()
+}
+
+func (PublicBoolPropertyOperation) implPublicEventFilterMetadataOperationUnion()               {}
+func (PublicNumberPropertyOperation) implPublicEventFilterMetadataOperationUnion()             {}
+func (PublicStringPropertyOperation) implPublicEventFilterMetadataOperationUnion()             {}
+func (PublicDateTimePropertyOperation) implPublicEventFilterMetadataOperationUnion()           {}
+func (PublicRangedDatePropertyOperation) implPublicEventFilterMetadataOperationUnion()         {}
+func (PublicComparativePropertyUpdatedOperation) implPublicEventFilterMetadataOperationUnion() {}
+func (PublicComparativeDatePropertyOperation) implPublicEventFilterMetadataOperationUnion()    {}
+func (PublicRollingDateRangePropertyOperation) implPublicEventFilterMetadataOperationUnion()   {}
+func (PublicRollingPropertyUpdatedOperation) implPublicEventFilterMetadataOperationUnion()     {}
+func (PublicEnumerationPropertyOperation) implPublicEventFilterMetadataOperationUnion()        {}
+func (PublicAllPropertyTypesOperation) implPublicEventFilterMetadataOperationUnion()           {}
+func (PublicRangedNumberPropertyOperation) implPublicEventFilterMetadataOperationUnion()       {}
+func (PublicMultiStringPropertyOperation) implPublicEventFilterMetadataOperationUnion()        {}
+func (PublicDatePropertyOperation) implPublicEventFilterMetadataOperationUnion()               {}
+func (PublicCalendarDatePropertyOperation) implPublicEventFilterMetadataOperationUnion()       {}
+func (PublicTimePointOperation) implPublicEventFilterMetadataOperationUnion()                  {}
+func (PublicRangedTimeOperation) implPublicEventFilterMetadataOperationUnion()                 {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicEventFilterMetadataOperationUnion.AsAny().(type) {
+//	case crm.PublicBoolPropertyOperation:
+//	case crm.PublicNumberPropertyOperation:
+//	case crm.PublicStringPropertyOperation:
+//	case crm.PublicDateTimePropertyOperation:
+//	case crm.PublicRangedDatePropertyOperation:
+//	case crm.PublicComparativePropertyUpdatedOperation:
+//	case crm.PublicComparativeDatePropertyOperation:
+//	case crm.PublicRollingDateRangePropertyOperation:
+//	case crm.PublicRollingPropertyUpdatedOperation:
+//	case crm.PublicEnumerationPropertyOperation:
+//	case crm.PublicAllPropertyTypesOperation:
+//	case crm.PublicRangedNumberPropertyOperation:
+//	case crm.PublicMultiStringPropertyOperation:
+//	case crm.PublicDatePropertyOperation:
+//	case crm.PublicCalendarDatePropertyOperation:
+//	case crm.PublicTimePointOperation:
+//	case crm.PublicRangedTimeOperation:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicEventFilterMetadataOperationUnion) AsAny() anyPublicEventFilterMetadataOperation {
+	switch u.OperationType {
+	case "BOOL":
+		return u.AsBool()
+	case "NUMBER":
+		return u.AsNumber()
+	case "STRING":
+		return u.AsString()
+	case "DATETIME":
+		return u.AsDatetime()
+	case "RANGED_DATE":
+		return u.AsRangedDate()
+	case "COMPARATIVE_PROPERTY_UPDATED":
+		return u.AsComparativePropertyUpdated()
+	case "COMPARATIVE_DATE":
+		return u.AsComparativeDate()
+	case "ROLLING_DATE_RANGE":
+		return u.AsRollingDateRange()
+	case "ROLLING_PROPERTY_UPDATED":
+		return u.AsRollingPropertyUpdated()
+	case "ENUMERATION":
+		return u.AsEnumeration()
+	case "ALL_PROPERTY":
+		return u.AsAllProperty()
+	case "NUMBER_RANGED":
+		return u.AsNumberRanged()
+	case "MULTISTRING":
+		return u.AsMultistring()
+	case "DATE":
+		return u.AsDate()
+	case "CALENDAR_DATE":
+		return u.AsCalendarDate()
+	case "TIME_POINT":
+		return u.AsTimePoint()
+	case "TIME_RANGED":
+		return u.AsTimeRanged()
+	}
+	return nil
 }
 
 func (u PublicEventFilterMetadataOperationUnion) AsBool() (v PublicBoolPropertyOperation) {
@@ -6358,6 +6600,29 @@ func (u PublicEventFilterMetadataOperationUnionParam) MarshalJSON() ([]byte, err
 }
 func (u *PublicEventFilterMetadataOperationUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicEventFilterMetadataOperationUnionParam](
+		"operationType",
+		apijson.Discriminator[PublicBoolPropertyOperationParam]("BOOL"),
+		apijson.Discriminator[PublicNumberPropertyOperationParam]("NUMBER"),
+		apijson.Discriminator[PublicStringPropertyOperationParam]("STRING"),
+		apijson.Discriminator[PublicDateTimePropertyOperationParam]("DATETIME"),
+		apijson.Discriminator[PublicRangedDatePropertyOperationParam]("RANGED_DATE"),
+		apijson.Discriminator[PublicComparativePropertyUpdatedOperationParam]("COMPARATIVE_PROPERTY_UPDATED"),
+		apijson.Discriminator[PublicComparativeDatePropertyOperationParam]("COMPARATIVE_DATE"),
+		apijson.Discriminator[PublicRollingDateRangePropertyOperationParam]("ROLLING_DATE_RANGE"),
+		apijson.Discriminator[PublicRollingPropertyUpdatedOperationParam]("ROLLING_PROPERTY_UPDATED"),
+		apijson.Discriminator[PublicEnumerationPropertyOperationParam]("ENUMERATION"),
+		apijson.Discriminator[PublicAllPropertyTypesOperationParam]("ALL_PROPERTY"),
+		apijson.Discriminator[PublicRangedNumberPropertyOperationParam]("NUMBER_RANGED"),
+		apijson.Discriminator[PublicMultiStringPropertyOperationParam]("MULTISTRING"),
+		apijson.Discriminator[PublicDatePropertyOperationParam]("DATE"),
+		apijson.Discriminator[PublicCalendarDatePropertyOperationParam]("CALENDAR_DATE"),
+		apijson.Discriminator[PublicTimePointOperationParam]("TIME_POINT"),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicFiscalQuarterReference struct {
@@ -6592,8 +6857,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicFormSubmissionFilterCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicFormSubmissionFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -6718,8 +6989,14 @@ func (r *PublicFormSubmissionFilterCoalescingRefineByUnion) UnmarshalJSON(data [
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicFormSubmissionFilterPruningRefineByUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicFormSubmissionFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -6894,6 +7171,21 @@ func (u *PublicFormSubmissionFilterCoalescingRefineByUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicFormSubmissionFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -6923,6 +7215,21 @@ func (u PublicFormSubmissionFilterPruningRefineByUnionParam) MarshalJSON() ([]by
 }
 func (u *PublicFormSubmissionFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicFormSubmissionFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicFormSubmissionOnPageFilter struct {
@@ -6994,8 +7301,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicFormSubmissionOnPageFilterCoalescingRefineByUnion.AsAny] method
+// to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicFormSubmissionOnPageFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -7120,8 +7433,14 @@ func (r *PublicFormSubmissionOnPageFilterCoalescingRefineByUnion) UnmarshalJSON(
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicFormSubmissionOnPageFilterPruningRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicFormSubmissionOnPageFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -7298,6 +7617,21 @@ func (u *PublicFormSubmissionOnPageFilterCoalescingRefineByUnionParam) Unmarshal
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicFormSubmissionOnPageFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -7327,6 +7661,21 @@ func (u PublicFormSubmissionOnPageFilterPruningRefineByUnionParam) MarshalJSON()
 }
 func (u *PublicFormSubmissionOnPageFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicFormSubmissionOnPageFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicInListFilter struct {
@@ -7571,8 +7920,13 @@ func (r PublicIndexedTimePoint) ToParam() PublicIndexedTimePointParam {
 // [PublicFiscalQuarterReference], [PublicFiscalYearReference],
 // [PublicYearReference], [PublicQuarterReference], [PublicMonthReference].
 //
+// Use the [PublicIndexedTimePointIndexReferenceUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicIndexedTimePointIndexReferenceUnion struct {
+	// Any of "NOW", "TODAY", "WEEK", "FISCAL_QUARTER", "FISCAL_YEAR", "YEAR",
+	// "QUARTER", "MONTH".
 	ReferenceType string `json:"referenceType"`
 	Hour          int64  `json:"hour"`
 	Millisecond   int64  `json:"millisecond"`
@@ -7593,6 +7947,58 @@ type PublicIndexedTimePointIndexReferenceUnion struct {
 		Month         respjson.Field
 		raw           string
 	} `json:"-"`
+}
+
+// anyPublicIndexedTimePointIndexReference is implemented by each variant of
+// [PublicIndexedTimePointIndexReferenceUnion] to add type safety for the return
+// type of [PublicIndexedTimePointIndexReferenceUnion.AsAny]
+type anyPublicIndexedTimePointIndexReference interface {
+	implPublicIndexedTimePointIndexReferenceUnion()
+}
+
+func (PublicNowReference) implPublicIndexedTimePointIndexReferenceUnion()           {}
+func (PublicTodayReference) implPublicIndexedTimePointIndexReferenceUnion()         {}
+func (PublicWeekReference) implPublicIndexedTimePointIndexReferenceUnion()          {}
+func (PublicFiscalQuarterReference) implPublicIndexedTimePointIndexReferenceUnion() {}
+func (PublicFiscalYearReference) implPublicIndexedTimePointIndexReferenceUnion()    {}
+func (PublicYearReference) implPublicIndexedTimePointIndexReferenceUnion()          {}
+func (PublicQuarterReference) implPublicIndexedTimePointIndexReferenceUnion()       {}
+func (PublicMonthReference) implPublicIndexedTimePointIndexReferenceUnion()         {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicIndexedTimePointIndexReferenceUnion.AsAny().(type) {
+//	case crm.PublicNowReference:
+//	case crm.PublicTodayReference:
+//	case crm.PublicWeekReference:
+//	case crm.PublicFiscalQuarterReference:
+//	case crm.PublicFiscalYearReference:
+//	case crm.PublicYearReference:
+//	case crm.PublicQuarterReference:
+//	case crm.PublicMonthReference:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicIndexedTimePointIndexReferenceUnion) AsAny() anyPublicIndexedTimePointIndexReference {
+	switch u.ReferenceType {
+	case "NOW":
+		return u.AsNow()
+	case "TODAY":
+		return u.AsToday()
+	case "WEEK":
+		return u.AsWeek()
+	case "FISCAL_QUARTER":
+		return u.AsFiscalQuarter()
+	case "FISCAL_YEAR":
+		return u.AsFiscalYear()
+	case "YEAR":
+		return u.AsYear()
+	case "QUARTER":
+		return u.AsQuarter()
+	case "MONTH":
+		return u.AsMonth()
+	}
+	return nil
 }
 
 func (u PublicIndexedTimePointIndexReferenceUnion) AsNow() (v PublicNowReference) {
@@ -7702,6 +8108,20 @@ func (u PublicIndexedTimePointIndexReferenceUnionParam) MarshalJSON() ([]byte, e
 }
 func (u *PublicIndexedTimePointIndexReferenceUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicIndexedTimePointIndexReferenceUnionParam](
+		"referenceType",
+		apijson.Discriminator[PublicNowReferenceParam]("NOW"),
+		apijson.Discriminator[PublicTodayReferenceParam]("TODAY"),
+		apijson.Discriminator[PublicWeekReferenceParam]("WEEK"),
+		apijson.Discriminator[PublicFiscalQuarterReferenceParam]("FISCAL_QUARTER"),
+		apijson.Discriminator[PublicFiscalYearReferenceParam]("FISCAL_YEAR"),
+		apijson.Discriminator[PublicYearReferenceParam]("YEAR"),
+		apijson.Discriminator[PublicQuarterReferenceParam]("QUARTER"),
+		apijson.Discriminator[PublicMonthReferenceParam]("MONTH"),
+	)
 }
 
 type PublicIntegrationEventFilter struct {
@@ -7941,8 +8361,12 @@ func (r *PublicListConversionResponse) UnmarshalJSON(data []byte) error {
 // properties and values from [PublicListConversionDate],
 // [PublicListConversionInactivity].
 //
+// Use the [PublicListConversionResponseRequestedConversionTimeUnion.AsAny] method
+// to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicListConversionResponseRequestedConversionTimeUnion struct {
+	// Any of "CONVERSION_DATE", "INACTIVITY".
 	ConversionType string `json:"conversionType"`
 	// This field is from variant [PublicListConversionDate].
 	Day int64 `json:"day"`
@@ -7965,12 +8389,42 @@ type PublicListConversionResponseRequestedConversionTimeUnion struct {
 	} `json:"-"`
 }
 
-func (u PublicListConversionResponseRequestedConversionTimeUnion) AsPublicListConversionDate() (v PublicListConversionDate) {
+// anyPublicListConversionResponseRequestedConversionTime is implemented by each
+// variant of [PublicListConversionResponseRequestedConversionTimeUnion] to add
+// type safety for the return type of
+// [PublicListConversionResponseRequestedConversionTimeUnion.AsAny]
+type anyPublicListConversionResponseRequestedConversionTime interface {
+	implPublicListConversionResponseRequestedConversionTimeUnion()
+}
+
+func (PublicListConversionDate) implPublicListConversionResponseRequestedConversionTimeUnion() {}
+func (PublicListConversionInactivity) implPublicListConversionResponseRequestedConversionTimeUnion() {
+}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicListConversionResponseRequestedConversionTimeUnion.AsAny().(type) {
+//	case crm.PublicListConversionDate:
+//	case crm.PublicListConversionInactivity:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicListConversionResponseRequestedConversionTimeUnion) AsAny() anyPublicListConversionResponseRequestedConversionTime {
+	switch u.ConversionType {
+	case "CONVERSION_DATE":
+		return u.AsConversionDate()
+	case "INACTIVITY":
+		return u.AsInactivity()
+	}
+	return nil
+}
+
+func (u PublicListConversionResponseRequestedConversionTimeUnion) AsConversionDate() (v PublicListConversionDate) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u PublicListConversionResponseRequestedConversionTimeUnion) AsPublicListConversionInactivity() (v PublicListConversionInactivity) {
+func (u PublicListConversionResponseRequestedConversionTimeUnion) AsInactivity() (v PublicListConversionInactivity) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -7982,28 +8436,36 @@ func (r *PublicListConversionResponseRequestedConversionTimeUnion) UnmarshalJSON
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func PublicListConversionTimeParamOfPublicListConversionInactivity(conversionType PublicListConversionInactivityConversionType, offset int64, timeUnit PublicListConversionInactivityTimeUnit) PublicListConversionTimeUnionParam {
-	var variant PublicListConversionInactivityParam
-	variant.ConversionType = conversionType
-	variant.Offset = offset
-	variant.TimeUnit = timeUnit
-	return PublicListConversionTimeUnionParam{OfPublicListConversionInactivity: &variant}
+func PublicListConversionTimeParamOfInactivity(conversionType PublicListConversionInactivityConversionType, offset int64, timeUnit PublicListConversionInactivityTimeUnit) PublicListConversionTimeUnionParam {
+	var inactivity PublicListConversionInactivityParam
+	inactivity.ConversionType = conversionType
+	inactivity.Offset = offset
+	inactivity.TimeUnit = timeUnit
+	return PublicListConversionTimeUnionParam{OfInactivity: &inactivity}
 }
 
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicListConversionTimeUnionParam struct {
-	OfPublicListConversionDate       *PublicListConversionDateParam       `json:",omitzero,inline"`
-	OfPublicListConversionInactivity *PublicListConversionInactivityParam `json:",omitzero,inline"`
+	OfConversionDate *PublicListConversionDateParam       `json:",omitzero,inline"`
+	OfInactivity     *PublicListConversionInactivityParam `json:",omitzero,inline"`
 	paramUnion
 }
 
 func (u PublicListConversionTimeUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfPublicListConversionDate, u.OfPublicListConversionInactivity)
+	return param.MarshalUnion(u, u.OfConversionDate, u.OfInactivity)
 }
 func (u *PublicListConversionTimeUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicListConversionTimeUnionParam](
+		"conversionType",
+		apijson.Discriminator[PublicListConversionDateParam]("CONVERSION_DATE"),
+		apijson.Discriminator[PublicListConversionInactivityParam]("INACTIVITY"),
+	)
 }
 
 type PublicListFolder struct {
@@ -12519,8 +12981,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicPageViewAnalyticsFilterCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicPageViewAnalyticsFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -12645,8 +13113,14 @@ func (r *PublicPageViewAnalyticsFilterCoalescingRefineByUnion) UnmarshalJSON(dat
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicPageViewAnalyticsFilterPruningRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicPageViewAnalyticsFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -12823,6 +13297,21 @@ func (u *PublicPageViewAnalyticsFilterCoalescingRefineByUnionParam) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicPageViewAnalyticsFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -12852,6 +13341,21 @@ func (u PublicPageViewAnalyticsFilterPruningRefineByUnionParam) MarshalJSON() ([
 }
 func (u *PublicPageViewAnalyticsFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicPageViewAnalyticsFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicPrivacyAnalyticsFilter struct {
@@ -13740,12 +14244,16 @@ func (r PublicRangedTimeOperation) ToParam() PublicRangedTimeOperationParam {
 // properties and values from [PublicDatePoint], [PublicIndexedTimePoint],
 // [PublicPropertyReferencedTime].
 //
+// Use the [PublicRangedTimeOperationLowerBoundTimePointUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicRangedTimeOperationLowerBoundTimePointUnion struct {
 	// This field is from variant [PublicDatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [PublicDatePoint].
-	Month    int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType string `json:"timeType"`
 	// This field is from variant [PublicDatePoint].
 	Year   int64  `json:"year"`
@@ -13784,6 +14292,38 @@ type PublicRangedTimeOperationLowerBoundTimePointUnion struct {
 		ReferenceType  respjson.Field
 		raw            string
 	} `json:"-"`
+}
+
+// anyPublicRangedTimeOperationLowerBoundTimePoint is implemented by each variant
+// of [PublicRangedTimeOperationLowerBoundTimePointUnion] to add type safety for
+// the return type of [PublicRangedTimeOperationLowerBoundTimePointUnion.AsAny]
+type anyPublicRangedTimeOperationLowerBoundTimePoint interface {
+	implPublicRangedTimeOperationLowerBoundTimePointUnion()
+}
+
+func (PublicDatePoint) implPublicRangedTimeOperationLowerBoundTimePointUnion()              {}
+func (PublicIndexedTimePoint) implPublicRangedTimeOperationLowerBoundTimePointUnion()       {}
+func (PublicPropertyReferencedTime) implPublicRangedTimeOperationLowerBoundTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicRangedTimeOperationLowerBoundTimePointUnion.AsAny().(type) {
+//	case crm.PublicDatePoint:
+//	case crm.PublicIndexedTimePoint:
+//	case crm.PublicPropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicRangedTimeOperationLowerBoundTimePointUnion) AsAny() anyPublicRangedTimeOperationLowerBoundTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u PublicRangedTimeOperationLowerBoundTimePointUnion) AsDate() (v PublicDatePoint) {
@@ -13826,12 +14366,16 @@ const (
 // properties and values from [PublicDatePoint], [PublicIndexedTimePoint],
 // [PublicPropertyReferencedTime].
 //
+// Use the [PublicRangedTimeOperationUpperBoundTimePointUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicRangedTimeOperationUpperBoundTimePointUnion struct {
 	// This field is from variant [PublicDatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [PublicDatePoint].
-	Month    int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType string `json:"timeType"`
 	// This field is from variant [PublicDatePoint].
 	Year   int64  `json:"year"`
@@ -13870,6 +14414,38 @@ type PublicRangedTimeOperationUpperBoundTimePointUnion struct {
 		ReferenceType  respjson.Field
 		raw            string
 	} `json:"-"`
+}
+
+// anyPublicRangedTimeOperationUpperBoundTimePoint is implemented by each variant
+// of [PublicRangedTimeOperationUpperBoundTimePointUnion] to add type safety for
+// the return type of [PublicRangedTimeOperationUpperBoundTimePointUnion.AsAny]
+type anyPublicRangedTimeOperationUpperBoundTimePoint interface {
+	implPublicRangedTimeOperationUpperBoundTimePointUnion()
+}
+
+func (PublicDatePoint) implPublicRangedTimeOperationUpperBoundTimePointUnion()              {}
+func (PublicIndexedTimePoint) implPublicRangedTimeOperationUpperBoundTimePointUnion()       {}
+func (PublicPropertyReferencedTime) implPublicRangedTimeOperationUpperBoundTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicRangedTimeOperationUpperBoundTimePointUnion.AsAny().(type) {
+//	case crm.PublicDatePoint:
+//	case crm.PublicIndexedTimePoint:
+//	case crm.PublicPropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicRangedTimeOperationUpperBoundTimePointUnion) AsAny() anyPublicRangedTimeOperationUpperBoundTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u PublicRangedTimeOperationUpperBoundTimePointUnion) AsDate() (v PublicDatePoint) {
@@ -13949,6 +14525,15 @@ func (u *PublicRangedTimeOperationLowerBoundTimePointUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicRangedTimeOperationLowerBoundTimePointUnionParam](
+		"timeType",
+		apijson.Discriminator[PublicDatePointParam]("DATE"),
+		apijson.Discriminator[PublicIndexedTimePointParam]("INDEXED"),
+		apijson.Discriminator[PublicPropertyReferencedTimeParam]("PROPERTY_REFERENCED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -13964,6 +14549,15 @@ func (u PublicRangedTimeOperationUpperBoundTimePointUnionParam) MarshalJSON() ([
 }
 func (u *PublicRangedTimeOperationUpperBoundTimePointUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicRangedTimeOperationUpperBoundTimePointUnionParam](
+		"timeType",
+		apijson.Discriminator[PublicDatePointParam]("DATE"),
+		apijson.Discriminator[PublicIndexedTimePointParam]("INDEXED"),
+		apijson.Discriminator[PublicPropertyReferencedTimeParam]("PROPERTY_REFERENCED"),
+	)
 }
 
 type PublicRelativeComparativeTimestampRefineBy struct {
@@ -15708,11 +16302,18 @@ const (
 // [PublicCalendarDatePropertyOperation], [PublicTimePointOperation],
 // [PublicRangedTimeOperation].
 //
+// Use the [PublicSurveyMonkeyValueFilterValueComparisonUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicSurveyMonkeyValueFilterValueComparisonUnion struct {
-	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
-	OperationType                string `json:"operationType"`
-	Operator                     string `json:"operator"`
+	IncludeObjectsWithNoValueSet bool `json:"includeObjectsWithNoValueSet"`
+	// Any of "BOOL", "NUMBER", "STRING", "DATETIME", "RANGED_DATE",
+	// "COMPARATIVE_PROPERTY_UPDATED", "COMPARATIVE_DATE", "ROLLING_DATE_RANGE",
+	// "ROLLING_PROPERTY_UPDATED", "ENUMERATION", "ALL_PROPERTY", "NUMBER_RANGED",
+	// "MULTISTRING", "DATE", "CALENDAR_DATE", "TIME_POINT", "TIME_RANGED".
+	OperationType string `json:"operationType"`
+	Operator      string `json:"operator"`
 	// This field is a union of [bool], [float64], [string]
 	Value                      PublicSurveyMonkeyValueFilterValueComparisonUnionValue `json:"value"`
 	RequiresTimeZoneConversion bool                                                   `json:"requiresTimeZoneConversion"`
@@ -15782,6 +16383,98 @@ type PublicSurveyMonkeyValueFilterValueComparisonUnion struct {
 		UpperBoundEndpointBehavior   respjson.Field
 		raw                          string
 	} `json:"-"`
+}
+
+// anyPublicSurveyMonkeyValueFilterValueComparison is implemented by each variant
+// of [PublicSurveyMonkeyValueFilterValueComparisonUnion] to add type safety for
+// the return type of [PublicSurveyMonkeyValueFilterValueComparisonUnion.AsAny]
+type anyPublicSurveyMonkeyValueFilterValueComparison interface {
+	implPublicSurveyMonkeyValueFilterValueComparisonUnion()
+}
+
+func (PublicBoolPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()       {}
+func (PublicNumberPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()     {}
+func (PublicStringPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()     {}
+func (PublicDateTimePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()   {}
+func (PublicRangedDatePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {}
+func (PublicComparativePropertyUpdatedOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {
+}
+func (PublicComparativeDatePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {
+}
+func (PublicRollingDateRangePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {
+}
+func (PublicRollingPropertyUpdatedOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {
+}
+func (PublicEnumerationPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()  {}
+func (PublicAllPropertyTypesOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()     {}
+func (PublicRangedNumberPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {}
+func (PublicMultiStringPropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()  {}
+func (PublicDatePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()         {}
+func (PublicCalendarDatePropertyOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion() {}
+func (PublicTimePointOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()            {}
+func (PublicRangedTimeOperation) implPublicSurveyMonkeyValueFilterValueComparisonUnion()           {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicSurveyMonkeyValueFilterValueComparisonUnion.AsAny().(type) {
+//	case crm.PublicBoolPropertyOperation:
+//	case crm.PublicNumberPropertyOperation:
+//	case crm.PublicStringPropertyOperation:
+//	case crm.PublicDateTimePropertyOperation:
+//	case crm.PublicRangedDatePropertyOperation:
+//	case crm.PublicComparativePropertyUpdatedOperation:
+//	case crm.PublicComparativeDatePropertyOperation:
+//	case crm.PublicRollingDateRangePropertyOperation:
+//	case crm.PublicRollingPropertyUpdatedOperation:
+//	case crm.PublicEnumerationPropertyOperation:
+//	case crm.PublicAllPropertyTypesOperation:
+//	case crm.PublicRangedNumberPropertyOperation:
+//	case crm.PublicMultiStringPropertyOperation:
+//	case crm.PublicDatePropertyOperation:
+//	case crm.PublicCalendarDatePropertyOperation:
+//	case crm.PublicTimePointOperation:
+//	case crm.PublicRangedTimeOperation:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicSurveyMonkeyValueFilterValueComparisonUnion) AsAny() anyPublicSurveyMonkeyValueFilterValueComparison {
+	switch u.OperationType {
+	case "BOOL":
+		return u.AsBool()
+	case "NUMBER":
+		return u.AsNumber()
+	case "STRING":
+		return u.AsString()
+	case "DATETIME":
+		return u.AsDatetime()
+	case "RANGED_DATE":
+		return u.AsRangedDate()
+	case "COMPARATIVE_PROPERTY_UPDATED":
+		return u.AsComparativePropertyUpdated()
+	case "COMPARATIVE_DATE":
+		return u.AsComparativeDate()
+	case "ROLLING_DATE_RANGE":
+		return u.AsRollingDateRange()
+	case "ROLLING_PROPERTY_UPDATED":
+		return u.AsRollingPropertyUpdated()
+	case "ENUMERATION":
+		return u.AsEnumeration()
+	case "ALL_PROPERTY":
+		return u.AsAllProperty()
+	case "NUMBER_RANGED":
+		return u.AsNumberRanged()
+	case "MULTISTRING":
+		return u.AsMultistring()
+	case "DATE":
+		return u.AsDate()
+	case "CALENDAR_DATE":
+		return u.AsCalendarDate()
+	case "TIME_POINT":
+		return u.AsTimePoint()
+	case "TIME_RANGED":
+		return u.AsTimeRanged()
+	}
+	return nil
 }
 
 func (u PublicSurveyMonkeyValueFilterValueComparisonUnion) AsBool() (v PublicBoolPropertyOperation) {
@@ -15983,6 +16676,29 @@ func (u *PublicSurveyMonkeyValueFilterValueComparisonUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicSurveyMonkeyValueFilterValueComparisonUnionParam](
+		"operationType",
+		apijson.Discriminator[PublicBoolPropertyOperationParam]("BOOL"),
+		apijson.Discriminator[PublicNumberPropertyOperationParam]("NUMBER"),
+		apijson.Discriminator[PublicStringPropertyOperationParam]("STRING"),
+		apijson.Discriminator[PublicDateTimePropertyOperationParam]("DATETIME"),
+		apijson.Discriminator[PublicRangedDatePropertyOperationParam]("RANGED_DATE"),
+		apijson.Discriminator[PublicComparativePropertyUpdatedOperationParam]("COMPARATIVE_PROPERTY_UPDATED"),
+		apijson.Discriminator[PublicComparativeDatePropertyOperationParam]("COMPARATIVE_DATE"),
+		apijson.Discriminator[PublicRollingDateRangePropertyOperationParam]("ROLLING_DATE_RANGE"),
+		apijson.Discriminator[PublicRollingPropertyUpdatedOperationParam]("ROLLING_PROPERTY_UPDATED"),
+		apijson.Discriminator[PublicEnumerationPropertyOperationParam]("ENUMERATION"),
+		apijson.Discriminator[PublicAllPropertyTypesOperationParam]("ALL_PROPERTY"),
+		apijson.Discriminator[PublicRangedNumberPropertyOperationParam]("NUMBER_RANGED"),
+		apijson.Discriminator[PublicMultiStringPropertyOperationParam]("MULTISTRING"),
+		apijson.Discriminator[PublicDatePropertyOperationParam]("DATE"),
+		apijson.Discriminator[PublicCalendarDatePropertyOperationParam]("CALENDAR_DATE"),
+		apijson.Discriminator[PublicTimePointOperationParam]("TIME_POINT"),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 type PublicTimeOffset struct {
 	// The numerical value representing the quantity of the time offset.
 	Amount int64 `json:"amount" api:"required"`
@@ -16095,12 +16811,16 @@ const (
 // values from [PublicDatePoint], [PublicIndexedTimePoint],
 // [PublicPropertyReferencedTime].
 //
+// Use the [PublicTimePointOperationTimePointUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicTimePointOperationTimePointUnion struct {
 	// This field is from variant [PublicDatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [PublicDatePoint].
-	Month    int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType string `json:"timeType"`
 	// This field is from variant [PublicDatePoint].
 	Year   int64  `json:"year"`
@@ -16139,6 +16859,38 @@ type PublicTimePointOperationTimePointUnion struct {
 		ReferenceType  respjson.Field
 		raw            string
 	} `json:"-"`
+}
+
+// anyPublicTimePointOperationTimePoint is implemented by each variant of
+// [PublicTimePointOperationTimePointUnion] to add type safety for the return type
+// of [PublicTimePointOperationTimePointUnion.AsAny]
+type anyPublicTimePointOperationTimePoint interface {
+	implPublicTimePointOperationTimePointUnion()
+}
+
+func (PublicDatePoint) implPublicTimePointOperationTimePointUnion()              {}
+func (PublicIndexedTimePoint) implPublicTimePointOperationTimePointUnion()       {}
+func (PublicPropertyReferencedTime) implPublicTimePointOperationTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicTimePointOperationTimePointUnion.AsAny().(type) {
+//	case crm.PublicDatePoint:
+//	case crm.PublicIndexedTimePoint:
+//	case crm.PublicPropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicTimePointOperationTimePointUnion) AsAny() anyPublicTimePointOperationTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u PublicTimePointOperationTimePointUnion) AsDate() (v PublicDatePoint) {
@@ -16211,6 +16963,15 @@ func (u PublicTimePointOperationTimePointUnionParam) MarshalJSON() ([]byte, erro
 }
 func (u *PublicTimePointOperationTimePointUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicTimePointOperationTimePointUnionParam](
+		"timeType",
+		apijson.Discriminator[PublicDatePointParam]("DATE"),
+		apijson.Discriminator[PublicIndexedTimePointParam]("INDEXED"),
+		apijson.Discriminator[PublicPropertyReferencedTimeParam]("PROPERTY_REFERENCED"),
+	)
 }
 
 type PublicTodayReference struct {
@@ -16340,8 +17101,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicUnifiedEventsFilterCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicUnifiedEventsFilterCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -16466,8 +17233,14 @@ func (r *PublicUnifiedEventsFilterCoalescingRefineByUnion) UnmarshalJSON(data []
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicUnifiedEventsFilterPruningRefineByUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicUnifiedEventsFilterPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -16639,6 +17412,21 @@ func (u *PublicUnifiedEventsFilterCoalescingRefineByUnionParam) UnmarshalJSON(da
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicUnifiedEventsFilterCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -16668,6 +17456,21 @@ func (u PublicUnifiedEventsFilterPruningRefineByUnionParam) MarshalJSON() ([]byt
 }
 func (u *PublicUnifiedEventsFilterPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicUnifiedEventsFilterPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicUnifiedEventsFilterBranch struct {
@@ -17752,8 +18555,14 @@ const (
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicUnifiedEventsFilterBranchCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicUnifiedEventsFilterBranchCoalescingRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -17878,8 +18687,14 @@ func (r *PublicUnifiedEventsFilterBranchCoalescingRefineByUnion) UnmarshalJSON(d
 // [PublicAbsoluteRangedTimestampRefineBy], [PublicAllHistoryRefineBy],
 // [PublicTimePointOperation], [PublicRangedTimeOperation].
 //
+// Use the [PublicUnifiedEventsFilterBranchPruningRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicUnifiedEventsFilterBranchPruningRefineByUnion struct {
+	// Any of "NUM_OCCURRENCES", "SET_OCCURRENCES", "RELATIVE_COMPARATIVE",
+	// "RELATIVE_RANGED", "ABSOLUTE_COMPARATIVE", "ABSOLUTE_RANGED", "ALL_HISTORY",
+	// nil, "TIME_RANGED".
 	Type string `json:"type"`
 	// This field is from variant [PublicNumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -18178,6 +18993,21 @@ func (u *PublicUnifiedEventsFilterBranchCoalescingRefineByUnionParam) UnmarshalJ
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicUnifiedEventsFilterBranchCoalescingRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
+}
+
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
@@ -18207,6 +19037,21 @@ func (u PublicUnifiedEventsFilterBranchPruningRefineByUnionParam) MarshalJSON() 
 }
 func (u *PublicUnifiedEventsFilterBranchPruningRefineByUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicUnifiedEventsFilterBranchPruningRefineByUnionParam](
+		"type",
+		apijson.Discriminator[PublicNumOccurrencesRefineByParam]("NUM_OCCURRENCES"),
+		apijson.Discriminator[PublicSetOccurrencesRefineByParam]("SET_OCCURRENCES"),
+		apijson.Discriminator[PublicRelativeComparativeTimestampRefineByParam]("RELATIVE_COMPARATIVE"),
+		apijson.Discriminator[PublicRelativeRangedTimestampRefineByParam]("RELATIVE_RANGED"),
+		apijson.Discriminator[PublicAbsoluteComparativeTimestampRefineByParam]("ABSOLUTE_COMPARATIVE"),
+		apijson.Discriminator[PublicAbsoluteRangedTimestampRefineByParam]("ABSOLUTE_RANGED"),
+		apijson.Discriminator[PublicAllHistoryRefineByParam]("ALL_HISTORY"),
+		apijson.Discriminator[PublicTimePointOperationParam](undefined),
+		apijson.Discriminator[PublicRangedTimeOperationParam]("TIME_RANGED"),
+	)
 }
 
 type PublicWebinarFilter struct {

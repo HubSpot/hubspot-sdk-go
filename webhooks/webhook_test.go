@@ -135,7 +135,7 @@ func TestWebhookNewJournalSubscription(t *testing.T) {
 	)
 	_, err := client.Webhooks.NewJournalSubscription(context.TODO(), webhooks.WebhookNewJournalSubscriptionParams{
 		SubscriptionUpsertRequest: shared.SubscriptionUpsertRequestUnionParam{
-			OfObjectSubscriptionUpsertRequest: &shared.ObjectSubscriptionUpsertRequestParam{
+			OfObject: &shared.ObjectSubscriptionUpsertRequestParam{
 				Actions:          []string{"CREATE"},
 				ObjectIDs:        []int64{0},
 				ObjectTypeID:     "objectTypeId",

@@ -238,16 +238,24 @@ const (
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type PublicExportRequestUnionParam struct {
-	OfPublicExportViewRequest *PublicExportViewRequestParam `json:",omitzero,inline"`
-	OfPublicExportListRequest *PublicExportListRequestParam `json:",omitzero,inline"`
+	OfView *PublicExportViewRequestParam `json:",omitzero,inline"`
+	OfList *PublicExportListRequestParam `json:",omitzero,inline"`
 	paramUnion
 }
 
 func (u PublicExportRequestUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfPublicExportViewRequest, u.OfPublicExportListRequest)
+	return param.MarshalUnion(u, u.OfView, u.OfList)
 }
 func (u *PublicExportRequestUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicExportRequestUnionParam](
+		"exportType",
+		apijson.Discriminator[PublicExportViewRequestParam]("VIEW"),
+		apijson.Discriminator[PublicExportListRequestParam]("LIST"),
+	)
 }
 
 type PublicExportResponse struct {

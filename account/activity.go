@@ -252,8 +252,8 @@ type HydratedCriticalAction struct {
 	// "SERVICE_KEY_PERMISSIONS_UPDATE", "SERVICE_KEY_REVEAL", "SERVICE_KEY_ROTATE",
 	// "SMTP_TOKEN_CREATED", "SMTP_TOKEN_DELETED", "SMTP_TOKEN_PASSWORD_RESET",
 	// "SMTP_TOKEN_RETRIEVED", "TEAM_ADDED", "TEAM_DELETED", "TEAM_USER_ADDED",
-	// "TEAM_USER_DELETED", "TEMPLATE_MODIFIED", "TOUCHLESS_PURCHASE",
-	// "UNIFIED_RESTORE_UNDO_EXECUTION", "UNINSTALL_INTEGRATION",
+	// "TEAM_USER_DELETED", "TEMPLATE_DELETED", "TEMPLATE_MODIFIED",
+	// "TOUCHLESS_PURCHASE", "UNIFIED_RESTORE_UNDO_EXECUTION", "UNINSTALL_INTEGRATION",
 	// "UNREQUIRE_SINGLE_SIGN_ON", "WEBHOOK_SETTINGS_UPDATE",
 	// "WEBHOOK_SUBSCRIPTION_CREATE", "WEBHOOK_SUBSCRIPTION_UPDATE".
 	Type HydratedCriticalActionType `json:"type" api:"required"`
@@ -432,6 +432,7 @@ const (
 	HydratedCriticalActionTypeTeamDeleted                                HydratedCriticalActionType = "TEAM_DELETED"
 	HydratedCriticalActionTypeTeamUserAdded                              HydratedCriticalActionType = "TEAM_USER_ADDED"
 	HydratedCriticalActionTypeTeamUserDeleted                            HydratedCriticalActionType = "TEAM_USER_DELETED"
+	HydratedCriticalActionTypeTemplateDeleted                            HydratedCriticalActionType = "TEMPLATE_DELETED"
 	HydratedCriticalActionTypeTemplateModified                           HydratedCriticalActionType = "TEMPLATE_MODIFIED"
 	HydratedCriticalActionTypeTouchlessPurchase                          HydratedCriticalActionType = "TOUCHLESS_PURCHASE"
 	HydratedCriticalActionTypeUnifiedRestoreUndoExecution                HydratedCriticalActionType = "UNIFIED_RESTORE_UNDO_EXECUTION"

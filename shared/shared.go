@@ -1309,6 +1309,13 @@ type Property struct {
 	// Whether the property will display the currency symbol set in the account
 	// settings.
 	ShowCurrencySymbol bool `json:"showCurrencySymbol"`
+	// Hint for how the text is displayed and validated in HubSpot's UI. Can be:
+	// "unformatted_single_line", "multi_line", "email", "phone_number", "domain_name",
+	// "ip_address", "physical_address", or "postal_code".
+	//
+	// Any of "domain_name", "email", "ip_address", "multi_line", "phone_number",
+	// "physical_address", "postal_code", "unformatted_single_line".
+	TextDisplayHint PropertyTextDisplayHint `json:"textDisplayHint"`
 	// When the object type was last updated.
 	UpdatedAt time.Time `json:"updatedAt" format:"date-time"`
 	// The internal user ID of the user who updated the property in HubSpot. This field
@@ -1343,6 +1350,7 @@ type Property struct {
 		ReferencedObjectType    respjson.Field
 		SensitiveDataCategories respjson.Field
 		ShowCurrencySymbol      respjson.Field
+		TextDisplayHint         respjson.Field
 		UpdatedAt               respjson.Field
 		UpdatedUserID           respjson.Field
 		ExtraFields             map[string]respjson.Field
@@ -1391,6 +1399,22 @@ const (
 	PropertyNumberDisplayHintUnformatted PropertyNumberDisplayHint = "unformatted"
 )
 
+// Hint for how the text is displayed and validated in HubSpot's UI. Can be:
+// "unformatted_single_line", "multi_line", "email", "phone_number", "domain_name",
+// "ip_address", "physical_address", or "postal_code".
+type PropertyTextDisplayHint string
+
+const (
+	PropertyTextDisplayHintDomainName            PropertyTextDisplayHint = "domain_name"
+	PropertyTextDisplayHintEmail                 PropertyTextDisplayHint = "email"
+	PropertyTextDisplayHintIPAddress             PropertyTextDisplayHint = "ip_address"
+	PropertyTextDisplayHintMultiLine             PropertyTextDisplayHint = "multi_line"
+	PropertyTextDisplayHintPhoneNumber           PropertyTextDisplayHint = "phone_number"
+	PropertyTextDisplayHintPhysicalAddress       PropertyTextDisplayHint = "physical_address"
+	PropertyTextDisplayHintPostalCode            PropertyTextDisplayHint = "postal_code"
+	PropertyTextDisplayHintUnformattedSingleLine PropertyTextDisplayHint = "unformatted_single_line"
+)
+
 // The properties FieldType, GroupName, Label, Name, Type are required.
 type PropertyCreateParam struct {
 	// Any of "booleancheckbox", "calculation_equation", "checkbox", "date", "file",
@@ -1418,6 +1442,9 @@ type PropertyCreateParam struct {
 	// "unformatted".
 	NumberDisplayHint PropertyCreateNumberDisplayHint `json:"numberDisplayHint,omitzero"`
 	Options           []OptionInputParam              `json:"options,omitzero"`
+	// Any of "domain_name", "email", "ip_address", "multi_line", "phone_number",
+	// "physical_address", "postal_code", "unformatted_single_line".
+	TextDisplayHint PropertyCreateTextDisplayHint `json:"textDisplayHint,omitzero"`
 	paramObj
 }
 
@@ -1475,6 +1502,19 @@ const (
 	PropertyCreateNumberDisplayHintPercentage  PropertyCreateNumberDisplayHint = "percentage"
 	PropertyCreateNumberDisplayHintProbability PropertyCreateNumberDisplayHint = "probability"
 	PropertyCreateNumberDisplayHintUnformatted PropertyCreateNumberDisplayHint = "unformatted"
+)
+
+type PropertyCreateTextDisplayHint string
+
+const (
+	PropertyCreateTextDisplayHintDomainName            PropertyCreateTextDisplayHint = "domain_name"
+	PropertyCreateTextDisplayHintEmail                 PropertyCreateTextDisplayHint = "email"
+	PropertyCreateTextDisplayHintIPAddress             PropertyCreateTextDisplayHint = "ip_address"
+	PropertyCreateTextDisplayHintMultiLine             PropertyCreateTextDisplayHint = "multi_line"
+	PropertyCreateTextDisplayHintPhoneNumber           PropertyCreateTextDisplayHint = "phone_number"
+	PropertyCreateTextDisplayHintPhysicalAddress       PropertyCreateTextDisplayHint = "physical_address"
+	PropertyCreateTextDisplayHintPostalCode            PropertyCreateTextDisplayHint = "postal_code"
+	PropertyCreateTextDisplayHintUnformattedSingleLine PropertyCreateTextDisplayHint = "unformatted_single_line"
 )
 
 type PropertyGroup struct {
@@ -2048,35 +2088,46 @@ func (r *StandardError) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func SubscriptionUpsertRequestParamOfAppLifecycleEventSubscriptionUpsertRequest(eventTypeID string, properties []string, subscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType) SubscriptionUpsertRequestUnionParam {
-	var variant AppLifecycleEventSubscriptionUpsertRequestParam
-	variant.EventTypeID = eventTypeID
-	variant.Properties = properties
-	variant.SubscriptionType = subscriptionType
-	return SubscriptionUpsertRequestUnionParam{OfAppLifecycleEventSubscriptionUpsertRequest: &variant}
+func SubscriptionUpsertRequestParamOfAppLifecycleEvent(eventTypeID string, properties []string, subscriptionType AppLifecycleEventSubscriptionUpsertRequestSubscriptionType) SubscriptionUpsertRequestUnionParam {
+	var appLifecycleEvent AppLifecycleEventSubscriptionUpsertRequestParam
+	appLifecycleEvent.EventTypeID = eventTypeID
+	appLifecycleEvent.Properties = properties
+	appLifecycleEvent.SubscriptionType = subscriptionType
+	return SubscriptionUpsertRequestUnionParam{OfAppLifecycleEvent: &appLifecycleEvent}
 }
 
 // Only one field can be non-zero.
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type SubscriptionUpsertRequestUnionParam struct {
-	OfObjectSubscriptionUpsertRequest              *ObjectSubscriptionUpsertRequestParam              `json:",omitzero,inline"`
-	OfAssociationSubscriptionUpsertRequest         *AssociationSubscriptionUpsertRequestParam         `json:",omitzero,inline"`
-	OfAppLifecycleEventSubscriptionUpsertRequest   *AppLifecycleEventSubscriptionUpsertRequestParam   `json:",omitzero,inline"`
-	OfListMembershipSubscriptionUpsertRequest      *ListMembershipSubscriptionUpsertRequestParam      `json:",omitzero,inline"`
-	OfGdprPrivacyDeletionSubscriptionUpsertRequest *GdprPrivacyDeletionSubscriptionUpsertRequestParam `json:",omitzero,inline"`
+	OfObject              *ObjectSubscriptionUpsertRequestParam              `json:",omitzero,inline"`
+	OfAssociation         *AssociationSubscriptionUpsertRequestParam         `json:",omitzero,inline"`
+	OfAppLifecycleEvent   *AppLifecycleEventSubscriptionUpsertRequestParam   `json:",omitzero,inline"`
+	OfListMembership      *ListMembershipSubscriptionUpsertRequestParam      `json:",omitzero,inline"`
+	OfGdprPrivacyDeletion *GdprPrivacyDeletionSubscriptionUpsertRequestParam `json:",omitzero,inline"`
 	paramUnion
 }
 
 func (u SubscriptionUpsertRequestUnionParam) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfObjectSubscriptionUpsertRequest,
-		u.OfAssociationSubscriptionUpsertRequest,
-		u.OfAppLifecycleEventSubscriptionUpsertRequest,
-		u.OfListMembershipSubscriptionUpsertRequest,
-		u.OfGdprPrivacyDeletionSubscriptionUpsertRequest)
+	return param.MarshalUnion(u, u.OfObject,
+		u.OfAssociation,
+		u.OfAppLifecycleEvent,
+		u.OfListMembership,
+		u.OfGdprPrivacyDeletion)
 }
 func (u *SubscriptionUpsertRequestUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[SubscriptionUpsertRequestUnionParam](
+		"subscriptionType",
+		apijson.Discriminator[ObjectSubscriptionUpsertRequestParam]("OBJECT"),
+		apijson.Discriminator[AssociationSubscriptionUpsertRequestParam]("ASSOCIATION"),
+		apijson.Discriminator[AppLifecycleEventSubscriptionUpsertRequestParam]("APP_LIFECYCLE_EVENT"),
+		apijson.Discriminator[ListMembershipSubscriptionUpsertRequestParam]("LIST_MEMBERSHIP"),
+		apijson.Discriminator[GdprPrivacyDeletionSubscriptionUpsertRequestParam]("GDPR_PRIVACY_DELETION"),
+	)
 }
 
 type TaskLocator struct {
