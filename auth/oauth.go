@@ -274,6 +274,8 @@ func (r *SignedAccessToken) UnmarshalJSON(data []byte) error {
 // TokenInfoResponseBaseIfUnion contains all possible properties and values from
 // [PublicAccessTokenInfoResponse], [PublicRefreshTokenInfoResponse].
 //
+// Use the [TokenInfoResponseBaseIfUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type TokenInfoResponseBaseIfUnion struct {
 	Token    string `json:"token"`
@@ -289,11 +291,12 @@ type TokenInfoResponseBaseIfUnion struct {
 	// This field is from variant [PublicAccessTokenInfoResponse].
 	SignedAccessToken SignedAccessToken `json:"signed_access_token"`
 	TokenType         string            `json:"token_type"`
-	TokenUse          string            `json:"token_use"`
-	UserID            int64             `json:"user_id"`
-	HubDomain         string            `json:"hub_domain"`
-	User              string            `json:"user"`
-	JSON              struct {
+	// Any of "access_token", "refresh_token".
+	TokenUse  string `json:"token_use"`
+	UserID    int64  `json:"user_id"`
+	HubDomain string `json:"hub_domain"`
+	User      string `json:"user"`
+	JSON      struct {
 		Token                 respjson.Field
 		Active                respjson.Field
 		AppID                 respjson.Field
@@ -312,12 +315,40 @@ type TokenInfoResponseBaseIfUnion struct {
 	} `json:"-"`
 }
 
-func (u TokenInfoResponseBaseIfUnion) AsPublicAccessTokenInfoResponse() (v PublicAccessTokenInfoResponse) {
+// anyTokenInfoResponseBaseIf is implemented by each variant of
+// [TokenInfoResponseBaseIfUnion] to add type safety for the return type of
+// [TokenInfoResponseBaseIfUnion.AsAny]
+type anyTokenInfoResponseBaseIf interface {
+	implTokenInfoResponseBaseIfUnion()
+}
+
+func (PublicAccessTokenInfoResponse) implTokenInfoResponseBaseIfUnion()  {}
+func (PublicRefreshTokenInfoResponse) implTokenInfoResponseBaseIfUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := TokenInfoResponseBaseIfUnion.AsAny().(type) {
+//	case auth.PublicAccessTokenInfoResponse:
+//	case auth.PublicRefreshTokenInfoResponse:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u TokenInfoResponseBaseIfUnion) AsAny() anyTokenInfoResponseBaseIf {
+	switch u.TokenUse {
+	case "access_token":
+		return u.AsAccessToken()
+	case "refresh_token":
+		return u.AsRefreshToken()
+	}
+	return nil
+}
+
+func (u TokenInfoResponseBaseIfUnion) AsAccessToken() (v PublicAccessTokenInfoResponse) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u TokenInfoResponseBaseIfUnion) AsPublicRefreshTokenInfoResponse() (v PublicRefreshTokenInfoResponse) {
+func (u TokenInfoResponseBaseIfUnion) AsRefreshToken() (v PublicRefreshTokenInfoResponse) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -332,19 +363,22 @@ func (r *TokenInfoResponseBaseIfUnion) UnmarshalJSON(data []byte) error {
 // TokenResponseIfUnion contains all possible properties and values from
 // [AccessTokenResponse], [ClientCredentialsTokenResponse].
 //
+// Use the [TokenResponseIfUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type TokenResponseIfUnion struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int64  `json:"expires_in"`
 	// This field is from variant [AccessTokenResponse].
-	RefreshToken string   `json:"refresh_token"`
-	TokenType    string   `json:"token_type"`
-	TokenUse     string   `json:"token_use"`
-	HubID        int64    `json:"hub_id"`
-	IDToken      string   `json:"id_token"`
-	Scopes       []string `json:"scopes"`
-	UserID       int64    `json:"user_id"`
-	JSON         struct {
+	RefreshToken string `json:"refresh_token"`
+	TokenType    string `json:"token_type"`
+	// Any of "access_token", "client_credentials".
+	TokenUse string   `json:"token_use"`
+	HubID    int64    `json:"hub_id"`
+	IDToken  string   `json:"id_token"`
+	Scopes   []string `json:"scopes"`
+	UserID   int64    `json:"user_id"`
+	JSON     struct {
 		AccessToken  respjson.Field
 		ExpiresIn    respjson.Field
 		RefreshToken respjson.Field
@@ -358,12 +392,39 @@ type TokenResponseIfUnion struct {
 	} `json:"-"`
 }
 
-func (u TokenResponseIfUnion) AsAccessTokenResponse() (v AccessTokenResponse) {
+// anyTokenResponseIf is implemented by each variant of [TokenResponseIfUnion] to
+// add type safety for the return type of [TokenResponseIfUnion.AsAny]
+type anyTokenResponseIf interface {
+	implTokenResponseIfUnion()
+}
+
+func (AccessTokenResponse) implTokenResponseIfUnion()            {}
+func (ClientCredentialsTokenResponse) implTokenResponseIfUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := TokenResponseIfUnion.AsAny().(type) {
+//	case auth.AccessTokenResponse:
+//	case auth.ClientCredentialsTokenResponse:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u TokenResponseIfUnion) AsAny() anyTokenResponseIf {
+	switch u.TokenUse {
+	case "access_token":
+		return u.AsAccessToken()
+	case "client_credentials":
+		return u.AsClientCredentials()
+	}
+	return nil
+}
+
+func (u TokenResponseIfUnion) AsAccessToken() (v AccessTokenResponse) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u TokenResponseIfUnion) AsClientCredentialsTokenResponse() (v ClientCredentialsTokenResponse) {
+func (u TokenResponseIfUnion) AsClientCredentials() (v ClientCredentialsTokenResponse) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }

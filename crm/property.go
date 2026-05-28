@@ -209,6 +209,9 @@ type PropertyUpdateParam struct {
 	NumberDisplayHint PropertyUpdateNumberDisplayHint `json:"numberDisplayHint,omitzero"`
 	// A list of valid options for the property.
 	Options []shared.OptionInputParam `json:"options,omitzero"`
+	// Any of "domain_name", "email", "ip_address", "multi_line", "phone_number",
+	// "physical_address", "postal_code", "unformatted_single_line".
+	TextDisplayHint PropertyUpdateTextDisplayHint `json:"textDisplayHint,omitzero"`
 	// The data type of the property.
 	//
 	// Any of "bool", "date", "datetime", "enumeration", "number", "phone_number",
@@ -252,6 +255,19 @@ const (
 	PropertyUpdateNumberDisplayHintPercentage  PropertyUpdateNumberDisplayHint = "percentage"
 	PropertyUpdateNumberDisplayHintProbability PropertyUpdateNumberDisplayHint = "probability"
 	PropertyUpdateNumberDisplayHintUnformatted PropertyUpdateNumberDisplayHint = "unformatted"
+)
+
+type PropertyUpdateTextDisplayHint string
+
+const (
+	PropertyUpdateTextDisplayHintDomainName            PropertyUpdateTextDisplayHint = "domain_name"
+	PropertyUpdateTextDisplayHintEmail                 PropertyUpdateTextDisplayHint = "email"
+	PropertyUpdateTextDisplayHintIPAddress             PropertyUpdateTextDisplayHint = "ip_address"
+	PropertyUpdateTextDisplayHintMultiLine             PropertyUpdateTextDisplayHint = "multi_line"
+	PropertyUpdateTextDisplayHintPhoneNumber           PropertyUpdateTextDisplayHint = "phone_number"
+	PropertyUpdateTextDisplayHintPhysicalAddress       PropertyUpdateTextDisplayHint = "physical_address"
+	PropertyUpdateTextDisplayHintPostalCode            PropertyUpdateTextDisplayHint = "postal_code"
+	PropertyUpdateTextDisplayHintUnformattedSingleLine PropertyUpdateTextDisplayHint = "unformatted_single_line"
 )
 
 // The data type of the property.

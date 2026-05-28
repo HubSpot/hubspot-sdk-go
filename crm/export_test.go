@@ -29,7 +29,7 @@ func TestExportNewAsyncWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Crm.Exports.NewAsync(context.TODO(), crm.ExportNewAsyncParams{
 		PublicExportRequest: crm.PublicExportRequestUnionParam{
-			OfPublicExportViewRequest: &crm.PublicExportViewRequestParam{
+			OfView: &crm.PublicExportViewRequestParam{
 				AssociatedObjectType:        []string{"string"},
 				ExportInternalValuesOptions: []string{"NAMES"},
 				ExportName:                  "exportName",

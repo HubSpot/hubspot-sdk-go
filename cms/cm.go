@@ -122,90 +122,96 @@ type AttachToLangPrimaryRequestVNextParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language AttachToLangPrimaryRequestVNextLanguage `json:"language,omitzero" api:"required"`
 	// ID of primary language object in multi-language group.
 	PrimaryID string `json:"primaryId" api:"required"`
@@ -216,90 +222,96 @@ type AttachToLangPrimaryRequestVNextParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	PrimaryLanguage AttachToLangPrimaryRequestVNextPrimaryLanguage `json:"primaryLanguage,omitzero"`
 	paramObj
 }
@@ -371,6 +383,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageAz     AttachToLangPrimaryRequestVNextLanguage = "az"
 	AttachToLangPrimaryRequestVNextLanguageAzAz   AttachToLangPrimaryRequestVNextLanguage = "az-az"
 	AttachToLangPrimaryRequestVNextLanguageBa     AttachToLangPrimaryRequestVNextLanguage = "ba"
+	AttachToLangPrimaryRequestVNextLanguageBal    AttachToLangPrimaryRequestVNextLanguage = "bal"
+	AttachToLangPrimaryRequestVNextLanguageBalPk  AttachToLangPrimaryRequestVNextLanguage = "bal-pk"
 	AttachToLangPrimaryRequestVNextLanguageBas    AttachToLangPrimaryRequestVNextLanguage = "bas"
 	AttachToLangPrimaryRequestVNextLanguageBasCm  AttachToLangPrimaryRequestVNextLanguage = "bas-cm"
 	AttachToLangPrimaryRequestVNextLanguageBe     AttachToLangPrimaryRequestVNextLanguage = "be"
@@ -386,6 +400,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageBho    AttachToLangPrimaryRequestVNextLanguage = "bho"
 	AttachToLangPrimaryRequestVNextLanguageBhoIn  AttachToLangPrimaryRequestVNextLanguage = "bho-in"
 	AttachToLangPrimaryRequestVNextLanguageBi     AttachToLangPrimaryRequestVNextLanguage = "bi"
+	AttachToLangPrimaryRequestVNextLanguageBlo    AttachToLangPrimaryRequestVNextLanguage = "blo"
+	AttachToLangPrimaryRequestVNextLanguageBloBj  AttachToLangPrimaryRequestVNextLanguage = "blo-bj"
 	AttachToLangPrimaryRequestVNextLanguageBm     AttachToLangPrimaryRequestVNextLanguage = "bm"
 	AttachToLangPrimaryRequestVNextLanguageBmMl   AttachToLangPrimaryRequestVNextLanguage = "bm-ml"
 	AttachToLangPrimaryRequestVNextLanguageBn     AttachToLangPrimaryRequestVNextLanguage = "bn"
@@ -424,6 +440,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageCr     AttachToLangPrimaryRequestVNextLanguage = "cr"
 	AttachToLangPrimaryRequestVNextLanguageCs     AttachToLangPrimaryRequestVNextLanguage = "cs"
 	AttachToLangPrimaryRequestVNextLanguageCsCz   AttachToLangPrimaryRequestVNextLanguage = "cs-cz"
+	AttachToLangPrimaryRequestVNextLanguageCsw    AttachToLangPrimaryRequestVNextLanguage = "csw"
+	AttachToLangPrimaryRequestVNextLanguageCswCa  AttachToLangPrimaryRequestVNextLanguage = "csw-ca"
 	AttachToLangPrimaryRequestVNextLanguageCu     AttachToLangPrimaryRequestVNextLanguage = "cu"
 	AttachToLangPrimaryRequestVNextLanguageCuRu   AttachToLangPrimaryRequestVNextLanguage = "cu-ru"
 	AttachToLangPrimaryRequestVNextLanguageCv     AttachToLangPrimaryRequestVNextLanguage = "cv"
@@ -489,6 +507,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageEnCn   AttachToLangPrimaryRequestVNextLanguage = "en-cn"
 	AttachToLangPrimaryRequestVNextLanguageEnCx   AttachToLangPrimaryRequestVNextLanguage = "en-cx"
 	AttachToLangPrimaryRequestVNextLanguageEnCy   AttachToLangPrimaryRequestVNextLanguage = "en-cy"
+	AttachToLangPrimaryRequestVNextLanguageEnCz   AttachToLangPrimaryRequestVNextLanguage = "en-cz"
 	AttachToLangPrimaryRequestVNextLanguageEnDe   AttachToLangPrimaryRequestVNextLanguage = "en-de"
 	AttachToLangPrimaryRequestVNextLanguageEnDg   AttachToLangPrimaryRequestVNextLanguage = "en-dg"
 	AttachToLangPrimaryRequestVNextLanguageEnDk   AttachToLangPrimaryRequestVNextLanguage = "en-dk"
@@ -508,15 +527,18 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageEnGh   AttachToLangPrimaryRequestVNextLanguage = "en-gh"
 	AttachToLangPrimaryRequestVNextLanguageEnGi   AttachToLangPrimaryRequestVNextLanguage = "en-gi"
 	AttachToLangPrimaryRequestVNextLanguageEnGm   AttachToLangPrimaryRequestVNextLanguage = "en-gm"
+	AttachToLangPrimaryRequestVNextLanguageEnGs   AttachToLangPrimaryRequestVNextLanguage = "en-gs"
 	AttachToLangPrimaryRequestVNextLanguageEnGu   AttachToLangPrimaryRequestVNextLanguage = "en-gu"
 	AttachToLangPrimaryRequestVNextLanguageEnGy   AttachToLangPrimaryRequestVNextLanguage = "en-gy"
 	AttachToLangPrimaryRequestVNextLanguageEnHk   AttachToLangPrimaryRequestVNextLanguage = "en-hk"
+	AttachToLangPrimaryRequestVNextLanguageEnHu   AttachToLangPrimaryRequestVNextLanguage = "en-hu"
 	AttachToLangPrimaryRequestVNextLanguageEnID   AttachToLangPrimaryRequestVNextLanguage = "en-id"
 	AttachToLangPrimaryRequestVNextLanguageEnIe   AttachToLangPrimaryRequestVNextLanguage = "en-ie"
 	AttachToLangPrimaryRequestVNextLanguageEnIl   AttachToLangPrimaryRequestVNextLanguage = "en-il"
 	AttachToLangPrimaryRequestVNextLanguageEnIm   AttachToLangPrimaryRequestVNextLanguage = "en-im"
 	AttachToLangPrimaryRequestVNextLanguageEnIn   AttachToLangPrimaryRequestVNextLanguage = "en-in"
 	AttachToLangPrimaryRequestVNextLanguageEnIo   AttachToLangPrimaryRequestVNextLanguage = "en-io"
+	AttachToLangPrimaryRequestVNextLanguageEnIt   AttachToLangPrimaryRequestVNextLanguage = "en-it"
 	AttachToLangPrimaryRequestVNextLanguageEnJe   AttachToLangPrimaryRequestVNextLanguage = "en-je"
 	AttachToLangPrimaryRequestVNextLanguageEnJm   AttachToLangPrimaryRequestVNextLanguage = "en-jm"
 	AttachToLangPrimaryRequestVNextLanguageEnKe   AttachToLangPrimaryRequestVNextLanguage = "en-ke"
@@ -542,16 +564,19 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageEnNf   AttachToLangPrimaryRequestVNextLanguage = "en-nf"
 	AttachToLangPrimaryRequestVNextLanguageEnNg   AttachToLangPrimaryRequestVNextLanguage = "en-ng"
 	AttachToLangPrimaryRequestVNextLanguageEnNl   AttachToLangPrimaryRequestVNextLanguage = "en-nl"
+	AttachToLangPrimaryRequestVNextLanguageEnNo   AttachToLangPrimaryRequestVNextLanguage = "en-no"
 	AttachToLangPrimaryRequestVNextLanguageEnNr   AttachToLangPrimaryRequestVNextLanguage = "en-nr"
 	AttachToLangPrimaryRequestVNextLanguageEnNu   AttachToLangPrimaryRequestVNextLanguage = "en-nu"
 	AttachToLangPrimaryRequestVNextLanguageEnNz   AttachToLangPrimaryRequestVNextLanguage = "en-nz"
 	AttachToLangPrimaryRequestVNextLanguageEnPg   AttachToLangPrimaryRequestVNextLanguage = "en-pg"
 	AttachToLangPrimaryRequestVNextLanguageEnPh   AttachToLangPrimaryRequestVNextLanguage = "en-ph"
 	AttachToLangPrimaryRequestVNextLanguageEnPk   AttachToLangPrimaryRequestVNextLanguage = "en-pk"
+	AttachToLangPrimaryRequestVNextLanguageEnPl   AttachToLangPrimaryRequestVNextLanguage = "en-pl"
 	AttachToLangPrimaryRequestVNextLanguageEnPn   AttachToLangPrimaryRequestVNextLanguage = "en-pn"
 	AttachToLangPrimaryRequestVNextLanguageEnPr   AttachToLangPrimaryRequestVNextLanguage = "en-pr"
 	AttachToLangPrimaryRequestVNextLanguageEnPt   AttachToLangPrimaryRequestVNextLanguage = "en-pt"
 	AttachToLangPrimaryRequestVNextLanguageEnPw   AttachToLangPrimaryRequestVNextLanguage = "en-pw"
+	AttachToLangPrimaryRequestVNextLanguageEnRo   AttachToLangPrimaryRequestVNextLanguage = "en-ro"
 	AttachToLangPrimaryRequestVNextLanguageEnRw   AttachToLangPrimaryRequestVNextLanguage = "en-rw"
 	AttachToLangPrimaryRequestVNextLanguageEnSb   AttachToLangPrimaryRequestVNextLanguage = "en-sb"
 	AttachToLangPrimaryRequestVNextLanguageEnSc   AttachToLangPrimaryRequestVNextLanguage = "en-sc"
@@ -560,6 +585,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageEnSg   AttachToLangPrimaryRequestVNextLanguage = "en-sg"
 	AttachToLangPrimaryRequestVNextLanguageEnSh   AttachToLangPrimaryRequestVNextLanguage = "en-sh"
 	AttachToLangPrimaryRequestVNextLanguageEnSi   AttachToLangPrimaryRequestVNextLanguage = "en-si"
+	AttachToLangPrimaryRequestVNextLanguageEnSk   AttachToLangPrimaryRequestVNextLanguage = "en-sk"
 	AttachToLangPrimaryRequestVNextLanguageEnSl   AttachToLangPrimaryRequestVNextLanguage = "en-sl"
 	AttachToLangPrimaryRequestVNextLanguageEnSS   AttachToLangPrimaryRequestVNextLanguage = "en-ss"
 	AttachToLangPrimaryRequestVNextLanguageEnSx   AttachToLangPrimaryRequestVNextLanguage = "en-sx"
@@ -701,6 +727,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageGa     AttachToLangPrimaryRequestVNextLanguage = "ga"
 	AttachToLangPrimaryRequestVNextLanguageGaGB   AttachToLangPrimaryRequestVNextLanguage = "ga-gb"
 	AttachToLangPrimaryRequestVNextLanguageGaIe   AttachToLangPrimaryRequestVNextLanguage = "ga-ie"
+	AttachToLangPrimaryRequestVNextLanguageGaa    AttachToLangPrimaryRequestVNextLanguage = "gaa"
+	AttachToLangPrimaryRequestVNextLanguageGaaGh  AttachToLangPrimaryRequestVNextLanguage = "gaa-gh"
 	AttachToLangPrimaryRequestVNextLanguageGd     AttachToLangPrimaryRequestVNextLanguage = "gd"
 	AttachToLangPrimaryRequestVNextLanguageGdGB   AttachToLangPrimaryRequestVNextLanguage = "gd-gb"
 	AttachToLangPrimaryRequestVNextLanguageGl     AttachToLangPrimaryRequestVNextLanguage = "gl"
@@ -734,6 +762,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageHsb    AttachToLangPrimaryRequestVNextLanguage = "hsb"
 	AttachToLangPrimaryRequestVNextLanguageHsbDe  AttachToLangPrimaryRequestVNextLanguage = "hsb-de"
 	AttachToLangPrimaryRequestVNextLanguageHt     AttachToLangPrimaryRequestVNextLanguage = "ht"
+	AttachToLangPrimaryRequestVNextLanguageHtHt   AttachToLangPrimaryRequestVNextLanguage = "ht-ht"
 	AttachToLangPrimaryRequestVNextLanguageHu     AttachToLangPrimaryRequestVNextLanguage = "hu"
 	AttachToLangPrimaryRequestVNextLanguageHuHu   AttachToLangPrimaryRequestVNextLanguage = "hu-hu"
 	AttachToLangPrimaryRequestVNextLanguageHy     AttachToLangPrimaryRequestVNextLanguage = "hy"
@@ -744,6 +773,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageID     AttachToLangPrimaryRequestVNextLanguage = "id"
 	AttachToLangPrimaryRequestVNextLanguageIDID   AttachToLangPrimaryRequestVNextLanguage = "id-id"
 	AttachToLangPrimaryRequestVNextLanguageIe     AttachToLangPrimaryRequestVNextLanguage = "ie"
+	AttachToLangPrimaryRequestVNextLanguageIeEe   AttachToLangPrimaryRequestVNextLanguage = "ie-ee"
 	AttachToLangPrimaryRequestVNextLanguageIg     AttachToLangPrimaryRequestVNextLanguage = "ig"
 	AttachToLangPrimaryRequestVNextLanguageIgNg   AttachToLangPrimaryRequestVNextLanguage = "ig-ng"
 	AttachToLangPrimaryRequestVNextLanguageIi     AttachToLangPrimaryRequestVNextLanguage = "ii"
@@ -799,6 +829,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageKn     AttachToLangPrimaryRequestVNextLanguage = "kn"
 	AttachToLangPrimaryRequestVNextLanguageKnIn   AttachToLangPrimaryRequestVNextLanguage = "kn-in"
 	AttachToLangPrimaryRequestVNextLanguageKo     AttachToLangPrimaryRequestVNextLanguage = "ko"
+	AttachToLangPrimaryRequestVNextLanguageKoCn   AttachToLangPrimaryRequestVNextLanguage = "ko-cn"
 	AttachToLangPrimaryRequestVNextLanguageKoKp   AttachToLangPrimaryRequestVNextLanguage = "ko-kp"
 	AttachToLangPrimaryRequestVNextLanguageKoKr   AttachToLangPrimaryRequestVNextLanguage = "ko-kr"
 	AttachToLangPrimaryRequestVNextLanguageKok    AttachToLangPrimaryRequestVNextLanguage = "kok"
@@ -817,6 +848,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageKv     AttachToLangPrimaryRequestVNextLanguage = "kv"
 	AttachToLangPrimaryRequestVNextLanguageKw     AttachToLangPrimaryRequestVNextLanguage = "kw"
 	AttachToLangPrimaryRequestVNextLanguageKwGB   AttachToLangPrimaryRequestVNextLanguage = "kw-gb"
+	AttachToLangPrimaryRequestVNextLanguageKxv    AttachToLangPrimaryRequestVNextLanguage = "kxv"
+	AttachToLangPrimaryRequestVNextLanguageKxvIn  AttachToLangPrimaryRequestVNextLanguage = "kxv-in"
 	AttachToLangPrimaryRequestVNextLanguageKy     AttachToLangPrimaryRequestVNextLanguage = "ky"
 	AttachToLangPrimaryRequestVNextLanguageKyKg   AttachToLangPrimaryRequestVNextLanguage = "ky-kg"
 	AttachToLangPrimaryRequestVNextLanguageLa     AttachToLangPrimaryRequestVNextLanguage = "la"
@@ -827,8 +860,12 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageLg     AttachToLangPrimaryRequestVNextLanguage = "lg"
 	AttachToLangPrimaryRequestVNextLanguageLgUg   AttachToLangPrimaryRequestVNextLanguage = "lg-ug"
 	AttachToLangPrimaryRequestVNextLanguageLi     AttachToLangPrimaryRequestVNextLanguage = "li"
+	AttachToLangPrimaryRequestVNextLanguageLij    AttachToLangPrimaryRequestVNextLanguage = "lij"
+	AttachToLangPrimaryRequestVNextLanguageLijIt  AttachToLangPrimaryRequestVNextLanguage = "lij-it"
 	AttachToLangPrimaryRequestVNextLanguageLkt    AttachToLangPrimaryRequestVNextLanguage = "lkt"
 	AttachToLangPrimaryRequestVNextLanguageLktUs  AttachToLangPrimaryRequestVNextLanguage = "lkt-us"
+	AttachToLangPrimaryRequestVNextLanguageLmo    AttachToLangPrimaryRequestVNextLanguage = "lmo"
+	AttachToLangPrimaryRequestVNextLanguageLmoIt  AttachToLangPrimaryRequestVNextLanguage = "lmo-it"
 	AttachToLangPrimaryRequestVNextLanguageLn     AttachToLangPrimaryRequestVNextLanguage = "ln"
 	AttachToLangPrimaryRequestVNextLanguageLnAo   AttachToLangPrimaryRequestVNextLanguage = "ln-ao"
 	AttachToLangPrimaryRequestVNextLanguageLnCd   AttachToLangPrimaryRequestVNextLanguage = "ln-cd"
@@ -925,7 +962,11 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageNnhCm  AttachToLangPrimaryRequestVNextLanguage = "nnh-cm"
 	AttachToLangPrimaryRequestVNextLanguageNo     AttachToLangPrimaryRequestVNextLanguage = "no"
 	AttachToLangPrimaryRequestVNextLanguageNoNo   AttachToLangPrimaryRequestVNextLanguage = "no-no"
+	AttachToLangPrimaryRequestVNextLanguageNqo    AttachToLangPrimaryRequestVNextLanguage = "nqo"
+	AttachToLangPrimaryRequestVNextLanguageNqoGn  AttachToLangPrimaryRequestVNextLanguage = "nqo-gn"
 	AttachToLangPrimaryRequestVNextLanguageNr     AttachToLangPrimaryRequestVNextLanguage = "nr"
+	AttachToLangPrimaryRequestVNextLanguageNso    AttachToLangPrimaryRequestVNextLanguage = "nso"
+	AttachToLangPrimaryRequestVNextLanguageNsoZa  AttachToLangPrimaryRequestVNextLanguage = "nso-za"
 	AttachToLangPrimaryRequestVNextLanguageNus    AttachToLangPrimaryRequestVNextLanguage = "nus"
 	AttachToLangPrimaryRequestVNextLanguageNusSS  AttachToLangPrimaryRequestVNextLanguage = "nus-ss"
 	AttachToLangPrimaryRequestVNextLanguageNv     AttachToLangPrimaryRequestVNextLanguage = "nv"
@@ -1055,6 +1096,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageSrXk   AttachToLangPrimaryRequestVNextLanguage = "sr-xk"
 	AttachToLangPrimaryRequestVNextLanguageSS     AttachToLangPrimaryRequestVNextLanguage = "ss"
 	AttachToLangPrimaryRequestVNextLanguageSt     AttachToLangPrimaryRequestVNextLanguage = "st"
+	AttachToLangPrimaryRequestVNextLanguageStLs   AttachToLangPrimaryRequestVNextLanguage = "st-ls"
+	AttachToLangPrimaryRequestVNextLanguageStZa   AttachToLangPrimaryRequestVNextLanguage = "st-za"
 	AttachToLangPrimaryRequestVNextLanguageSu     AttachToLangPrimaryRequestVNextLanguage = "su"
 	AttachToLangPrimaryRequestVNextLanguageSuID   AttachToLangPrimaryRequestVNextLanguage = "su-id"
 	AttachToLangPrimaryRequestVNextLanguageSv     AttachToLangPrimaryRequestVNextLanguage = "sv"
@@ -1067,6 +1110,11 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageSwTz   AttachToLangPrimaryRequestVNextLanguage = "sw-tz"
 	AttachToLangPrimaryRequestVNextLanguageSwUg   AttachToLangPrimaryRequestVNextLanguage = "sw-ug"
 	AttachToLangPrimaryRequestVNextLanguageSy     AttachToLangPrimaryRequestVNextLanguage = "sy"
+	AttachToLangPrimaryRequestVNextLanguageSyr    AttachToLangPrimaryRequestVNextLanguage = "syr"
+	AttachToLangPrimaryRequestVNextLanguageSyrIq  AttachToLangPrimaryRequestVNextLanguage = "syr-iq"
+	AttachToLangPrimaryRequestVNextLanguageSyrSy  AttachToLangPrimaryRequestVNextLanguage = "syr-sy"
+	AttachToLangPrimaryRequestVNextLanguageSzl    AttachToLangPrimaryRequestVNextLanguage = "szl"
+	AttachToLangPrimaryRequestVNextLanguageSzlPl  AttachToLangPrimaryRequestVNextLanguage = "szl-pl"
 	AttachToLangPrimaryRequestVNextLanguageTa     AttachToLangPrimaryRequestVNextLanguage = "ta"
 	AttachToLangPrimaryRequestVNextLanguageTaIn   AttachToLangPrimaryRequestVNextLanguage = "ta-in"
 	AttachToLangPrimaryRequestVNextLanguageTaLk   AttachToLangPrimaryRequestVNextLanguage = "ta-lk"
@@ -1088,6 +1136,8 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageTkTm   AttachToLangPrimaryRequestVNextLanguage = "tk-tm"
 	AttachToLangPrimaryRequestVNextLanguageTl     AttachToLangPrimaryRequestVNextLanguage = "tl"
 	AttachToLangPrimaryRequestVNextLanguageTn     AttachToLangPrimaryRequestVNextLanguage = "tn"
+	AttachToLangPrimaryRequestVNextLanguageTnBw   AttachToLangPrimaryRequestVNextLanguage = "tn-bw"
+	AttachToLangPrimaryRequestVNextLanguageTnZa   AttachToLangPrimaryRequestVNextLanguage = "tn-za"
 	AttachToLangPrimaryRequestVNextLanguageTo     AttachToLangPrimaryRequestVNextLanguage = "to"
 	AttachToLangPrimaryRequestVNextLanguageToTo   AttachToLangPrimaryRequestVNextLanguage = "to-to"
 	AttachToLangPrimaryRequestVNextLanguageTok    AttachToLangPrimaryRequestVNextLanguage = "tok"
@@ -1117,8 +1167,12 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageVai    AttachToLangPrimaryRequestVNextLanguage = "vai"
 	AttachToLangPrimaryRequestVNextLanguageVaiLr  AttachToLangPrimaryRequestVNextLanguage = "vai-lr"
 	AttachToLangPrimaryRequestVNextLanguageVe     AttachToLangPrimaryRequestVNextLanguage = "ve"
+	AttachToLangPrimaryRequestVNextLanguageVec    AttachToLangPrimaryRequestVNextLanguage = "vec"
+	AttachToLangPrimaryRequestVNextLanguageVecIt  AttachToLangPrimaryRequestVNextLanguage = "vec-it"
 	AttachToLangPrimaryRequestVNextLanguageVi     AttachToLangPrimaryRequestVNextLanguage = "vi"
 	AttachToLangPrimaryRequestVNextLanguageViVn   AttachToLangPrimaryRequestVNextLanguage = "vi-vn"
+	AttachToLangPrimaryRequestVNextLanguageVmw    AttachToLangPrimaryRequestVNextLanguage = "vmw"
+	AttachToLangPrimaryRequestVNextLanguageVmwMz  AttachToLangPrimaryRequestVNextLanguage = "vmw-mz"
 	AttachToLangPrimaryRequestVNextLanguageVo     AttachToLangPrimaryRequestVNextLanguage = "vo"
 	AttachToLangPrimaryRequestVNextLanguageVo001  AttachToLangPrimaryRequestVNextLanguage = "vo-001"
 	AttachToLangPrimaryRequestVNextLanguageVun    AttachToLangPrimaryRequestVNextLanguage = "vun"
@@ -1130,12 +1184,15 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageWoSn   AttachToLangPrimaryRequestVNextLanguage = "wo-sn"
 	AttachToLangPrimaryRequestVNextLanguageXh     AttachToLangPrimaryRequestVNextLanguage = "xh"
 	AttachToLangPrimaryRequestVNextLanguageXhZa   AttachToLangPrimaryRequestVNextLanguage = "xh-za"
+	AttachToLangPrimaryRequestVNextLanguageXnr    AttachToLangPrimaryRequestVNextLanguage = "xnr"
+	AttachToLangPrimaryRequestVNextLanguageXnrIn  AttachToLangPrimaryRequestVNextLanguage = "xnr-in"
 	AttachToLangPrimaryRequestVNextLanguageXog    AttachToLangPrimaryRequestVNextLanguage = "xog"
 	AttachToLangPrimaryRequestVNextLanguageXogUg  AttachToLangPrimaryRequestVNextLanguage = "xog-ug"
 	AttachToLangPrimaryRequestVNextLanguageYav    AttachToLangPrimaryRequestVNextLanguage = "yav"
 	AttachToLangPrimaryRequestVNextLanguageYavCm  AttachToLangPrimaryRequestVNextLanguage = "yav-cm"
 	AttachToLangPrimaryRequestVNextLanguageYi     AttachToLangPrimaryRequestVNextLanguage = "yi"
 	AttachToLangPrimaryRequestVNextLanguageYi001  AttachToLangPrimaryRequestVNextLanguage = "yi-001"
+	AttachToLangPrimaryRequestVNextLanguageYiUa   AttachToLangPrimaryRequestVNextLanguage = "yi-ua"
 	AttachToLangPrimaryRequestVNextLanguageYo     AttachToLangPrimaryRequestVNextLanguage = "yo"
 	AttachToLangPrimaryRequestVNextLanguageYoBj   AttachToLangPrimaryRequestVNextLanguage = "yo-bj"
 	AttachToLangPrimaryRequestVNextLanguageYoNg   AttachToLangPrimaryRequestVNextLanguage = "yo-ng"
@@ -1146,7 +1203,9 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageYue    AttachToLangPrimaryRequestVNextLanguage = "yue"
 	AttachToLangPrimaryRequestVNextLanguageYueCn  AttachToLangPrimaryRequestVNextLanguage = "yue-cn"
 	AttachToLangPrimaryRequestVNextLanguageYueHk  AttachToLangPrimaryRequestVNextLanguage = "yue-hk"
+	AttachToLangPrimaryRequestVNextLanguageYueMo  AttachToLangPrimaryRequestVNextLanguage = "yue-mo"
 	AttachToLangPrimaryRequestVNextLanguageZa     AttachToLangPrimaryRequestVNextLanguage = "za"
+	AttachToLangPrimaryRequestVNextLanguageZaCn   AttachToLangPrimaryRequestVNextLanguage = "za-cn"
 	AttachToLangPrimaryRequestVNextLanguageZgh    AttachToLangPrimaryRequestVNextLanguage = "zgh"
 	AttachToLangPrimaryRequestVNextLanguageZghMa  AttachToLangPrimaryRequestVNextLanguage = "zgh-ma"
 	AttachToLangPrimaryRequestVNextLanguageZh     AttachToLangPrimaryRequestVNextLanguage = "zh"
@@ -1155,6 +1214,7 @@ const (
 	AttachToLangPrimaryRequestVNextLanguageZhHant AttachToLangPrimaryRequestVNextLanguage = "zh-hant"
 	AttachToLangPrimaryRequestVNextLanguageZhHk   AttachToLangPrimaryRequestVNextLanguage = "zh-hk"
 	AttachToLangPrimaryRequestVNextLanguageZhMo   AttachToLangPrimaryRequestVNextLanguage = "zh-mo"
+	AttachToLangPrimaryRequestVNextLanguageZhMy   AttachToLangPrimaryRequestVNextLanguage = "zh-my"
 	AttachToLangPrimaryRequestVNextLanguageZhSg   AttachToLangPrimaryRequestVNextLanguage = "zh-sg"
 	AttachToLangPrimaryRequestVNextLanguageZhTw   AttachToLangPrimaryRequestVNextLanguage = "zh-tw"
 	AttachToLangPrimaryRequestVNextLanguageZu     AttachToLangPrimaryRequestVNextLanguage = "zu"
@@ -1220,6 +1280,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageAz     AttachToLangPrimaryRequestVNextPrimaryLanguage = "az"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageAzAz   AttachToLangPrimaryRequestVNextPrimaryLanguage = "az-az"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBa     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ba"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageBal    AttachToLangPrimaryRequestVNextPrimaryLanguage = "bal"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageBalPk  AttachToLangPrimaryRequestVNextPrimaryLanguage = "bal-pk"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBas    AttachToLangPrimaryRequestVNextPrimaryLanguage = "bas"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBasCm  AttachToLangPrimaryRequestVNextPrimaryLanguage = "bas-cm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBe     AttachToLangPrimaryRequestVNextPrimaryLanguage = "be"
@@ -1235,6 +1297,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBho    AttachToLangPrimaryRequestVNextPrimaryLanguage = "bho"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBhoIn  AttachToLangPrimaryRequestVNextPrimaryLanguage = "bho-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBi     AttachToLangPrimaryRequestVNextPrimaryLanguage = "bi"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageBlo    AttachToLangPrimaryRequestVNextPrimaryLanguage = "blo"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageBloBj  AttachToLangPrimaryRequestVNextPrimaryLanguage = "blo-bj"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBm     AttachToLangPrimaryRequestVNextPrimaryLanguage = "bm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBmMl   AttachToLangPrimaryRequestVNextPrimaryLanguage = "bm-ml"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageBn     AttachToLangPrimaryRequestVNextPrimaryLanguage = "bn"
@@ -1273,6 +1337,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCr     AttachToLangPrimaryRequestVNextPrimaryLanguage = "cr"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCs     AttachToLangPrimaryRequestVNextPrimaryLanguage = "cs"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCsCz   AttachToLangPrimaryRequestVNextPrimaryLanguage = "cs-cz"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageCsw    AttachToLangPrimaryRequestVNextPrimaryLanguage = "csw"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageCswCa  AttachToLangPrimaryRequestVNextPrimaryLanguage = "csw-ca"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCu     AttachToLangPrimaryRequestVNextPrimaryLanguage = "cu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCuRu   AttachToLangPrimaryRequestVNextPrimaryLanguage = "cu-ru"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageCv     AttachToLangPrimaryRequestVNextPrimaryLanguage = "cv"
@@ -1338,6 +1404,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnCn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-cn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnCx   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-cx"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnCy   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-cy"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnCz   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-cz"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnDe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-de"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnDg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-dg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnDk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-dk"
@@ -1357,15 +1424,18 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGh   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gh"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGi   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gi"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGm   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gm"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGs   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gs"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGu   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnGy   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-gy"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnHk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-hk"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnHu   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-hu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnID   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-id"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ie"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIl   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-il"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIm   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-im"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-io"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnIt   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-it"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnJe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-je"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnJm   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-jm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnKe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ke"
@@ -1391,16 +1461,19 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNf   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-nf"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ng"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNl   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-nl"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-no"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNr   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-nr"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNu   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-nu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnNz   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-nz"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPh   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ph"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pk"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPl   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pl"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPr   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pr"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPt   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pt"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnPw   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-pw"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnRo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ro"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnRw   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-rw"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSb   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sb"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSc   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sc"
@@ -1409,6 +1482,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSh   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sh"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSi   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-si"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sk"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSl   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sl"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSS   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-ss"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageEnSx   AttachToLangPrimaryRequestVNextPrimaryLanguage = "en-sx"
@@ -1550,6 +1624,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGa     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ga"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGaGB   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ga-gb"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGaIe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ga-ie"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageGaa    AttachToLangPrimaryRequestVNextPrimaryLanguage = "gaa"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageGaaGh  AttachToLangPrimaryRequestVNextPrimaryLanguage = "gaa-gh"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGd     AttachToLangPrimaryRequestVNextPrimaryLanguage = "gd"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGdGB   AttachToLangPrimaryRequestVNextPrimaryLanguage = "gd-gb"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageGl     AttachToLangPrimaryRequestVNextPrimaryLanguage = "gl"
@@ -1583,6 +1659,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHsb    AttachToLangPrimaryRequestVNextPrimaryLanguage = "hsb"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHsbDe  AttachToLangPrimaryRequestVNextPrimaryLanguage = "hsb-de"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHt     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ht"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageHtHt   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ht-ht"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHu     AttachToLangPrimaryRequestVNextPrimaryLanguage = "hu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHuHu   AttachToLangPrimaryRequestVNextPrimaryLanguage = "hu-hu"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageHy     AttachToLangPrimaryRequestVNextPrimaryLanguage = "hy"
@@ -1593,6 +1670,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageID     AttachToLangPrimaryRequestVNextPrimaryLanguage = "id"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageIDID   AttachToLangPrimaryRequestVNextPrimaryLanguage = "id-id"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageIe     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ie"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageIeEe   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ie-ee"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageIg     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ig"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageIgNg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ig-ng"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageIi     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ii"
@@ -1648,6 +1726,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKn     AttachToLangPrimaryRequestVNextPrimaryLanguage = "kn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKnIn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "kn-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKo     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ko"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageKoCn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ko-cn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKoKp   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ko-kp"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKoKr   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ko-kr"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKok    AttachToLangPrimaryRequestVNextPrimaryLanguage = "kok"
@@ -1666,6 +1745,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKv     AttachToLangPrimaryRequestVNextPrimaryLanguage = "kv"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKw     AttachToLangPrimaryRequestVNextPrimaryLanguage = "kw"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKwGB   AttachToLangPrimaryRequestVNextPrimaryLanguage = "kw-gb"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageKxv    AttachToLangPrimaryRequestVNextPrimaryLanguage = "kxv"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageKxvIn  AttachToLangPrimaryRequestVNextPrimaryLanguage = "kxv-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKy     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ky"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageKyKg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ky-kg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLa     AttachToLangPrimaryRequestVNextPrimaryLanguage = "la"
@@ -1676,8 +1757,12 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLg     AttachToLangPrimaryRequestVNextPrimaryLanguage = "lg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLgUg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "lg-ug"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLi     AttachToLangPrimaryRequestVNextPrimaryLanguage = "li"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageLij    AttachToLangPrimaryRequestVNextPrimaryLanguage = "lij"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageLijIt  AttachToLangPrimaryRequestVNextPrimaryLanguage = "lij-it"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLkt    AttachToLangPrimaryRequestVNextPrimaryLanguage = "lkt"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLktUs  AttachToLangPrimaryRequestVNextPrimaryLanguage = "lkt-us"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageLmo    AttachToLangPrimaryRequestVNextPrimaryLanguage = "lmo"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageLmoIt  AttachToLangPrimaryRequestVNextPrimaryLanguage = "lmo-it"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLn     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ln"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLnAo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ln-ao"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageLnCd   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ln-cd"
@@ -1774,7 +1859,11 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNnhCm  AttachToLangPrimaryRequestVNextPrimaryLanguage = "nnh-cm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNo     AttachToLangPrimaryRequestVNextPrimaryLanguage = "no"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNoNo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "no-no"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageNqo    AttachToLangPrimaryRequestVNextPrimaryLanguage = "nqo"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageNqoGn  AttachToLangPrimaryRequestVNextPrimaryLanguage = "nqo-gn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNr     AttachToLangPrimaryRequestVNextPrimaryLanguage = "nr"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageNso    AttachToLangPrimaryRequestVNextPrimaryLanguage = "nso"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageNsoZa  AttachToLangPrimaryRequestVNextPrimaryLanguage = "nso-za"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNus    AttachToLangPrimaryRequestVNextPrimaryLanguage = "nus"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNusSS  AttachToLangPrimaryRequestVNextPrimaryLanguage = "nus-ss"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageNv     AttachToLangPrimaryRequestVNextPrimaryLanguage = "nv"
@@ -1904,6 +1993,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSrXk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "sr-xk"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSS     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ss"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSt     AttachToLangPrimaryRequestVNextPrimaryLanguage = "st"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageStLs   AttachToLangPrimaryRequestVNextPrimaryLanguage = "st-ls"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageStZa   AttachToLangPrimaryRequestVNextPrimaryLanguage = "st-za"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSu     AttachToLangPrimaryRequestVNextPrimaryLanguage = "su"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSuID   AttachToLangPrimaryRequestVNextPrimaryLanguage = "su-id"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSv     AttachToLangPrimaryRequestVNextPrimaryLanguage = "sv"
@@ -1916,6 +2007,11 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSwTz   AttachToLangPrimaryRequestVNextPrimaryLanguage = "sw-tz"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSwUg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "sw-ug"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageSy     AttachToLangPrimaryRequestVNextPrimaryLanguage = "sy"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageSyr    AttachToLangPrimaryRequestVNextPrimaryLanguage = "syr"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageSyrIq  AttachToLangPrimaryRequestVNextPrimaryLanguage = "syr-iq"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageSyrSy  AttachToLangPrimaryRequestVNextPrimaryLanguage = "syr-sy"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageSzl    AttachToLangPrimaryRequestVNextPrimaryLanguage = "szl"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageSzlPl  AttachToLangPrimaryRequestVNextPrimaryLanguage = "szl-pl"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTa     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ta"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTaIn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ta-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTaLk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "ta-lk"
@@ -1937,6 +2033,8 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTkTm   AttachToLangPrimaryRequestVNextPrimaryLanguage = "tk-tm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTl     AttachToLangPrimaryRequestVNextPrimaryLanguage = "tl"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTn     AttachToLangPrimaryRequestVNextPrimaryLanguage = "tn"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageTnBw   AttachToLangPrimaryRequestVNextPrimaryLanguage = "tn-bw"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageTnZa   AttachToLangPrimaryRequestVNextPrimaryLanguage = "tn-za"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTo     AttachToLangPrimaryRequestVNextPrimaryLanguage = "to"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageToTo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "to-to"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageTok    AttachToLangPrimaryRequestVNextPrimaryLanguage = "tok"
@@ -1966,8 +2064,12 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVai    AttachToLangPrimaryRequestVNextPrimaryLanguage = "vai"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVaiLr  AttachToLangPrimaryRequestVNextPrimaryLanguage = "vai-lr"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVe     AttachToLangPrimaryRequestVNextPrimaryLanguage = "ve"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageVec    AttachToLangPrimaryRequestVNextPrimaryLanguage = "vec"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageVecIt  AttachToLangPrimaryRequestVNextPrimaryLanguage = "vec-it"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVi     AttachToLangPrimaryRequestVNextPrimaryLanguage = "vi"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageViVn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "vi-vn"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageVmw    AttachToLangPrimaryRequestVNextPrimaryLanguage = "vmw"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageVmwMz  AttachToLangPrimaryRequestVNextPrimaryLanguage = "vmw-mz"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVo     AttachToLangPrimaryRequestVNextPrimaryLanguage = "vo"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVo001  AttachToLangPrimaryRequestVNextPrimaryLanguage = "vo-001"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageVun    AttachToLangPrimaryRequestVNextPrimaryLanguage = "vun"
@@ -1979,12 +2081,15 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageWoSn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "wo-sn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageXh     AttachToLangPrimaryRequestVNextPrimaryLanguage = "xh"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageXhZa   AttachToLangPrimaryRequestVNextPrimaryLanguage = "xh-za"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageXnr    AttachToLangPrimaryRequestVNextPrimaryLanguage = "xnr"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageXnrIn  AttachToLangPrimaryRequestVNextPrimaryLanguage = "xnr-in"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageXog    AttachToLangPrimaryRequestVNextPrimaryLanguage = "xog"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageXogUg  AttachToLangPrimaryRequestVNextPrimaryLanguage = "xog-ug"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYav    AttachToLangPrimaryRequestVNextPrimaryLanguage = "yav"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYavCm  AttachToLangPrimaryRequestVNextPrimaryLanguage = "yav-cm"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYi     AttachToLangPrimaryRequestVNextPrimaryLanguage = "yi"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYi001  AttachToLangPrimaryRequestVNextPrimaryLanguage = "yi-001"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageYiUa   AttachToLangPrimaryRequestVNextPrimaryLanguage = "yi-ua"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYo     AttachToLangPrimaryRequestVNextPrimaryLanguage = "yo"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYoBj   AttachToLangPrimaryRequestVNextPrimaryLanguage = "yo-bj"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYoNg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "yo-ng"
@@ -1995,7 +2100,9 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYue    AttachToLangPrimaryRequestVNextPrimaryLanguage = "yue"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYueCn  AttachToLangPrimaryRequestVNextPrimaryLanguage = "yue-cn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageYueHk  AttachToLangPrimaryRequestVNextPrimaryLanguage = "yue-hk"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageYueMo  AttachToLangPrimaryRequestVNextPrimaryLanguage = "yue-mo"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZa     AttachToLangPrimaryRequestVNextPrimaryLanguage = "za"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageZaCn   AttachToLangPrimaryRequestVNextPrimaryLanguage = "za-cn"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZgh    AttachToLangPrimaryRequestVNextPrimaryLanguage = "zgh"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZghMa  AttachToLangPrimaryRequestVNextPrimaryLanguage = "zgh-ma"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZh     AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh"
@@ -2004,6 +2111,7 @@ const (
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZhHant AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-hant"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZhHk   AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-hk"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZhMo   AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-mo"
+	AttachToLangPrimaryRequestVNextPrimaryLanguageZhMy   AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-my"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZhSg   AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-sg"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZhTw   AttachToLangPrimaryRequestVNextPrimaryLanguage = "zh-tw"
 	AttachToLangPrimaryRequestVNextPrimaryLanguageZu     AttachToLangPrimaryRequestVNextPrimaryLanguage = "zu"
@@ -2936,90 +3044,96 @@ type UpdateLanguagesRequestVNextParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "asa", "asa-tz",
-	// "ast", "ast-es", "as-in", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "bem", "bem-zm", "bez", "bez-tz", "be-by", "bg", "bgc", "bgc-in", "bg-bg",
-	// "bi", "bho", "bho-in", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "brx", "brx-in", "br-fr", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ceb", "ceb-ph", "ce-ru",
-	// "ch", "cgg", "cgg-ug", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "dav",
-	// "dav-ke", "da-dk", "da-gl", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dyo", "dyo-sn", "dv", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "ast", "ast-es", "as-in", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "bem", "bem-zm", "bez", "bez-tz", "be-by", "bg", "bgc",
+	// "bgc-in", "bg-bg", "bi", "bho", "bho-in", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "brx", "brx-in", "br-fr", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ceb", "ceb-ph", "ce-ru", "ch", "cgg", "cgg-ug", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "dav", "dav-ke", "da-dk", "da-gl", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dyo", "dyo-sn",
+	// "dv", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fil", "fil-ph", "fi-fi",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "frr", "frr-de", "fr-be", "fr-bf", "fr-bi",
-	// "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm",
-	// "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht",
-	// "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr",
-	// "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn",
-	// "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "guz", "guz-ke", "gu-in", "gv",
-	// "gv-im", "ha", "haw", "haw-us", "ha-gh", "ha-ne", "ha-ng", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "ht", "hsb", "hsb-de", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "ie", "ig", "ig-ng", "ii",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fil", "fil-ph", "fi-fi", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "frr", "frr-de", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd",
+	// "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga",
+	// "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc",
+	// "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf",
+	// "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn",
+	// "fr-vu", "fr-wf", "fr-yt", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "guz", "guz-ke", "gu-in", "gv", "gv-im", "ha", "haw",
+	// "haw-us", "ha-gh", "ha-ne", "ha-ng", "he", "he-il", "hi", "hi-in", "hmn", "ho",
+	// "hr", "hr-ba", "hr-hr", "ht", "ht-ht", "hsb", "hsb-de", "hu", "hu-hu", "hy",
+	// "hy-am", "hz", "ia", "ia-001", "id", "ie", "ie-ee", "ig", "ig-ng", "ii",
 	// "ii-cn", "ik", "io", "id-id", "is", "is-is", "it", "it-ch", "it-it", "it-sm",
 	// "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "yi", "yi-001", "jmc", "jmc-tz",
 	// "jv", "jv-id", "ka", "kab", "kab-dz", "kam", "kam-ke", "kar", "ka-ge", "kde",
 	// "kde-tz", "kea", "kea-cv", "kgp", "kgp-br", "kg", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kkj", "kkj-cm", "kk-kz", "kl", "kln", "kln-ke", "kl-gl",
-	// "km", "km-kh", "kn", "kn-in", "ko", "kok", "kok-in", "ko-kp", "ko-kr", "kr",
-	// "ks", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ks-in", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "lag", "lag-tz", "la", "lb", "lb-lu", "lg",
-	// "lg-ug", "lkt", "lkt-us", "li", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "luo", "luo-ke", "luy",
-	// "luy-ke", "lu-cd", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz",
-	// "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mgh", "mgh-mz", "mgo",
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "kok", "kok-in", "ko-kp", "ko-kr",
+	// "kr", "ks", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ks-in", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "lag", "lag-tz",
+	// "la", "lb", "lb-lu", "lg", "lg-ug", "lkt", "lkt-us", "li", "lij", "lij-it",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "luo", "luo-ke", "luy", "luy-ke",
+	// "lu-cd", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mgh", "mgh-mz", "mgo",
 	// "mgo-cm", "mg-mg", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
 	// "mni", "mni-in", "mn-mn", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
 	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "naq",
 	// "naq-na", "na", "nb", "nb-no", "nb-sj", "nd", "nds", "nds-de", "nds-nl",
 	// "nd-zw", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq", "nl-ch",
 	// "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn", "nnh",
-	// "nnh-cm", "nn-no", "nr", "nv", "ny", "no", "no-no", "nus", "nus-ss", "nyn",
-	// "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke", "or", "or-in",
-	// "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng", "pis",
-	// "pis-sb", "pi", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk", "pt",
-	// "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz",
-	// "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in",
-	// "rm", "rm-ch", "rn", "rn-bi", "ro", "rof", "rof-tz", "ro-md", "ro-ro", "ru",
-	// "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rwk", "rwk-tz",
-	// "rw-rw", "sa", "sah", "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sa-in",
-	// "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "seh", "seh-mz",
-	// "ses", "ses-ml", "se-fi", "se-no", "se-se", "sg", "sg-cf", "shi", "shi-ma",
-	// "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi", "sms",
-	// "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "teo", "teo-ke", "teo-ug", "te-in", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "tok", "tok-001", "to-to", "ts", "tr",
-	// "tr-cy", "tr-tr", "tt", "tt-ru", "tw", "ty", "twq", "twq-ne", "tzm", "tzm-ma",
-	// "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af", "uz-uz",
-	// "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz", "wa",
-	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav", "yav-cm",
-	// "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn",
-	// "yue-hk", "zgh", "zgh-ma", "za", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk",
-	// "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "nnh-cm", "nn-no", "nqo", "nqo-gn", "nr", "nso", "nso-za", "nv", "ny", "no",
+	// "no-no", "nus", "nus-ss", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om",
+	// "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk",
+	// "pcm", "pcm-ng", "pis", "pis-sb", "pi", "pl", "pl-pl", "prg", "prg-001", "ps",
+	// "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw",
+	// "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec",
+	// "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "rof", "rof-tz",
+	// "ro-md", "ro-ro", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua",
+	// "rw", "rwk", "rwk-tz", "rw-rw", "sa", "sah", "sah-ru", "saq", "saq-ke", "sat",
+	// "sat-in", "sa-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se",
+	// "seh", "seh-mz", "ses", "ses-ml", "se-fi", "se-no", "se-se", "sg", "sg-cf",
+	// "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn",
+	// "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke",
+	// "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me",
+	// "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id", "sv", "sv-ax",
+	// "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy", "syr",
+	// "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg",
+	// "te", "teo", "teo-ke", "teo-ug", "te-in", "tg", "tg-tj", "th", "th-th", "ti",
+	// "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to", "tok",
+	// "tok-001", "to-to", "ts", "tr", "tr-cy", "tr-tr", "tt", "tt-ru", "tw", "ty",
+	// "twq", "twq-ne", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in",
+	// "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec", "vec-it", "vi",
+	// "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa", "wae",
+	// "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug", "yav",
+	// "yav-cm", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co", "yrl-ve",
+	// "yue", "yue-cn", "yue-hk", "yue-mo", "zgh", "zgh-ma", "za", "za-cn", "zh",
+	// "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-my", "zh-sg", "zh-tw",
+	// "zu", "zu-za".
 	Languages map[string]string `json:"languages,omitzero" api:"required"`
 	// ID of the primary object in the multi-language group.
 	PrimaryID string `json:"primaryId" api:"required"`

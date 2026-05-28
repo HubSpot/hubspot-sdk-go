@@ -823,13 +823,17 @@ func (r *IntegratorObjectResult) UnmarshalJSON(data []byte) error {
 // IntegratorObjectResultActionUnion contains all possible properties and values
 // from [ActionHookActionBody], [IFrameActionBody].
 //
+// Use the [IntegratorObjectResultActionUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type IntegratorObjectResultActionUnion struct {
 	// This field is from variant [ActionHookActionBody].
 	HTTPMethod            ActionHookActionBodyHTTPMethod `json:"httpMethod"`
 	PropertyNamesIncluded []string                       `json:"propertyNamesIncluded"`
-	Type                  string                         `json:"type"`
-	URL                   string                         `json:"url"`
+	// Any of "ACTION_HOOK", "IFRAME".
+	Type string `json:"type"`
+	URL  string `json:"url"`
 	// This field is from variant [ActionHookActionBody].
 	Confirmation ActionConfirmationBody `json:"confirmation"`
 	Label        string                 `json:"label"`
@@ -848,6 +852,34 @@ type IntegratorObjectResultActionUnion struct {
 		Width                 respjson.Field
 		raw                   string
 	} `json:"-"`
+}
+
+// anyIntegratorObjectResultAction is implemented by each variant of
+// [IntegratorObjectResultActionUnion] to add type safety for the return type of
+// [IntegratorObjectResultActionUnion.AsAny]
+type anyIntegratorObjectResultAction interface {
+	implIntegratorObjectResultActionUnion()
+}
+
+func (ActionHookActionBody) implIntegratorObjectResultActionUnion() {}
+func (IFrameActionBody) implIntegratorObjectResultActionUnion()     {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := IntegratorObjectResultActionUnion.AsAny().(type) {
+//	case crm.ActionHookActionBody:
+//	case crm.IFrameActionBody:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u IntegratorObjectResultActionUnion) AsAny() anyIntegratorObjectResultAction {
+	switch u.Type {
+	case "ACTION_HOOK":
+		return u.AsActionHook()
+	case "IFRAME":
+		return u.AsIframe()
+	}
+	return nil
 }
 
 func (u IntegratorObjectResultActionUnion) AsActionHook() (v ActionHookActionBody) {
@@ -1015,13 +1047,16 @@ func (r *TopLevelActions) UnmarshalJSON(data []byte) error {
 // TopLevelActionsSecondaryUnion contains all possible properties and values from
 // [ActionHookActionBody], [IFrameActionBody].
 //
+// Use the [TopLevelActionsSecondaryUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type TopLevelActionsSecondaryUnion struct {
 	// This field is from variant [ActionHookActionBody].
 	HTTPMethod            ActionHookActionBodyHTTPMethod `json:"httpMethod"`
 	PropertyNamesIncluded []string                       `json:"propertyNamesIncluded"`
-	Type                  string                         `json:"type"`
-	URL                   string                         `json:"url"`
+	// Any of "ACTION_HOOK", "IFRAME".
+	Type string `json:"type"`
+	URL  string `json:"url"`
 	// This field is from variant [ActionHookActionBody].
 	Confirmation ActionConfirmationBody `json:"confirmation"`
 	Label        string                 `json:"label"`
@@ -1040,6 +1075,34 @@ type TopLevelActionsSecondaryUnion struct {
 		Width                 respjson.Field
 		raw                   string
 	} `json:"-"`
+}
+
+// anyTopLevelActionsSecondary is implemented by each variant of
+// [TopLevelActionsSecondaryUnion] to add type safety for the return type of
+// [TopLevelActionsSecondaryUnion.AsAny]
+type anyTopLevelActionsSecondary interface {
+	implTopLevelActionsSecondaryUnion()
+}
+
+func (ActionHookActionBody) implTopLevelActionsSecondaryUnion() {}
+func (IFrameActionBody) implTopLevelActionsSecondaryUnion()     {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := TopLevelActionsSecondaryUnion.AsAny().(type) {
+//	case crm.ActionHookActionBody:
+//	case crm.IFrameActionBody:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u TopLevelActionsSecondaryUnion) AsAny() anyTopLevelActionsSecondary {
+	switch u.Type {
+	case "ACTION_HOOK":
+		return u.AsActionHook()
+	case "IFRAME":
+		return u.AsIframe()
+	}
+	return nil
 }
 
 func (u TopLevelActionsSecondaryUnion) AsActionHook() (v ActionHookActionBody) {
@@ -1062,13 +1125,16 @@ func (r *TopLevelActionsSecondaryUnion) UnmarshalJSON(data []byte) error {
 // TopLevelActionsPrimaryUnion contains all possible properties and values from
 // [ActionHookActionBody], [IFrameActionBody].
 //
+// Use the [TopLevelActionsPrimaryUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type TopLevelActionsPrimaryUnion struct {
 	// This field is from variant [ActionHookActionBody].
 	HTTPMethod            ActionHookActionBodyHTTPMethod `json:"httpMethod"`
 	PropertyNamesIncluded []string                       `json:"propertyNamesIncluded"`
-	Type                  string                         `json:"type"`
-	URL                   string                         `json:"url"`
+	// Any of "ACTION_HOOK", "IFRAME".
+	Type string `json:"type"`
+	URL  string `json:"url"`
 	// This field is from variant [ActionHookActionBody].
 	Confirmation ActionConfirmationBody `json:"confirmation"`
 	Label        string                 `json:"label"`
@@ -1087,6 +1153,34 @@ type TopLevelActionsPrimaryUnion struct {
 		Width                 respjson.Field
 		raw                   string
 	} `json:"-"`
+}
+
+// anyTopLevelActionsPrimary is implemented by each variant of
+// [TopLevelActionsPrimaryUnion] to add type safety for the return type of
+// [TopLevelActionsPrimaryUnion.AsAny]
+type anyTopLevelActionsPrimary interface {
+	implTopLevelActionsPrimaryUnion()
+}
+
+func (ActionHookActionBody) implTopLevelActionsPrimaryUnion() {}
+func (IFrameActionBody) implTopLevelActionsPrimaryUnion()     {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := TopLevelActionsPrimaryUnion.AsAny().(type) {
+//	case crm.ActionHookActionBody:
+//	case crm.IFrameActionBody:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u TopLevelActionsPrimaryUnion) AsAny() anyTopLevelActionsPrimary {
+	switch u.Type {
+	case "ACTION_HOOK":
+		return u.AsActionHook()
+	case "IFRAME":
+		return u.AsIframe()
+	}
+	return nil
 }
 
 func (u TopLevelActionsPrimaryUnion) AsActionHook() (v ActionHookActionBody) {

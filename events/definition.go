@@ -296,8 +296,12 @@ func (r *AllPropertyTypesOperation) UnmarshalJSON(data []byte) error {
 // AllPropertyTypesOperationCoalescingRefineByUnion contains all possible
 // properties and values from [NumOccurrencesRefineBy], [SetOccurrencesRefineBy].
 //
+// Use the [AllPropertyTypesOperationCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type AllPropertyTypesOperationCoalescingRefineByUnion struct {
+	// Any of "NumOccurrencesRefineBy", "SetOccurrencesRefineBy".
 	Type string `json:"type"`
 	// This field is from variant [NumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -312,6 +316,34 @@ type AllPropertyTypesOperationCoalescingRefineByUnion struct {
 		SetType        respjson.Field
 		raw            string
 	} `json:"-"`
+}
+
+// anyAllPropertyTypesOperationCoalescingRefineBy is implemented by each variant of
+// [AllPropertyTypesOperationCoalescingRefineByUnion] to add type safety for the
+// return type of [AllPropertyTypesOperationCoalescingRefineByUnion.AsAny]
+type anyAllPropertyTypesOperationCoalescingRefineBy interface {
+	implAllPropertyTypesOperationCoalescingRefineByUnion()
+}
+
+func (NumOccurrencesRefineBy) implAllPropertyTypesOperationCoalescingRefineByUnion() {}
+func (SetOccurrencesRefineBy) implAllPropertyTypesOperationCoalescingRefineByUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := AllPropertyTypesOperationCoalescingRefineByUnion.AsAny().(type) {
+//	case events.NumOccurrencesRefineBy:
+//	case events.SetOccurrencesRefineBy:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u AllPropertyTypesOperationCoalescingRefineByUnion) AsAny() anyAllPropertyTypesOperationCoalescingRefineBy {
+	switch u.Type {
+	case "NumOccurrencesRefineBy":
+		return u.AsNumOccurrencesRefineBy()
+	case "SetOccurrencesRefineBy":
+		return u.AsSetOccurrencesRefineBy()
+	}
+	return nil
 }
 
 func (u AllPropertyTypesOperationCoalescingRefineByUnion) AsNumOccurrencesRefineBy() (v NumOccurrencesRefineBy) {
@@ -352,12 +384,18 @@ const (
 // [AbsoluteRangedTimestampRefineBy], [AllHistoryRefineBy], [TimePointOperation],
 // [RangedTimeOperation].
 //
+// Use the [AllPropertyTypesOperationPruningRefineByUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type AllPropertyTypesOperationPruningRefineByUnion struct {
 	Comparison string `json:"comparison"`
 	// This field is from variant [RelativeComparativeTimestampRefineBy].
 	TimeOffset TimeOffset `json:"timeOffset"`
-	Type       string     `json:"type"`
+	// Any of "RelativeComparativeTimestampRefineBy",
+	// "RelativeRangedTimestampRefineBy", "AbsoluteComparativeTimestampRefineBy",
+	// "AbsoluteRangedTimestampRefineBy", "AllHistoryRefineBy", nil, nil.
+	Type string `json:"type"`
 	// This field is from variant [RelativeRangedTimestampRefineBy].
 	LowerBoundOffset TimeOffset `json:"lowerBoundOffset"`
 	RangeType        string     `json:"rangeType"`
@@ -2080,8 +2118,13 @@ func (r *IndexedTimePoint) UnmarshalJSON(data []byte) error {
 // from [NowReference], [TodayReference], [WeekReference], [MonthReference],
 // [QuarterReference], [FiscalQuarter], [YearReference], [FiscalYear].
 //
+// Use the [IndexedTimePointIndexReferenceUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type IndexedTimePointIndexReferenceUnion struct {
+	// Any of "NOW", "TODAY", "WEEK", "MONTH", "QUARTER", "FISCAL_QUARTER", "YEAR",
+	// "FISCAL_YEAR".
 	ReferenceType string `json:"referenceType"`
 	Hour          int64  `json:"hour"`
 	Millisecond   int64  `json:"millisecond"`
@@ -2102,6 +2145,58 @@ type IndexedTimePointIndexReferenceUnion struct {
 		Month         respjson.Field
 		raw           string
 	} `json:"-"`
+}
+
+// anyIndexedTimePointIndexReference is implemented by each variant of
+// [IndexedTimePointIndexReferenceUnion] to add type safety for the return type of
+// [IndexedTimePointIndexReferenceUnion.AsAny]
+type anyIndexedTimePointIndexReference interface {
+	implIndexedTimePointIndexReferenceUnion()
+}
+
+func (NowReference) implIndexedTimePointIndexReferenceUnion()     {}
+func (TodayReference) implIndexedTimePointIndexReferenceUnion()   {}
+func (WeekReference) implIndexedTimePointIndexReferenceUnion()    {}
+func (MonthReference) implIndexedTimePointIndexReferenceUnion()   {}
+func (QuarterReference) implIndexedTimePointIndexReferenceUnion() {}
+func (FiscalQuarter) implIndexedTimePointIndexReferenceUnion()    {}
+func (YearReference) implIndexedTimePointIndexReferenceUnion()    {}
+func (FiscalYear) implIndexedTimePointIndexReferenceUnion()       {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := IndexedTimePointIndexReferenceUnion.AsAny().(type) {
+//	case events.NowReference:
+//	case events.TodayReference:
+//	case events.WeekReference:
+//	case events.MonthReference:
+//	case events.QuarterReference:
+//	case events.FiscalQuarter:
+//	case events.YearReference:
+//	case events.FiscalYear:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u IndexedTimePointIndexReferenceUnion) AsAny() anyIndexedTimePointIndexReference {
+	switch u.ReferenceType {
+	case "NOW":
+		return u.AsNow()
+	case "TODAY":
+		return u.AsToday()
+	case "WEEK":
+		return u.AsWeek()
+	case "MONTH":
+		return u.AsMonth()
+	case "QUARTER":
+		return u.AsQuarter()
+	case "FISCAL_QUARTER":
+		return u.AsFiscalQuarter()
+	case "YEAR":
+		return u.AsYear()
+	case "FISCAL_YEAR":
+		return u.AsFiscalYear()
+	}
+	return nil
 }
 
 func (u IndexedTimePointIndexReferenceUnion) AsNow() (v NowReference) {
@@ -2239,8 +2334,12 @@ func (r *MultiStringPropertyOperation) UnmarshalJSON(data []byte) error {
 // MultiStringPropertyOperationCoalescingRefineByUnion contains all possible
 // properties and values from [NumOccurrencesRefineBy], [SetOccurrencesRefineBy].
 //
+// Use the [MultiStringPropertyOperationCoalescingRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type MultiStringPropertyOperationCoalescingRefineByUnion struct {
+	// Any of "NumOccurrencesRefineBy", "SetOccurrencesRefineBy".
 	Type string `json:"type"`
 	// This field is from variant [NumOccurrencesRefineBy].
 	MaxOccurrences int64 `json:"maxOccurrences"`
@@ -2255,6 +2354,34 @@ type MultiStringPropertyOperationCoalescingRefineByUnion struct {
 		SetType        respjson.Field
 		raw            string
 	} `json:"-"`
+}
+
+// anyMultiStringPropertyOperationCoalescingRefineBy is implemented by each variant
+// of [MultiStringPropertyOperationCoalescingRefineByUnion] to add type safety for
+// the return type of [MultiStringPropertyOperationCoalescingRefineByUnion.AsAny]
+type anyMultiStringPropertyOperationCoalescingRefineBy interface {
+	implMultiStringPropertyOperationCoalescingRefineByUnion()
+}
+
+func (NumOccurrencesRefineBy) implMultiStringPropertyOperationCoalescingRefineByUnion() {}
+func (SetOccurrencesRefineBy) implMultiStringPropertyOperationCoalescingRefineByUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := MultiStringPropertyOperationCoalescingRefineByUnion.AsAny().(type) {
+//	case events.NumOccurrencesRefineBy:
+//	case events.SetOccurrencesRefineBy:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u MultiStringPropertyOperationCoalescingRefineByUnion) AsAny() anyMultiStringPropertyOperationCoalescingRefineBy {
+	switch u.Type {
+	case "NumOccurrencesRefineBy":
+		return u.AsNumOccurrencesRefineBy()
+	case "SetOccurrencesRefineBy":
+		return u.AsSetOccurrencesRefineBy()
+	}
+	return nil
 }
 
 func (u MultiStringPropertyOperationCoalescingRefineByUnion) AsNumOccurrencesRefineBy() (v NumOccurrencesRefineBy) {
@@ -2299,12 +2426,18 @@ const (
 // [AbsoluteRangedTimestampRefineBy], [AllHistoryRefineBy], [TimePointOperation],
 // [RangedTimeOperation].
 //
+// Use the [MultiStringPropertyOperationPruningRefineByUnion.AsAny] method to
+// switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type MultiStringPropertyOperationPruningRefineByUnion struct {
 	Comparison string `json:"comparison"`
 	// This field is from variant [RelativeComparativeTimestampRefineBy].
 	TimeOffset TimeOffset `json:"timeOffset"`
-	Type       string     `json:"type"`
+	// Any of "RelativeComparativeTimestampRefineBy",
+	// "RelativeRangedTimestampRefineBy", "AbsoluteComparativeTimestampRefineBy",
+	// "AbsoluteRangedTimestampRefineBy", "AllHistoryRefineBy", nil, nil.
+	Type string `json:"type"`
 	// This field is from variant [RelativeRangedTimestampRefineBy].
 	LowerBoundOffset TimeOffset `json:"lowerBoundOffset"`
 	RangeType        string     `json:"rangeType"`
@@ -2562,13 +2695,20 @@ const (
 // [CalendarDatePropertyOperation], [TimePointOperation], [RangedTimeOperation],
 // [RegexPropertyOperation].
 //
+// Use the [PropertyFilterOperationUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PropertyFilterOperationUnion struct {
 	IncludeObjectsWithNoValueSet bool   `json:"includeObjectsWithNoValueSet"`
 	OperationType                string `json:"operationType"`
 	Operator                     string `json:"operator"`
 	OperatorName                 string `json:"operatorName"`
-	PropertyType                 string `json:"propertyType"`
+	// Any of "bool", "number", "string", "datetime", "datetime-ranged",
+	// "datetime-comparative", "bool-comparative", "number-comparative",
+	// "string-comparative", "property-updated-comparative", "datetime-rolling",
+	// "rolling-property-updated", "enumeration", "alltypes", "number-ranged",
+	// "multistring", "date", "calendar-date", "timepoint", "rangedtime", "regex".
+	PropertyType string `json:"propertyType"`
 	// This field is a union of [bool], [float64], [string]
 	Value                      PropertyFilterOperationUnionValue `json:"value"`
 	DefaultValue               string                            `json:"defaultValue"`
@@ -2666,6 +2806,110 @@ type PropertyFilterOperationUnion struct {
 		Pattern                      respjson.Field
 		raw                          string
 	} `json:"-"`
+}
+
+// anyPropertyFilterOperation is implemented by each variant of
+// [PropertyFilterOperationUnion] to add type safety for the return type of
+// [PropertyFilterOperationUnion.AsAny]
+type anyPropertyFilterOperation interface {
+	implPropertyFilterOperationUnion()
+}
+
+func (BoolPropertyOperation) implPropertyFilterOperationUnion()               {}
+func (NumberPropertyOperation) implPropertyFilterOperationUnion()             {}
+func (StringPropertyOperation) implPropertyFilterOperationUnion()             {}
+func (DateTimePropertyOperation) implPropertyFilterOperationUnion()           {}
+func (RangedDatePropertyOperation) implPropertyFilterOperationUnion()         {}
+func (ComparativeDatePropertyOperation) implPropertyFilterOperationUnion()    {}
+func (ComparativeBoolPropertyOperation) implPropertyFilterOperationUnion()    {}
+func (ComparativeNumberPropertyOperation) implPropertyFilterOperationUnion()  {}
+func (ComparativeStringPropertyOperation) implPropertyFilterOperationUnion()  {}
+func (ComparativePropertyUpdatedOperation) implPropertyFilterOperationUnion() {}
+func (RollingDateRangePropertyOperation) implPropertyFilterOperationUnion()   {}
+func (RollingPropertyUpdatedOperation) implPropertyFilterOperationUnion()     {}
+func (EnumerationPropertyOperation) implPropertyFilterOperationUnion()        {}
+func (AllPropertyTypesOperation) implPropertyFilterOperationUnion()           {}
+func (RangedNumberPropertyOperation) implPropertyFilterOperationUnion()       {}
+func (MultiStringPropertyOperation) implPropertyFilterOperationUnion()        {}
+func (DatePropertyOperation) implPropertyFilterOperationUnion()               {}
+func (CalendarDatePropertyOperation) implPropertyFilterOperationUnion()       {}
+func (TimePointOperation) implPropertyFilterOperationUnion()                  {}
+func (RangedTimeOperation) implPropertyFilterOperationUnion()                 {}
+func (RegexPropertyOperation) implPropertyFilterOperationUnion()              {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PropertyFilterOperationUnion.AsAny().(type) {
+//	case events.BoolPropertyOperation:
+//	case events.NumberPropertyOperation:
+//	case events.StringPropertyOperation:
+//	case events.DateTimePropertyOperation:
+//	case events.RangedDatePropertyOperation:
+//	case events.ComparativeDatePropertyOperation:
+//	case events.ComparativeBoolPropertyOperation:
+//	case events.ComparativeNumberPropertyOperation:
+//	case events.ComparativeStringPropertyOperation:
+//	case events.ComparativePropertyUpdatedOperation:
+//	case events.RollingDateRangePropertyOperation:
+//	case events.RollingPropertyUpdatedOperation:
+//	case events.EnumerationPropertyOperation:
+//	case events.AllPropertyTypesOperation:
+//	case events.RangedNumberPropertyOperation:
+//	case events.MultiStringPropertyOperation:
+//	case events.DatePropertyOperation:
+//	case events.CalendarDatePropertyOperation:
+//	case events.TimePointOperation:
+//	case events.RangedTimeOperation:
+//	case events.RegexPropertyOperation:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PropertyFilterOperationUnion) AsAny() anyPropertyFilterOperation {
+	switch u.PropertyType {
+	case "bool":
+		return u.AsBool()
+	case "number":
+		return u.AsNumber()
+	case "string":
+		return u.AsString()
+	case "datetime":
+		return u.AsDatetime()
+	case "datetime-ranged":
+		return u.AsDatetimeRanged()
+	case "datetime-comparative":
+		return u.AsDatetimeComparative()
+	case "bool-comparative":
+		return u.AsBoolComparative()
+	case "number-comparative":
+		return u.AsNumberComparative()
+	case "string-comparative":
+		return u.AsStringComparative()
+	case "property-updated-comparative":
+		return u.AsPropertyUpdatedComparative()
+	case "datetime-rolling":
+		return u.AsDatetimeRolling()
+	case "rolling-property-updated":
+		return u.AsRollingPropertyUpdated()
+	case "enumeration":
+		return u.AsEnumeration()
+	case "alltypes":
+		return u.AsAlltypes()
+	case "number-ranged":
+		return u.AsNumberRanged()
+	case "multistring":
+		return u.AsMultistring()
+	case "date":
+		return u.AsDate()
+	case "calendar-date":
+		return u.AsCalendarDate()
+	case "timepoint":
+		return u.AsTimepoint()
+	case "rangedtime":
+		return u.AsRangedtime()
+	case "regex":
+		return u.AsRegex()
+	}
+	return nil
 }
 
 func (u PropertyFilterOperationUnion) AsBool() (v BoolPropertyOperation) {
@@ -3179,12 +3423,16 @@ const (
 // RangedTimeOperationLowerBoundTimePointUnion contains all possible properties and
 // values from [DatePoint], [IndexedTimePoint], [PropertyReferencedTime].
 //
+// Use the [RangedTimeOperationLowerBoundTimePointUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type RangedTimeOperationLowerBoundTimePointUnion struct {
 	// This field is from variant [DatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [DatePoint].
-	Month          int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType       string `json:"timeType"`
 	TimezoneSource string `json:"timezoneSource"`
 	// This field is from variant [DatePoint].
@@ -3226,6 +3474,38 @@ type RangedTimeOperationLowerBoundTimePointUnion struct {
 		ReferenceType             respjson.Field
 		raw                       string
 	} `json:"-"`
+}
+
+// anyRangedTimeOperationLowerBoundTimePoint is implemented by each variant of
+// [RangedTimeOperationLowerBoundTimePointUnion] to add type safety for the return
+// type of [RangedTimeOperationLowerBoundTimePointUnion.AsAny]
+type anyRangedTimeOperationLowerBoundTimePoint interface {
+	implRangedTimeOperationLowerBoundTimePointUnion()
+}
+
+func (DatePoint) implRangedTimeOperationLowerBoundTimePointUnion()              {}
+func (IndexedTimePoint) implRangedTimeOperationLowerBoundTimePointUnion()       {}
+func (PropertyReferencedTime) implRangedTimeOperationLowerBoundTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := RangedTimeOperationLowerBoundTimePointUnion.AsAny().(type) {
+//	case events.DatePoint:
+//	case events.IndexedTimePoint:
+//	case events.PropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u RangedTimeOperationLowerBoundTimePointUnion) AsAny() anyRangedTimeOperationLowerBoundTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u RangedTimeOperationLowerBoundTimePointUnion) AsDate() (v DatePoint) {
@@ -3283,12 +3563,16 @@ const (
 // RangedTimeOperationUpperBoundTimePointUnion contains all possible properties and
 // values from [DatePoint], [IndexedTimePoint], [PropertyReferencedTime].
 //
+// Use the [RangedTimeOperationUpperBoundTimePointUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type RangedTimeOperationUpperBoundTimePointUnion struct {
 	// This field is from variant [DatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [DatePoint].
-	Month          int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType       string `json:"timeType"`
 	TimezoneSource string `json:"timezoneSource"`
 	// This field is from variant [DatePoint].
@@ -3330,6 +3614,38 @@ type RangedTimeOperationUpperBoundTimePointUnion struct {
 		ReferenceType             respjson.Field
 		raw                       string
 	} `json:"-"`
+}
+
+// anyRangedTimeOperationUpperBoundTimePoint is implemented by each variant of
+// [RangedTimeOperationUpperBoundTimePointUnion] to add type safety for the return
+// type of [RangedTimeOperationUpperBoundTimePointUnion.AsAny]
+type anyRangedTimeOperationUpperBoundTimePoint interface {
+	implRangedTimeOperationUpperBoundTimePointUnion()
+}
+
+func (DatePoint) implRangedTimeOperationUpperBoundTimePointUnion()              {}
+func (IndexedTimePoint) implRangedTimeOperationUpperBoundTimePointUnion()       {}
+func (PropertyReferencedTime) implRangedTimeOperationUpperBoundTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := RangedTimeOperationUpperBoundTimePointUnion.AsAny().(type) {
+//	case events.DatePoint:
+//	case events.IndexedTimePoint:
+//	case events.PropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u RangedTimeOperationUpperBoundTimePointUnion) AsAny() anyRangedTimeOperationUpperBoundTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u RangedTimeOperationUpperBoundTimePointUnion) AsDate() (v DatePoint) {
@@ -3773,12 +4089,16 @@ const (
 // TimePointOperationTimePointUnion contains all possible properties and values
 // from [DatePoint], [IndexedTimePoint], [PropertyReferencedTime].
 //
+// Use the [TimePointOperationTimePointUnion.AsAny] method to switch on the
+// variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type TimePointOperationTimePointUnion struct {
 	// This field is from variant [DatePoint].
 	Day int64 `json:"day"`
 	// This field is from variant [DatePoint].
-	Month          int64  `json:"month"`
+	Month int64 `json:"month"`
+	// Any of "DATE", "INDEXED", "PROPERTY_REFERENCED".
 	TimeType       string `json:"timeType"`
 	TimezoneSource string `json:"timezoneSource"`
 	// This field is from variant [DatePoint].
@@ -3820,6 +4140,38 @@ type TimePointOperationTimePointUnion struct {
 		ReferenceType             respjson.Field
 		raw                       string
 	} `json:"-"`
+}
+
+// anyTimePointOperationTimePoint is implemented by each variant of
+// [TimePointOperationTimePointUnion] to add type safety for the return type of
+// [TimePointOperationTimePointUnion.AsAny]
+type anyTimePointOperationTimePoint interface {
+	implTimePointOperationTimePointUnion()
+}
+
+func (DatePoint) implTimePointOperationTimePointUnion()              {}
+func (IndexedTimePoint) implTimePointOperationTimePointUnion()       {}
+func (PropertyReferencedTime) implTimePointOperationTimePointUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := TimePointOperationTimePointUnion.AsAny().(type) {
+//	case events.DatePoint:
+//	case events.IndexedTimePoint:
+//	case events.PropertyReferencedTime:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u TimePointOperationTimePointUnion) AsAny() anyTimePointOperationTimePoint {
+	switch u.TimeType {
+	case "DATE":
+		return u.AsDate()
+	case "INDEXED":
+		return u.AsIndexed()
+	case "PROPERTY_REFERENCED":
+		return u.AsPropertyReferenced()
+	}
+	return nil
 }
 
 func (u TimePointOperationTimePointUnion) AsDate() (v DatePoint) {

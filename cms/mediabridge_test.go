@@ -290,6 +290,7 @@ func TestMediaBridgeNewPropertyWithOptionalParams(t *testing.T) {
 				}},
 				ReferencedObjectType: hubspotsdk.String("referencedObjectType"),
 				ShowCurrencySymbol:   hubspotsdk.Bool(true),
+				TextDisplayHint:      shared.PropertyCreateTextDisplayHintDomainName,
 			},
 		},
 	)
@@ -915,6 +916,7 @@ func TestMediaBridgeUpdatePropertyWithOptionalParams(t *testing.T) {
 					Description:  hubspotsdk.String("description"),
 				}},
 				ShowCurrencySymbol: hubspotsdk.Bool(true),
+				TextDisplayHint:    cms.MediaBridgePropertyUpdateTextDisplayHintDomainName,
 				Type:               cms.MediaBridgePropertyUpdateTypeBool,
 			},
 		},

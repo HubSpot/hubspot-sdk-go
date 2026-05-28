@@ -1732,6 +1732,9 @@ type MediaBridgePropertyUpdateParam struct {
 	// "unformatted".
 	NumberDisplayHint MediaBridgePropertyUpdateNumberDisplayHint `json:"numberDisplayHint,omitzero"`
 	Options           []shared.OptionInputParam                  `json:"options,omitzero"`
+	// Any of "domain_name", "email", "ip_address", "multi_line", "phone_number",
+	// "physical_address", "postal_code", "unformatted_single_line".
+	TextDisplayHint MediaBridgePropertyUpdateTextDisplayHint `json:"textDisplayHint,omitzero"`
 	// Any of "bool", "date", "datetime", "enumeration", "number", "phone_number",
 	// "string".
 	Type MediaBridgePropertyUpdateType `json:"type,omitzero"`
@@ -1772,6 +1775,19 @@ const (
 	MediaBridgePropertyUpdateNumberDisplayHintPercentage  MediaBridgePropertyUpdateNumberDisplayHint = "percentage"
 	MediaBridgePropertyUpdateNumberDisplayHintProbability MediaBridgePropertyUpdateNumberDisplayHint = "probability"
 	MediaBridgePropertyUpdateNumberDisplayHintUnformatted MediaBridgePropertyUpdateNumberDisplayHint = "unformatted"
+)
+
+type MediaBridgePropertyUpdateTextDisplayHint string
+
+const (
+	MediaBridgePropertyUpdateTextDisplayHintDomainName            MediaBridgePropertyUpdateTextDisplayHint = "domain_name"
+	MediaBridgePropertyUpdateTextDisplayHintEmail                 MediaBridgePropertyUpdateTextDisplayHint = "email"
+	MediaBridgePropertyUpdateTextDisplayHintIPAddress             MediaBridgePropertyUpdateTextDisplayHint = "ip_address"
+	MediaBridgePropertyUpdateTextDisplayHintMultiLine             MediaBridgePropertyUpdateTextDisplayHint = "multi_line"
+	MediaBridgePropertyUpdateTextDisplayHintPhoneNumber           MediaBridgePropertyUpdateTextDisplayHint = "phone_number"
+	MediaBridgePropertyUpdateTextDisplayHintPhysicalAddress       MediaBridgePropertyUpdateTextDisplayHint = "physical_address"
+	MediaBridgePropertyUpdateTextDisplayHintPostalCode            MediaBridgePropertyUpdateTextDisplayHint = "postal_code"
+	MediaBridgePropertyUpdateTextDisplayHintUnformattedSingleLine MediaBridgePropertyUpdateTextDisplayHint = "unformatted_single_line"
 )
 
 type MediaBridgePropertyUpdateType string
@@ -2314,8 +2330,11 @@ type Property1 struct {
 	ReferencedObjectType    string                     `json:"referencedObjectType"`
 	SensitiveDataCategories []string                   `json:"sensitiveDataCategories"`
 	ShowCurrencySymbol      bool                       `json:"showCurrencySymbol"`
-	UpdatedAt               time.Time                  `json:"updatedAt" format:"date-time"`
-	UpdatedUserID           string                     `json:"updatedUserId"`
+	// Any of "domain_name", "email", "ip_address", "multi_line", "phone_number",
+	// "physical_address", "postal_code", "unformatted_single_line".
+	TextDisplayHint Property1TextDisplayHint `json:"textDisplayHint"`
+	UpdatedAt       time.Time                `json:"updatedAt" format:"date-time"`
+	UpdatedUserID   string                   `json:"updatedUserId"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Description             respjson.Field
@@ -2345,6 +2364,7 @@ type Property1 struct {
 		ReferencedObjectType    respjson.Field
 		SensitiveDataCategories respjson.Field
 		ShowCurrencySymbol      respjson.Field
+		TextDisplayHint         respjson.Field
 		UpdatedAt               respjson.Field
 		UpdatedUserID           respjson.Field
 		ExtraFields             map[string]respjson.Field
@@ -2384,6 +2404,19 @@ const (
 	Property1NumberDisplayHintPercentage  Property1NumberDisplayHint = "percentage"
 	Property1NumberDisplayHintProbability Property1NumberDisplayHint = "probability"
 	Property1NumberDisplayHintUnformatted Property1NumberDisplayHint = "unformatted"
+)
+
+type Property1TextDisplayHint string
+
+const (
+	Property1TextDisplayHintDomainName            Property1TextDisplayHint = "domain_name"
+	Property1TextDisplayHintEmail                 Property1TextDisplayHint = "email"
+	Property1TextDisplayHintIPAddress             Property1TextDisplayHint = "ip_address"
+	Property1TextDisplayHintMultiLine             Property1TextDisplayHint = "multi_line"
+	Property1TextDisplayHintPhoneNumber           Property1TextDisplayHint = "phone_number"
+	Property1TextDisplayHintPhysicalAddress       Property1TextDisplayHint = "physical_address"
+	Property1TextDisplayHintPostalCode            Property1TextDisplayHint = "postal_code"
+	Property1TextDisplayHintUnformattedSingleLine Property1TextDisplayHint = "unformatted_single_line"
 )
 
 type PropertyDefinition struct {

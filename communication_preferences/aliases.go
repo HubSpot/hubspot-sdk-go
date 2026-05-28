@@ -392,6 +392,37 @@ const PropertyNumberDisplayHintProbability = shared.PropertyNumberDisplayHintPro
 // Equals "unformatted"
 const PropertyNumberDisplayHintUnformatted = shared.PropertyNumberDisplayHintUnformatted
 
+// Hint for how the text is displayed and validated in HubSpot's UI. Can be:
+// "unformatted_single_line", "multi_line", "email", "phone_number", "domain_name",
+// "ip_address", "physical_address", or "postal_code".
+//
+// This is an alias to an internal type.
+type PropertyTextDisplayHint = shared.PropertyTextDisplayHint
+
+// Equals "domain_name"
+const PropertyTextDisplayHintDomainName = shared.PropertyTextDisplayHintDomainName
+
+// Equals "email"
+const PropertyTextDisplayHintEmail = shared.PropertyTextDisplayHintEmail
+
+// Equals "ip_address"
+const PropertyTextDisplayHintIPAddress = shared.PropertyTextDisplayHintIPAddress
+
+// Equals "multi_line"
+const PropertyTextDisplayHintMultiLine = shared.PropertyTextDisplayHintMultiLine
+
+// Equals "phone_number"
+const PropertyTextDisplayHintPhoneNumber = shared.PropertyTextDisplayHintPhoneNumber
+
+// Equals "physical_address"
+const PropertyTextDisplayHintPhysicalAddress = shared.PropertyTextDisplayHintPhysicalAddress
+
+// Equals "postal_code"
+const PropertyTextDisplayHintPostalCode = shared.PropertyTextDisplayHintPostalCode
+
+// Equals "unformatted_single_line"
+const PropertyTextDisplayHintUnformattedSingleLine = shared.PropertyTextDisplayHintUnformattedSingleLine
+
 // This is an alias to an internal type.
 type PropertyCreateParam = shared.PropertyCreateParam
 
@@ -490,6 +521,33 @@ const PropertyCreateNumberDisplayHintProbability = shared.PropertyCreateNumberDi
 
 // Equals "unformatted"
 const PropertyCreateNumberDisplayHintUnformatted = shared.PropertyCreateNumberDisplayHintUnformatted
+
+// This is an alias to an internal type.
+type PropertyCreateTextDisplayHint = shared.PropertyCreateTextDisplayHint
+
+// Equals "domain_name"
+const PropertyCreateTextDisplayHintDomainName = shared.PropertyCreateTextDisplayHintDomainName
+
+// Equals "email"
+const PropertyCreateTextDisplayHintEmail = shared.PropertyCreateTextDisplayHintEmail
+
+// Equals "ip_address"
+const PropertyCreateTextDisplayHintIPAddress = shared.PropertyCreateTextDisplayHintIPAddress
+
+// Equals "multi_line"
+const PropertyCreateTextDisplayHintMultiLine = shared.PropertyCreateTextDisplayHintMultiLine
+
+// Equals "phone_number"
+const PropertyCreateTextDisplayHintPhoneNumber = shared.PropertyCreateTextDisplayHintPhoneNumber
+
+// Equals "physical_address"
+const PropertyCreateTextDisplayHintPhysicalAddress = shared.PropertyCreateTextDisplayHintPhysicalAddress
+
+// Equals "postal_code"
+const PropertyCreateTextDisplayHintPostalCode = shared.PropertyCreateTextDisplayHintPostalCode
+
+// Equals "unformatted_single_line"
+const PropertyCreateTextDisplayHintUnformattedSingleLine = shared.PropertyCreateTextDisplayHintUnformattedSingleLine
 
 // This is an alias to an internal type.
 type PropertyGroup = shared.PropertyGroup

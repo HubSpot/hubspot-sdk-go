@@ -30,7 +30,7 @@ func TestSubscriptionNew(t *testing.T) {
 	)
 	_, err := client.WebhooksJournal.Subscriptions.New(context.TODO(), webhooks_journal.SubscriptionNewParams{
 		SubscriptionUpsertRequest: shared.SubscriptionUpsertRequestUnionParam{
-			OfObjectSubscriptionUpsertRequest: &shared.ObjectSubscriptionUpsertRequestParam{
+			OfObject: &shared.ObjectSubscriptionUpsertRequestParam{
 				Actions:          []string{"CREATE"},
 				ObjectIDs:        []int64{0},
 				ObjectTypeID:     "objectTypeId",

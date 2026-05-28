@@ -498,90 +498,96 @@ type PagesPage struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language PagesPageLanguage `json:"language" api:"required"`
 	// A structure detailing the layout sections of the page.
 	LayoutSections map[string]LayoutSection `json:"layoutSections" api:"required"`
@@ -871,6 +877,8 @@ const (
 	PagesPageLanguageAz     PagesPageLanguage = "az"
 	PagesPageLanguageAzAz   PagesPageLanguage = "az-az"
 	PagesPageLanguageBa     PagesPageLanguage = "ba"
+	PagesPageLanguageBal    PagesPageLanguage = "bal"
+	PagesPageLanguageBalPk  PagesPageLanguage = "bal-pk"
 	PagesPageLanguageBas    PagesPageLanguage = "bas"
 	PagesPageLanguageBasCm  PagesPageLanguage = "bas-cm"
 	PagesPageLanguageBe     PagesPageLanguage = "be"
@@ -886,6 +894,8 @@ const (
 	PagesPageLanguageBho    PagesPageLanguage = "bho"
 	PagesPageLanguageBhoIn  PagesPageLanguage = "bho-in"
 	PagesPageLanguageBi     PagesPageLanguage = "bi"
+	PagesPageLanguageBlo    PagesPageLanguage = "blo"
+	PagesPageLanguageBloBj  PagesPageLanguage = "blo-bj"
 	PagesPageLanguageBm     PagesPageLanguage = "bm"
 	PagesPageLanguageBmMl   PagesPageLanguage = "bm-ml"
 	PagesPageLanguageBn     PagesPageLanguage = "bn"
@@ -924,6 +934,8 @@ const (
 	PagesPageLanguageCr     PagesPageLanguage = "cr"
 	PagesPageLanguageCs     PagesPageLanguage = "cs"
 	PagesPageLanguageCsCz   PagesPageLanguage = "cs-cz"
+	PagesPageLanguageCsw    PagesPageLanguage = "csw"
+	PagesPageLanguageCswCa  PagesPageLanguage = "csw-ca"
 	PagesPageLanguageCu     PagesPageLanguage = "cu"
 	PagesPageLanguageCuRu   PagesPageLanguage = "cu-ru"
 	PagesPageLanguageCv     PagesPageLanguage = "cv"
@@ -989,6 +1001,7 @@ const (
 	PagesPageLanguageEnCn   PagesPageLanguage = "en-cn"
 	PagesPageLanguageEnCx   PagesPageLanguage = "en-cx"
 	PagesPageLanguageEnCy   PagesPageLanguage = "en-cy"
+	PagesPageLanguageEnCz   PagesPageLanguage = "en-cz"
 	PagesPageLanguageEnDe   PagesPageLanguage = "en-de"
 	PagesPageLanguageEnDg   PagesPageLanguage = "en-dg"
 	PagesPageLanguageEnDk   PagesPageLanguage = "en-dk"
@@ -1008,15 +1021,18 @@ const (
 	PagesPageLanguageEnGh   PagesPageLanguage = "en-gh"
 	PagesPageLanguageEnGi   PagesPageLanguage = "en-gi"
 	PagesPageLanguageEnGm   PagesPageLanguage = "en-gm"
+	PagesPageLanguageEnGs   PagesPageLanguage = "en-gs"
 	PagesPageLanguageEnGu   PagesPageLanguage = "en-gu"
 	PagesPageLanguageEnGy   PagesPageLanguage = "en-gy"
 	PagesPageLanguageEnHk   PagesPageLanguage = "en-hk"
+	PagesPageLanguageEnHu   PagesPageLanguage = "en-hu"
 	PagesPageLanguageEnID   PagesPageLanguage = "en-id"
 	PagesPageLanguageEnIe   PagesPageLanguage = "en-ie"
 	PagesPageLanguageEnIl   PagesPageLanguage = "en-il"
 	PagesPageLanguageEnIm   PagesPageLanguage = "en-im"
 	PagesPageLanguageEnIn   PagesPageLanguage = "en-in"
 	PagesPageLanguageEnIo   PagesPageLanguage = "en-io"
+	PagesPageLanguageEnIt   PagesPageLanguage = "en-it"
 	PagesPageLanguageEnJe   PagesPageLanguage = "en-je"
 	PagesPageLanguageEnJm   PagesPageLanguage = "en-jm"
 	PagesPageLanguageEnKe   PagesPageLanguage = "en-ke"
@@ -1042,16 +1058,19 @@ const (
 	PagesPageLanguageEnNf   PagesPageLanguage = "en-nf"
 	PagesPageLanguageEnNg   PagesPageLanguage = "en-ng"
 	PagesPageLanguageEnNl   PagesPageLanguage = "en-nl"
+	PagesPageLanguageEnNo   PagesPageLanguage = "en-no"
 	PagesPageLanguageEnNr   PagesPageLanguage = "en-nr"
 	PagesPageLanguageEnNu   PagesPageLanguage = "en-nu"
 	PagesPageLanguageEnNz   PagesPageLanguage = "en-nz"
 	PagesPageLanguageEnPg   PagesPageLanguage = "en-pg"
 	PagesPageLanguageEnPh   PagesPageLanguage = "en-ph"
 	PagesPageLanguageEnPk   PagesPageLanguage = "en-pk"
+	PagesPageLanguageEnPl   PagesPageLanguage = "en-pl"
 	PagesPageLanguageEnPn   PagesPageLanguage = "en-pn"
 	PagesPageLanguageEnPr   PagesPageLanguage = "en-pr"
 	PagesPageLanguageEnPt   PagesPageLanguage = "en-pt"
 	PagesPageLanguageEnPw   PagesPageLanguage = "en-pw"
+	PagesPageLanguageEnRo   PagesPageLanguage = "en-ro"
 	PagesPageLanguageEnRw   PagesPageLanguage = "en-rw"
 	PagesPageLanguageEnSb   PagesPageLanguage = "en-sb"
 	PagesPageLanguageEnSc   PagesPageLanguage = "en-sc"
@@ -1060,6 +1079,7 @@ const (
 	PagesPageLanguageEnSg   PagesPageLanguage = "en-sg"
 	PagesPageLanguageEnSh   PagesPageLanguage = "en-sh"
 	PagesPageLanguageEnSi   PagesPageLanguage = "en-si"
+	PagesPageLanguageEnSk   PagesPageLanguage = "en-sk"
 	PagesPageLanguageEnSl   PagesPageLanguage = "en-sl"
 	PagesPageLanguageEnSS   PagesPageLanguage = "en-ss"
 	PagesPageLanguageEnSx   PagesPageLanguage = "en-sx"
@@ -1201,6 +1221,8 @@ const (
 	PagesPageLanguageGa     PagesPageLanguage = "ga"
 	PagesPageLanguageGaGB   PagesPageLanguage = "ga-gb"
 	PagesPageLanguageGaIe   PagesPageLanguage = "ga-ie"
+	PagesPageLanguageGaa    PagesPageLanguage = "gaa"
+	PagesPageLanguageGaaGh  PagesPageLanguage = "gaa-gh"
 	PagesPageLanguageGd     PagesPageLanguage = "gd"
 	PagesPageLanguageGdGB   PagesPageLanguage = "gd-gb"
 	PagesPageLanguageGl     PagesPageLanguage = "gl"
@@ -1234,6 +1256,7 @@ const (
 	PagesPageLanguageHsb    PagesPageLanguage = "hsb"
 	PagesPageLanguageHsbDe  PagesPageLanguage = "hsb-de"
 	PagesPageLanguageHt     PagesPageLanguage = "ht"
+	PagesPageLanguageHtHt   PagesPageLanguage = "ht-ht"
 	PagesPageLanguageHu     PagesPageLanguage = "hu"
 	PagesPageLanguageHuHu   PagesPageLanguage = "hu-hu"
 	PagesPageLanguageHy     PagesPageLanguage = "hy"
@@ -1244,6 +1267,7 @@ const (
 	PagesPageLanguageID     PagesPageLanguage = "id"
 	PagesPageLanguageIDID   PagesPageLanguage = "id-id"
 	PagesPageLanguageIe     PagesPageLanguage = "ie"
+	PagesPageLanguageIeEe   PagesPageLanguage = "ie-ee"
 	PagesPageLanguageIg     PagesPageLanguage = "ig"
 	PagesPageLanguageIgNg   PagesPageLanguage = "ig-ng"
 	PagesPageLanguageIi     PagesPageLanguage = "ii"
@@ -1299,6 +1323,7 @@ const (
 	PagesPageLanguageKn     PagesPageLanguage = "kn"
 	PagesPageLanguageKnIn   PagesPageLanguage = "kn-in"
 	PagesPageLanguageKo     PagesPageLanguage = "ko"
+	PagesPageLanguageKoCn   PagesPageLanguage = "ko-cn"
 	PagesPageLanguageKoKp   PagesPageLanguage = "ko-kp"
 	PagesPageLanguageKoKr   PagesPageLanguage = "ko-kr"
 	PagesPageLanguageKok    PagesPageLanguage = "kok"
@@ -1317,6 +1342,8 @@ const (
 	PagesPageLanguageKv     PagesPageLanguage = "kv"
 	PagesPageLanguageKw     PagesPageLanguage = "kw"
 	PagesPageLanguageKwGB   PagesPageLanguage = "kw-gb"
+	PagesPageLanguageKxv    PagesPageLanguage = "kxv"
+	PagesPageLanguageKxvIn  PagesPageLanguage = "kxv-in"
 	PagesPageLanguageKy     PagesPageLanguage = "ky"
 	PagesPageLanguageKyKg   PagesPageLanguage = "ky-kg"
 	PagesPageLanguageLa     PagesPageLanguage = "la"
@@ -1327,8 +1354,12 @@ const (
 	PagesPageLanguageLg     PagesPageLanguage = "lg"
 	PagesPageLanguageLgUg   PagesPageLanguage = "lg-ug"
 	PagesPageLanguageLi     PagesPageLanguage = "li"
+	PagesPageLanguageLij    PagesPageLanguage = "lij"
+	PagesPageLanguageLijIt  PagesPageLanguage = "lij-it"
 	PagesPageLanguageLkt    PagesPageLanguage = "lkt"
 	PagesPageLanguageLktUs  PagesPageLanguage = "lkt-us"
+	PagesPageLanguageLmo    PagesPageLanguage = "lmo"
+	PagesPageLanguageLmoIt  PagesPageLanguage = "lmo-it"
 	PagesPageLanguageLn     PagesPageLanguage = "ln"
 	PagesPageLanguageLnAo   PagesPageLanguage = "ln-ao"
 	PagesPageLanguageLnCd   PagesPageLanguage = "ln-cd"
@@ -1425,7 +1456,11 @@ const (
 	PagesPageLanguageNnhCm  PagesPageLanguage = "nnh-cm"
 	PagesPageLanguageNo     PagesPageLanguage = "no"
 	PagesPageLanguageNoNo   PagesPageLanguage = "no-no"
+	PagesPageLanguageNqo    PagesPageLanguage = "nqo"
+	PagesPageLanguageNqoGn  PagesPageLanguage = "nqo-gn"
 	PagesPageLanguageNr     PagesPageLanguage = "nr"
+	PagesPageLanguageNso    PagesPageLanguage = "nso"
+	PagesPageLanguageNsoZa  PagesPageLanguage = "nso-za"
 	PagesPageLanguageNus    PagesPageLanguage = "nus"
 	PagesPageLanguageNusSS  PagesPageLanguage = "nus-ss"
 	PagesPageLanguageNv     PagesPageLanguage = "nv"
@@ -1555,6 +1590,8 @@ const (
 	PagesPageLanguageSrXk   PagesPageLanguage = "sr-xk"
 	PagesPageLanguageSS     PagesPageLanguage = "ss"
 	PagesPageLanguageSt     PagesPageLanguage = "st"
+	PagesPageLanguageStLs   PagesPageLanguage = "st-ls"
+	PagesPageLanguageStZa   PagesPageLanguage = "st-za"
 	PagesPageLanguageSu     PagesPageLanguage = "su"
 	PagesPageLanguageSuID   PagesPageLanguage = "su-id"
 	PagesPageLanguageSv     PagesPageLanguage = "sv"
@@ -1567,6 +1604,11 @@ const (
 	PagesPageLanguageSwTz   PagesPageLanguage = "sw-tz"
 	PagesPageLanguageSwUg   PagesPageLanguage = "sw-ug"
 	PagesPageLanguageSy     PagesPageLanguage = "sy"
+	PagesPageLanguageSyr    PagesPageLanguage = "syr"
+	PagesPageLanguageSyrIq  PagesPageLanguage = "syr-iq"
+	PagesPageLanguageSyrSy  PagesPageLanguage = "syr-sy"
+	PagesPageLanguageSzl    PagesPageLanguage = "szl"
+	PagesPageLanguageSzlPl  PagesPageLanguage = "szl-pl"
 	PagesPageLanguageTa     PagesPageLanguage = "ta"
 	PagesPageLanguageTaIn   PagesPageLanguage = "ta-in"
 	PagesPageLanguageTaLk   PagesPageLanguage = "ta-lk"
@@ -1588,6 +1630,8 @@ const (
 	PagesPageLanguageTkTm   PagesPageLanguage = "tk-tm"
 	PagesPageLanguageTl     PagesPageLanguage = "tl"
 	PagesPageLanguageTn     PagesPageLanguage = "tn"
+	PagesPageLanguageTnBw   PagesPageLanguage = "tn-bw"
+	PagesPageLanguageTnZa   PagesPageLanguage = "tn-za"
 	PagesPageLanguageTo     PagesPageLanguage = "to"
 	PagesPageLanguageToTo   PagesPageLanguage = "to-to"
 	PagesPageLanguageTok    PagesPageLanguage = "tok"
@@ -1617,8 +1661,12 @@ const (
 	PagesPageLanguageVai    PagesPageLanguage = "vai"
 	PagesPageLanguageVaiLr  PagesPageLanguage = "vai-lr"
 	PagesPageLanguageVe     PagesPageLanguage = "ve"
+	PagesPageLanguageVec    PagesPageLanguage = "vec"
+	PagesPageLanguageVecIt  PagesPageLanguage = "vec-it"
 	PagesPageLanguageVi     PagesPageLanguage = "vi"
 	PagesPageLanguageViVn   PagesPageLanguage = "vi-vn"
+	PagesPageLanguageVmw    PagesPageLanguage = "vmw"
+	PagesPageLanguageVmwMz  PagesPageLanguage = "vmw-mz"
 	PagesPageLanguageVo     PagesPageLanguage = "vo"
 	PagesPageLanguageVo001  PagesPageLanguage = "vo-001"
 	PagesPageLanguageVun    PagesPageLanguage = "vun"
@@ -1630,12 +1678,15 @@ const (
 	PagesPageLanguageWoSn   PagesPageLanguage = "wo-sn"
 	PagesPageLanguageXh     PagesPageLanguage = "xh"
 	PagesPageLanguageXhZa   PagesPageLanguage = "xh-za"
+	PagesPageLanguageXnr    PagesPageLanguage = "xnr"
+	PagesPageLanguageXnrIn  PagesPageLanguage = "xnr-in"
 	PagesPageLanguageXog    PagesPageLanguage = "xog"
 	PagesPageLanguageXogUg  PagesPageLanguage = "xog-ug"
 	PagesPageLanguageYav    PagesPageLanguage = "yav"
 	PagesPageLanguageYavCm  PagesPageLanguage = "yav-cm"
 	PagesPageLanguageYi     PagesPageLanguage = "yi"
 	PagesPageLanguageYi001  PagesPageLanguage = "yi-001"
+	PagesPageLanguageYiUa   PagesPageLanguage = "yi-ua"
 	PagesPageLanguageYo     PagesPageLanguage = "yo"
 	PagesPageLanguageYoBj   PagesPageLanguage = "yo-bj"
 	PagesPageLanguageYoNg   PagesPageLanguage = "yo-ng"
@@ -1646,7 +1697,9 @@ const (
 	PagesPageLanguageYue    PagesPageLanguage = "yue"
 	PagesPageLanguageYueCn  PagesPageLanguage = "yue-cn"
 	PagesPageLanguageYueHk  PagesPageLanguage = "yue-hk"
+	PagesPageLanguageYueMo  PagesPageLanguage = "yue-mo"
 	PagesPageLanguageZa     PagesPageLanguage = "za"
+	PagesPageLanguageZaCn   PagesPageLanguage = "za-cn"
 	PagesPageLanguageZgh    PagesPageLanguage = "zgh"
 	PagesPageLanguageZghMa  PagesPageLanguage = "zgh-ma"
 	PagesPageLanguageZh     PagesPageLanguage = "zh"
@@ -1655,6 +1708,7 @@ const (
 	PagesPageLanguageZhHant PagesPageLanguage = "zh-hant"
 	PagesPageLanguageZhHk   PagesPageLanguage = "zh-hk"
 	PagesPageLanguageZhMo   PagesPageLanguage = "zh-mo"
+	PagesPageLanguageZhMy   PagesPageLanguage = "zh-my"
 	PagesPageLanguageZhSg   PagesPageLanguage = "zh-sg"
 	PagesPageLanguageZhTw   PagesPageLanguage = "zh-tw"
 	PagesPageLanguageZu     PagesPageLanguage = "zu"
@@ -1764,90 +1818,96 @@ type PagesPageParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language PagesPageLanguage `json:"language,omitzero" api:"required"`
 	// A structure detailing the layout sections of the page.
 	LayoutSections map[string]LayoutSectionParam `json:"layoutSections,omitzero" api:"required"`
