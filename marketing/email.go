@@ -432,90 +432,96 @@ type EmailCreateRequestParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language EmailCreateRequestLanguage `json:"language,omitzero"`
 	RssData  PublicRssEmailDetailsParam `json:"rssData,omitzero"`
 	// The email state.
@@ -634,6 +640,8 @@ const (
 	EmailCreateRequestLanguageAz     EmailCreateRequestLanguage = "az"
 	EmailCreateRequestLanguageAzAz   EmailCreateRequestLanguage = "az-az"
 	EmailCreateRequestLanguageBa     EmailCreateRequestLanguage = "ba"
+	EmailCreateRequestLanguageBal    EmailCreateRequestLanguage = "bal"
+	EmailCreateRequestLanguageBalPk  EmailCreateRequestLanguage = "bal-pk"
 	EmailCreateRequestLanguageBas    EmailCreateRequestLanguage = "bas"
 	EmailCreateRequestLanguageBasCm  EmailCreateRequestLanguage = "bas-cm"
 	EmailCreateRequestLanguageBe     EmailCreateRequestLanguage = "be"
@@ -649,6 +657,8 @@ const (
 	EmailCreateRequestLanguageBho    EmailCreateRequestLanguage = "bho"
 	EmailCreateRequestLanguageBhoIn  EmailCreateRequestLanguage = "bho-in"
 	EmailCreateRequestLanguageBi     EmailCreateRequestLanguage = "bi"
+	EmailCreateRequestLanguageBlo    EmailCreateRequestLanguage = "blo"
+	EmailCreateRequestLanguageBloBj  EmailCreateRequestLanguage = "blo-bj"
 	EmailCreateRequestLanguageBm     EmailCreateRequestLanguage = "bm"
 	EmailCreateRequestLanguageBmMl   EmailCreateRequestLanguage = "bm-ml"
 	EmailCreateRequestLanguageBn     EmailCreateRequestLanguage = "bn"
@@ -687,6 +697,8 @@ const (
 	EmailCreateRequestLanguageCr     EmailCreateRequestLanguage = "cr"
 	EmailCreateRequestLanguageCs     EmailCreateRequestLanguage = "cs"
 	EmailCreateRequestLanguageCsCz   EmailCreateRequestLanguage = "cs-cz"
+	EmailCreateRequestLanguageCsw    EmailCreateRequestLanguage = "csw"
+	EmailCreateRequestLanguageCswCa  EmailCreateRequestLanguage = "csw-ca"
 	EmailCreateRequestLanguageCu     EmailCreateRequestLanguage = "cu"
 	EmailCreateRequestLanguageCuRu   EmailCreateRequestLanguage = "cu-ru"
 	EmailCreateRequestLanguageCv     EmailCreateRequestLanguage = "cv"
@@ -752,6 +764,7 @@ const (
 	EmailCreateRequestLanguageEnCn   EmailCreateRequestLanguage = "en-cn"
 	EmailCreateRequestLanguageEnCx   EmailCreateRequestLanguage = "en-cx"
 	EmailCreateRequestLanguageEnCy   EmailCreateRequestLanguage = "en-cy"
+	EmailCreateRequestLanguageEnCz   EmailCreateRequestLanguage = "en-cz"
 	EmailCreateRequestLanguageEnDe   EmailCreateRequestLanguage = "en-de"
 	EmailCreateRequestLanguageEnDg   EmailCreateRequestLanguage = "en-dg"
 	EmailCreateRequestLanguageEnDk   EmailCreateRequestLanguage = "en-dk"
@@ -771,15 +784,18 @@ const (
 	EmailCreateRequestLanguageEnGh   EmailCreateRequestLanguage = "en-gh"
 	EmailCreateRequestLanguageEnGi   EmailCreateRequestLanguage = "en-gi"
 	EmailCreateRequestLanguageEnGm   EmailCreateRequestLanguage = "en-gm"
+	EmailCreateRequestLanguageEnGs   EmailCreateRequestLanguage = "en-gs"
 	EmailCreateRequestLanguageEnGu   EmailCreateRequestLanguage = "en-gu"
 	EmailCreateRequestLanguageEnGy   EmailCreateRequestLanguage = "en-gy"
 	EmailCreateRequestLanguageEnHk   EmailCreateRequestLanguage = "en-hk"
+	EmailCreateRequestLanguageEnHu   EmailCreateRequestLanguage = "en-hu"
 	EmailCreateRequestLanguageEnID   EmailCreateRequestLanguage = "en-id"
 	EmailCreateRequestLanguageEnIe   EmailCreateRequestLanguage = "en-ie"
 	EmailCreateRequestLanguageEnIl   EmailCreateRequestLanguage = "en-il"
 	EmailCreateRequestLanguageEnIm   EmailCreateRequestLanguage = "en-im"
 	EmailCreateRequestLanguageEnIn   EmailCreateRequestLanguage = "en-in"
 	EmailCreateRequestLanguageEnIo   EmailCreateRequestLanguage = "en-io"
+	EmailCreateRequestLanguageEnIt   EmailCreateRequestLanguage = "en-it"
 	EmailCreateRequestLanguageEnJe   EmailCreateRequestLanguage = "en-je"
 	EmailCreateRequestLanguageEnJm   EmailCreateRequestLanguage = "en-jm"
 	EmailCreateRequestLanguageEnKe   EmailCreateRequestLanguage = "en-ke"
@@ -805,16 +821,19 @@ const (
 	EmailCreateRequestLanguageEnNf   EmailCreateRequestLanguage = "en-nf"
 	EmailCreateRequestLanguageEnNg   EmailCreateRequestLanguage = "en-ng"
 	EmailCreateRequestLanguageEnNl   EmailCreateRequestLanguage = "en-nl"
+	EmailCreateRequestLanguageEnNo   EmailCreateRequestLanguage = "en-no"
 	EmailCreateRequestLanguageEnNr   EmailCreateRequestLanguage = "en-nr"
 	EmailCreateRequestLanguageEnNu   EmailCreateRequestLanguage = "en-nu"
 	EmailCreateRequestLanguageEnNz   EmailCreateRequestLanguage = "en-nz"
 	EmailCreateRequestLanguageEnPg   EmailCreateRequestLanguage = "en-pg"
 	EmailCreateRequestLanguageEnPh   EmailCreateRequestLanguage = "en-ph"
 	EmailCreateRequestLanguageEnPk   EmailCreateRequestLanguage = "en-pk"
+	EmailCreateRequestLanguageEnPl   EmailCreateRequestLanguage = "en-pl"
 	EmailCreateRequestLanguageEnPn   EmailCreateRequestLanguage = "en-pn"
 	EmailCreateRequestLanguageEnPr   EmailCreateRequestLanguage = "en-pr"
 	EmailCreateRequestLanguageEnPt   EmailCreateRequestLanguage = "en-pt"
 	EmailCreateRequestLanguageEnPw   EmailCreateRequestLanguage = "en-pw"
+	EmailCreateRequestLanguageEnRo   EmailCreateRequestLanguage = "en-ro"
 	EmailCreateRequestLanguageEnRw   EmailCreateRequestLanguage = "en-rw"
 	EmailCreateRequestLanguageEnSb   EmailCreateRequestLanguage = "en-sb"
 	EmailCreateRequestLanguageEnSc   EmailCreateRequestLanguage = "en-sc"
@@ -823,6 +842,7 @@ const (
 	EmailCreateRequestLanguageEnSg   EmailCreateRequestLanguage = "en-sg"
 	EmailCreateRequestLanguageEnSh   EmailCreateRequestLanguage = "en-sh"
 	EmailCreateRequestLanguageEnSi   EmailCreateRequestLanguage = "en-si"
+	EmailCreateRequestLanguageEnSk   EmailCreateRequestLanguage = "en-sk"
 	EmailCreateRequestLanguageEnSl   EmailCreateRequestLanguage = "en-sl"
 	EmailCreateRequestLanguageEnSS   EmailCreateRequestLanguage = "en-ss"
 	EmailCreateRequestLanguageEnSx   EmailCreateRequestLanguage = "en-sx"
@@ -964,6 +984,8 @@ const (
 	EmailCreateRequestLanguageGa     EmailCreateRequestLanguage = "ga"
 	EmailCreateRequestLanguageGaGB   EmailCreateRequestLanguage = "ga-gb"
 	EmailCreateRequestLanguageGaIe   EmailCreateRequestLanguage = "ga-ie"
+	EmailCreateRequestLanguageGaa    EmailCreateRequestLanguage = "gaa"
+	EmailCreateRequestLanguageGaaGh  EmailCreateRequestLanguage = "gaa-gh"
 	EmailCreateRequestLanguageGd     EmailCreateRequestLanguage = "gd"
 	EmailCreateRequestLanguageGdGB   EmailCreateRequestLanguage = "gd-gb"
 	EmailCreateRequestLanguageGl     EmailCreateRequestLanguage = "gl"
@@ -997,6 +1019,7 @@ const (
 	EmailCreateRequestLanguageHsb    EmailCreateRequestLanguage = "hsb"
 	EmailCreateRequestLanguageHsbDe  EmailCreateRequestLanguage = "hsb-de"
 	EmailCreateRequestLanguageHt     EmailCreateRequestLanguage = "ht"
+	EmailCreateRequestLanguageHtHt   EmailCreateRequestLanguage = "ht-ht"
 	EmailCreateRequestLanguageHu     EmailCreateRequestLanguage = "hu"
 	EmailCreateRequestLanguageHuHu   EmailCreateRequestLanguage = "hu-hu"
 	EmailCreateRequestLanguageHy     EmailCreateRequestLanguage = "hy"
@@ -1007,6 +1030,7 @@ const (
 	EmailCreateRequestLanguageID     EmailCreateRequestLanguage = "id"
 	EmailCreateRequestLanguageIDID   EmailCreateRequestLanguage = "id-id"
 	EmailCreateRequestLanguageIe     EmailCreateRequestLanguage = "ie"
+	EmailCreateRequestLanguageIeEe   EmailCreateRequestLanguage = "ie-ee"
 	EmailCreateRequestLanguageIg     EmailCreateRequestLanguage = "ig"
 	EmailCreateRequestLanguageIgNg   EmailCreateRequestLanguage = "ig-ng"
 	EmailCreateRequestLanguageIi     EmailCreateRequestLanguage = "ii"
@@ -1062,6 +1086,7 @@ const (
 	EmailCreateRequestLanguageKn     EmailCreateRequestLanguage = "kn"
 	EmailCreateRequestLanguageKnIn   EmailCreateRequestLanguage = "kn-in"
 	EmailCreateRequestLanguageKo     EmailCreateRequestLanguage = "ko"
+	EmailCreateRequestLanguageKoCn   EmailCreateRequestLanguage = "ko-cn"
 	EmailCreateRequestLanguageKoKp   EmailCreateRequestLanguage = "ko-kp"
 	EmailCreateRequestLanguageKoKr   EmailCreateRequestLanguage = "ko-kr"
 	EmailCreateRequestLanguageKok    EmailCreateRequestLanguage = "kok"
@@ -1080,6 +1105,8 @@ const (
 	EmailCreateRequestLanguageKv     EmailCreateRequestLanguage = "kv"
 	EmailCreateRequestLanguageKw     EmailCreateRequestLanguage = "kw"
 	EmailCreateRequestLanguageKwGB   EmailCreateRequestLanguage = "kw-gb"
+	EmailCreateRequestLanguageKxv    EmailCreateRequestLanguage = "kxv"
+	EmailCreateRequestLanguageKxvIn  EmailCreateRequestLanguage = "kxv-in"
 	EmailCreateRequestLanguageKy     EmailCreateRequestLanguage = "ky"
 	EmailCreateRequestLanguageKyKg   EmailCreateRequestLanguage = "ky-kg"
 	EmailCreateRequestLanguageLa     EmailCreateRequestLanguage = "la"
@@ -1090,8 +1117,12 @@ const (
 	EmailCreateRequestLanguageLg     EmailCreateRequestLanguage = "lg"
 	EmailCreateRequestLanguageLgUg   EmailCreateRequestLanguage = "lg-ug"
 	EmailCreateRequestLanguageLi     EmailCreateRequestLanguage = "li"
+	EmailCreateRequestLanguageLij    EmailCreateRequestLanguage = "lij"
+	EmailCreateRequestLanguageLijIt  EmailCreateRequestLanguage = "lij-it"
 	EmailCreateRequestLanguageLkt    EmailCreateRequestLanguage = "lkt"
 	EmailCreateRequestLanguageLktUs  EmailCreateRequestLanguage = "lkt-us"
+	EmailCreateRequestLanguageLmo    EmailCreateRequestLanguage = "lmo"
+	EmailCreateRequestLanguageLmoIt  EmailCreateRequestLanguage = "lmo-it"
 	EmailCreateRequestLanguageLn     EmailCreateRequestLanguage = "ln"
 	EmailCreateRequestLanguageLnAo   EmailCreateRequestLanguage = "ln-ao"
 	EmailCreateRequestLanguageLnCd   EmailCreateRequestLanguage = "ln-cd"
@@ -1188,7 +1219,11 @@ const (
 	EmailCreateRequestLanguageNnhCm  EmailCreateRequestLanguage = "nnh-cm"
 	EmailCreateRequestLanguageNo     EmailCreateRequestLanguage = "no"
 	EmailCreateRequestLanguageNoNo   EmailCreateRequestLanguage = "no-no"
+	EmailCreateRequestLanguageNqo    EmailCreateRequestLanguage = "nqo"
+	EmailCreateRequestLanguageNqoGn  EmailCreateRequestLanguage = "nqo-gn"
 	EmailCreateRequestLanguageNr     EmailCreateRequestLanguage = "nr"
+	EmailCreateRequestLanguageNso    EmailCreateRequestLanguage = "nso"
+	EmailCreateRequestLanguageNsoZa  EmailCreateRequestLanguage = "nso-za"
 	EmailCreateRequestLanguageNus    EmailCreateRequestLanguage = "nus"
 	EmailCreateRequestLanguageNusSS  EmailCreateRequestLanguage = "nus-ss"
 	EmailCreateRequestLanguageNv     EmailCreateRequestLanguage = "nv"
@@ -1318,6 +1353,8 @@ const (
 	EmailCreateRequestLanguageSrXk   EmailCreateRequestLanguage = "sr-xk"
 	EmailCreateRequestLanguageSS     EmailCreateRequestLanguage = "ss"
 	EmailCreateRequestLanguageSt     EmailCreateRequestLanguage = "st"
+	EmailCreateRequestLanguageStLs   EmailCreateRequestLanguage = "st-ls"
+	EmailCreateRequestLanguageStZa   EmailCreateRequestLanguage = "st-za"
 	EmailCreateRequestLanguageSu     EmailCreateRequestLanguage = "su"
 	EmailCreateRequestLanguageSuID   EmailCreateRequestLanguage = "su-id"
 	EmailCreateRequestLanguageSv     EmailCreateRequestLanguage = "sv"
@@ -1330,6 +1367,11 @@ const (
 	EmailCreateRequestLanguageSwTz   EmailCreateRequestLanguage = "sw-tz"
 	EmailCreateRequestLanguageSwUg   EmailCreateRequestLanguage = "sw-ug"
 	EmailCreateRequestLanguageSy     EmailCreateRequestLanguage = "sy"
+	EmailCreateRequestLanguageSyr    EmailCreateRequestLanguage = "syr"
+	EmailCreateRequestLanguageSyrIq  EmailCreateRequestLanguage = "syr-iq"
+	EmailCreateRequestLanguageSyrSy  EmailCreateRequestLanguage = "syr-sy"
+	EmailCreateRequestLanguageSzl    EmailCreateRequestLanguage = "szl"
+	EmailCreateRequestLanguageSzlPl  EmailCreateRequestLanguage = "szl-pl"
 	EmailCreateRequestLanguageTa     EmailCreateRequestLanguage = "ta"
 	EmailCreateRequestLanguageTaIn   EmailCreateRequestLanguage = "ta-in"
 	EmailCreateRequestLanguageTaLk   EmailCreateRequestLanguage = "ta-lk"
@@ -1351,6 +1393,8 @@ const (
 	EmailCreateRequestLanguageTkTm   EmailCreateRequestLanguage = "tk-tm"
 	EmailCreateRequestLanguageTl     EmailCreateRequestLanguage = "tl"
 	EmailCreateRequestLanguageTn     EmailCreateRequestLanguage = "tn"
+	EmailCreateRequestLanguageTnBw   EmailCreateRequestLanguage = "tn-bw"
+	EmailCreateRequestLanguageTnZa   EmailCreateRequestLanguage = "tn-za"
 	EmailCreateRequestLanguageTo     EmailCreateRequestLanguage = "to"
 	EmailCreateRequestLanguageToTo   EmailCreateRequestLanguage = "to-to"
 	EmailCreateRequestLanguageTok    EmailCreateRequestLanguage = "tok"
@@ -1380,8 +1424,12 @@ const (
 	EmailCreateRequestLanguageVai    EmailCreateRequestLanguage = "vai"
 	EmailCreateRequestLanguageVaiLr  EmailCreateRequestLanguage = "vai-lr"
 	EmailCreateRequestLanguageVe     EmailCreateRequestLanguage = "ve"
+	EmailCreateRequestLanguageVec    EmailCreateRequestLanguage = "vec"
+	EmailCreateRequestLanguageVecIt  EmailCreateRequestLanguage = "vec-it"
 	EmailCreateRequestLanguageVi     EmailCreateRequestLanguage = "vi"
 	EmailCreateRequestLanguageViVn   EmailCreateRequestLanguage = "vi-vn"
+	EmailCreateRequestLanguageVmw    EmailCreateRequestLanguage = "vmw"
+	EmailCreateRequestLanguageVmwMz  EmailCreateRequestLanguage = "vmw-mz"
 	EmailCreateRequestLanguageVo     EmailCreateRequestLanguage = "vo"
 	EmailCreateRequestLanguageVo001  EmailCreateRequestLanguage = "vo-001"
 	EmailCreateRequestLanguageVun    EmailCreateRequestLanguage = "vun"
@@ -1393,12 +1441,15 @@ const (
 	EmailCreateRequestLanguageWoSn   EmailCreateRequestLanguage = "wo-sn"
 	EmailCreateRequestLanguageXh     EmailCreateRequestLanguage = "xh"
 	EmailCreateRequestLanguageXhZa   EmailCreateRequestLanguage = "xh-za"
+	EmailCreateRequestLanguageXnr    EmailCreateRequestLanguage = "xnr"
+	EmailCreateRequestLanguageXnrIn  EmailCreateRequestLanguage = "xnr-in"
 	EmailCreateRequestLanguageXog    EmailCreateRequestLanguage = "xog"
 	EmailCreateRequestLanguageXogUg  EmailCreateRequestLanguage = "xog-ug"
 	EmailCreateRequestLanguageYav    EmailCreateRequestLanguage = "yav"
 	EmailCreateRequestLanguageYavCm  EmailCreateRequestLanguage = "yav-cm"
 	EmailCreateRequestLanguageYi     EmailCreateRequestLanguage = "yi"
 	EmailCreateRequestLanguageYi001  EmailCreateRequestLanguage = "yi-001"
+	EmailCreateRequestLanguageYiUa   EmailCreateRequestLanguage = "yi-ua"
 	EmailCreateRequestLanguageYo     EmailCreateRequestLanguage = "yo"
 	EmailCreateRequestLanguageYoBj   EmailCreateRequestLanguage = "yo-bj"
 	EmailCreateRequestLanguageYoNg   EmailCreateRequestLanguage = "yo-ng"
@@ -1409,7 +1460,9 @@ const (
 	EmailCreateRequestLanguageYue    EmailCreateRequestLanguage = "yue"
 	EmailCreateRequestLanguageYueCn  EmailCreateRequestLanguage = "yue-cn"
 	EmailCreateRequestLanguageYueHk  EmailCreateRequestLanguage = "yue-hk"
+	EmailCreateRequestLanguageYueMo  EmailCreateRequestLanguage = "yue-mo"
 	EmailCreateRequestLanguageZa     EmailCreateRequestLanguage = "za"
+	EmailCreateRequestLanguageZaCn   EmailCreateRequestLanguage = "za-cn"
 	EmailCreateRequestLanguageZgh    EmailCreateRequestLanguage = "zgh"
 	EmailCreateRequestLanguageZghMa  EmailCreateRequestLanguage = "zgh-ma"
 	EmailCreateRequestLanguageZh     EmailCreateRequestLanguage = "zh"
@@ -1418,6 +1471,7 @@ const (
 	EmailCreateRequestLanguageZhHant EmailCreateRequestLanguage = "zh-hant"
 	EmailCreateRequestLanguageZhHk   EmailCreateRequestLanguage = "zh-hk"
 	EmailCreateRequestLanguageZhMo   EmailCreateRequestLanguage = "zh-mo"
+	EmailCreateRequestLanguageZhMy   EmailCreateRequestLanguage = "zh-my"
 	EmailCreateRequestLanguageZhSg   EmailCreateRequestLanguage = "zh-sg"
 	EmailCreateRequestLanguageZhTw   EmailCreateRequestLanguage = "zh-tw"
 	EmailCreateRequestLanguageZu     EmailCreateRequestLanguage = "zu"
@@ -1622,90 +1676,96 @@ type EmailUpdateRequestParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language EmailUpdateRequestLanguage `json:"language,omitzero"`
 	RssData  PublicRssEmailDetailsParam `json:"rssData,omitzero"`
 	// The email state.
@@ -1824,6 +1884,8 @@ const (
 	EmailUpdateRequestLanguageAz     EmailUpdateRequestLanguage = "az"
 	EmailUpdateRequestLanguageAzAz   EmailUpdateRequestLanguage = "az-az"
 	EmailUpdateRequestLanguageBa     EmailUpdateRequestLanguage = "ba"
+	EmailUpdateRequestLanguageBal    EmailUpdateRequestLanguage = "bal"
+	EmailUpdateRequestLanguageBalPk  EmailUpdateRequestLanguage = "bal-pk"
 	EmailUpdateRequestLanguageBas    EmailUpdateRequestLanguage = "bas"
 	EmailUpdateRequestLanguageBasCm  EmailUpdateRequestLanguage = "bas-cm"
 	EmailUpdateRequestLanguageBe     EmailUpdateRequestLanguage = "be"
@@ -1839,6 +1901,8 @@ const (
 	EmailUpdateRequestLanguageBho    EmailUpdateRequestLanguage = "bho"
 	EmailUpdateRequestLanguageBhoIn  EmailUpdateRequestLanguage = "bho-in"
 	EmailUpdateRequestLanguageBi     EmailUpdateRequestLanguage = "bi"
+	EmailUpdateRequestLanguageBlo    EmailUpdateRequestLanguage = "blo"
+	EmailUpdateRequestLanguageBloBj  EmailUpdateRequestLanguage = "blo-bj"
 	EmailUpdateRequestLanguageBm     EmailUpdateRequestLanguage = "bm"
 	EmailUpdateRequestLanguageBmMl   EmailUpdateRequestLanguage = "bm-ml"
 	EmailUpdateRequestLanguageBn     EmailUpdateRequestLanguage = "bn"
@@ -1877,6 +1941,8 @@ const (
 	EmailUpdateRequestLanguageCr     EmailUpdateRequestLanguage = "cr"
 	EmailUpdateRequestLanguageCs     EmailUpdateRequestLanguage = "cs"
 	EmailUpdateRequestLanguageCsCz   EmailUpdateRequestLanguage = "cs-cz"
+	EmailUpdateRequestLanguageCsw    EmailUpdateRequestLanguage = "csw"
+	EmailUpdateRequestLanguageCswCa  EmailUpdateRequestLanguage = "csw-ca"
 	EmailUpdateRequestLanguageCu     EmailUpdateRequestLanguage = "cu"
 	EmailUpdateRequestLanguageCuRu   EmailUpdateRequestLanguage = "cu-ru"
 	EmailUpdateRequestLanguageCv     EmailUpdateRequestLanguage = "cv"
@@ -1942,6 +2008,7 @@ const (
 	EmailUpdateRequestLanguageEnCn   EmailUpdateRequestLanguage = "en-cn"
 	EmailUpdateRequestLanguageEnCx   EmailUpdateRequestLanguage = "en-cx"
 	EmailUpdateRequestLanguageEnCy   EmailUpdateRequestLanguage = "en-cy"
+	EmailUpdateRequestLanguageEnCz   EmailUpdateRequestLanguage = "en-cz"
 	EmailUpdateRequestLanguageEnDe   EmailUpdateRequestLanguage = "en-de"
 	EmailUpdateRequestLanguageEnDg   EmailUpdateRequestLanguage = "en-dg"
 	EmailUpdateRequestLanguageEnDk   EmailUpdateRequestLanguage = "en-dk"
@@ -1961,15 +2028,18 @@ const (
 	EmailUpdateRequestLanguageEnGh   EmailUpdateRequestLanguage = "en-gh"
 	EmailUpdateRequestLanguageEnGi   EmailUpdateRequestLanguage = "en-gi"
 	EmailUpdateRequestLanguageEnGm   EmailUpdateRequestLanguage = "en-gm"
+	EmailUpdateRequestLanguageEnGs   EmailUpdateRequestLanguage = "en-gs"
 	EmailUpdateRequestLanguageEnGu   EmailUpdateRequestLanguage = "en-gu"
 	EmailUpdateRequestLanguageEnGy   EmailUpdateRequestLanguage = "en-gy"
 	EmailUpdateRequestLanguageEnHk   EmailUpdateRequestLanguage = "en-hk"
+	EmailUpdateRequestLanguageEnHu   EmailUpdateRequestLanguage = "en-hu"
 	EmailUpdateRequestLanguageEnID   EmailUpdateRequestLanguage = "en-id"
 	EmailUpdateRequestLanguageEnIe   EmailUpdateRequestLanguage = "en-ie"
 	EmailUpdateRequestLanguageEnIl   EmailUpdateRequestLanguage = "en-il"
 	EmailUpdateRequestLanguageEnIm   EmailUpdateRequestLanguage = "en-im"
 	EmailUpdateRequestLanguageEnIn   EmailUpdateRequestLanguage = "en-in"
 	EmailUpdateRequestLanguageEnIo   EmailUpdateRequestLanguage = "en-io"
+	EmailUpdateRequestLanguageEnIt   EmailUpdateRequestLanguage = "en-it"
 	EmailUpdateRequestLanguageEnJe   EmailUpdateRequestLanguage = "en-je"
 	EmailUpdateRequestLanguageEnJm   EmailUpdateRequestLanguage = "en-jm"
 	EmailUpdateRequestLanguageEnKe   EmailUpdateRequestLanguage = "en-ke"
@@ -1995,16 +2065,19 @@ const (
 	EmailUpdateRequestLanguageEnNf   EmailUpdateRequestLanguage = "en-nf"
 	EmailUpdateRequestLanguageEnNg   EmailUpdateRequestLanguage = "en-ng"
 	EmailUpdateRequestLanguageEnNl   EmailUpdateRequestLanguage = "en-nl"
+	EmailUpdateRequestLanguageEnNo   EmailUpdateRequestLanguage = "en-no"
 	EmailUpdateRequestLanguageEnNr   EmailUpdateRequestLanguage = "en-nr"
 	EmailUpdateRequestLanguageEnNu   EmailUpdateRequestLanguage = "en-nu"
 	EmailUpdateRequestLanguageEnNz   EmailUpdateRequestLanguage = "en-nz"
 	EmailUpdateRequestLanguageEnPg   EmailUpdateRequestLanguage = "en-pg"
 	EmailUpdateRequestLanguageEnPh   EmailUpdateRequestLanguage = "en-ph"
 	EmailUpdateRequestLanguageEnPk   EmailUpdateRequestLanguage = "en-pk"
+	EmailUpdateRequestLanguageEnPl   EmailUpdateRequestLanguage = "en-pl"
 	EmailUpdateRequestLanguageEnPn   EmailUpdateRequestLanguage = "en-pn"
 	EmailUpdateRequestLanguageEnPr   EmailUpdateRequestLanguage = "en-pr"
 	EmailUpdateRequestLanguageEnPt   EmailUpdateRequestLanguage = "en-pt"
 	EmailUpdateRequestLanguageEnPw   EmailUpdateRequestLanguage = "en-pw"
+	EmailUpdateRequestLanguageEnRo   EmailUpdateRequestLanguage = "en-ro"
 	EmailUpdateRequestLanguageEnRw   EmailUpdateRequestLanguage = "en-rw"
 	EmailUpdateRequestLanguageEnSb   EmailUpdateRequestLanguage = "en-sb"
 	EmailUpdateRequestLanguageEnSc   EmailUpdateRequestLanguage = "en-sc"
@@ -2013,6 +2086,7 @@ const (
 	EmailUpdateRequestLanguageEnSg   EmailUpdateRequestLanguage = "en-sg"
 	EmailUpdateRequestLanguageEnSh   EmailUpdateRequestLanguage = "en-sh"
 	EmailUpdateRequestLanguageEnSi   EmailUpdateRequestLanguage = "en-si"
+	EmailUpdateRequestLanguageEnSk   EmailUpdateRequestLanguage = "en-sk"
 	EmailUpdateRequestLanguageEnSl   EmailUpdateRequestLanguage = "en-sl"
 	EmailUpdateRequestLanguageEnSS   EmailUpdateRequestLanguage = "en-ss"
 	EmailUpdateRequestLanguageEnSx   EmailUpdateRequestLanguage = "en-sx"
@@ -2154,6 +2228,8 @@ const (
 	EmailUpdateRequestLanguageGa     EmailUpdateRequestLanguage = "ga"
 	EmailUpdateRequestLanguageGaGB   EmailUpdateRequestLanguage = "ga-gb"
 	EmailUpdateRequestLanguageGaIe   EmailUpdateRequestLanguage = "ga-ie"
+	EmailUpdateRequestLanguageGaa    EmailUpdateRequestLanguage = "gaa"
+	EmailUpdateRequestLanguageGaaGh  EmailUpdateRequestLanguage = "gaa-gh"
 	EmailUpdateRequestLanguageGd     EmailUpdateRequestLanguage = "gd"
 	EmailUpdateRequestLanguageGdGB   EmailUpdateRequestLanguage = "gd-gb"
 	EmailUpdateRequestLanguageGl     EmailUpdateRequestLanguage = "gl"
@@ -2187,6 +2263,7 @@ const (
 	EmailUpdateRequestLanguageHsb    EmailUpdateRequestLanguage = "hsb"
 	EmailUpdateRequestLanguageHsbDe  EmailUpdateRequestLanguage = "hsb-de"
 	EmailUpdateRequestLanguageHt     EmailUpdateRequestLanguage = "ht"
+	EmailUpdateRequestLanguageHtHt   EmailUpdateRequestLanguage = "ht-ht"
 	EmailUpdateRequestLanguageHu     EmailUpdateRequestLanguage = "hu"
 	EmailUpdateRequestLanguageHuHu   EmailUpdateRequestLanguage = "hu-hu"
 	EmailUpdateRequestLanguageHy     EmailUpdateRequestLanguage = "hy"
@@ -2197,6 +2274,7 @@ const (
 	EmailUpdateRequestLanguageID     EmailUpdateRequestLanguage = "id"
 	EmailUpdateRequestLanguageIDID   EmailUpdateRequestLanguage = "id-id"
 	EmailUpdateRequestLanguageIe     EmailUpdateRequestLanguage = "ie"
+	EmailUpdateRequestLanguageIeEe   EmailUpdateRequestLanguage = "ie-ee"
 	EmailUpdateRequestLanguageIg     EmailUpdateRequestLanguage = "ig"
 	EmailUpdateRequestLanguageIgNg   EmailUpdateRequestLanguage = "ig-ng"
 	EmailUpdateRequestLanguageIi     EmailUpdateRequestLanguage = "ii"
@@ -2252,6 +2330,7 @@ const (
 	EmailUpdateRequestLanguageKn     EmailUpdateRequestLanguage = "kn"
 	EmailUpdateRequestLanguageKnIn   EmailUpdateRequestLanguage = "kn-in"
 	EmailUpdateRequestLanguageKo     EmailUpdateRequestLanguage = "ko"
+	EmailUpdateRequestLanguageKoCn   EmailUpdateRequestLanguage = "ko-cn"
 	EmailUpdateRequestLanguageKoKp   EmailUpdateRequestLanguage = "ko-kp"
 	EmailUpdateRequestLanguageKoKr   EmailUpdateRequestLanguage = "ko-kr"
 	EmailUpdateRequestLanguageKok    EmailUpdateRequestLanguage = "kok"
@@ -2270,6 +2349,8 @@ const (
 	EmailUpdateRequestLanguageKv     EmailUpdateRequestLanguage = "kv"
 	EmailUpdateRequestLanguageKw     EmailUpdateRequestLanguage = "kw"
 	EmailUpdateRequestLanguageKwGB   EmailUpdateRequestLanguage = "kw-gb"
+	EmailUpdateRequestLanguageKxv    EmailUpdateRequestLanguage = "kxv"
+	EmailUpdateRequestLanguageKxvIn  EmailUpdateRequestLanguage = "kxv-in"
 	EmailUpdateRequestLanguageKy     EmailUpdateRequestLanguage = "ky"
 	EmailUpdateRequestLanguageKyKg   EmailUpdateRequestLanguage = "ky-kg"
 	EmailUpdateRequestLanguageLa     EmailUpdateRequestLanguage = "la"
@@ -2280,8 +2361,12 @@ const (
 	EmailUpdateRequestLanguageLg     EmailUpdateRequestLanguage = "lg"
 	EmailUpdateRequestLanguageLgUg   EmailUpdateRequestLanguage = "lg-ug"
 	EmailUpdateRequestLanguageLi     EmailUpdateRequestLanguage = "li"
+	EmailUpdateRequestLanguageLij    EmailUpdateRequestLanguage = "lij"
+	EmailUpdateRequestLanguageLijIt  EmailUpdateRequestLanguage = "lij-it"
 	EmailUpdateRequestLanguageLkt    EmailUpdateRequestLanguage = "lkt"
 	EmailUpdateRequestLanguageLktUs  EmailUpdateRequestLanguage = "lkt-us"
+	EmailUpdateRequestLanguageLmo    EmailUpdateRequestLanguage = "lmo"
+	EmailUpdateRequestLanguageLmoIt  EmailUpdateRequestLanguage = "lmo-it"
 	EmailUpdateRequestLanguageLn     EmailUpdateRequestLanguage = "ln"
 	EmailUpdateRequestLanguageLnAo   EmailUpdateRequestLanguage = "ln-ao"
 	EmailUpdateRequestLanguageLnCd   EmailUpdateRequestLanguage = "ln-cd"
@@ -2378,7 +2463,11 @@ const (
 	EmailUpdateRequestLanguageNnhCm  EmailUpdateRequestLanguage = "nnh-cm"
 	EmailUpdateRequestLanguageNo     EmailUpdateRequestLanguage = "no"
 	EmailUpdateRequestLanguageNoNo   EmailUpdateRequestLanguage = "no-no"
+	EmailUpdateRequestLanguageNqo    EmailUpdateRequestLanguage = "nqo"
+	EmailUpdateRequestLanguageNqoGn  EmailUpdateRequestLanguage = "nqo-gn"
 	EmailUpdateRequestLanguageNr     EmailUpdateRequestLanguage = "nr"
+	EmailUpdateRequestLanguageNso    EmailUpdateRequestLanguage = "nso"
+	EmailUpdateRequestLanguageNsoZa  EmailUpdateRequestLanguage = "nso-za"
 	EmailUpdateRequestLanguageNus    EmailUpdateRequestLanguage = "nus"
 	EmailUpdateRequestLanguageNusSS  EmailUpdateRequestLanguage = "nus-ss"
 	EmailUpdateRequestLanguageNv     EmailUpdateRequestLanguage = "nv"
@@ -2508,6 +2597,8 @@ const (
 	EmailUpdateRequestLanguageSrXk   EmailUpdateRequestLanguage = "sr-xk"
 	EmailUpdateRequestLanguageSS     EmailUpdateRequestLanguage = "ss"
 	EmailUpdateRequestLanguageSt     EmailUpdateRequestLanguage = "st"
+	EmailUpdateRequestLanguageStLs   EmailUpdateRequestLanguage = "st-ls"
+	EmailUpdateRequestLanguageStZa   EmailUpdateRequestLanguage = "st-za"
 	EmailUpdateRequestLanguageSu     EmailUpdateRequestLanguage = "su"
 	EmailUpdateRequestLanguageSuID   EmailUpdateRequestLanguage = "su-id"
 	EmailUpdateRequestLanguageSv     EmailUpdateRequestLanguage = "sv"
@@ -2520,6 +2611,11 @@ const (
 	EmailUpdateRequestLanguageSwTz   EmailUpdateRequestLanguage = "sw-tz"
 	EmailUpdateRequestLanguageSwUg   EmailUpdateRequestLanguage = "sw-ug"
 	EmailUpdateRequestLanguageSy     EmailUpdateRequestLanguage = "sy"
+	EmailUpdateRequestLanguageSyr    EmailUpdateRequestLanguage = "syr"
+	EmailUpdateRequestLanguageSyrIq  EmailUpdateRequestLanguage = "syr-iq"
+	EmailUpdateRequestLanguageSyrSy  EmailUpdateRequestLanguage = "syr-sy"
+	EmailUpdateRequestLanguageSzl    EmailUpdateRequestLanguage = "szl"
+	EmailUpdateRequestLanguageSzlPl  EmailUpdateRequestLanguage = "szl-pl"
 	EmailUpdateRequestLanguageTa     EmailUpdateRequestLanguage = "ta"
 	EmailUpdateRequestLanguageTaIn   EmailUpdateRequestLanguage = "ta-in"
 	EmailUpdateRequestLanguageTaLk   EmailUpdateRequestLanguage = "ta-lk"
@@ -2541,6 +2637,8 @@ const (
 	EmailUpdateRequestLanguageTkTm   EmailUpdateRequestLanguage = "tk-tm"
 	EmailUpdateRequestLanguageTl     EmailUpdateRequestLanguage = "tl"
 	EmailUpdateRequestLanguageTn     EmailUpdateRequestLanguage = "tn"
+	EmailUpdateRequestLanguageTnBw   EmailUpdateRequestLanguage = "tn-bw"
+	EmailUpdateRequestLanguageTnZa   EmailUpdateRequestLanguage = "tn-za"
 	EmailUpdateRequestLanguageTo     EmailUpdateRequestLanguage = "to"
 	EmailUpdateRequestLanguageToTo   EmailUpdateRequestLanguage = "to-to"
 	EmailUpdateRequestLanguageTok    EmailUpdateRequestLanguage = "tok"
@@ -2570,8 +2668,12 @@ const (
 	EmailUpdateRequestLanguageVai    EmailUpdateRequestLanguage = "vai"
 	EmailUpdateRequestLanguageVaiLr  EmailUpdateRequestLanguage = "vai-lr"
 	EmailUpdateRequestLanguageVe     EmailUpdateRequestLanguage = "ve"
+	EmailUpdateRequestLanguageVec    EmailUpdateRequestLanguage = "vec"
+	EmailUpdateRequestLanguageVecIt  EmailUpdateRequestLanguage = "vec-it"
 	EmailUpdateRequestLanguageVi     EmailUpdateRequestLanguage = "vi"
 	EmailUpdateRequestLanguageViVn   EmailUpdateRequestLanguage = "vi-vn"
+	EmailUpdateRequestLanguageVmw    EmailUpdateRequestLanguage = "vmw"
+	EmailUpdateRequestLanguageVmwMz  EmailUpdateRequestLanguage = "vmw-mz"
 	EmailUpdateRequestLanguageVo     EmailUpdateRequestLanguage = "vo"
 	EmailUpdateRequestLanguageVo001  EmailUpdateRequestLanguage = "vo-001"
 	EmailUpdateRequestLanguageVun    EmailUpdateRequestLanguage = "vun"
@@ -2583,12 +2685,15 @@ const (
 	EmailUpdateRequestLanguageWoSn   EmailUpdateRequestLanguage = "wo-sn"
 	EmailUpdateRequestLanguageXh     EmailUpdateRequestLanguage = "xh"
 	EmailUpdateRequestLanguageXhZa   EmailUpdateRequestLanguage = "xh-za"
+	EmailUpdateRequestLanguageXnr    EmailUpdateRequestLanguage = "xnr"
+	EmailUpdateRequestLanguageXnrIn  EmailUpdateRequestLanguage = "xnr-in"
 	EmailUpdateRequestLanguageXog    EmailUpdateRequestLanguage = "xog"
 	EmailUpdateRequestLanguageXogUg  EmailUpdateRequestLanguage = "xog-ug"
 	EmailUpdateRequestLanguageYav    EmailUpdateRequestLanguage = "yav"
 	EmailUpdateRequestLanguageYavCm  EmailUpdateRequestLanguage = "yav-cm"
 	EmailUpdateRequestLanguageYi     EmailUpdateRequestLanguage = "yi"
 	EmailUpdateRequestLanguageYi001  EmailUpdateRequestLanguage = "yi-001"
+	EmailUpdateRequestLanguageYiUa   EmailUpdateRequestLanguage = "yi-ua"
 	EmailUpdateRequestLanguageYo     EmailUpdateRequestLanguage = "yo"
 	EmailUpdateRequestLanguageYoBj   EmailUpdateRequestLanguage = "yo-bj"
 	EmailUpdateRequestLanguageYoNg   EmailUpdateRequestLanguage = "yo-ng"
@@ -2599,7 +2704,9 @@ const (
 	EmailUpdateRequestLanguageYue    EmailUpdateRequestLanguage = "yue"
 	EmailUpdateRequestLanguageYueCn  EmailUpdateRequestLanguage = "yue-cn"
 	EmailUpdateRequestLanguageYueHk  EmailUpdateRequestLanguage = "yue-hk"
+	EmailUpdateRequestLanguageYueMo  EmailUpdateRequestLanguage = "yue-mo"
 	EmailUpdateRequestLanguageZa     EmailUpdateRequestLanguage = "za"
+	EmailUpdateRequestLanguageZaCn   EmailUpdateRequestLanguage = "za-cn"
 	EmailUpdateRequestLanguageZgh    EmailUpdateRequestLanguage = "zgh"
 	EmailUpdateRequestLanguageZghMa  EmailUpdateRequestLanguage = "zgh-ma"
 	EmailUpdateRequestLanguageZh     EmailUpdateRequestLanguage = "zh"
@@ -2608,6 +2715,7 @@ const (
 	EmailUpdateRequestLanguageZhHant EmailUpdateRequestLanguage = "zh-hant"
 	EmailUpdateRequestLanguageZhHk   EmailUpdateRequestLanguage = "zh-hk"
 	EmailUpdateRequestLanguageZhMo   EmailUpdateRequestLanguage = "zh-mo"
+	EmailUpdateRequestLanguageZhMy   EmailUpdateRequestLanguage = "zh-my"
 	EmailUpdateRequestLanguageZhSg   EmailUpdateRequestLanguage = "zh-sg"
 	EmailUpdateRequestLanguageZhTw   EmailUpdateRequestLanguage = "zh-tw"
 	EmailUpdateRequestLanguageZu     EmailUpdateRequestLanguage = "zu"
@@ -2889,90 +2997,96 @@ type PublicEmail struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language PublicEmailLanguage `json:"language"`
 	// The name of the email, as displayed on the email dashboard.
 	Name                   string `json:"name"`
@@ -3164,6 +3278,8 @@ const (
 	PublicEmailLanguageAz     PublicEmailLanguage = "az"
 	PublicEmailLanguageAzAz   PublicEmailLanguage = "az-az"
 	PublicEmailLanguageBa     PublicEmailLanguage = "ba"
+	PublicEmailLanguageBal    PublicEmailLanguage = "bal"
+	PublicEmailLanguageBalPk  PublicEmailLanguage = "bal-pk"
 	PublicEmailLanguageBas    PublicEmailLanguage = "bas"
 	PublicEmailLanguageBasCm  PublicEmailLanguage = "bas-cm"
 	PublicEmailLanguageBe     PublicEmailLanguage = "be"
@@ -3179,6 +3295,8 @@ const (
 	PublicEmailLanguageBho    PublicEmailLanguage = "bho"
 	PublicEmailLanguageBhoIn  PublicEmailLanguage = "bho-in"
 	PublicEmailLanguageBi     PublicEmailLanguage = "bi"
+	PublicEmailLanguageBlo    PublicEmailLanguage = "blo"
+	PublicEmailLanguageBloBj  PublicEmailLanguage = "blo-bj"
 	PublicEmailLanguageBm     PublicEmailLanguage = "bm"
 	PublicEmailLanguageBmMl   PublicEmailLanguage = "bm-ml"
 	PublicEmailLanguageBn     PublicEmailLanguage = "bn"
@@ -3217,6 +3335,8 @@ const (
 	PublicEmailLanguageCr     PublicEmailLanguage = "cr"
 	PublicEmailLanguageCs     PublicEmailLanguage = "cs"
 	PublicEmailLanguageCsCz   PublicEmailLanguage = "cs-cz"
+	PublicEmailLanguageCsw    PublicEmailLanguage = "csw"
+	PublicEmailLanguageCswCa  PublicEmailLanguage = "csw-ca"
 	PublicEmailLanguageCu     PublicEmailLanguage = "cu"
 	PublicEmailLanguageCuRu   PublicEmailLanguage = "cu-ru"
 	PublicEmailLanguageCv     PublicEmailLanguage = "cv"
@@ -3282,6 +3402,7 @@ const (
 	PublicEmailLanguageEnCn   PublicEmailLanguage = "en-cn"
 	PublicEmailLanguageEnCx   PublicEmailLanguage = "en-cx"
 	PublicEmailLanguageEnCy   PublicEmailLanguage = "en-cy"
+	PublicEmailLanguageEnCz   PublicEmailLanguage = "en-cz"
 	PublicEmailLanguageEnDe   PublicEmailLanguage = "en-de"
 	PublicEmailLanguageEnDg   PublicEmailLanguage = "en-dg"
 	PublicEmailLanguageEnDk   PublicEmailLanguage = "en-dk"
@@ -3301,15 +3422,18 @@ const (
 	PublicEmailLanguageEnGh   PublicEmailLanguage = "en-gh"
 	PublicEmailLanguageEnGi   PublicEmailLanguage = "en-gi"
 	PublicEmailLanguageEnGm   PublicEmailLanguage = "en-gm"
+	PublicEmailLanguageEnGs   PublicEmailLanguage = "en-gs"
 	PublicEmailLanguageEnGu   PublicEmailLanguage = "en-gu"
 	PublicEmailLanguageEnGy   PublicEmailLanguage = "en-gy"
 	PublicEmailLanguageEnHk   PublicEmailLanguage = "en-hk"
+	PublicEmailLanguageEnHu   PublicEmailLanguage = "en-hu"
 	PublicEmailLanguageEnID   PublicEmailLanguage = "en-id"
 	PublicEmailLanguageEnIe   PublicEmailLanguage = "en-ie"
 	PublicEmailLanguageEnIl   PublicEmailLanguage = "en-il"
 	PublicEmailLanguageEnIm   PublicEmailLanguage = "en-im"
 	PublicEmailLanguageEnIn   PublicEmailLanguage = "en-in"
 	PublicEmailLanguageEnIo   PublicEmailLanguage = "en-io"
+	PublicEmailLanguageEnIt   PublicEmailLanguage = "en-it"
 	PublicEmailLanguageEnJe   PublicEmailLanguage = "en-je"
 	PublicEmailLanguageEnJm   PublicEmailLanguage = "en-jm"
 	PublicEmailLanguageEnKe   PublicEmailLanguage = "en-ke"
@@ -3335,16 +3459,19 @@ const (
 	PublicEmailLanguageEnNf   PublicEmailLanguage = "en-nf"
 	PublicEmailLanguageEnNg   PublicEmailLanguage = "en-ng"
 	PublicEmailLanguageEnNl   PublicEmailLanguage = "en-nl"
+	PublicEmailLanguageEnNo   PublicEmailLanguage = "en-no"
 	PublicEmailLanguageEnNr   PublicEmailLanguage = "en-nr"
 	PublicEmailLanguageEnNu   PublicEmailLanguage = "en-nu"
 	PublicEmailLanguageEnNz   PublicEmailLanguage = "en-nz"
 	PublicEmailLanguageEnPg   PublicEmailLanguage = "en-pg"
 	PublicEmailLanguageEnPh   PublicEmailLanguage = "en-ph"
 	PublicEmailLanguageEnPk   PublicEmailLanguage = "en-pk"
+	PublicEmailLanguageEnPl   PublicEmailLanguage = "en-pl"
 	PublicEmailLanguageEnPn   PublicEmailLanguage = "en-pn"
 	PublicEmailLanguageEnPr   PublicEmailLanguage = "en-pr"
 	PublicEmailLanguageEnPt   PublicEmailLanguage = "en-pt"
 	PublicEmailLanguageEnPw   PublicEmailLanguage = "en-pw"
+	PublicEmailLanguageEnRo   PublicEmailLanguage = "en-ro"
 	PublicEmailLanguageEnRw   PublicEmailLanguage = "en-rw"
 	PublicEmailLanguageEnSb   PublicEmailLanguage = "en-sb"
 	PublicEmailLanguageEnSc   PublicEmailLanguage = "en-sc"
@@ -3353,6 +3480,7 @@ const (
 	PublicEmailLanguageEnSg   PublicEmailLanguage = "en-sg"
 	PublicEmailLanguageEnSh   PublicEmailLanguage = "en-sh"
 	PublicEmailLanguageEnSi   PublicEmailLanguage = "en-si"
+	PublicEmailLanguageEnSk   PublicEmailLanguage = "en-sk"
 	PublicEmailLanguageEnSl   PublicEmailLanguage = "en-sl"
 	PublicEmailLanguageEnSS   PublicEmailLanguage = "en-ss"
 	PublicEmailLanguageEnSx   PublicEmailLanguage = "en-sx"
@@ -3494,6 +3622,8 @@ const (
 	PublicEmailLanguageGa     PublicEmailLanguage = "ga"
 	PublicEmailLanguageGaGB   PublicEmailLanguage = "ga-gb"
 	PublicEmailLanguageGaIe   PublicEmailLanguage = "ga-ie"
+	PublicEmailLanguageGaa    PublicEmailLanguage = "gaa"
+	PublicEmailLanguageGaaGh  PublicEmailLanguage = "gaa-gh"
 	PublicEmailLanguageGd     PublicEmailLanguage = "gd"
 	PublicEmailLanguageGdGB   PublicEmailLanguage = "gd-gb"
 	PublicEmailLanguageGl     PublicEmailLanguage = "gl"
@@ -3527,6 +3657,7 @@ const (
 	PublicEmailLanguageHsb    PublicEmailLanguage = "hsb"
 	PublicEmailLanguageHsbDe  PublicEmailLanguage = "hsb-de"
 	PublicEmailLanguageHt     PublicEmailLanguage = "ht"
+	PublicEmailLanguageHtHt   PublicEmailLanguage = "ht-ht"
 	PublicEmailLanguageHu     PublicEmailLanguage = "hu"
 	PublicEmailLanguageHuHu   PublicEmailLanguage = "hu-hu"
 	PublicEmailLanguageHy     PublicEmailLanguage = "hy"
@@ -3537,6 +3668,7 @@ const (
 	PublicEmailLanguageID     PublicEmailLanguage = "id"
 	PublicEmailLanguageIDID   PublicEmailLanguage = "id-id"
 	PublicEmailLanguageIe     PublicEmailLanguage = "ie"
+	PublicEmailLanguageIeEe   PublicEmailLanguage = "ie-ee"
 	PublicEmailLanguageIg     PublicEmailLanguage = "ig"
 	PublicEmailLanguageIgNg   PublicEmailLanguage = "ig-ng"
 	PublicEmailLanguageIi     PublicEmailLanguage = "ii"
@@ -3592,6 +3724,7 @@ const (
 	PublicEmailLanguageKn     PublicEmailLanguage = "kn"
 	PublicEmailLanguageKnIn   PublicEmailLanguage = "kn-in"
 	PublicEmailLanguageKo     PublicEmailLanguage = "ko"
+	PublicEmailLanguageKoCn   PublicEmailLanguage = "ko-cn"
 	PublicEmailLanguageKoKp   PublicEmailLanguage = "ko-kp"
 	PublicEmailLanguageKoKr   PublicEmailLanguage = "ko-kr"
 	PublicEmailLanguageKok    PublicEmailLanguage = "kok"
@@ -3610,6 +3743,8 @@ const (
 	PublicEmailLanguageKv     PublicEmailLanguage = "kv"
 	PublicEmailLanguageKw     PublicEmailLanguage = "kw"
 	PublicEmailLanguageKwGB   PublicEmailLanguage = "kw-gb"
+	PublicEmailLanguageKxv    PublicEmailLanguage = "kxv"
+	PublicEmailLanguageKxvIn  PublicEmailLanguage = "kxv-in"
 	PublicEmailLanguageKy     PublicEmailLanguage = "ky"
 	PublicEmailLanguageKyKg   PublicEmailLanguage = "ky-kg"
 	PublicEmailLanguageLa     PublicEmailLanguage = "la"
@@ -3620,8 +3755,12 @@ const (
 	PublicEmailLanguageLg     PublicEmailLanguage = "lg"
 	PublicEmailLanguageLgUg   PublicEmailLanguage = "lg-ug"
 	PublicEmailLanguageLi     PublicEmailLanguage = "li"
+	PublicEmailLanguageLij    PublicEmailLanguage = "lij"
+	PublicEmailLanguageLijIt  PublicEmailLanguage = "lij-it"
 	PublicEmailLanguageLkt    PublicEmailLanguage = "lkt"
 	PublicEmailLanguageLktUs  PublicEmailLanguage = "lkt-us"
+	PublicEmailLanguageLmo    PublicEmailLanguage = "lmo"
+	PublicEmailLanguageLmoIt  PublicEmailLanguage = "lmo-it"
 	PublicEmailLanguageLn     PublicEmailLanguage = "ln"
 	PublicEmailLanguageLnAo   PublicEmailLanguage = "ln-ao"
 	PublicEmailLanguageLnCd   PublicEmailLanguage = "ln-cd"
@@ -3718,7 +3857,11 @@ const (
 	PublicEmailLanguageNnhCm  PublicEmailLanguage = "nnh-cm"
 	PublicEmailLanguageNo     PublicEmailLanguage = "no"
 	PublicEmailLanguageNoNo   PublicEmailLanguage = "no-no"
+	PublicEmailLanguageNqo    PublicEmailLanguage = "nqo"
+	PublicEmailLanguageNqoGn  PublicEmailLanguage = "nqo-gn"
 	PublicEmailLanguageNr     PublicEmailLanguage = "nr"
+	PublicEmailLanguageNso    PublicEmailLanguage = "nso"
+	PublicEmailLanguageNsoZa  PublicEmailLanguage = "nso-za"
 	PublicEmailLanguageNus    PublicEmailLanguage = "nus"
 	PublicEmailLanguageNusSS  PublicEmailLanguage = "nus-ss"
 	PublicEmailLanguageNv     PublicEmailLanguage = "nv"
@@ -3848,6 +3991,8 @@ const (
 	PublicEmailLanguageSrXk   PublicEmailLanguage = "sr-xk"
 	PublicEmailLanguageSS     PublicEmailLanguage = "ss"
 	PublicEmailLanguageSt     PublicEmailLanguage = "st"
+	PublicEmailLanguageStLs   PublicEmailLanguage = "st-ls"
+	PublicEmailLanguageStZa   PublicEmailLanguage = "st-za"
 	PublicEmailLanguageSu     PublicEmailLanguage = "su"
 	PublicEmailLanguageSuID   PublicEmailLanguage = "su-id"
 	PublicEmailLanguageSv     PublicEmailLanguage = "sv"
@@ -3860,6 +4005,11 @@ const (
 	PublicEmailLanguageSwTz   PublicEmailLanguage = "sw-tz"
 	PublicEmailLanguageSwUg   PublicEmailLanguage = "sw-ug"
 	PublicEmailLanguageSy     PublicEmailLanguage = "sy"
+	PublicEmailLanguageSyr    PublicEmailLanguage = "syr"
+	PublicEmailLanguageSyrIq  PublicEmailLanguage = "syr-iq"
+	PublicEmailLanguageSyrSy  PublicEmailLanguage = "syr-sy"
+	PublicEmailLanguageSzl    PublicEmailLanguage = "szl"
+	PublicEmailLanguageSzlPl  PublicEmailLanguage = "szl-pl"
 	PublicEmailLanguageTa     PublicEmailLanguage = "ta"
 	PublicEmailLanguageTaIn   PublicEmailLanguage = "ta-in"
 	PublicEmailLanguageTaLk   PublicEmailLanguage = "ta-lk"
@@ -3881,6 +4031,8 @@ const (
 	PublicEmailLanguageTkTm   PublicEmailLanguage = "tk-tm"
 	PublicEmailLanguageTl     PublicEmailLanguage = "tl"
 	PublicEmailLanguageTn     PublicEmailLanguage = "tn"
+	PublicEmailLanguageTnBw   PublicEmailLanguage = "tn-bw"
+	PublicEmailLanguageTnZa   PublicEmailLanguage = "tn-za"
 	PublicEmailLanguageTo     PublicEmailLanguage = "to"
 	PublicEmailLanguageToTo   PublicEmailLanguage = "to-to"
 	PublicEmailLanguageTok    PublicEmailLanguage = "tok"
@@ -3910,8 +4062,12 @@ const (
 	PublicEmailLanguageVai    PublicEmailLanguage = "vai"
 	PublicEmailLanguageVaiLr  PublicEmailLanguage = "vai-lr"
 	PublicEmailLanguageVe     PublicEmailLanguage = "ve"
+	PublicEmailLanguageVec    PublicEmailLanguage = "vec"
+	PublicEmailLanguageVecIt  PublicEmailLanguage = "vec-it"
 	PublicEmailLanguageVi     PublicEmailLanguage = "vi"
 	PublicEmailLanguageViVn   PublicEmailLanguage = "vi-vn"
+	PublicEmailLanguageVmw    PublicEmailLanguage = "vmw"
+	PublicEmailLanguageVmwMz  PublicEmailLanguage = "vmw-mz"
 	PublicEmailLanguageVo     PublicEmailLanguage = "vo"
 	PublicEmailLanguageVo001  PublicEmailLanguage = "vo-001"
 	PublicEmailLanguageVun    PublicEmailLanguage = "vun"
@@ -3923,12 +4079,15 @@ const (
 	PublicEmailLanguageWoSn   PublicEmailLanguage = "wo-sn"
 	PublicEmailLanguageXh     PublicEmailLanguage = "xh"
 	PublicEmailLanguageXhZa   PublicEmailLanguage = "xh-za"
+	PublicEmailLanguageXnr    PublicEmailLanguage = "xnr"
+	PublicEmailLanguageXnrIn  PublicEmailLanguage = "xnr-in"
 	PublicEmailLanguageXog    PublicEmailLanguage = "xog"
 	PublicEmailLanguageXogUg  PublicEmailLanguage = "xog-ug"
 	PublicEmailLanguageYav    PublicEmailLanguage = "yav"
 	PublicEmailLanguageYavCm  PublicEmailLanguage = "yav-cm"
 	PublicEmailLanguageYi     PublicEmailLanguage = "yi"
 	PublicEmailLanguageYi001  PublicEmailLanguage = "yi-001"
+	PublicEmailLanguageYiUa   PublicEmailLanguage = "yi-ua"
 	PublicEmailLanguageYo     PublicEmailLanguage = "yo"
 	PublicEmailLanguageYoBj   PublicEmailLanguage = "yo-bj"
 	PublicEmailLanguageYoNg   PublicEmailLanguage = "yo-ng"
@@ -3939,7 +4098,9 @@ const (
 	PublicEmailLanguageYue    PublicEmailLanguage = "yue"
 	PublicEmailLanguageYueCn  PublicEmailLanguage = "yue-cn"
 	PublicEmailLanguageYueHk  PublicEmailLanguage = "yue-hk"
+	PublicEmailLanguageYueMo  PublicEmailLanguage = "yue-mo"
 	PublicEmailLanguageZa     PublicEmailLanguage = "za"
+	PublicEmailLanguageZaCn   PublicEmailLanguage = "za-cn"
 	PublicEmailLanguageZgh    PublicEmailLanguage = "zgh"
 	PublicEmailLanguageZghMa  PublicEmailLanguage = "zgh-ma"
 	PublicEmailLanguageZh     PublicEmailLanguage = "zh"
@@ -3948,6 +4109,7 @@ const (
 	PublicEmailLanguageZhHant PublicEmailLanguage = "zh-hant"
 	PublicEmailLanguageZhHk   PublicEmailLanguage = "zh-hk"
 	PublicEmailLanguageZhMo   PublicEmailLanguage = "zh-mo"
+	PublicEmailLanguageZhMy   PublicEmailLanguage = "zh-my"
 	PublicEmailLanguageZhSg   PublicEmailLanguage = "zh-sg"
 	PublicEmailLanguageZhTw   PublicEmailLanguage = "zh-tw"
 	PublicEmailLanguageZu     PublicEmailLanguage = "zu"

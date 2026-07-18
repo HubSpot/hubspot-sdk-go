@@ -58,6 +58,7 @@ func TestPropertyBatchNew(t *testing.T) {
 					}},
 					ReferencedObjectType: hubspotsdk.String("referencedObjectType"),
 					ShowCurrencySymbol:   hubspotsdk.Bool(true),
+					TextDisplayHint:      shared.PropertyCreateTextDisplayHintDomainName,
 				}},
 			},
 		},

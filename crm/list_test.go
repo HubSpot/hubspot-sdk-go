@@ -1213,7 +1213,7 @@ func TestListUpdateScheduleConversion(t *testing.T) {
 		"listId",
 		crm.ListUpdateScheduleConversionParams{
 			PublicListConversionTime: crm.PublicListConversionTimeUnionParam{
-				OfPublicListConversionDate: &crm.PublicListConversionDateParam{
+				OfConversionDate: &crm.PublicListConversionDateParam{
 					ConversionType: crm.PublicListConversionDateConversionTypeConversionDate,
 					Day:            0,
 					Month:          0,

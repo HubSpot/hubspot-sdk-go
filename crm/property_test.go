@@ -57,6 +57,7 @@ func TestPropertyNewWithOptionalParams(t *testing.T) {
 				}},
 				ReferencedObjectType: hubspotsdk.String("referencedObjectType"),
 				ShowCurrencySymbol:   hubspotsdk.Bool(true),
+				TextDisplayHint:      shared.PropertyCreateTextDisplayHintDomainName,
 			},
 		},
 	)
@@ -106,6 +107,7 @@ func TestPropertyUpdateWithOptionalParams(t *testing.T) {
 					Description:  hubspotsdk.String("description"),
 				}},
 				ShowCurrencySymbol: hubspotsdk.Bool(true),
+				TextDisplayHint:    crm.PropertyUpdateTextDisplayHintDomainName,
 				Type:               crm.PropertyUpdateTypeBool,
 			},
 		},

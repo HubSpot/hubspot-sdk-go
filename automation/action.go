@@ -257,6 +257,17 @@ func (u *CallbackCompletionBatchRequestRequestContextUnionParam) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[CallbackCompletionBatchRequestRequestContextUnionParam](
+		"source",
+		apijson.Discriminator[WorkflowsRequestContextParam]("WORKFLOWS"),
+		apijson.Discriminator[AgentRequestContextParam]("AGENTS"),
+		apijson.Discriminator[CopilotRequestContextParam]("COPILOT"),
+		apijson.Discriminator[StandaloneRequestContextParam]("STANDALONE"),
+		apijson.Discriminator[TestRequestContextParam]("TEST"),
+	)
+}
+
 // The properties OutputFields, TypedOutputs are required.
 type CallbackCompletionRequestParam struct {
 	// Contains the output fields associated with the callback, with each field
@@ -301,6 +312,17 @@ func (u CallbackCompletionRequestRequestContextUnionParam) MarshalJSON() ([]byte
 }
 func (u *CallbackCompletionRequestRequestContextUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[CallbackCompletionRequestRequestContextUnionParam](
+		"source",
+		apijson.Discriminator[WorkflowsRequestContextParam]("WORKFLOWS"),
+		apijson.Discriminator[AgentRequestContextParam]("AGENTS"),
+		apijson.Discriminator[CopilotRequestContextParam]("COPILOT"),
+		apijson.Discriminator[StandaloneRequestContextParam]("STANDALONE"),
+		apijson.Discriminator[TestRequestContextParam]("TEST"),
+	)
 }
 
 // The properties ApplicationGroup, ApplicationID, IsPrivate, Metadata,
@@ -637,8 +659,11 @@ func (r FieldTypeDefinition) ToParam() FieldTypeDefinitionParam {
 // [StringFieldSchema], [BooleanFieldSchema], [ArrayFieldSchema],
 // [ObjectFieldSchema].
 //
+// Use the [FieldTypeDefinitionSchemaUnion.AsAny] method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type FieldTypeDefinitionSchemaUnion struct {
+	// Any of "INTEGER", "LONG", "DOUBLE", "STRING", "BOOLEAN", "ARRAY", "OBJECT".
 	Type string `json:"type"`
 	// This field is a union of [int64], [int64], [float64]
 	Maximum FieldTypeDefinitionSchemaUnionMaximum `json:"maximum"`
@@ -659,6 +684,54 @@ type FieldTypeDefinitionSchemaUnion struct {
 		Properties respjson.Field
 		raw        string
 	} `json:"-"`
+}
+
+// anyFieldTypeDefinitionSchema is implemented by each variant of
+// [FieldTypeDefinitionSchemaUnion] to add type safety for the return type of
+// [FieldTypeDefinitionSchemaUnion.AsAny]
+type anyFieldTypeDefinitionSchema interface {
+	implFieldTypeDefinitionSchemaUnion()
+}
+
+func (IntegerFieldSchema) implFieldTypeDefinitionSchemaUnion() {}
+func (LongFieldSchema) implFieldTypeDefinitionSchemaUnion()    {}
+func (DoubleFieldSchema) implFieldTypeDefinitionSchemaUnion()  {}
+func (StringFieldSchema) implFieldTypeDefinitionSchemaUnion()  {}
+func (BooleanFieldSchema) implFieldTypeDefinitionSchemaUnion() {}
+func (ArrayFieldSchema) implFieldTypeDefinitionSchemaUnion()   {}
+func (ObjectFieldSchema) implFieldTypeDefinitionSchemaUnion()  {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := FieldTypeDefinitionSchemaUnion.AsAny().(type) {
+//	case automation.IntegerFieldSchema:
+//	case automation.LongFieldSchema:
+//	case automation.DoubleFieldSchema:
+//	case automation.StringFieldSchema:
+//	case automation.BooleanFieldSchema:
+//	case automation.ArrayFieldSchema:
+//	case automation.ObjectFieldSchema:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u FieldTypeDefinitionSchemaUnion) AsAny() anyFieldTypeDefinitionSchema {
+	switch u.Type {
+	case "INTEGER":
+		return u.AsInteger()
+	case "LONG":
+		return u.AsLong()
+	case "DOUBLE":
+		return u.AsDouble()
+	case "STRING":
+		return u.AsString()
+	case "BOOLEAN":
+		return u.AsBoolean()
+	case "ARRAY":
+		return u.AsArray()
+	case "OBJECT":
+		return u.AsObject()
+	}
+	return nil
 }
 
 func (u FieldTypeDefinitionSchemaUnion) AsInteger() (v IntegerFieldSchema) {
@@ -1079,6 +1152,19 @@ func (u *FieldTypeDefinitionSchemaUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[FieldTypeDefinitionSchemaUnionParam](
+		"type",
+		apijson.Discriminator[IntegerFieldSchemaParam]("INTEGER"),
+		apijson.Discriminator[LongFieldSchemaParam]("LONG"),
+		apijson.Discriminator[DoubleFieldSchemaParam]("DOUBLE"),
+		apijson.Discriminator[StringFieldSchemaParam]("STRING"),
+		apijson.Discriminator[BooleanFieldSchemaParam]("BOOLEAN"),
+		apijson.Discriminator[ArrayFieldSchemaParam]("ARRAY"),
+		apijson.Discriminator[ObjectFieldSchemaParam]("OBJECT"),
+	)
+}
+
 type IntegerFieldSchema struct {
 	// The type of the field, which is set to INTEGER.
 	//
@@ -1343,11 +1429,15 @@ func (r *PublicActionDefinition) UnmarshalJSON(data []byte) error {
 // and values from [PublicSingleFieldDependency],
 // [PublicConditionalSingleFieldDependency].
 //
+// Use the [PublicActionDefinitionInputFieldDependencyUnion.AsAny] method to switch
+// on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicActionDefinitionInputFieldDependencyUnion struct {
-	ControllingFieldName string   `json:"controllingFieldName"`
-	DependencyType       string   `json:"dependencyType"`
-	DependentFieldNames  []string `json:"dependentFieldNames"`
+	ControllingFieldName string `json:"controllingFieldName"`
+	// Any of "SINGLE_FIELD", "CONDITIONAL_SINGLE_FIELD".
+	DependencyType      string   `json:"dependencyType"`
+	DependentFieldNames []string `json:"dependentFieldNames"`
 	// This field is from variant [PublicConditionalSingleFieldDependency].
 	ControllingFieldValue string `json:"controllingFieldValue"`
 	JSON                  struct {
@@ -1357,6 +1447,34 @@ type PublicActionDefinitionInputFieldDependencyUnion struct {
 		ControllingFieldValue respjson.Field
 		raw                   string
 	} `json:"-"`
+}
+
+// anyPublicActionDefinitionInputFieldDependency is implemented by each variant of
+// [PublicActionDefinitionInputFieldDependencyUnion] to add type safety for the
+// return type of [PublicActionDefinitionInputFieldDependencyUnion.AsAny]
+type anyPublicActionDefinitionInputFieldDependency interface {
+	implPublicActionDefinitionInputFieldDependencyUnion()
+}
+
+func (PublicSingleFieldDependency) implPublicActionDefinitionInputFieldDependencyUnion()            {}
+func (PublicConditionalSingleFieldDependency) implPublicActionDefinitionInputFieldDependencyUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicActionDefinitionInputFieldDependencyUnion.AsAny().(type) {
+//	case automation.PublicSingleFieldDependency:
+//	case automation.PublicConditionalSingleFieldDependency:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicActionDefinitionInputFieldDependencyUnion) AsAny() anyPublicActionDefinitionInputFieldDependency {
+	switch u.DependencyType {
+	case "SINGLE_FIELD":
+		return u.AsSingleField()
+	case "CONDITIONAL_SINGLE_FIELD":
+		return u.AsConditionalSingleField()
+	}
+	return nil
 }
 
 func (u PublicActionDefinitionInputFieldDependencyUnion) AsSingleField() (v PublicSingleFieldDependency) {
@@ -1422,6 +1540,14 @@ func (u *PublicActionDefinitionEggInputFieldDependencyUnionParam) UnmarshalJSON(
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[PublicActionDefinitionEggInputFieldDependencyUnionParam](
+		"dependencyType",
+		apijson.Discriminator[PublicSingleFieldDependencyParam]("SINGLE_FIELD"),
+		apijson.Discriminator[PublicConditionalSingleFieldDependencyParam]("CONDITIONAL_SINGLE_FIELD"),
+	)
+}
+
 type PublicActionDefinitionPatchParam struct {
 	// The URL endpoint where the action is executed.
 	ActionURL param.Opt[string] `json:"actionUrl,omitzero"`
@@ -1460,6 +1586,14 @@ func (u PublicActionDefinitionPatchInputFieldDependencyUnionParam) MarshalJSON()
 }
 func (u *PublicActionDefinitionPatchInputFieldDependencyUnionParam) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
+}
+
+func init() {
+	apijson.RegisterUnion[PublicActionDefinitionPatchInputFieldDependencyUnionParam](
+		"dependencyType",
+		apijson.Discriminator[PublicSingleFieldDependencyParam]("SINGLE_FIELD"),
+		apijson.Discriminator[PublicConditionalSingleFieldDependencyParam]("CONDITIONAL_SINGLE_FIELD"),
+	)
 }
 
 // The property RequiresObject is required.

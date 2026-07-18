@@ -851,11 +851,15 @@ const (
 // [RandomAccessCollectionResponseWithTotalHubDBTableRowV3],
 // [StreamingCollectionResponseWithTotalHubDBTableRowV3].
 //
+// Use the [UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union.AsAny]
+// method to switch on the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union struct {
 	Results []HubDBTableRowV3Wrapper `json:"results"`
 	Total   int64                    `json:"total"`
-	Type    string                   `json:"type"`
+	// Any of "RANDOM_ACCESS", "STREAMING".
+	Type string `json:"type"`
 	// This field is a union of [BoundedPaging], [shared.Paging]
 	Paging UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3UnionPaging `json:"paging"`
 	JSON   struct {
@@ -867,12 +871,43 @@ type UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union struct {
 	} `json:"-"`
 }
 
-func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsRandomAccessCollectionResponseWithTotalHubDBTableRowV3() (v RandomAccessCollectionResponseWithTotalHubDBTableRowV3) {
+// anyUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3 is implemented by each
+// variant of [UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union] to add
+// type safety for the return type of
+// [UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union.AsAny]
+type anyUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3 interface {
+	implUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union()
+}
+
+func (RandomAccessCollectionResponseWithTotalHubDBTableRowV3) implUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union() {
+}
+func (StreamingCollectionResponseWithTotalHubDBTableRowV3) implUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union() {
+}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union.AsAny().(type) {
+//	case cms.RandomAccessCollectionResponseWithTotalHubDBTableRowV3:
+//	case cms.StreamingCollectionResponseWithTotalHubDBTableRowV3:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsAny() anyUnifiedCollectionResponseWithTotalBaseHubDBTableRowV3 {
+	switch u.Type {
+	case "RANDOM_ACCESS":
+		return u.AsRandomAccess()
+	case "STREAMING":
+		return u.AsStreaming()
+	}
+	return nil
+}
+
+func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsRandomAccess() (v RandomAccessCollectionResponseWithTotalHubDBTableRowV3) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsStreamingCollectionResponseWithTotalHubDBTableRowV3() (v StreamingCollectionResponseWithTotalHubDBTableRowV3) {
+func (u UnifiedCollectionResponseWithTotalBaseHubDBTableRowV3Union) AsStreaming() (v StreamingCollectionResponseWithTotalHubDBTableRowV3) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }

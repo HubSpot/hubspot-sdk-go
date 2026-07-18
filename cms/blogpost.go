@@ -338,90 +338,96 @@ type BlogPostParam struct {
 	// "ar-dz", "ar-eg", "ar-eh", "ar-er", "ar-il", "ar-iq", "ar-jo", "ar-km", "ar-kw",
 	// "ar-lb", "ar-ly", "ar-ma", "ar-mr", "ar-om", "ar-ps", "ar-qa", "ar-sa", "ar-sd",
 	// "ar-so", "ar-ss", "ar-sy", "ar-td", "ar-tn", "ar-ye", "as", "as-in", "asa",
-	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bas", "bas-cm",
-	// "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg", "bgc", "bgc-in",
-	// "bho", "bho-in", "bi", "bm", "bm-ml", "bn", "bn-bd", "bn-in", "bo", "bo-cn",
-	// "bo-in", "br", "br-fr", "brx", "brx-in", "bs", "bs-ba", "ca", "ca-ad", "ca-es",
-	// "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in", "ce", "ce-ru", "ceb", "ceb-ph",
-	// "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb", "ckb-iq", "ckb-ir", "co", "cr",
-	// "cs", "cs-cz", "cu", "cu-ru", "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk",
-	// "da-gl", "dav", "dav-ke", "de", "de-at", "de-be", "de-ch", "de-de", "de-gr",
-	// "de-it", "de-li", "de-lu", "dje", "dje-ne", "doi", "doi-in", "dsb", "dsb-de",
-	// "dua", "dua-cm", "dv", "dyo", "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee",
-	// "ee-gh", "ee-tg", "el", "el-cy", "el-gr", "en", "en-001", "en-150", "en-ae",
-	// "en-ag", "en-ai", "en-as", "en-at", "en-au", "en-bb", "en-be", "en-bi", "en-bm",
-	// "en-bs", "en-bw", "en-bz", "en-ca", "en-cc", "en-ch", "en-ck", "en-cm", "en-cn",
-	// "en-cx", "en-cy", "en-de", "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er",
-	// "en-es", "en-fi", "en-fj", "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg",
-	// "en-gh", "en-gi", "en-gm", "en-gu", "en-gy", "en-hk", "en-id", "en-ie", "en-il",
-	// "en-im", "en-in", "en-io", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
+	// "asa-tz", "ast", "ast-es", "av", "ay", "az", "az-az", "ba", "bal", "bal-pk",
+	// "bas", "bas-cm", "be", "be-by", "bem", "bem-zm", "bez", "bez-tz", "bg", "bg-bg",
+	// "bgc", "bgc-in", "bho", "bho-in", "bi", "blo", "blo-bj", "bm", "bm-ml", "bn",
+	// "bn-bd", "bn-in", "bo", "bo-cn", "bo-in", "br", "br-fr", "brx", "brx-in", "bs",
+	// "bs-ba", "ca", "ca-ad", "ca-es", "ca-fr", "ca-it", "ccp", "ccp-bd", "ccp-in",
+	// "ce", "ce-ru", "ceb", "ceb-ph", "cgg", "cgg-ug", "ch", "chr", "chr-us", "ckb",
+	// "ckb-iq", "ckb-ir", "co", "cr", "cs", "cs-cz", "csw", "csw-ca", "cu", "cu-ru",
+	// "cv", "cv-ru", "cy", "cy-gb", "da", "da-dk", "da-gl", "dav", "dav-ke", "de",
+	// "de-at", "de-be", "de-ch", "de-de", "de-gr", "de-it", "de-li", "de-lu", "dje",
+	// "dje-ne", "doi", "doi-in", "dsb", "dsb-de", "dua", "dua-cm", "dv", "dyo",
+	// "dyo-sn", "dz", "dz-bt", "ebu", "ebu-ke", "ee", "ee-gh", "ee-tg", "el", "el-cy",
+	// "el-gr", "en", "en-001", "en-150", "en-ae", "en-ag", "en-ai", "en-as", "en-at",
+	// "en-au", "en-bb", "en-be", "en-bi", "en-bm", "en-bs", "en-bw", "en-bz", "en-ca",
+	// "en-cc", "en-ch", "en-ck", "en-cm", "en-cn", "en-cx", "en-cy", "en-cz", "en-de",
+	// "en-dg", "en-dk", "en-dm", "en-ee", "en-eg", "en-er", "en-es", "en-fi", "en-fj",
+	// "en-fk", "en-fm", "en-fr", "en-gb", "en-gd", "en-gg", "en-gh", "en-gi", "en-gm",
+	// "en-gs", "en-gu", "en-gy", "en-hk", "en-hu", "en-id", "en-ie", "en-il", "en-im",
+	// "en-in", "en-io", "en-it", "en-je", "en-jm", "en-ke", "en-ki", "en-kn", "en-ky",
 	// "en-lc", "en-lr", "en-ls", "en-lu", "en-mg", "en-mh", "en-mo", "en-mp", "en-ms",
 	// "en-mt", "en-mu", "en-mv", "en-mw", "en-mx", "en-my", "en-na", "en-nf", "en-ng",
-	// "en-nl", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pn", "en-pr",
-	// "en-pt", "en-pw", "en-rw", "en-sb", "en-sc", "en-sd", "en-se", "en-sg", "en-sh",
-	// "en-si", "en-sl", "en-ss", "en-sx", "en-sz", "en-tc", "en-th", "en-tk", "en-tn",
-	// "en-to", "en-tt", "en-tv", "en-tz", "en-ug", "en-um", "en-us", "en-vc", "en-vg",
-	// "en-vi", "en-vn", "en-vu", "en-ws", "en-za", "en-zm", "en-zw", "eo", "eo-001",
-	// "es", "es-419", "es-ar", "es-bo", "es-br", "es-bz", "es-cl", "es-co", "es-cr",
-	// "es-cu", "es-do", "es-ea", "es-ec", "es-es", "es-gq", "es-gt", "es-hn", "es-ic",
-	// "es-mx", "es-ni", "es-pa", "es-pe", "es-ph", "es-pr", "es-py", "es-sv", "es-us",
-	// "es-uy", "es-ve", "et", "et-ee", "eu", "eu-es", "ewo", "ewo-cm", "fa", "fa-af",
-	// "fa-ir", "ff", "ff-bf", "ff-cm", "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr",
-	// "ff-mr", "ff-ne", "ff-ng", "ff-sl", "ff-sn", "fi", "fi-fi", "fil", "fil-ph",
-	// "fj", "fo", "fo-dk", "fo-fo", "fr", "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl",
-	// "fr-ca", "fr-cd", "fr-cf", "fr-cg", "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz",
-	// "fr-fr", "fr-ga", "fr-gf", "fr-gn", "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu",
-	// "fr-ma", "fr-mc", "fr-mf", "fr-mg", "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc",
-	// "fr-ne", "fr-pf", "fr-pm", "fr-re", "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td",
-	// "fr-tg", "fr-tn", "fr-vu", "fr-wf", "fr-yt", "frr", "frr-de", "fur", "fur-it",
-	// "fy", "fy-nl", "ga", "ga-gb", "ga-ie", "gd", "gd-gb", "gl", "gl-es", "gn",
-	// "gsw", "gsw-ch", "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv",
-	// "gv-im", "ha", "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi",
-	// "hi-in", "hmn", "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "hu",
-	// "hu-hu", "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ig",
+	// "en-nl", "en-no", "en-nr", "en-nu", "en-nz", "en-pg", "en-ph", "en-pk", "en-pl",
+	// "en-pn", "en-pr", "en-pt", "en-pw", "en-ro", "en-rw", "en-sb", "en-sc", "en-sd",
+	// "en-se", "en-sg", "en-sh", "en-si", "en-sk", "en-sl", "en-ss", "en-sx", "en-sz",
+	// "en-tc", "en-th", "en-tk", "en-tn", "en-to", "en-tt", "en-tv", "en-tz", "en-ug",
+	// "en-um", "en-us", "en-vc", "en-vg", "en-vi", "en-vn", "en-vu", "en-ws", "en-za",
+	// "en-zm", "en-zw", "eo", "eo-001", "es", "es-419", "es-ar", "es-bo", "es-br",
+	// "es-bz", "es-cl", "es-co", "es-cr", "es-cu", "es-do", "es-ea", "es-ec", "es-es",
+	// "es-gq", "es-gt", "es-hn", "es-ic", "es-mx", "es-ni", "es-pa", "es-pe", "es-ph",
+	// "es-pr", "es-py", "es-sv", "es-us", "es-uy", "es-ve", "et", "et-ee", "eu",
+	// "eu-es", "ewo", "ewo-cm", "fa", "fa-af", "fa-ir", "ff", "ff-bf", "ff-cm",
+	// "ff-gh", "ff-gm", "ff-gn", "ff-gw", "ff-lr", "ff-mr", "ff-ne", "ff-ng", "ff-sl",
+	// "ff-sn", "fi", "fi-fi", "fil", "fil-ph", "fj", "fo", "fo-dk", "fo-fo", "fr",
+	// "fr-be", "fr-bf", "fr-bi", "fr-bj", "fr-bl", "fr-ca", "fr-cd", "fr-cf", "fr-cg",
+	// "fr-ch", "fr-ci", "fr-cm", "fr-dj", "fr-dz", "fr-fr", "fr-ga", "fr-gf", "fr-gn",
+	// "fr-gp", "fr-gq", "fr-ht", "fr-km", "fr-lu", "fr-ma", "fr-mc", "fr-mf", "fr-mg",
+	// "fr-ml", "fr-mq", "fr-mr", "fr-mu", "fr-nc", "fr-ne", "fr-pf", "fr-pm", "fr-re",
+	// "fr-rw", "fr-sc", "fr-sn", "fr-sy", "fr-td", "fr-tg", "fr-tn", "fr-vu", "fr-wf",
+	// "fr-yt", "frr", "frr-de", "fur", "fur-it", "fy", "fy-nl", "ga", "ga-gb",
+	// "ga-ie", "gaa", "gaa-gh", "gd", "gd-gb", "gl", "gl-es", "gn", "gsw", "gsw-ch",
+	// "gsw-fr", "gsw-li", "gu", "gu-in", "guz", "guz-ke", "gv", "gv-im", "ha",
+	// "ha-gh", "ha-ne", "ha-ng", "haw", "haw-us", "he", "he-il", "hi", "hi-in", "hmn",
+	// "ho", "hr", "hr-ba", "hr-hr", "hsb", "hsb-de", "ht", "ht-ht", "hu", "hu-hu",
+	// "hy", "hy-am", "hz", "ia", "ia-001", "id", "id-id", "ie", "ie-ee", "ig",
 	// "ig-ng", "ii", "ii-cn", "ik", "io", "is", "is-is", "it", "it-ch", "it-it",
 	// "it-sm", "it-va", "iu", "ja", "ja-jp", "jgo", "jgo-cm", "jmc", "jmc-tz", "jv",
 	// "jv-id", "ka", "ka-ge", "kab", "kab-dz", "kam", "kam-ke", "kar", "kde",
 	// "kde-tz", "kea", "kea-cv", "kg", "kgp", "kgp-br", "kh", "khq", "khq-ml", "ki",
 	// "ki-ke", "kj", "kk", "kk-kz", "kkj", "kkj-cm", "kl", "kl-gl", "kln", "kln-ke",
-	// "km", "km-kh", "kn", "kn-in", "ko", "ko-kp", "ko-kr", "kok", "kok-in", "kr",
-	// "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku", "ku-tr",
-	// "kv", "kw", "kw-gb", "ky", "ky-kg", "la", "lag", "lag-tz", "lb", "lb-lu", "lg",
-	// "lg-ug", "li", "lkt", "lkt-us", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo",
-	// "lo-la", "lrc", "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo",
-	// "luo-ke", "luy", "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke",
-	// "mas-tz", "mdf", "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg",
-	// "mgh", "mgh-mz", "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml",
-	// "ml-in", "mn", "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id",
-	// "ms-my", "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn",
-	// "mzn-ir", "na", "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds",
-	// "nds-de", "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be",
-	// "nl-bq", "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm",
-	// "nn", "nn-no", "nnh", "nnh-cm", "no", "no-no", "nr", "nus", "nus-ss", "nv",
-	// "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj", "om", "om-et", "om-ke",
-	// "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in", "pa-pk", "pcm", "pcm-ng",
-	// "pi", "pis", "pis-sb", "pl", "pl-pl", "prg", "prg-001", "ps", "ps-af", "ps-pk",
-	// "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv", "pt-gq", "pt-gw", "pt-lu", "pt-mo",
-	// "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu", "qu-bo", "qu-ec", "qu-pe", "raj",
-	// "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro", "ro-md", "ro-ro", "rof", "rof-tz",
-	// "ru", "ru-by", "ru-kg", "ru-kz", "ru-md", "ru-ru", "ru-ua", "rw", "rw-rw",
-	// "rwk", "rwk-tz", "sa", "sa-in", "sah", "sah-ru", "saq", "saq-ke", "sat",
-	// "sat-in", "sbp", "sbp-tz", "sc", "sc-it", "sd", "sd-in", "sd-pk", "se", "se-fi",
-	// "se-no", "se-se", "seh", "seh-mz", "ses", "ses-ml", "sg", "sg-cf", "shi",
-	// "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl", "sl-si", "sm", "smn", "smn-fi",
-	// "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj", "so-et", "so-ke", "so-so", "sq",
-	// "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba", "sr-cs", "sr-me", "sr-rs", "sr-xk",
-	// "ss", "st", "su", "su-id", "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd",
-	// "sw-ke", "sw-tz", "sw-ug", "sy", "ta", "ta-in", "ta-lk", "ta-my", "ta-sg", "te",
-	// "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th", "ti", "ti-er",
-	// "ti-et", "tk", "tk-tm", "tl", "tn", "to", "to-to", "tok", "tok-001", "tr",
-	// "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw", "twq", "twq-ne", "ty", "tzm",
-	// "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur", "ur-in", "ur-pk", "uz", "uz-af",
-	// "uz-uz", "vai", "vai-lr", "ve", "vi", "vi-vn", "vo", "vo-001", "vun", "vun-tz",
-	// "wa", "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xog", "xog-ug", "yav",
-	// "yav-cm", "yi", "yi-001", "yo", "yo-bj", "yo-ng", "yrl", "yrl-br", "yrl-co",
-	// "yrl-ve", "yue", "yue-cn", "yue-hk", "za", "zgh", "zgh-ma", "zh", "zh-cn",
-	// "zh-hans", "zh-hant", "zh-hk", "zh-mo", "zh-sg", "zh-tw", "zu", "zu-za".
+	// "km", "km-kh", "kn", "kn-in", "ko", "ko-cn", "ko-kp", "ko-kr", "kok", "kok-in",
+	// "kr", "ks", "ks-in", "ksb", "ksb-tz", "ksf", "ksf-cm", "ksh", "ksh-de", "ku",
+	// "ku-tr", "kv", "kw", "kw-gb", "kxv", "kxv-in", "ky", "ky-kg", "la", "lag",
+	// "lag-tz", "lb", "lb-lu", "lg", "lg-ug", "li", "lij", "lij-it", "lkt", "lkt-us",
+	// "lmo", "lmo-it", "ln", "ln-ao", "ln-cd", "ln-cf", "ln-cg", "lo", "lo-la", "lrc",
+	// "lrc-iq", "lrc-ir", "lt", "lt-lt", "lu", "lu-cd", "luo", "luo-ke", "luy",
+	// "luy-ke", "lv", "lv-lv", "mai", "mai-in", "mas", "mas-ke", "mas-tz", "mdf",
+	// "mdf-ru", "mer", "mer-ke", "mfe", "mfe-mu", "mg", "mg-mg", "mgh", "mgh-mz",
+	// "mgo", "mgo-cm", "mh", "mi", "mi-nz", "mk", "mk-mk", "ml", "ml-in", "mn",
+	// "mn-mn", "mni", "mni-in", "mr", "mr-in", "ms", "ms-bn", "ms-id", "ms-my",
+	// "ms-sg", "mt", "mt-mt", "mua", "mua-cm", "my", "my-mm", "mzn", "mzn-ir", "na",
+	// "naq", "naq-na", "nb", "nb-no", "nb-sj", "nd", "nd-zw", "nds", "nds-de",
+	// "nds-nl", "ne", "ne-in", "ne-np", "ng", "nl", "nl-aw", "nl-be", "nl-bq",
+	// "nl-ch", "nl-cw", "nl-lu", "nl-nl", "nl-sr", "nl-sx", "nmg", "nmg-cm", "nn",
+	// "nn-no", "nnh", "nnh-cm", "no", "no-no", "nqo", "nqo-gn", "nr", "nso", "nso-za",
+	// "nus", "nus-ss", "nv", "ny", "nyn", "nyn-ug", "oc", "oc-es", "oc-fr", "oj",
+	// "om", "om-et", "om-ke", "or", "or-in", "os", "os-ge", "os-ru", "pa", "pa-in",
+	// "pa-pk", "pcm", "pcm-ng", "pi", "pis", "pis-sb", "pl", "pl-pl", "prg",
+	// "prg-001", "ps", "ps-af", "ps-pk", "pt", "pt-ao", "pt-br", "pt-ch", "pt-cv",
+	// "pt-gq", "pt-gw", "pt-lu", "pt-mo", "pt-mz", "pt-pt", "pt-st", "pt-tl", "qu",
+	// "qu-bo", "qu-ec", "qu-pe", "raj", "raj-in", "rm", "rm-ch", "rn", "rn-bi", "ro",
+	// "ro-md", "ro-ro", "rof", "rof-tz", "ru", "ru-by", "ru-kg", "ru-kz", "ru-md",
+	// "ru-ru", "ru-ua", "rw", "rw-rw", "rwk", "rwk-tz", "sa", "sa-in", "sah",
+	// "sah-ru", "saq", "saq-ke", "sat", "sat-in", "sbp", "sbp-tz", "sc", "sc-it",
+	// "sd", "sd-in", "sd-pk", "se", "se-fi", "se-no", "se-se", "seh", "seh-mz", "ses",
+	// "ses-ml", "sg", "sg-cf", "shi", "shi-ma", "si", "si-lk", "sk", "sk-sk", "sl",
+	// "sl-si", "sm", "smn", "smn-fi", "sms", "sms-fi", "sn", "sn-zw", "so", "so-dj",
+	// "so-et", "so-ke", "so-so", "sq", "sq-al", "sq-mk", "sq-xk", "sr", "sr-ba",
+	// "sr-cs", "sr-me", "sr-rs", "sr-xk", "ss", "st", "st-ls", "st-za", "su", "su-id",
+	// "sv", "sv-ax", "sv-fi", "sv-se", "sw", "sw-cd", "sw-ke", "sw-tz", "sw-ug", "sy",
+	// "syr", "syr-iq", "syr-sy", "szl", "szl-pl", "ta", "ta-in", "ta-lk", "ta-my",
+	// "ta-sg", "te", "te-in", "teo", "teo-ke", "teo-ug", "tg", "tg-tj", "th", "th-th",
+	// "ti", "ti-er", "ti-et", "tk", "tk-tm", "tl", "tn", "tn-bw", "tn-za", "to",
+	// "to-to", "tok", "tok-001", "tr", "tr-cy", "tr-tr", "ts", "tt", "tt-ru", "tw",
+	// "twq", "twq-ne", "ty", "tzm", "tzm-ma", "ug", "ug-cn", "uk", "uk-ua", "ur",
+	// "ur-in", "ur-pk", "uz", "uz-af", "uz-uz", "vai", "vai-lr", "ve", "vec",
+	// "vec-it", "vi", "vi-vn", "vmw", "vmw-mz", "vo", "vo-001", "vun", "vun-tz", "wa",
+	// "wae", "wae-ch", "wo", "wo-sn", "xh", "xh-za", "xnr", "xnr-in", "xog", "xog-ug",
+	// "yav", "yav-cm", "yi", "yi-001", "yi-ua", "yo", "yo-bj", "yo-ng", "yrl",
+	// "yrl-br", "yrl-co", "yrl-ve", "yue", "yue-cn", "yue-hk", "yue-mo", "za",
+	// "za-cn", "zgh", "zgh-ma", "zh", "zh-cn", "zh-hans", "zh-hant", "zh-hk", "zh-mo",
+	// "zh-my", "zh-sg", "zh-tw", "zu", "zu-za".
 	Language BlogPostLanguage `json:"language,omitzero" api:"required"`
 	// A structure detailing the layout sections of the blog post.
 	LayoutSections map[string]LayoutSectionParam `json:"layoutSections,omitzero" api:"required"`
@@ -648,6 +654,8 @@ const (
 	BlogPostLanguageAz     BlogPostLanguage = "az"
 	BlogPostLanguageAzAz   BlogPostLanguage = "az-az"
 	BlogPostLanguageBa     BlogPostLanguage = "ba"
+	BlogPostLanguageBal    BlogPostLanguage = "bal"
+	BlogPostLanguageBalPk  BlogPostLanguage = "bal-pk"
 	BlogPostLanguageBas    BlogPostLanguage = "bas"
 	BlogPostLanguageBasCm  BlogPostLanguage = "bas-cm"
 	BlogPostLanguageBe     BlogPostLanguage = "be"
@@ -663,6 +671,8 @@ const (
 	BlogPostLanguageBho    BlogPostLanguage = "bho"
 	BlogPostLanguageBhoIn  BlogPostLanguage = "bho-in"
 	BlogPostLanguageBi     BlogPostLanguage = "bi"
+	BlogPostLanguageBlo    BlogPostLanguage = "blo"
+	BlogPostLanguageBloBj  BlogPostLanguage = "blo-bj"
 	BlogPostLanguageBm     BlogPostLanguage = "bm"
 	BlogPostLanguageBmMl   BlogPostLanguage = "bm-ml"
 	BlogPostLanguageBn     BlogPostLanguage = "bn"
@@ -701,6 +711,8 @@ const (
 	BlogPostLanguageCr     BlogPostLanguage = "cr"
 	BlogPostLanguageCs     BlogPostLanguage = "cs"
 	BlogPostLanguageCsCz   BlogPostLanguage = "cs-cz"
+	BlogPostLanguageCsw    BlogPostLanguage = "csw"
+	BlogPostLanguageCswCa  BlogPostLanguage = "csw-ca"
 	BlogPostLanguageCu     BlogPostLanguage = "cu"
 	BlogPostLanguageCuRu   BlogPostLanguage = "cu-ru"
 	BlogPostLanguageCv     BlogPostLanguage = "cv"
@@ -766,6 +778,7 @@ const (
 	BlogPostLanguageEnCn   BlogPostLanguage = "en-cn"
 	BlogPostLanguageEnCx   BlogPostLanguage = "en-cx"
 	BlogPostLanguageEnCy   BlogPostLanguage = "en-cy"
+	BlogPostLanguageEnCz   BlogPostLanguage = "en-cz"
 	BlogPostLanguageEnDe   BlogPostLanguage = "en-de"
 	BlogPostLanguageEnDg   BlogPostLanguage = "en-dg"
 	BlogPostLanguageEnDk   BlogPostLanguage = "en-dk"
@@ -785,15 +798,18 @@ const (
 	BlogPostLanguageEnGh   BlogPostLanguage = "en-gh"
 	BlogPostLanguageEnGi   BlogPostLanguage = "en-gi"
 	BlogPostLanguageEnGm   BlogPostLanguage = "en-gm"
+	BlogPostLanguageEnGs   BlogPostLanguage = "en-gs"
 	BlogPostLanguageEnGu   BlogPostLanguage = "en-gu"
 	BlogPostLanguageEnGy   BlogPostLanguage = "en-gy"
 	BlogPostLanguageEnHk   BlogPostLanguage = "en-hk"
+	BlogPostLanguageEnHu   BlogPostLanguage = "en-hu"
 	BlogPostLanguageEnID   BlogPostLanguage = "en-id"
 	BlogPostLanguageEnIe   BlogPostLanguage = "en-ie"
 	BlogPostLanguageEnIl   BlogPostLanguage = "en-il"
 	BlogPostLanguageEnIm   BlogPostLanguage = "en-im"
 	BlogPostLanguageEnIn   BlogPostLanguage = "en-in"
 	BlogPostLanguageEnIo   BlogPostLanguage = "en-io"
+	BlogPostLanguageEnIt   BlogPostLanguage = "en-it"
 	BlogPostLanguageEnJe   BlogPostLanguage = "en-je"
 	BlogPostLanguageEnJm   BlogPostLanguage = "en-jm"
 	BlogPostLanguageEnKe   BlogPostLanguage = "en-ke"
@@ -819,16 +835,19 @@ const (
 	BlogPostLanguageEnNf   BlogPostLanguage = "en-nf"
 	BlogPostLanguageEnNg   BlogPostLanguage = "en-ng"
 	BlogPostLanguageEnNl   BlogPostLanguage = "en-nl"
+	BlogPostLanguageEnNo   BlogPostLanguage = "en-no"
 	BlogPostLanguageEnNr   BlogPostLanguage = "en-nr"
 	BlogPostLanguageEnNu   BlogPostLanguage = "en-nu"
 	BlogPostLanguageEnNz   BlogPostLanguage = "en-nz"
 	BlogPostLanguageEnPg   BlogPostLanguage = "en-pg"
 	BlogPostLanguageEnPh   BlogPostLanguage = "en-ph"
 	BlogPostLanguageEnPk   BlogPostLanguage = "en-pk"
+	BlogPostLanguageEnPl   BlogPostLanguage = "en-pl"
 	BlogPostLanguageEnPn   BlogPostLanguage = "en-pn"
 	BlogPostLanguageEnPr   BlogPostLanguage = "en-pr"
 	BlogPostLanguageEnPt   BlogPostLanguage = "en-pt"
 	BlogPostLanguageEnPw   BlogPostLanguage = "en-pw"
+	BlogPostLanguageEnRo   BlogPostLanguage = "en-ro"
 	BlogPostLanguageEnRw   BlogPostLanguage = "en-rw"
 	BlogPostLanguageEnSb   BlogPostLanguage = "en-sb"
 	BlogPostLanguageEnSc   BlogPostLanguage = "en-sc"
@@ -837,6 +856,7 @@ const (
 	BlogPostLanguageEnSg   BlogPostLanguage = "en-sg"
 	BlogPostLanguageEnSh   BlogPostLanguage = "en-sh"
 	BlogPostLanguageEnSi   BlogPostLanguage = "en-si"
+	BlogPostLanguageEnSk   BlogPostLanguage = "en-sk"
 	BlogPostLanguageEnSl   BlogPostLanguage = "en-sl"
 	BlogPostLanguageEnSS   BlogPostLanguage = "en-ss"
 	BlogPostLanguageEnSx   BlogPostLanguage = "en-sx"
@@ -978,6 +998,8 @@ const (
 	BlogPostLanguageGa     BlogPostLanguage = "ga"
 	BlogPostLanguageGaGB   BlogPostLanguage = "ga-gb"
 	BlogPostLanguageGaIe   BlogPostLanguage = "ga-ie"
+	BlogPostLanguageGaa    BlogPostLanguage = "gaa"
+	BlogPostLanguageGaaGh  BlogPostLanguage = "gaa-gh"
 	BlogPostLanguageGd     BlogPostLanguage = "gd"
 	BlogPostLanguageGdGB   BlogPostLanguage = "gd-gb"
 	BlogPostLanguageGl     BlogPostLanguage = "gl"
@@ -1011,6 +1033,7 @@ const (
 	BlogPostLanguageHsb    BlogPostLanguage = "hsb"
 	BlogPostLanguageHsbDe  BlogPostLanguage = "hsb-de"
 	BlogPostLanguageHt     BlogPostLanguage = "ht"
+	BlogPostLanguageHtHt   BlogPostLanguage = "ht-ht"
 	BlogPostLanguageHu     BlogPostLanguage = "hu"
 	BlogPostLanguageHuHu   BlogPostLanguage = "hu-hu"
 	BlogPostLanguageHy     BlogPostLanguage = "hy"
@@ -1021,6 +1044,7 @@ const (
 	BlogPostLanguageID     BlogPostLanguage = "id"
 	BlogPostLanguageIDID   BlogPostLanguage = "id-id"
 	BlogPostLanguageIe     BlogPostLanguage = "ie"
+	BlogPostLanguageIeEe   BlogPostLanguage = "ie-ee"
 	BlogPostLanguageIg     BlogPostLanguage = "ig"
 	BlogPostLanguageIgNg   BlogPostLanguage = "ig-ng"
 	BlogPostLanguageIi     BlogPostLanguage = "ii"
@@ -1076,6 +1100,7 @@ const (
 	BlogPostLanguageKn     BlogPostLanguage = "kn"
 	BlogPostLanguageKnIn   BlogPostLanguage = "kn-in"
 	BlogPostLanguageKo     BlogPostLanguage = "ko"
+	BlogPostLanguageKoCn   BlogPostLanguage = "ko-cn"
 	BlogPostLanguageKoKp   BlogPostLanguage = "ko-kp"
 	BlogPostLanguageKoKr   BlogPostLanguage = "ko-kr"
 	BlogPostLanguageKok    BlogPostLanguage = "kok"
@@ -1094,6 +1119,8 @@ const (
 	BlogPostLanguageKv     BlogPostLanguage = "kv"
 	BlogPostLanguageKw     BlogPostLanguage = "kw"
 	BlogPostLanguageKwGB   BlogPostLanguage = "kw-gb"
+	BlogPostLanguageKxv    BlogPostLanguage = "kxv"
+	BlogPostLanguageKxvIn  BlogPostLanguage = "kxv-in"
 	BlogPostLanguageKy     BlogPostLanguage = "ky"
 	BlogPostLanguageKyKg   BlogPostLanguage = "ky-kg"
 	BlogPostLanguageLa     BlogPostLanguage = "la"
@@ -1104,8 +1131,12 @@ const (
 	BlogPostLanguageLg     BlogPostLanguage = "lg"
 	BlogPostLanguageLgUg   BlogPostLanguage = "lg-ug"
 	BlogPostLanguageLi     BlogPostLanguage = "li"
+	BlogPostLanguageLij    BlogPostLanguage = "lij"
+	BlogPostLanguageLijIt  BlogPostLanguage = "lij-it"
 	BlogPostLanguageLkt    BlogPostLanguage = "lkt"
 	BlogPostLanguageLktUs  BlogPostLanguage = "lkt-us"
+	BlogPostLanguageLmo    BlogPostLanguage = "lmo"
+	BlogPostLanguageLmoIt  BlogPostLanguage = "lmo-it"
 	BlogPostLanguageLn     BlogPostLanguage = "ln"
 	BlogPostLanguageLnAo   BlogPostLanguage = "ln-ao"
 	BlogPostLanguageLnCd   BlogPostLanguage = "ln-cd"
@@ -1202,7 +1233,11 @@ const (
 	BlogPostLanguageNnhCm  BlogPostLanguage = "nnh-cm"
 	BlogPostLanguageNo     BlogPostLanguage = "no"
 	BlogPostLanguageNoNo   BlogPostLanguage = "no-no"
+	BlogPostLanguageNqo    BlogPostLanguage = "nqo"
+	BlogPostLanguageNqoGn  BlogPostLanguage = "nqo-gn"
 	BlogPostLanguageNr     BlogPostLanguage = "nr"
+	BlogPostLanguageNso    BlogPostLanguage = "nso"
+	BlogPostLanguageNsoZa  BlogPostLanguage = "nso-za"
 	BlogPostLanguageNus    BlogPostLanguage = "nus"
 	BlogPostLanguageNusSS  BlogPostLanguage = "nus-ss"
 	BlogPostLanguageNv     BlogPostLanguage = "nv"
@@ -1332,6 +1367,8 @@ const (
 	BlogPostLanguageSrXk   BlogPostLanguage = "sr-xk"
 	BlogPostLanguageSS     BlogPostLanguage = "ss"
 	BlogPostLanguageSt     BlogPostLanguage = "st"
+	BlogPostLanguageStLs   BlogPostLanguage = "st-ls"
+	BlogPostLanguageStZa   BlogPostLanguage = "st-za"
 	BlogPostLanguageSu     BlogPostLanguage = "su"
 	BlogPostLanguageSuID   BlogPostLanguage = "su-id"
 	BlogPostLanguageSv     BlogPostLanguage = "sv"
@@ -1344,6 +1381,11 @@ const (
 	BlogPostLanguageSwTz   BlogPostLanguage = "sw-tz"
 	BlogPostLanguageSwUg   BlogPostLanguage = "sw-ug"
 	BlogPostLanguageSy     BlogPostLanguage = "sy"
+	BlogPostLanguageSyr    BlogPostLanguage = "syr"
+	BlogPostLanguageSyrIq  BlogPostLanguage = "syr-iq"
+	BlogPostLanguageSyrSy  BlogPostLanguage = "syr-sy"
+	BlogPostLanguageSzl    BlogPostLanguage = "szl"
+	BlogPostLanguageSzlPl  BlogPostLanguage = "szl-pl"
 	BlogPostLanguageTa     BlogPostLanguage = "ta"
 	BlogPostLanguageTaIn   BlogPostLanguage = "ta-in"
 	BlogPostLanguageTaLk   BlogPostLanguage = "ta-lk"
@@ -1365,6 +1407,8 @@ const (
 	BlogPostLanguageTkTm   BlogPostLanguage = "tk-tm"
 	BlogPostLanguageTl     BlogPostLanguage = "tl"
 	BlogPostLanguageTn     BlogPostLanguage = "tn"
+	BlogPostLanguageTnBw   BlogPostLanguage = "tn-bw"
+	BlogPostLanguageTnZa   BlogPostLanguage = "tn-za"
 	BlogPostLanguageTo     BlogPostLanguage = "to"
 	BlogPostLanguageToTo   BlogPostLanguage = "to-to"
 	BlogPostLanguageTok    BlogPostLanguage = "tok"
@@ -1394,8 +1438,12 @@ const (
 	BlogPostLanguageVai    BlogPostLanguage = "vai"
 	BlogPostLanguageVaiLr  BlogPostLanguage = "vai-lr"
 	BlogPostLanguageVe     BlogPostLanguage = "ve"
+	BlogPostLanguageVec    BlogPostLanguage = "vec"
+	BlogPostLanguageVecIt  BlogPostLanguage = "vec-it"
 	BlogPostLanguageVi     BlogPostLanguage = "vi"
 	BlogPostLanguageViVn   BlogPostLanguage = "vi-vn"
+	BlogPostLanguageVmw    BlogPostLanguage = "vmw"
+	BlogPostLanguageVmwMz  BlogPostLanguage = "vmw-mz"
 	BlogPostLanguageVo     BlogPostLanguage = "vo"
 	BlogPostLanguageVo001  BlogPostLanguage = "vo-001"
 	BlogPostLanguageVun    BlogPostLanguage = "vun"
@@ -1407,12 +1455,15 @@ const (
 	BlogPostLanguageWoSn   BlogPostLanguage = "wo-sn"
 	BlogPostLanguageXh     BlogPostLanguage = "xh"
 	BlogPostLanguageXhZa   BlogPostLanguage = "xh-za"
+	BlogPostLanguageXnr    BlogPostLanguage = "xnr"
+	BlogPostLanguageXnrIn  BlogPostLanguage = "xnr-in"
 	BlogPostLanguageXog    BlogPostLanguage = "xog"
 	BlogPostLanguageXogUg  BlogPostLanguage = "xog-ug"
 	BlogPostLanguageYav    BlogPostLanguage = "yav"
 	BlogPostLanguageYavCm  BlogPostLanguage = "yav-cm"
 	BlogPostLanguageYi     BlogPostLanguage = "yi"
 	BlogPostLanguageYi001  BlogPostLanguage = "yi-001"
+	BlogPostLanguageYiUa   BlogPostLanguage = "yi-ua"
 	BlogPostLanguageYo     BlogPostLanguage = "yo"
 	BlogPostLanguageYoBj   BlogPostLanguage = "yo-bj"
 	BlogPostLanguageYoNg   BlogPostLanguage = "yo-ng"
@@ -1423,7 +1474,9 @@ const (
 	BlogPostLanguageYue    BlogPostLanguage = "yue"
 	BlogPostLanguageYueCn  BlogPostLanguage = "yue-cn"
 	BlogPostLanguageYueHk  BlogPostLanguage = "yue-hk"
+	BlogPostLanguageYueMo  BlogPostLanguage = "yue-mo"
 	BlogPostLanguageZa     BlogPostLanguage = "za"
+	BlogPostLanguageZaCn   BlogPostLanguage = "za-cn"
 	BlogPostLanguageZgh    BlogPostLanguage = "zgh"
 	BlogPostLanguageZghMa  BlogPostLanguage = "zgh-ma"
 	BlogPostLanguageZh     BlogPostLanguage = "zh"
@@ -1432,6 +1485,7 @@ const (
 	BlogPostLanguageZhHant BlogPostLanguage = "zh-hant"
 	BlogPostLanguageZhHk   BlogPostLanguage = "zh-hk"
 	BlogPostLanguageZhMo   BlogPostLanguage = "zh-mo"
+	BlogPostLanguageZhMy   BlogPostLanguage = "zh-my"
 	BlogPostLanguageZhSg   BlogPostLanguage = "zh-sg"
 	BlogPostLanguageZhTw   BlogPostLanguage = "zh-tw"
 	BlogPostLanguageZu     BlogPostLanguage = "zu"

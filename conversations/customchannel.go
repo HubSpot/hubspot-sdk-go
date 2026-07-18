@@ -156,6 +156,19 @@ func (u *ChannelIntegrationMessageEggAttachmentUnionParam) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, u)
 }
 
+func init() {
+	apijson.RegisterUnion[ChannelIntegrationMessageEggAttachmentUnionParam](
+		"type",
+		apijson.Discriminator[FileAttachmentParam]("FILE"),
+		apijson.Discriminator[LocationAttachmentParam]("LOCATION"),
+		apijson.Discriminator[ContactAttachmentParam]("CONTACT"),
+		apijson.Discriminator[UnsupportedContentAttachmentParam]("UNSUPPORTED_CONTENT"),
+		apijson.Discriminator[MessageHeaderAttachmentParam]("MESSAGE_HEADER"),
+		apijson.Discriminator[QuickRepliesAttachmentParam]("QUICK_REPLIES"),
+		apijson.Discriminator[SocialMetadataIntegrationAttachmentParam]("SOCIAL_MEDIA_METADATA"),
+	)
+}
+
 type ChannelIntegrationMessageEggMessageDirection string
 
 const (
@@ -774,11 +787,11 @@ type PreResolvedContactParam struct {
 	// "hs_gps_latitude", "hs_gps_longitude", "hs_has_active_subscription",
 	// "hs_inferred_language_codes", "hs_intent_paid_up_to_date",
 	// "hs_intent_signals_enabled", "hs_ip_timezone", "hs_is_contact",
-	// "hs_is_enriched", "hs_is_merge_revertible", "hs_is_unworked",
-	// "hs_job_change_detected_date", "hs_journey_stage", "hs_language",
-	// "hs_last_metered_enrichment_timestamp", "hs_last_sales_activity_date",
-	// "hs_last_sales_activity_timestamp", "hs_last_sales_activity_type",
-	// "hs_last_sms_send_date", "hs_last_sms_send_name",
+	// "hs_is_enriched", "hs_is_mass_marketing_activation_disallowed",
+	// "hs_is_merge_revertible", "hs_is_unworked", "hs_job_change_detected_date",
+	// "hs_journey_stage", "hs_language", "hs_last_metered_enrichment_timestamp",
+	// "hs_last_sales_activity_date", "hs_last_sales_activity_timestamp",
+	// "hs_last_sales_activity_type", "hs_last_sms_send_date", "hs_last_sms_send_name",
 	// "hs_latest_disqualified_lead_date", "hs_latest_meeting_activity",
 	// "hs_latest_open_lead_date", "hs_latest_qualified_lead_date",
 	// "hs_latest_sequence_ended_date", "hs_latest_sequence_enrolled",
@@ -1211,15 +1224,20 @@ func (r *PublicConversationsMessage) UnmarshalJSON(data []byte) error {
 // [PublicUnsupportedContent], [PublicMessageHeader], [PublicQuickReplies],
 // [PublicWhatsAppTemplateMetadata], [PublicSocialMetadataAttachment].
 //
+// Use the [PublicConversationsMessageAttachmentUnion.AsAny] method to switch on
+// the variant.
+//
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type PublicConversationsMessageAttachmentUnion struct {
 	// This field is a union of [string], [int64]
 	FileID PublicConversationsMessageAttachmentUnionFileID `json:"fileId"`
 	// This field is from variant [PublicFile].
 	FileUsageType PublicFileFileUsageType `json:"fileUsageType"`
-	Type          string                  `json:"type"`
-	Name          string                  `json:"name"`
-	URL           string                  `json:"url"`
+	// Any of "FILE", "LOCATION", "CONTACT", "UNSUPPORTED_CONTENT", "MESSAGE_HEADER",
+	// "QUICK_REPLIES", "WHATSAPP_TEMPLATE_METADATA", "SOCIAL_MEDIA_METADATA".
+	Type string `json:"type"`
+	Name string `json:"name"`
+	URL  string `json:"url"`
 	// This field is from variant [PublicLocation].
 	Latitude float64 `json:"latitude"`
 	// This field is from variant [PublicLocation].
@@ -1270,6 +1288,58 @@ type PublicConversationsMessageAttachmentUnion struct {
 		SocialMetadata   respjson.Field
 		raw              string
 	} `json:"-"`
+}
+
+// anyPublicConversationsMessageAttachment is implemented by each variant of
+// [PublicConversationsMessageAttachmentUnion] to add type safety for the return
+// type of [PublicConversationsMessageAttachmentUnion.AsAny]
+type anyPublicConversationsMessageAttachment interface {
+	implPublicConversationsMessageAttachmentUnion()
+}
+
+func (PublicFile) implPublicConversationsMessageAttachmentUnion()                     {}
+func (PublicLocation) implPublicConversationsMessageAttachmentUnion()                 {}
+func (PublicContact) implPublicConversationsMessageAttachmentUnion()                  {}
+func (PublicUnsupportedContent) implPublicConversationsMessageAttachmentUnion()       {}
+func (PublicMessageHeader) implPublicConversationsMessageAttachmentUnion()            {}
+func (PublicQuickReplies) implPublicConversationsMessageAttachmentUnion()             {}
+func (PublicWhatsAppTemplateMetadata) implPublicConversationsMessageAttachmentUnion() {}
+func (PublicSocialMetadataAttachment) implPublicConversationsMessageAttachmentUnion() {}
+
+// Use the following switch statement to find the correct variant
+//
+//	switch variant := PublicConversationsMessageAttachmentUnion.AsAny().(type) {
+//	case conversations.PublicFile:
+//	case conversations.PublicLocation:
+//	case conversations.PublicContact:
+//	case conversations.PublicUnsupportedContent:
+//	case conversations.PublicMessageHeader:
+//	case conversations.PublicQuickReplies:
+//	case conversations.PublicWhatsAppTemplateMetadata:
+//	case conversations.PublicSocialMetadataAttachment:
+//	default:
+//	  fmt.Errorf("no variant present")
+//	}
+func (u PublicConversationsMessageAttachmentUnion) AsAny() anyPublicConversationsMessageAttachment {
+	switch u.Type {
+	case "FILE":
+		return u.AsFile()
+	case "LOCATION":
+		return u.AsLocation()
+	case "CONTACT":
+		return u.AsContact()
+	case "UNSUPPORTED_CONTENT":
+		return u.AsUnsupportedContent()
+	case "MESSAGE_HEADER":
+		return u.AsMessageHeader()
+	case "QUICK_REPLIES":
+		return u.AsQuickReplies()
+	case "WHATSAPP_TEMPLATE_METADATA":
+		return u.AsWhatsappTemplateMetadata()
+	case "SOCIAL_MEDIA_METADATA":
+		return u.AsSocialMediaMetadata()
+	}
+	return nil
 }
 
 func (u PublicConversationsMessageAttachmentUnion) AsFile() (v PublicFile) {
