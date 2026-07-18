@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha.6 (2026-07-18)
+
+Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)
+
+### Features
+
+* **api:** api update ([7f3b461](https://github.com/HubSpot/hubspot-sdk-go/commit/7f3b461f8bf6a2c1184cc5fae44a1421a8547a45))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([aca8cf3](https://github.com/HubSpot/hubspot-sdk-go/commit/aca8cf3ec5675f7cb6427d6ba567cc055a3bc89d))
+
 ## 0.1.0-alpha.5 (2026-05-26)
 
 Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/HubSpot/hubspot-sdk-go/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
