@@ -21,6 +21,8 @@ import (
 	"github.com/HubSpot/hubspot-sdk-go/internal"
 	"github.com/HubSpot/hubspot-sdk-go/internal/apierror"
 	"github.com/HubSpot/hubspot-sdk-go/internal/apiform"
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiformurlencoded"
+
 	"github.com/HubSpot/hubspot-sdk-go/internal/apiquery"
 )
 
@@ -129,6 +131,19 @@ func NewRequestConfig(ctx context.Context, method string, u string, body any, ds
 				u = u + "?" + params
 			}
 		}
+	}
+	if body, ok := body.(apiformurlencoded.Marshaler); ok {
+		var (
+			content []byte
+			err     error
+		)
+		content, contentType, err = body.MarshalFormEncoded()
+		if err != nil {
+			return nil, err
+		}
+		reader = bytes.NewBuffer(content)
+		hasSerializationFunc = true
+
 	}
 	if body, ok := body.([]byte); ok {
 		reader = bytes.NewBuffer(body)

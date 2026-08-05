@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"slices"
 
+	"github.com/HubSpot/hubspot-sdk-go/internal/apiformurlencoded"
 	"github.com/HubSpot/hubspot-sdk-go/internal/apijson"
 	"github.com/HubSpot/hubspot-sdk-go/internal/requestconfig"
 	"github.com/HubSpot/hubspot-sdk-go/option"
@@ -437,24 +438,20 @@ func (r *TokenResponseIfUnion) UnmarshalJSON(data []byte) error {
 }
 
 type OAuthNewTokenParams struct {
-	ClientID     param.Opt[string] `json:"client_id,omitzero"`
-	ClientSecret param.Opt[string] `json:"client_secret,omitzero"`
-	Code         param.Opt[string] `json:"code,omitzero"`
-	CodeVerifier param.Opt[string] `json:"code_verifier,omitzero"`
-	RedirectUri  param.Opt[string] `json:"redirect_uri,omitzero"`
-	RefreshToken param.Opt[string] `json:"refresh_token,omitzero"`
-	Scope        param.Opt[string] `json:"scope,omitzero"`
+	ClientID     param.Opt[string] `query:"client_id,omitzero"`
+	ClientSecret param.Opt[string] `query:"client_secret,omitzero"`
+	Code         param.Opt[string] `query:"code,omitzero"`
+	CodeVerifier param.Opt[string] `query:"code_verifier,omitzero"`
+	RedirectUri  param.Opt[string] `query:"redirect_uri,omitzero"`
+	RefreshToken param.Opt[string] `query:"refresh_token,omitzero"`
+	Scope        param.Opt[string] `query:"scope,omitzero"`
 	// Any of "authorization_code", "client_credentials", "refresh_token".
-	GrantType OAuthNewTokenParamsGrantType `json:"grant_type,omitzero"`
+	GrantType OAuthNewTokenParamsGrantType `query:"grant_type,omitzero"`
 	paramObj
 }
 
-func (r OAuthNewTokenParams) MarshalJSON() (data []byte, err error) {
-	type shadow OAuthNewTokenParams
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *OAuthNewTokenParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+func (r OAuthNewTokenParams) MarshalFormEncoded() (data []byte, contentType string, err error) {
+	return apiformurlencoded.Marshal(r)
 }
 
 type OAuthNewTokenParamsGrantType string
@@ -466,33 +463,25 @@ const (
 )
 
 type OAuthIntrospectTokenParams struct {
-	Token         param.Opt[string] `json:"token,omitzero"`
-	ClientID      param.Opt[string] `json:"client_id,omitzero"`
-	ClientSecret  param.Opt[string] `json:"client_secret,omitzero"`
-	TokenTypeHint param.Opt[string] `json:"token_type_hint,omitzero"`
+	Token         param.Opt[string] `query:"token,omitzero"`
+	ClientID      param.Opt[string] `query:"client_id,omitzero"`
+	ClientSecret  param.Opt[string] `query:"client_secret,omitzero"`
+	TokenTypeHint param.Opt[string] `query:"token_type_hint,omitzero"`
 	paramObj
 }
 
-func (r OAuthIntrospectTokenParams) MarshalJSON() (data []byte, err error) {
-	type shadow OAuthIntrospectTokenParams
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *OAuthIntrospectTokenParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+func (r OAuthIntrospectTokenParams) MarshalFormEncoded() (data []byte, contentType string, err error) {
+	return apiformurlencoded.Marshal(r)
 }
 
 type OAuthRevokeTokenParams struct {
-	Token         param.Opt[string] `json:"token,omitzero"`
-	ClientID      param.Opt[string] `json:"client_id,omitzero"`
-	ClientSecret  param.Opt[string] `json:"client_secret,omitzero"`
-	TokenTypeHint param.Opt[string] `json:"token_type_hint,omitzero"`
+	Token         param.Opt[string] `query:"token,omitzero"`
+	ClientID      param.Opt[string] `query:"client_id,omitzero"`
+	ClientSecret  param.Opt[string] `query:"client_secret,omitzero"`
+	TokenTypeHint param.Opt[string] `query:"token_type_hint,omitzero"`
 	paramObj
 }
 
-func (r OAuthRevokeTokenParams) MarshalJSON() (data []byte, err error) {
-	type shadow OAuthRevokeTokenParams
-	return param.MarshalObject(r, (*shadow)(&r))
-}
-func (r *OAuthRevokeTokenParams) UnmarshalJSON(data []byte) error {
-	return apijson.UnmarshalRoot(data, r)
+func (r OAuthRevokeTokenParams) MarshalFormEncoded() (data []byte, contentType string, err error) {
+	return apiformurlencoded.Marshal(r)
 }
